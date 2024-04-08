@@ -26,8 +26,8 @@ This plugin currently supports the following languages:
 * :it: Italian
 * :de: German
 * :es: Spanish
-* :pt: Portuguese
-* :nl: Dutch
+* :portugal: Portuguese
+* :netherlands: Dutch
 
 ## Requirements
 * Moodle 4.1+ (tested with version `20221128`)
