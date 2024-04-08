@@ -1,0 +1,101 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_nolej/contentlimits
+
+    Context variables required for this template:
+    * limitaudio
+    * limitvideo
+    * limitdoc
+    * limitmaxduration
+    * minutes
+    * limitmincharacters
+    * limitmaxsize
+    * limittype
+    * limitmaxpages
+    * audioformats
+    * videoformats
+    * docformats
+
+    Example context (json):
+    {
+        'limitaudio': get_string('limitaudio', 'local_nolej'),
+        'limitvideo': get_string('limitvideo', 'local_nolej'),
+        'limitdoc': get_string('limitdoc', 'local_nolej'),
+        'limitmaxduration': get_string('limitmaxduration', 'local_nolej'),
+        'minutes': get_string('minutes'),
+        'limitmincharacters': get_string('limitmincharacters', 'local_nolej'),
+        'limitmaxcharacters': get_string('limitmaxcharacters', 'local_nolej'),
+        'limitmaxsize': get_string('limitmaxsize', 'local_nolej'),
+        'limittype': get_string('limittype', 'local_nolej'),
+        'limitmaxpages': get_string('limitmaxpages', 'local_nolej'),
+        'audioformats': 'mp3, wav, opus, ogg, oga, m4a',
+        'videoformats': 'm4v, mp4, ogv, avi, webm',
+        'docformats': 'pdf, doc, docx, odt'
+    }
+}}
+
+<style>
+    .limit-container {
+        margin-bottom: 20px;
+        margin-top: calc(0.375rem + 1px);
+    }
+</style>
+
+<div class="limit-container">
+    <details class="limit-details">
+        <summary>{{limitaudio}}</summary>
+        <div class="limit-content">
+            <ul>
+                <li>{{limitmaxduration}}: 60 {{minutes}}</li>
+                <li>{{limitmincharacters}}: 500</li>
+                <li>{{limitmaxsize}}: 1 GB</li>
+                <li>{{limitmaxcharacters}}: 50 000</li>
+                <li>{{limittype}}: {{audioformats}}</li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+<div class="limit-container">
+    <details class="limit-details">
+        <summary>{{limitvideo}}</summary>
+        <div class="limit-content">
+            <ul>
+                <li>{{limitmaxduration}}: 60 {{minutes}}</li>
+                <li>{{limitmincharacters}}: 500</li>
+                <li>{{limitmaxsize}}: 1 GB</li>
+                <li>{{limitmaxcharacters}}: 50 000</li>
+                <li>{{limittype}}: {{videoformats}}</li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+<div class="limit-container">
+    <details class="limit-details">
+        <summary>{{limitdoc}}</summary>
+        <div class="limit-content">
+            <ul>
+                <li>{{limitmaxpages}}: 50</li>
+                <li>{{limitmincharacters}}: 500</li>
+                <li>{{limitmaxcharacters}}: 50 000</li>
+                <li>{{limittype}}: {{docformats}}</li>
+            </ul>
+        </div>
+    </details>
+</div>

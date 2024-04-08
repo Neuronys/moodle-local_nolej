@@ -1,0 +1,215 @@
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Strings for local_nolej
+ *
+ * @package     local_nolej
+ * @author      2023 Vincenzo Padula <vincenzo@oc-group.eu>
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+defined('MOODLE_INTERNAL') || die();
+
+// Plugin
+$string['pluginname'] = 'Nolej';
+$string['nolej:usenolej'] = 'Create activities with Nolej';
+
+// Settings
+$string['apikey'] = 'API Key';
+$string['apikeyinfo'] = 'Your Nolej API Key.';
+$string['apikeymissing'] = 'Nolej API key is missing. You need to set it in the plugin configuration.';
+
+// Manage
+$string['library'] = 'Nolej library';
+$string['modules'] = 'Your Nolej modules';
+$string['status'] = 'Status';
+$string['created'] = 'Created';
+$string['lastupdate'] = 'Last update';
+$string['editmodule'] = 'Edit';
+$string['createmodule'] = 'Create a new Nolej module';
+$string['deletemodule'] = 'Delete';
+$string['deletemoduledescription'] = 'Are you sure you want to delete this Nolej module?';
+$string['moduledeleted'] = 'The Nolej module has been deleted.';
+$string['action'] = 'Action';
+$string['documentinfo'] = 'Module info';
+$string['genericerror'] = 'An error occurred: <pre>{$a->error}</pre>';
+$string['moduleview'] = 'View module';
+
+// Status
+$string['status_0'] = 'New module';
+$string['status_1'] = 'Transcription in progress';
+$string['status_2'] = 'Transcription completed';
+$string['status_3'] = 'Analysis in progress';
+$string['status_4'] = 'Analysis completed';
+$string['status_5'] = 'Revision in progress';
+$string['status_6'] = 'Revision completed';
+$string['status_7'] = 'Activities generation in progress';
+$string['status_8'] = 'Activities generated';
+$string['status_9'] = 'Failed';
+
+// Notifications
+$string['eventwebhookcalled'] = 'Nolej webhook has been called.';
+$string['messageprovider:transcription_ok'] = 'Transcription completed';
+$string['messageprovider:transcription_ko'] = 'Transcription failed';
+$string['messageprovider:analysis_ok'] = 'Analysis completed';
+$string['messageprovider:analysis_ko'] = 'Analysis failed';
+$string['messageprovider:activities_ok'] = 'Activities generated';
+$string['messageprovider:activities_ko'] = 'Activity generation failed';
+$string['action_transcription_ok'] = 'Transcription is ready';
+$string['action_transcription_ok_body'] = 'Transcription of document "{$a->title}" has been completed on {$a->tstamp}, you can now check it and start the analysis.';
+$string['action_transcription_ko'] = 'Transcription failed';
+$string['action_transcription_ko_body'] = 'Unfortunately, transcription of document "{$a->title}" has failed on {$a->tstamp}. Error message: {$a->errormessage}';
+$string['action_analysis_ok'] = 'Analysis is ready';
+$string['action_analysis_ok_body'] = 'Analysis of document "{$a->title}" has been completed on {$a->tstamp}, you can now review it.';
+$string['action_analysis_ko'] = 'Analysis failed';
+$string['action_analysis_ko_body'] = 'Unfortunately, analysis of document "{$a->title}" has failed on {$a->tstamp}. Error message: {$a->errormessage}';
+$string['action_activities_ok'] = 'Activities successfully generated';
+$string['action_activities_ok_body'] = 'Activities of document "{$a->title}" have been generated on {$a->tstamp}.';
+$string['action_activities_ko'] = 'Activity generation failed';
+$string['action_activities_ko_body'] = 'Unfortunately, activities generation of document "{$a->title}" has failed on {$a->tstamp}. Error message: {$a->errormessage}';
+
+// Creation
+$string['title'] = 'Title';
+$string['titledesc'] = 'Choose a title or leave it blank and Nolej will choose a title for you.';
+$string['source'] = 'Source';
+$string['sourcetype'] = 'Source type';
+$string['sourcetypefile'] = 'File';
+$string['sourcetypeweb'] = 'Web resource';
+$string['sourcetypetext'] = 'Write text directly';
+$string['sourcefile'] = 'File';
+$string['sourceurl'] = 'Web URL';
+$string['sourceurldesc'] = 'Write an URL';
+$string['sourceurltype'] = 'Type of content';
+$string['sourcefreetext'] = 'Text';
+$string['sourcedocument'] = 'Document';
+$string['sourceaudio'] = 'Audio';
+$string['sourcevideo'] = 'Video';
+$string['sourceweb'] = 'Web Content';
+$string['language'] = 'Content language';
+$string['languagedesc'] = 'Choosing the correct language of the media helps Nolej to better analyze it.';
+$string['create'] = 'Create module';
+$string['modulenotcreated'] = 'Module not created';
+$string['modulecreated'] = 'Module created, transcription in progress...';
+$string['modulenotfound'] = 'Module not found';
+$string['errdocument'] = 'An error accurred during the creation of Nolej module:<br><pre>{$a}</pre><br>Please try again or contact an administrator if this error persists.';
+
+// Content limits
+$string['limitcontent'] = 'Content limitations';
+$string['limitaudio'] = 'Audio limits';
+$string['limitvideo'] = 'Video limits';
+$string['limitdoc'] = 'Document limits';
+$string['limitmaxduration'] = 'Max duration';
+$string['limitmaxpages'] = 'Maximum number of pages';
+$string['limitmaxsize'] = 'File maximum size';
+$string['limitmincharacters'] = 'Minimum characters';
+$string['limitmaxcharacters'] = 'Maximum characters';
+$string['limittype'] = 'Allowed types';
+
+// Analysis
+$string['analyze'] = 'Start analysis';
+$string['analysisconfirm'] = 'Warning: Before proceeding, have you thoroughly reviewed the transcription? Once the analysis begins, modifications cannot be made. Please ensure accuracy before continuing.';
+$string['transcription'] = 'Transcription';
+$string['missingtranscription'] = 'Missing transcription';
+$string['analysisstart'] = 'Analysis started';
+$string['cannotwritetranscription'] = 'Cannot save transcription on disk, please contact an Administrator if this error persists.';
+
+// Summary
+$string['savesummary'] = 'Save summary';
+$string['summary'] = 'Summary';
+$string['abstract'] = 'Abstract';
+$string['keypoints'] = 'Keypoints';
+$string['cannotwritesummary'] = 'Cannot save summary on disk, please contact an Administrator if this error persists.';
+$string['summarynotsaved'] = 'Could not update the summary. Please contact an Administrator if this error persists.';
+$string['summarysaved'] = 'Summary has been saved.';
+
+// Questions
+$string['questions'] = 'Questions';
+$string['savequestions'] = 'Save questions';
+$string['questionssaved'] = 'Questions saved.';
+$string['questionsnotsaved'] = 'Could not update the questions. Please contact an Administrator if this error persists.';
+$string['cannotwritequestions'] = 'Cannot save questions on disk, please contact an Administrator if this error persists.';
+$string['questionn'] = 'Question #{$a}';
+$string['question'] = 'Question';
+$string['questiontype'] = 'Question type';
+$string['questiontypeopen'] = 'Open answer';
+$string['questiontypeftb'] = 'Fill the blanks';
+$string['questiontypetf'] = 'True or false';
+$string['questiontypemcq'] = 'Multiple choice question';
+$string['questiontypehoq'] = 'High order question';
+$string['questionenable'] = 'Enable question';
+$string['questionuseforgrading'] = 'Use for grading';
+$string['questionanswer'] = 'Answer';
+$string['questionanswertrue'] = 'Correct statement';
+$string['questionanswerfalse'] = 'False statement';
+$string['questiondistractor'] = 'Distractor';
+$string['questionusedistractor'] = 'Statement to display';
+
+// Concepts
+$string['concepts'] = 'Concepts';
+$string['saveconcepts'] = 'Save concepts';
+$string['cannotwriteconcepts'] = 'Cannot save concepts on disk, please contact an Administrator if this error persists.';
+$string['conceptssaved'] = 'Concepts saved.';
+$string['conceptsnotsaved'] = 'Could not update the concepts. Please contact an Administrator if this error persists.';
+$string['conceptenable'] = 'Enabled';
+$string['conceptlabel'] = 'Label';
+$string['conceptdefinition'] = 'Definition';
+$string['conceptuseforgaming'] = 'Use for games';
+$string['conceptuseforcw'] = 'Crossword';
+$string['conceptuseforftw'] = 'Find the word';
+$string['conceptusefordtw'] = 'Drag the word';
+$string['conceptuseingames'] = 'Available games';
+$string['conceptuseforpractice'] = 'Use for practice';
+
+// Activities
+$string['settings'] = 'Generate';
+$string['activities'] = 'Preview';
+$string['generate'] = 'Generate activities';
+$string['activitiescrossword'] = 'Crossword';
+$string['activitiescwwords'] = 'Defines how many words to use in the Crossword activity';
+$string['activitiesdragtheword'] = 'Drag the word';
+$string['activitiesdtwwords'] = 'Defines how many words to use in the Drag The Word activity';
+$string['activitiesfindtheword'] = 'Find the word';
+$string['activitiesflashcardsflashcards'] = 'Defines how many flashcards should appear in the conceptual assessment activity';
+$string['activitiesftwwords'] = 'Defines how many words to use in the Find The Word activity';
+$string['activitiesglossary'] = 'Glossary';
+$string['activitiesgrade'] = 'Conceptual assessment';
+$string['activitiesgradequestions'] = 'Defines how many questions should appear in the conceptual assessment activity';
+$string['activitiesgradeq'] = 'Contextual assessment';
+$string['activitiesgradeqquestions'] = 'Defines how many questions should appear in the contextual assessment activity';
+$string['activitieshoquestions'] = 'High order questions';
+$string['activitiesibook'] = 'Interactive book';
+$string['activitiesivideo'] = 'Interactive video';
+$string['activitiesivideoquestions'] = 'Defines how many questions should be proposed per set in the Interactive Video activity. There are 2 sets: one at the middle of the video, one at the end of the video';
+$string['activitiesivideosummary'] = 'Defines if the summary will be added to the end of the Interactive Video activity';
+$string['activitiespractice'] = 'Conceptual flashcards';
+$string['activitiespracticeflashcards'] = 'Defines how many questions should appear in the conceptual flashcard activity';
+$string['activitiespracticeq'] = 'Contextual flashcards';
+$string['activitiespracticeqflashcards'] = 'Defines how many questions should appear in the contextual flashcard activity';
+$string['activitiesselect'] = 'Select an activity';
+$string['activitiesselected'] = 'Nolej activity: %s from module "%s".';
+$string['activitiessummary'] = 'Summary';
+$string['activitiesuseinibook'] = 'Use this activity in the Interactive book';
+$string['activitiesenable'] = 'Generate {$a}';
+$string['minvalue'] = 'Minimum value';
+$string['maxvalue'] = 'Maximum value';
+$string['cannotwritesettings'] = 'Cannot save settings on disk, please contact an Administrator if this error persists.';
+$string['settingsnotsaved'] = 'Could not update the settings. Please contact an Administrator if this error persists.';
+$string['generationstarted'] = 'Generation started';
+$string['erractivitiesdecode'] = 'Failed to decode activities data';
+$string['erractivitydownload'] = 'Failed to save activity on disk';
+$string['errh5psave'] = 'Failed to save h5p package';
+$string['errh5pvalidation'] = 'h5p package is not valid';

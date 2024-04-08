@@ -1,0 +1,72 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_nolej/range_form_element
+
+    Context variables required for this template:
+    * elementname
+    * label
+    * value
+    * min
+    * max
+    * step
+    * attributes
+    * errormessage
+    * lang
+        * minvalue
+        * maxvalue
+
+    Example context (json):
+    {
+        'elementname': 'range',
+        'label': 'Course full name',
+        'value': 50,
+        'min': 0,
+        'max': 100,
+        'step': 1,
+        'attributes': '',
+        'errormessage': 'Value too low',
+        'lang': {
+            'minvalue': get_string('minvalue', 'local_nolej'),
+            'maxvalue': get_string('maxvalue', 'local_nolej')
+        }
+    }
+
+    The "margin-top: -1.5rem" on the first div hides the space that
+    the default moodle's input label occupies. (May there be a better solution)
+}}
+
+<div id="fitem_id_{{elementname}}" class="form-group row fitem" style="margin-top: -1.5rem;">
+    <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
+        <label for="id_{{elementname}}">{{label}}</label>
+    </div>
+    <div class="col-md-9 felement" data-fieldtype="integer">
+        <div class="row mt-2">
+            <output name="out_{{elementname}}" for="{{elementname}}" class="col-md-6 col-sm-9 w-100 text-center">{{value}}</output>
+        </div>
+        <div class="row">
+            <input type="range" {{{attributes}}} class="col-md-6 col-sm-9 w-100 mr-3 ml-3" min="{{min}}" max="{{max}}" step="{{step}}" oninput="out_{{elementname}}.value=parseInt(id_{{elementname}}.value)">
+        </div>
+        <div class="small row">
+            <div class="col-md-3">{{lang.minvalue}}: {{min}}</div>
+            <div class="col-md-3">{{lang.maxvalue}}: {{max}}</div>
+        </div>
+        <div class="form-control-feedback invalid-feedback" id="id_error_{{elementname}}">
+            {{errormessage}}
+        </div>
+    </div>
+</div>

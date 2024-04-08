@@ -1,0 +1,52 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_nolej/creation
+
+    This template does not require any context variable.
+}}
+
+<style>
+    .atto_image_button, .atto_h5p_button {
+        display: none;
+    }
+</style>
+
+<script>
+
+// Ensure page load
+window.addEventListener('load', function() {
+
+    // Editor initially hidden
+    document.getElementById('fitem_id_sourcetext').style.display = 'none';
+    var types = document.getElementsByName('sourcetype');
+
+    for (var i = 0, len = types.length; i < len; i++) {
+        types[i].addEventListener('change', function() {
+            var value = this.value;
+
+            // Show editor iff selected type is text
+            if(this.checked && value == 'text') {
+                document.getElementById('fitem_id_sourcetext').style.display = '';
+            } else {
+                document.getElementById('fitem_id_sourcetext').style.display = 'none';
+            }
+        })
+    }
+});
+
+</script>
