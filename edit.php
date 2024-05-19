@@ -117,6 +117,7 @@ if (
                 $module->setstep(\local_nolej\module\module::STEP_CONCEPTS);
                 $module->concepts();
             }
+            break;
 
         case \local_nolej\module\module::STEP_CONCEPTS:
         case \local_nolej\module\module::STEP_QUESTIONS:
