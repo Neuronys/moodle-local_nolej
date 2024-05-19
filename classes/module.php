@@ -69,7 +69,7 @@ class module
      */
     public function creation()
     {
-        global $OUTPUT, $DB, $USER, $SITE, $context;
+        global $OUTPUT, $PAGE, $DB, $USER, $SITE, $context;
 
         // Display and handle creation form
         $mform = new \local_nolej\form\creation();
@@ -230,6 +230,8 @@ class module
         } else {
             // Display form
         }
+
+        $PAGE->requires->js_call_amd('local_nolej/creation');
 
         echo $OUTPUT->header();
         $mform->display();
