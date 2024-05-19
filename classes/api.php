@@ -941,22 +941,6 @@ class api
         ]);
         $modulecontext = \context_coursecat::instance($modulecategory->id);
 
-        // $enrol = enrol_get_plugin('manual');
-        // $instances = enrol_get_instances($modulecategory->id, true);
-        // foreach ($instances as $instance) {
-        //     if ($instance->enrol === 'manual') {
-        //         break;
-        //     }
-        // }
-        // if ($instance->enrol !== 'manual') {
-        //     throw new \Exception('No manual enrol plugin in course');
-        // }
-        // $enrol->enrol_user($instance, $document->user_id, 0, $now, 0, ENROL_USER_ACTIVE, 0);
-
-        // // Limit access
-        // $role = get_config('moodle', 'defaultcourseroleid');
-        // assign_capability('moodle/category:viewcourselist', CAP_ALLOW, $role, $modulecontext);
-
         foreach ($activities as $activity) {
             $filepath = sprintf('%s/%s.h5p', $h5pdir, $activity->activity_name);
 
@@ -1011,40 +995,6 @@ class api
                     false
                 );
 
-                /**
-                 * Normal h5p object, not for content bank
-                 */
-                // $config = (object) [];
-                // $h5pid = \core_h5p\helper::save_h5p($h5pfactory, $file, $config);
-                // if ($h5pid == null) {
-                //     $errors[] = sprintf('%s (%s)', $activity->activity_name, get_string('errh5psave', 'local_nolej'));
-                //     continue;
-                // }
-                // if ($h5pid === false) {
-                //     $errors[] = sprintf('%s (%s)', $activity->activity_name, get_string('errh5pvalidation', 'local_nolej'));
-                //     continue;
-                // }
-                // $errors[] = sprintf('%s (%s %d)', $activity->activity_name, 'File saved with h5p id', $h5pid);
-
-                // if ($file && $h5pcontent) {
-                //     $updatedfilerecord = (object) [
-                //         'id' => $file->get_id(),
-                //         'itemid' => $h5pcontent->get_id()
-                //     ];
-                //     // As itemid changed, the pathnamehash has to be updated in the file table.
-                //     $pathnamehash = \file_storage::get_pathname_hash(
-                //         $file->get_contextid(),
-                //         $file->get_component(),
-                //         $file->get_filearea(),
-                //         $updatedfilerecord->itemid,
-                //         $file->get_filepath(),
-                //         $file->get_filename()
-                //     );
-                //     $updatedfilerecord->pathnamehash = $pathnamehash;
-                //     $DB->update_record('files', $updatedfilerecord);
-                //     // The pathnamehash in the h5p table must match the file pathnamehash.
-                //     $h5pfactory->get_framework()->updateContentFields($h5pid, ['pathnamehash' => $pathnamehash]);
-                // }
             } catch (\Exception $e) {
                 $errors[] = sprintf('%s (%s)', $activity->activity_name, 'Exception: ' . print_r($e));
             }
@@ -1110,14 +1060,6 @@ class api
             ? (new \moodle_url('/local/nolej/edit.php', ['documentid' => $documentid]))->out(false)
             : (new \moodle_url('/local/nolej/manage.php'))->out(false);
         $message->contexturlname = get_string('moduleview', 'local_nolej'); // Link title explaining where users get to for the contexturl
-        // Extra content for specific processor
-        // $content = [
-        // '*' => [
-        //     'header' => ' test ',
-        //     'footer' => ' test ',
-        // ],
-        // ];
-        // $message->set_additional_content('email', $content);
         $messageid = message_send($message);
         $this->log('Message sent with ID: ' . $messageid . ' to user ' . $userid);
     }
