@@ -179,7 +179,6 @@ class api
             return null;
         }
 
-        // TODO: send a PUT request
         $jsondata = $encode ? json_encode($data) : $data;
         $url = self::API_URL . $path;
 
@@ -422,12 +421,12 @@ class api
     }
 
     /**
+     * Log the event
      * @param string $msg
      * @param ?string $documentid
      */
     public function log($msg, $documentid = null)
     {
-        // TODO
         $event = \local_nolej\event\webhook_called::create(
             [
                 'context' => \context_system::instance(),
