@@ -1095,7 +1095,8 @@ function printdocumentinfo()
             'questions' => $step == 'questions',
             'concepts' => $step == 'concepts',
             'settings' => $step == 'activities',
-            'editurl' => (new \moodle_url('/local/nolej/edit.php', ['documentid' => $document->document_id]))->out(false)
+            'editurl' => (new \moodle_url('/local/nolej/edit.php', ['documentid' => $document->document_id]))->out(false),
+            'manageurl' => (new \moodle_url('/local/nolej/manage.php'))->out(false)
         ]
     );
 }

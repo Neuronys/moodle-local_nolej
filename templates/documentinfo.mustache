@@ -24,6 +24,7 @@
     * concepts
     * settings
     * editurl
+    * manageurl
     * title
     * source
     * sourcetype
@@ -50,6 +51,7 @@
         'source': 'https://www.youtube.com/...',
         'sourcetype': 'Video',
         'transcription': 'This is the transcription of the video',
+        'manageurl': 'https://mymoodlesite.com/local/nolej/manage.php',
         'editurl': 'https://mymoodlesite.com/local/nolej/edit.php?documentid=abcd-efgh'
         'lang': {
             'summary': get_string('summary', 'local_nolej'),
@@ -124,25 +126,46 @@
         <div class='card'>
             <div class='card-header' style='border-bottom: none;' id='headingOne'>
                 <nav class='navbar navbar-expand-lg navbar-default navbar-light' style='box-shadow:none;'>
+                    <ul class='nav navbar-nav navbar-left' style='flex: none;'>
+                        <li class='mb-2'>
+                            <a class='nav-link btn btn-default rounded px-2' role="button" href='{{manageurl}}'><i class='fa fa-chevron-left mr-2'></i> {{lang.back}}</a>
+                        </li>
+                    </ul>
                     {{#review}}
                     <ul class='nav navbar-nav w-100'>
                         <li class='mr-2 mb-2'>
-                            <a class='nav-link btn btn-default rounded btn-outline-secondary px-2 {{#concepts}}active{{/concepts}}' aria-pressed="{{concepts}}" role="button" href='{{editurl}}&step=concepts'><i class='fa fa-lightbulb-o mr-2'></i> {{lang.concepts}}</a>
+                            <a class='nav-link btn btn-default rounded btn-outline-secondary px-2 {{#concepts}}active{{/concepts}}' aria-pressed="{{concepts}}" role="button" href='{{editurl}}&step=concepts'>
+                                <i class='fa fa-lightbulb-o mr-2'></i>
+                                {{lang.concepts}}
+                            </a>
                         </li>
                         <li class='mr-2 mb-2'>
-                            <a class='nav-link btn btn-default rounded btn-outline-secondary px-2 {{#questions}}active{{/questions}}' aria-pressed="{{questions}}" role="button" href='{{editurl}}&step=questions'><i class='fa fa-question mr-2'></i> {{lang.questions}}</a>
+                            <a class='nav-link btn btn-default rounded btn-outline-secondary px-2 {{#questions}}active{{/questions}}' aria-pressed="{{questions}}" role="button" href='{{editurl}}&step=questions'>
+                                <i class='fa fa-question mr-2'></i>
+                                {{lang.questions}}
+                            </a>
                         </li>
                         <li class='mr-2 mb-2'>
-                            <a class='nav-link btn btn-default rounded btn-outline-secondary px-2 {{#summary}}active{{/summary}}' aria-pressed="{{summary}}" role="button" href='{{editurl}}&step=summary'><i class='fa fa-list mr-2'></i> {{lang.summary}}</a>
+                            <a class='nav-link btn btn-default rounded btn-outline-secondary px-2 {{#summary}}active{{/summary}}' aria-pressed="{{summary}}" role="button" href='{{editurl}}&step=summary'>
+                                <i class='fa fa-list mr-2'></i>
+                                {{lang.summary}}
+                            </a>
                         </li>
                         <li class='mr-2 mb-2'>
-                            <a class='nav-link btn btn-default rounded btn-outline-secondary px-2 {{#settings}}active{{/settings}}' aria-pressed="{{settings}}" role="button" href='{{editurl}}&step=activities'><i class='fa fa-cog mr-2'></i> {{lang.settings}}</a>
+                            <a class='nav-link btn btn-default rounded btn-outline-secondary px-2 {{#settings}}active{{/settings}}' aria-pressed="{{settings}}" role="button" href='{{editurl}}&step=activities'>
+                                <i class='fa fa-cog mr-2'></i>
+                                {{lang.settings}}
+                            </a>
                         </li>
                     </ul>
                     {{/review}}
-                    <ul class='nav navbar-nav navbar-right'>
-                        <li class='mb-2' style='flex: none;'>
-                            <a class='nav-link btn btn-default' href='#' data-toggle='collapse' data-target='#collapseOne' aria-expanded='true' aria-controls='collapseOne' onclick='toggleChevron()'><i class='fa fa-info'></i> {{lang.documentinfo}} <i id='chevronIcon' class='fa fa-chevron-down'></i></a>
+                    <ul class='nav navbar-nav navbar-right' style='flex: none;'>
+                        <li class='mb-2'>
+                            <a class='nav-link btn btn-default' href='#' data-toggle='collapse' data-target='#collapseOne' aria-expanded='true' aria-controls='collapseOne' onclick='toggleChevron()'>
+                                <i class='fa fa-info'></i>
+                                {{lang.documentinfo}}
+                                <i id='chevronIcon' class='fa fa-chevron-down'></i>
+                            </a>
                         </li>
                     </ul>
                 </nav>
