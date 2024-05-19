@@ -65,16 +65,6 @@ class creation extends \moodleform
             $OUTPUT->render_from_template(
                 'local_nolej/contentlimits',
                 (object) [
-                    'limitaudio' => get_string('limitaudio', 'local_nolej'),
-                    'limitvideo' => get_string('limitvideo', 'local_nolej'),
-                    'limitdoc' => get_string('limitdoc', 'local_nolej'),
-                    'limitmaxduration' => get_string('limitmaxduration', 'local_nolej'),
-                    'minutes' => get_string('minutes'),
-                    'limitmincharacters' => get_string('limitmincharacters', 'local_nolej'),
-                    'limitmaxcharacters' => get_string('limitmaxcharacters', 'local_nolej'),
-                    'limitmaxsize' => get_string('limitmaxsize', 'local_nolej'),
-                    'limittype' => get_string('limittype', 'local_nolej'),
-                    'limitmaxpages' => get_string('limitmaxpages', 'local_nolej'),
                     'audioformats' => join(', ', \local_nolej\api\api::TYPE_AUDIO),
                     'videoformats' => join(', ', \local_nolej\api\api::TYPE_VIDEO),
                     'docformats' => join(', ', \local_nolej\api\api::TYPE_DOC)

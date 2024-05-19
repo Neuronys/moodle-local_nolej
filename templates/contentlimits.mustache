@@ -18,31 +18,12 @@
     @template local_nolej/contentlimits
 
     Context variables required for this template:
-    * limitaudio
-    * limitvideo
-    * limitdoc
-    * limitmaxduration
-    * minutes
-    * limitmincharacters
-    * limitmaxsize
-    * limittype
-    * limitmaxpages
     * audioformats
     * videoformats
     * docformats
 
     Example context (json):
     {
-        'limitaudio': get_string('limitaudio', 'local_nolej'),
-        'limitvideo': get_string('limitvideo', 'local_nolej'),
-        'limitdoc': get_string('limitdoc', 'local_nolej'),
-        'limitmaxduration': get_string('limitmaxduration', 'local_nolej'),
-        'minutes': get_string('minutes'),
-        'limitmincharacters': get_string('limitmincharacters', 'local_nolej'),
-        'limitmaxcharacters': get_string('limitmaxcharacters', 'local_nolej'),
-        'limitmaxsize': get_string('limitmaxsize', 'local_nolej'),
-        'limittype': get_string('limittype', 'local_nolej'),
-        'limitmaxpages': get_string('limitmaxpages', 'local_nolej'),
         'audioformats': 'mp3, wav, opus, ogg, oga, m4a',
         'videoformats': 'm4v, mp4, ogv, avi, webm',
         'docformats': 'pdf, doc, docx, odt'
@@ -58,14 +39,14 @@
 
 <div class="limit-container">
     <details class="limit-details">
-        <summary>{{limitaudio}}</summary>
+        <summary>{{#str}} limitaudio, local_nolej {{/str}}</summary>
         <div class="limit-content">
             <ul>
-                <li>{{limitmaxduration}}: 60 {{minutes}}</li>
-                <li>{{limitmincharacters}}: 500</li>
-                <li>{{limitmaxsize}}: 1 GB</li>
-                <li>{{limitmaxcharacters}}: 50 000</li>
-                <li>{{limittype}}: {{audioformats}}</li>
+                <li>{{#str}} limitmaxduration, local_nolej {{/str}}: 60 {{#str}} minutes, moodle {{/str}}</li>
+                <li>{{#str}} limitmincharacters, local_nolej {{/str}}: 500</li>
+                <li>{{#str}} limitmaxsize, local_nolej {{/str}}: 1 GB</li>
+                <li>{{#str}} limitmaxcharacters, local_nolej {{/str}}: 50 000</li>
+                <li>{{#str}} limittype, local_nolej {{/str}}: {{audioformats}}</li>
             </ul>
         </div>
     </details>
@@ -73,14 +54,14 @@
 
 <div class="limit-container">
     <details class="limit-details">
-        <summary>{{limitvideo}}</summary>
+        <summary>{{#str}} limitvideo, local_nolej {{/str}}</summary>
         <div class="limit-content">
             <ul>
-                <li>{{limitmaxduration}}: 60 {{minutes}}</li>
-                <li>{{limitmincharacters}}: 500</li>
-                <li>{{limitmaxsize}}: 1 GB</li>
-                <li>{{limitmaxcharacters}}: 50 000</li>
-                <li>{{limittype}}: {{videoformats}}</li>
+                <li>{{#str}} limitmaxduration, local_nolej {{/str}}: 60 {{#str}} minutes, moodle {{/str}}</li>
+                <li>{{#str}} limitmincharacters, local_nolej {{/str}}: 500</li>
+                <li>{{#str}} limitmaxsize, local_nolej {{/str}}: 1 GB</li>
+                <li>{{#str}} limitmaxcharacters, local_nolej {{/str}}: 50 000</li>
+                <li>{{#str}} limittype, local_nolej {{/str}}: {{videoformats}}</li>
             </ul>
         </div>
     </details>
@@ -88,13 +69,13 @@
 
 <div class="limit-container">
     <details class="limit-details">
-        <summary>{{limitdoc}}</summary>
+        <summary>{{#str}} limitdoc, local_nolej {{/str}}</summary>
         <div class="limit-content">
             <ul>
-                <li>{{limitmaxpages}}: 50</li>
-                <li>{{limitmincharacters}}: 500</li>
-                <li>{{limitmaxcharacters}}: 50 000</li>
-                <li>{{limittype}}: {{docformats}}</li>
+                <li>{{#str}} limitmaxpages, local_nolej {{/str}}: 50</li>
+                <li>{{#str}} limitmincharacters, local_nolej {{/str}}: 500</li>
+                <li>{{#str}} limitmaxcharacters, local_nolej {{/str}}: 50 000</li>
+                <li>{{#str}} limittype, local_nolej {{/str}}: {{docformats}}</li>
             </ul>
         </div>
     </details>
