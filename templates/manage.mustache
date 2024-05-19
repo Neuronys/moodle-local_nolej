@@ -27,16 +27,6 @@
             * lastupdate
             * editurl
             * activitiesurl
-    * lang
-        * title
-        * created
-        * status
-        * lastupdate
-        * action
-        * createmodule
-        * editmodule
-        * deletemodule
-        * activities
 
     Example context (json):
     {
@@ -51,34 +41,23 @@
                 'activitiesurl': null,
             }
         ]
-        'lang': {
-            'title': get_string('title', 'local_nolej'),
-            'created': get_string('created', 'local_nolej'),
-            'status': get_string('status', 'local_nolej'),
-            'lastupdate': get_string('lastupdate', 'local_nolej'),
-            'action': get_string('action', 'local_nolej'),
-            'createmodule': get_string('createmodule', 'local_nolej'),
-            'editmodule': get_string('editmodule', 'local_nolej'),
-            'deletemodule': get_string('deletemodule', 'local_nolej'),
-            'activities': get_string('activities', 'local_nolej')
-        }
     }
 }}
 
 
 <div class="text-right mb-3 mt-2">
-    <input type="button" class="btn btn-primary" value="{{lang.createmodule}}" onclick="location.href='{{{createurl}}}'" />
+    <input type="button" class="btn btn-primary" value="{{#str}} createmodule, local_nolej {{/str}}" onclick="location.href='{{{createurl}}}'" />
 </div>
 
 <div class="table-responsive-xl">
     <table class="table table-hover">
     <thead>
         <tr>
-            <th scope="col">{{lang.title}}</th>
-            <th scope="col">{{lang.created}}</th>
-            <th scope="col">{{lang.status}}</th>
-            <th scope="col">{{lang.lastupdate}}</th>
-            <th scope="col">{{lang.action}}</th>
+            <th scope="col">{{#str}} title, local_nolej {{/str}}</th>
+            <th scope="col">{{#str}} created, local_nolej {{/str}}</th>
+            <th scope="col">{{#str}} status, local_nolej {{/str}}</th>
+            <th scope="col">{{#str}} lastupdate, local_nolej {{/str}}</th>
+            <th scope="col">{{#str}} action, local_nolej {{/str}}</th>
         </tr>
     </thead>
     <tbody>
@@ -90,12 +69,12 @@
                 <td>{{lastupdate}}</td>
                 <td>
                     {{#activitiesurl}}
-                    <input type="button" class="btn btn-primary mr-2 mb-2 local_nolej_activities" value="{{lang.activities}}" onclick="location.href='{{{activitiesurl}}}'" />
+                    <input type="button" class="btn btn-primary mr-2 mb-2 local_nolej_activities" value="{{#str}} activities, local_nolej {{/str}}" onclick="location.href='{{{activitiesurl}}}'" />
                     {{/activitiesurl}}
                     {{#editurl}}
-                    <input type="button" class="btn btn-secondary mr-2 mb-2 local_nolej_edit" value="{{lang.editmodule}}" onclick="location.href='{{{editurl}}}'" />
+                    <input type="button" class="btn btn-secondary mr-2 mb-2 local_nolej_edit" value="{{#str}} editmodule, local_nolej {{/str}}" onclick="location.href='{{{editurl}}}'" />
                     {{/editurl}}
-                    <input type="button" class="btn btn-danger mr-2 mb-2 local_nolej_delete" data-documentid="{{documentid}}" value="{{lang.deletemodule}}" />
+                    <input type="button" class="btn btn-danger mr-2 mb-2 local_nolej_delete" data-documentid="{{documentid}}" value="{{#str}} deletemodule, local_nolej {{/str}}" />
                 </td>
             </tr>
         {{/modules}}

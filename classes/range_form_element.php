@@ -95,10 +95,6 @@ class range_form_element extends HTML_QuickForm_text
                 'value' => $this->getValue(),
                 'attributes' => $this->_getAttrString($this->_attributes),
                 'errormessage' => '',
-                'lang' => [
-                    'minvalue' => get_string('minvalue', 'local_nolej'),
-                    'maxvalue' => get_string('maxvalue', 'local_nolej')
-                ]
             ]
         );
     }

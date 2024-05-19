@@ -26,9 +26,6 @@
     * step
     * attributes
     * errormessage
-    * lang
-        * minvalue
-        * maxvalue
 
     Example context (json):
     {
@@ -39,11 +36,7 @@
         'max': 100,
         'step': 1,
         'attributes': '',
-        'errormessage': 'Value too low',
-        'lang': {
-            'minvalue': get_string('minvalue', 'local_nolej'),
-            'maxvalue': get_string('maxvalue', 'local_nolej')
-        }
+        'errormessage': 'Value too low'
     }
 
     The "margin-top: -1.5rem" on the first div hides the space that
@@ -62,8 +55,8 @@
             <input type="range" {{{attributes}}} class="col-md-6 col-sm-9 w-100 mr-3 ml-3" min="{{min}}" max="{{max}}" step="{{step}}" oninput="out_{{elementname}}.value=parseInt(id_{{elementname}}.value)">
         </div>
         <div class="small row">
-            <div class="col-md-3">{{lang.minvalue}}: {{min}}</div>
-            <div class="col-md-3">{{lang.maxvalue}}: {{max}}</div>
+            <div class="col-md-3">{{#str}} minvalue, local_nolej {{/str}}: {{min}}</div>
+            <div class="col-md-3">{{#str}} maxvalue, local_nolej {{/str}}: {{max}}</div>
         </div>
         <div class="form-control-feedback invalid-feedback" id="id_error_{{elementname}}">
             {{errormessage}}

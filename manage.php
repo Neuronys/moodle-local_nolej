@@ -144,17 +144,6 @@ foreach ($modules as $module) {
 }
 
 $templatecontext = (object) [
-    'lang' => [
-        'title' => get_string('title', 'local_nolej'),
-        'created' => get_string('created', 'local_nolej'),
-        'status' => get_string('status', 'local_nolej'),
-        'lastupdate' => get_string('lastupdate', 'local_nolej'),
-        'action' => get_string('action', 'local_nolej'),
-        'createmodule' => get_string('createmodule', 'local_nolej'),
-        'editmodule' => get_string('editmodule', 'local_nolej'),
-        'deletemodule' => get_string('deletemodule', 'local_nolej'),
-        'activities' => get_string('activities', 'local_nolej')
-    ],
     'modules' => $modulearray,
     'createurl' => (new moodle_url('/local/nolej/edit.php'))->out(false)
 ];

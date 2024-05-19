@@ -1075,17 +1075,6 @@ function printdocumentinfo()
     echo $OUTPUT->render_from_template(
         'local_nolej/documentinfo',
         (object) [
-            'lang' => [
-                'documentinfo' => get_string('documentinfo', 'local_nolej'),
-                'title' => get_string('title', 'local_nolej'),
-                'source' => get_string('source', 'local_nolej'),
-                'sourcetype' => get_string('sourcetype', 'local_nolej'),
-                'transcription' => get_string('transcription', 'local_nolej'),
-                'summary' => get_string('summary', 'local_nolej'),
-                'questions' => get_string('questions', 'local_nolej'),
-                'concepts' => get_string('concepts', 'local_nolej'),
-                'settings' => get_string('settings', 'local_nolej')
-            ],
             'title' => $document->title,
             'source' => $document->doc_url,
             'sourcetype' => get_string('source' . $document->media_type, 'local_nolej'),
