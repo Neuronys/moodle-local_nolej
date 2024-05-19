@@ -1135,4 +1135,40 @@ class api
             $CFG->lang = $preferred_language;
         }
     }
+
+    /**
+     * Remove anything which isn't a word, number
+     * or any of the following caracters -_().
+     * Remove any runs of periods.
+     * @see https://stackoverflow.com/a/2021729
+     * 
+     * @param string $filename
+     * @return string
+     */
+    public static function sanitizefilename($filename)
+    {
+        $filename = mb_ereg_replace("([^\w\d\-_\(\).])", '', $filename);
+        $filename = mb_ereg_replace("([\.]{2,})", '', $filename);
+        return $filename;
+    }
+
+    /**
+     * Download the file
+     * @see https://stackoverflow.com/a/2882523
+     */
+    public static function deliverfile($filepath)
+    {
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename=' . basename($filepath));
+        header('Content-Transfer-Encoding: binary');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($filepath));
+        ob_clean();
+        flush();
+        readfile($filepath);
+        exit;
+    }
 }
