@@ -105,13 +105,11 @@
         <div class='card'>
             <div class='card-header' style='border-bottom: none;' id='headingOne'>
                 <nav class='navbar navbar-expand-lg navbar-default navbar-light' style='box-shadow:none;'>
-                    <ul class='nav navbar-nav navbar-left' style='flex: none;'>
+                    <ul class='nav navbar-nav w-100'>
                         <li class='mb-2'>
                             <a class='nav-link btn btn-default rounded px-2' role="button" href='{{manageurl}}'><i class='fa fa-chevron-left mr-2'></i> {{#str}} back, moodle {{/str}}</a>
                         </li>
-                    </ul>
-                    {{#review}}
-                    <ul class='nav navbar-nav w-100'>
+                        {{#review}}
                         <li class='mr-2 mb-2'>
                             <a class='nav-link btn btn-default rounded btn-outline-secondary px-2 {{#concepts}}active{{/concepts}}' aria-pressed="{{concepts}}" role="button" href='{{editurl}}&step=concepts'>
                                 <i class='fa fa-lightbulb-o mr-2'></i>
@@ -136,10 +134,8 @@
                                 {{#str}} settings, local_nolej {{/str}}
                             </a>
                         </li>
-                    </ul>
-                    {{/review}}
-                    <ul class='nav navbar-nav navbar-right' style='flex: none;'>
-                        <li class='mb-2'>
+                        {{/review}}
+                        <li class='mr-2 mb-2'>
                             <a class='nav-link btn btn-default' href='#' data-toggle='collapse' data-target='#collapseOne' aria-expanded='true' aria-controls='collapseOne' onclick='toggleChevron()'>
                                 <i class='fa fa-info'></i>
                                 {{#str}} documentinfo, local_nolej {{/str}}
