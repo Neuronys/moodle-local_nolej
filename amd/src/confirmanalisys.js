@@ -17,7 +17,8 @@
  * Show a start analysis confirmation modal
  *
  * @module      local_nolej
- * @author      2023 Vincenzo Padula <vincenzo@oc-group.eu>
+ * @author      2024 Vincenzo Padula <vincenzo@oc-group.eu>
+ * @copyright   2024 OC Open Consulting SB Srl
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 define(['jquery', 'core/modal_factory', 'core/str', 'core/modal_events'], function ($, ModalFactory, String, ModalEvents) {

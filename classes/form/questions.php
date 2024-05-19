@@ -18,7 +18,8 @@
  * Questions edit form
  *
  * @package     local_nolej
- * @author      2023 Vincenzo Padula <vincenzo@oc-group.eu>
+ * @author      2024 Vincenzo Padula <vincenzo@oc-group.eu>
+ * @copyright   2024 OC Open Consulting SB Srl
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -26,8 +27,8 @@ namespace local_nolej\form;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->libdir . '/formslib.php');
-require_once($CFG->dirroot . '/local/nolej/classes/api.php');
+require_once ($CFG->libdir . '/formslib.php');
+require_once ($CFG->dirroot . '/local/nolej/classes/api.php');
 
 class questions extends \moodleform
 {
@@ -132,10 +133,10 @@ class questions extends \moodleform
                         'local_nolej'
                     )
                 )->setValue(
-                    $questiontype == 'open'
+                        $questiontype == 'open'
                         ? $questions[$i]->enable
                         : $questions[$i]->use_for_grading
-                );
+                    );
 
                 if ($questiontype != 'hoq') {
                     $mform->addElement(

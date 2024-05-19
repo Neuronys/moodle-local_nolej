@@ -18,17 +18,18 @@
  * Nolej module edit steps, from creation to activity generation.
  *
  * @package     local_nolej
- * @author      2023 Vincenzo Padula <vincenzo@oc-group.eu>
+ * @author      2024 Vincenzo Padula <vincenzo@oc-group.eu>
+ * @copyright   2024 OC Open Consulting SB Srl
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once(__DIR__ . '/../../config.php');
+require_once (__DIR__ . '/../../config.php');
 
 require_login();
 $context = context_system::instance();
 require_capability('local/nolej:usenolej', $context);
 
-require_once($CFG->dirroot . '/local/nolej/classes/api.php');
+require_once ($CFG->dirroot . '/local/nolej/classes/api.php');
 
 if (!\local_nolej\api\api::haskey()) {
     // API key missing
@@ -43,13 +44,15 @@ if (!\local_nolej\api\api::haskey()) {
 $documentid = optional_param('documentid', null, PARAM_ALPHANUMEXT);
 $step = empty($documentid) ? null : optional_param('step', null, PARAM_ALPHA);
 
-$PAGE->set_url(new \moodle_url(
-    '/local/nolej/edit.php',
-    [
-        'documentid' => $documentid,
-        'step' => $step
-    ]
-));
+$PAGE->set_url(
+    new \moodle_url(
+        '/local/nolej/edit.php',
+        [
+            'documentid' => $documentid,
+            'step' => $step
+        ]
+    )
+);
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 
@@ -327,13 +330,15 @@ function handleanalysis()
 
     // Display and handle creation form
     $mform = new \local_nolej\form\transcription(
-        (new \moodle_url(
-            '/local/nolej/edit.php',
-            [
-                'documentid' => $documentid,
-                'step' => 'analysis'
-            ]
-        ))->out(false),
+        (
+            new \moodle_url(
+                '/local/nolej/edit.php',
+                [
+                    'documentid' => $documentid,
+                    'step' => 'analysis'
+                ]
+            )
+        )->out(false),
         ['documentid' => $documentid]
     );
 
@@ -350,13 +355,15 @@ function handleanalysis()
             \local_nolej\api\api::writecontent($documentid, 'transcription.htm', $transcription);
 
             // Call Nolej analysis API
-            $webhook = (new \moodle_url(
-                '/local/nolej/webhook.php',
-                [
-                    'documentid' => $documentid,
-                    'fileid' => 'transcription.htm'
-                ]
-            ))->out(false);
+            $webhook = (
+                new \moodle_url(
+                    '/local/nolej/webhook.php',
+                    [
+                        'documentid' => $documentid,
+                        'fileid' => 'transcription.htm'
+                    ]
+                )
+            )->out(false);
 
             $result = \local_nolej\api\api::put(
                 "/documents/$documentid/transcription",
@@ -419,13 +426,15 @@ function handleanalysis()
             );
         } else {
             redirect(
-                (new \moodle_url(
-                    '/local/nolej/edit.php',
-                    [
-                        'documentid' => $documentid,
-                        'step' => 'analysis'
-                    ]
-                ))->out(false),
+                (
+                    new \moodle_url(
+                        '/local/nolej/edit.php',
+                        [
+                            'documentid' => $documentid,
+                            'step' => 'analysis'
+                        ]
+                    )
+                )->out(false),
                 get_string('missingtranscription', 'local_nolej'),
                 null,
                 \core\output\notification::NOTIFY_ERROR
@@ -451,13 +460,15 @@ function handlesummary()
 
     // Display and handle creation form
     $mform = new \local_nolej\form\summary(
-        (new \moodle_url(
-            '/local/nolej/edit.php',
-            [
-                'documentid' => $documentid,
-                'step' => 'summary'
-            ]
-        ))->out(false),
+        (
+            new \moodle_url(
+                '/local/nolej/edit.php',
+                [
+                    'documentid' => $documentid,
+                    'step' => 'summary'
+                ]
+            )
+        )->out(false),
         ['documentid' => $documentid]
     );
 
@@ -500,13 +511,15 @@ function handlesummary()
         $success = \local_nolej\api\api::writecontent($documentid, 'summary.json', json_encode($summary));
         if (!$success) {
             redirect(
-                (new \moodle_url(
-                    '/local/nolej/edit.php',
-                    [
-                        'documentid' => $documentid,
-                        'step' => 'summary'
-                    ]
-                ))->out(false),
+                (
+                    new \moodle_url(
+                        '/local/nolej/edit.php',
+                        [
+                            'documentid' => $documentid,
+                            'step' => 'summary'
+                        ]
+                    )
+                )->out(false),
                 get_string('cannotwritesummary', 'local_nolej'),
                 null,
                 \core\output\notification::NOTIFY_ERROR
@@ -516,13 +529,15 @@ function handlesummary()
 
         $success = \local_nolej\api\api::putcontent($documentid, 'summary', 'summary.json');
         redirect(
-            (new \moodle_url(
-                '/local/nolej/edit.php',
-                [
-                    'documentid' => $documentid,
-                    'step' => 'summary'
-                ]
-            ))->out(false),
+            (
+                new \moodle_url(
+                    '/local/nolej/edit.php',
+                    [
+                        'documentid' => $documentid,
+                        'step' => 'summary'
+                    ]
+                )
+            )->out(false),
             get_string($success ? 'summarysaved' : 'summarynotsaved', 'local_nolej'),
             null,
             $success ? \core\output\notification::NOTIFY_SUCCESS : \core\output\notification::NOTIFY_ERROR
@@ -546,13 +561,15 @@ function handleconcepts()
 
     // Display and handle creation form
     $mform = new \local_nolej\form\concepts(
-        (new \moodle_url(
-            '/local/nolej/edit.php',
-            [
-                'documentid' => $documentid,
-                'step' => 'concepts'
-            ]
-        ))->out(false),
+        (
+            new \moodle_url(
+                '/local/nolej/edit.php',
+                [
+                    'documentid' => $documentid,
+                    'step' => 'concepts'
+                ]
+            )
+        )->out(false),
         ['documentid' => $documentid]
     );
 
@@ -614,13 +631,15 @@ function handleconcepts()
         $success = \local_nolej\api\api::writecontent($documentid, 'concepts.json', json_encode(['concepts' => $concepts]));
         if (!$success) {
             redirect(
-                (new \moodle_url(
-                    '/local/nolej/edit.php',
-                    [
-                        'documentid' => $documentid,
-                        'step' => 'concepts'
-                    ]
-                ))->out(false),
+                (
+                    new \moodle_url(
+                        '/local/nolej/edit.php',
+                        [
+                            'documentid' => $documentid,
+                            'step' => 'concepts'
+                        ]
+                    )
+                )->out(false),
                 get_string('cannotwriteconcepts', 'local_nolej'),
                 null,
                 \core\output\notification::NOTIFY_ERROR
@@ -630,13 +649,15 @@ function handleconcepts()
 
         $success = \local_nolej\api\api::putcontent($documentid, 'concepts', 'concepts.json');
         redirect(
-            (new \moodle_url(
-                '/local/nolej/edit.php',
-                [
-                    'documentid' => $documentid,
-                    'step' => 'concepts'
-                ]
-            ))->out(false),
+            (
+                new \moodle_url(
+                    '/local/nolej/edit.php',
+                    [
+                        'documentid' => $documentid,
+                        'step' => 'concepts'
+                    ]
+                )
+            )->out(false),
             get_string($success ? 'conceptssaved' : 'conceptsnotsaved', 'local_nolej'),
             null,
             $success ? \core\output\notification::NOTIFY_SUCCESS : \core\output\notification::NOTIFY_ERROR
@@ -660,13 +681,15 @@ function handlequestions()
 
     // Display and handle creation form
     $mform = new \local_nolej\form\questions(
-        (new \moodle_url(
-            '/local/nolej/edit.php',
-            [
-                'documentid' => $documentid,
-                'step' => 'questions'
-            ]
-        ))->out(false),
+        (
+            new \moodle_url(
+                '/local/nolej/edit.php',
+                [
+                    'documentid' => $documentid,
+                    'step' => 'questions'
+                ]
+            )
+        )->out(false),
         ['documentid' => $documentid]
     );
 
@@ -729,13 +752,15 @@ function handlequestions()
         $success = \local_nolej\api\api::writecontent($documentid, 'questions.json', json_encode(['questions' => $questions]));
         if (!$success) {
             redirect(
-                (new \moodle_url(
-                    '/local/nolej/edit.php',
-                    [
-                        'documentid' => $documentid,
-                        'step' => 'questions'
-                    ]
-                ))->out(false),
+                (
+                    new \moodle_url(
+                        '/local/nolej/edit.php',
+                        [
+                            'documentid' => $documentid,
+                            'step' => 'questions'
+                        ]
+                    )
+                )->out(false),
                 get_string('cannotwritequestions', 'local_nolej'),
                 null,
                 \core\output\notification::NOTIFY_ERROR
@@ -745,13 +770,15 @@ function handlequestions()
 
         $success = \local_nolej\api\api::putcontent($documentid, 'questions', 'questions.json');
         redirect(
-            (new \moodle_url(
-                '/local/nolej/edit.php',
-                [
-                    'documentid' => $documentid,
-                    'step' => 'questions'
-                ]
-            ))->out(false),
+            (
+                new \moodle_url(
+                    '/local/nolej/edit.php',
+                    [
+                        'documentid' => $documentid,
+                        'step' => 'questions'
+                    ]
+                )
+            )->out(false),
             get_string($success ? 'questionssaved' : 'questionsnotsaved', 'local_nolej'),
             null,
             $success ? \core\output\notification::NOTIFY_SUCCESS : \core\output\notification::NOTIFY_ERROR
@@ -775,13 +802,15 @@ function handleactivities()
 
     // Display and handle creation form
     $mform = new \local_nolej\form\activities(
-        (new \moodle_url(
-            '/local/nolej/edit.php',
-            [
-                'documentid' => $documentid,
-                'step' => 'activities'
-            ]
-        ))->out(false),
+        (
+            new \moodle_url(
+                '/local/nolej/edit.php',
+                [
+                    'documentid' => $documentid,
+                    'step' => 'activities'
+                ]
+            )
+        )->out(false),
         ['documentid' => $documentid]
     );
 
@@ -897,13 +926,15 @@ function handleactivities()
         $success = \local_nolej\api\api::writecontent($documentid, 'settings.json', json_encode($settingstosave));
         if (!$success) {
             redirect(
-                (new \moodle_url(
-                    '/local/nolej/edit.php',
-                    [
-                        'documentid' => $documentid,
-                        'step' => 'settings'
-                    ]
-                ))->out(false),
+                (
+                    new \moodle_url(
+                        '/local/nolej/edit.php',
+                        [
+                            'documentid' => $documentid,
+                            'step' => 'settings'
+                        ]
+                    )
+                )->out(false),
                 get_string('cannotwritesettings', 'local_nolej'),
                 null,
                 \core\output\notification::NOTIFY_ERROR
@@ -946,13 +977,15 @@ function handleactivities()
             );
         } else {
             redirect(
-                (new \moodle_url(
-                    '/local/nolej/edit.php',
-                    [
-                        'documentid' => $documentid,
-                        'step' => 'settings'
-                    ]
-                ))->out(false),
+                (
+                    new \moodle_url(
+                        '/local/nolej/edit.php',
+                        [
+                            'documentid' => $documentid,
+                            'step' => 'settings'
+                        ]
+                    )
+                )->out(false),
                 get_string('settingsnotsaved', 'local_nolej'),
                 null,
                 \core\output\notification::NOTIFY_ERROR

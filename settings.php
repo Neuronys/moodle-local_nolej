@@ -18,7 +18,8 @@
  * Add config page to admin menu.
  *
  * @package     local_nolej
- * @author      2023 Vincenzo Padula <vincenzo@oc-group.eu>
+ * @author      2024 Vincenzo Padula <vincenzo@oc-group.eu>
+ * @copyright   2024 OC Open Consulting SB Srl
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -28,10 +29,12 @@ if ($hassiteconfig) { // needs this condition or there is error on login page
     $settings = new admin_settingpage('local_nolej', get_string('pluginname', 'local_nolej'));
     $ADMIN->add('localplugins', $settings);
 
-    $settings->add(new admin_setting_configpasswordunmask(
-        'local_nolej/api_key',
-        get_string('apikey', 'local_nolej'),
-        get_string('apikeyinfo', 'local_nolej'),
-        ''
-    ));
+    $settings->add(
+        new admin_setting_configpasswordunmask(
+            'local_nolej/api_key',
+            get_string('apikey', 'local_nolej'),
+            get_string('apikeyinfo', 'local_nolej'),
+            ''
+        )
+    );
 }

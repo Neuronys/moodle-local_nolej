@@ -18,17 +18,18 @@
  * Nolej module list
  *
  * @package     local_nolej
- * @author      2023 Vincenzo Padula <vincenzo@oc-group.eu>
+ * @author      2024 Vincenzo Padula <vincenzo@oc-group.eu>
+ * @copyright   2024 OC Open Consulting SB Srl
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once(__DIR__ . '/../../config.php');
+require_once (__DIR__ . '/../../config.php');
 
 require_login();
 $context = context_system::instance();
 require_capability('local/nolej:usenolej', $context);
 
-require_once($CFG->dirroot . '/local/nolej/classes/api.php');
+require_once ($CFG->dirroot . '/local/nolej/classes/api.php');
 
 $PAGE->set_url(new moodle_url('/local/nolej/manage.php'));
 $PAGE->set_context($context);
@@ -72,18 +73,22 @@ foreach ($modules as $module) {
         'created' => userdate($module->tstamp),
         'lastupdate' => '-',
         'editurl' => $module->status != \local_nolej\api\api::STATUS_FAILED
-            ? (new moodle_url(
-                '/local/nolej/edit.php',
-                [
-                    'documentid' => $module->document_id,
-                    'step' => $status2form[$module->status]
-                ]
-            ))->out(false)
+            ? (
+                new moodle_url(
+                    '/local/nolej/edit.php',
+                    [
+                        'documentid' => $module->document_id,
+                        'step' => $status2form[$module->status]
+                    ]
+                )
+            )->out(false)
             : false,
-        'deleteurl' => (new moodle_url(
-            '/local/nolej/delete.php',
-            ['documentid' => $module->document_id]
-        ))->out(false),
+        'deleteurl' => (
+            new moodle_url(
+                '/local/nolej/delete.php',
+                ['documentid' => $module->document_id]
+            )
+        )->out(false),
         'contextid' => null
     ];
 
@@ -126,10 +131,12 @@ foreach ($modules as $module) {
             );
             $context = $context ? reset($context) : false;
             if ($context && !empty($context->contextid)) {
-                $moduledata['activitiesurl'] = (new moodle_url(
-                    '/contentbank/index.php',
-                    ['contextid' => $context->contextid]
-                ))->out(false);
+                $moduledata['activitiesurl'] = (
+                    new moodle_url(
+                        '/contentbank/index.php',
+                        ['contextid' => $context->contextid]
+                    )
+                )->out(false);
             }
         }
     }

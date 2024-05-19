@@ -18,7 +18,8 @@
  * Nolej API
  *
  * @package     local_nolej
- * @author      2023 Vincenzo Padula <vincenzo@oc-group.eu>
+ * @author      2024 Vincenzo Padula <vincenzo@oc-group.eu>
+ * @copyright   2024 OC Open Consulting SB Srl
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -26,7 +27,7 @@ namespace local_nolej\api;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/local/nolej/classes/event/webhook_called.php');
+require_once ($CFG->dirroot . '/local/nolej/classes/event/webhook_called.php');
 
 class api
 {
@@ -543,12 +544,12 @@ class api
 
         if (
             !isset(
-                $this->data['documentID'],
-                $this->data['status'],
-                $this->data['code'],
-                $this->data['error_message'],
-                $this->data['consumedCredit']
-            ) ||
+            $this->data['documentID'],
+            $this->data['status'],
+            $this->data['code'],
+            $this->data['error_message'],
+            $this->data['consumedCredit']
+        ) ||
             !is_string($this->data['documentID']) ||
             !is_string($this->data['status']) ||
             !is_string($this->data['error_message']) ||
@@ -650,12 +651,12 @@ class api
 
         if (
             !isset(
-                $this->data['documentID'],
-                $this->data['status'],
-                $this->data['code'],
-                $this->data['error_message'],
-                $this->data['consumedCredit']
-            ) ||
+            $this->data['documentID'],
+            $this->data['status'],
+            $this->data['code'],
+            $this->data['error_message'],
+            $this->data['consumedCredit']
+        ) ||
             !is_string($this->data['documentID']) ||
             !is_string($this->data['status']) ||
             !is_string($this->data['error_message']) ||
@@ -757,12 +758,12 @@ class api
 
         if (
             !isset(
-                $this->data['documentID'],
-                $this->data['status'],
-                $this->data['code'],
-                $this->data['error_message'],
-                $this->data['consumedCredit']
-            ) ||
+            $this->data['documentID'],
+            $this->data['status'],
+            $this->data['code'],
+            $this->data['error_message'],
+            $this->data['consumedCredit']
+        ) ||
             !is_string($this->data['documentID']) ||
             !is_string($this->data['status']) ||
             !is_string($this->data['error_message']) ||
@@ -981,7 +982,7 @@ class api
                     'author' => $document->user_id,
                     'type' => $activity->activity_name,
                     'contextid' => $modulecontext->id,
-                    'filepath'  => '/'
+                    'filepath' => '/'
                 ];
                 $contenttype = new \contenttype_h5p\contenttype($modulecontext);
                 $h5pcontent = $contenttype->create_content($record);
@@ -989,10 +990,10 @@ class api
                 $filerecord = (object) [
                     'contextid' => $modulecontext->id,
                     'component' => \core_h5p\file_storage::COMPONENT,
-                    'filearea'  => \core_h5p\file_storage::CONTENT_FILEAREA,
-                    'itemid'    => $h5pcontent->get_id(),
-                    'filepath'  => '/',
-                    'filename'  => get_string('activities' . $activity->activity_name, 'local_nolej') . '.h5p',
+                    'filearea' => \core_h5p\file_storage::CONTENT_FILEAREA,
+                    'itemid' => $h5pcontent->get_id(),
+                    'filepath' => '/',
+                    'filename' => get_string('activities' . $activity->activity_name, 'local_nolej') . '.h5p',
                 ];
 
                 $file = $fs->create_file_from_pathname($filerecord, $filepath);
