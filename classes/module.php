@@ -235,7 +235,6 @@ class module
 
         echo $OUTPUT->header();
         $mform->display();
-        echo $OUTPUT->render_from_template('local_nolej/creation', null);
         echo $OUTPUT->footer();
     }
 
