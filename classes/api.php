@@ -567,7 +567,7 @@ class api
             return;
         }
 
-        $this->setLanguageOfUser((int) $document->user_id);
+        $this->setlanguageofuser((int) $document->user_id);
 
         $now = time();
 
@@ -673,7 +673,7 @@ class api
             return;
         }
 
-        $this->setLanguageOfUser((int) $document->user_id);
+        $this->setlanguageofuser((int) $document->user_id);
 
         $now = time();
 
@@ -779,7 +779,7 @@ class api
             return;
         }
 
-        $this->setLanguageOfUser((int) $document->user_id);
+        $this->setlanguageofuser((int) $document->user_id);
 
         $now = time();
 
@@ -899,7 +899,7 @@ class api
 
     /**
      * Download activities and save them in the Content Box
-     * 
+     *
      * @param object $document
      * @return array of errors
      */
@@ -1047,37 +1047,38 @@ class api
         );
 
         $message = new \core\message\message();
-        $message->component = 'local_nolej'; // Your plugin's name
-        $message->name = $action; // Your notification name from message.php
-        $message->userfrom = \core_user::get_noreply_user(); // If the message is 'from' a specific user you can set them here
+        $message->component = 'local_nolej';
+        $message->name = $action;
+        $message->userfrom = \core_user::get_noreply_user();
         $message->userto = $userid;
         $message->subject = get_string('action_' . $action, 'local_nolej');
         $message->fullmessage = get_string('action_' . $action . '_body', 'local_nolej', $vars);
         $message->fullmessageformat = FORMAT_HTML;
         $message->fullmessagehtml = get_string($body, 'local_nolej', $vars);
         $message->smallmessage = get_string('action_' . $action, 'local_nolej');
-        $message->notification = 1; // Because this is a notification generated from Moodle, not a user-to-user message
-        $message->contexturl = substr($action, -2) == 'ok' // A relevant URL for the notification
+        $message->notification = 1; // Notification generated from Moodle, not a user-to-user message
+        $message->contexturl = substr($action, -2) == 'ok'
             ? (new \moodle_url('/local/nolej/edit.php', ['documentid' => $documentid]))->out(false)
             : (new \moodle_url('/local/nolej/manage.php'))->out(false);
-        $message->contexturlname = get_string('moduleview', 'local_nolej'); // Link title explaining where users get to for the contexturl
+        $message->contexturlname = get_string('moduleview', 'local_nolej');
         $messageid = message_send($message);
+
         $this->log('Message sent with ID: ' . $messageid . ' to user ' . $userid);
     }
 
-    protected function setLanguageOfUser(int $userid)
+    protected function setlanguageofuser(int $userid)
     {
         global $DB, $CFG, $USER;
         $user = $DB->get_record(
             'user',
             ['id' => $userid]
         );
-        $preferred_language = $user->lang;
+        $preferredlanguage = $user->lang;
 
         if (isloggedin()) {
-            $USER->lang = $preferred_language;
+            $USER->lang = $preferredlanguage;
         } else {
-            $CFG->lang = $preferred_language;
+            $CFG->lang = $preferredlanguage;
         }
     }
 
@@ -1086,7 +1087,7 @@ class api
      * or any of the following caracters -_().
      * Remove any runs of periods.
      * @see https://stackoverflow.com/a/2021729
-     * 
+     *
      * @param string $filename
      * @return string
      */

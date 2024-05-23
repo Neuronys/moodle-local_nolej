@@ -43,21 +43,21 @@ class range_form_element extends HTML_QuickForm_text
 
     /**
      * Class constructor
-     * 
-     * @param     string    $elementName    (optional)Input field name attribute
-     * @param     string    $elementLabel   (optional)Input field label
-     * @param     mixed     $attributes     (optional)Either a typical HTML attribute string 
-     *                                      or an associative array
-     * @param     mixed     $options        (optional)Range input options
-     * @access    public
-     * @return    void
+     *
+     * @param string $elementname (optional) Input field name attribute
+     * @param string $elementlabel (optional) Input field label
+     * @param mixed $attributes (optional) Either a typical HTML attribute string or an associative array
+     * @param mixed $options (optional) Range input options
+     *
+     * @access public
+     * @return void
      */
-    public function __construct($elementName = null, $elementLabel = null, $attributes = null, $options = null)
+    public function __construct($elementname = null, $elementlabel = null, $attributes = null, $options = null)
     {
-        parent::__construct($elementName, $elementLabel, $attributes);
+        parent::__construct($elementname, $elementlabel, $attributes);
 
         // Hide default label
-        $this->elementlabel = $elementLabel;
+        $this->elementlabel = $elementlabel;
         $this->_label = '';
 
         if ($options != null && is_array($options)) {

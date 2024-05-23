@@ -32,7 +32,7 @@ class webhook_called extends \core\event\base
     protected function init()
     {
         $this->data['context'] = \context_system::instance();
-        $this->data['crud'] = 'c'; // c(reate), r(ead), u(pdate), d(elete)
+        $this->data['crud'] = 'c'; // Create, Read, Update, Delete
         $this->data['edulevel'] = self::LEVEL_OTHER;
     }
 

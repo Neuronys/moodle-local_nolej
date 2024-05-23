@@ -226,8 +226,6 @@ class module
                     \core\output\notification::NOTIFY_ERROR
                 );
             }
-        } else {
-            // Display form
         }
 
         $PAGE->requires->js_call_amd('local_nolej/creation');
@@ -268,7 +266,11 @@ class module
             $transcription = $fromform->transcription;
 
             if (!empty($transcription)) {
-                \local_nolej\api\api::writecontent($this->documentid, 'transcription.htm', $transcription);
+                \local_nolej\api\api::writecontent(
+                    $this->documentid,
+                    'transcription.htm',
+                    $transcription
+                );
 
                 // Call Nolej analysis API
                 $webhook = (
@@ -357,8 +359,8 @@ class module
                 );
             }
         } else {
+            // Data not valid
             $PAGE->requires->js_call_amd('local_nolej/confirmanalysis');
-            // Data not valid, display the form.
         }
 
         echo $OUTPUT->header();
@@ -443,7 +445,11 @@ class module
                 $concepts[$i]->use_for_practice = (bool) $fromform->{'concept_' . $id . '_use_for_practice'};
             }
 
-            $success = \local_nolej\api\api::writecontent($this->documentid, 'concepts.json', json_encode(['concepts' => $concepts]));
+            $success = \local_nolej\api\api::writecontent(
+                $this->documentid,
+                'concepts.json',
+                json_encode(['concepts' => $concepts])
+            );
             if (!$success) {
                 redirect(
                     (
@@ -477,8 +483,6 @@ class module
                 null,
                 $success ? \core\output\notification::NOTIFY_SUCCESS : \core\output\notification::NOTIFY_ERROR
             );
-        } else {
-            // Data not valid, display the form.
         }
 
         echo $OUTPUT->header();
@@ -564,7 +568,11 @@ class module
                 $questions[$i]->distractors = $distractors;
             }
 
-            $success = \local_nolej\api\api::writecontent($this->documentid, 'questions.json', json_encode(['questions' => $questions]));
+            $success = \local_nolej\api\api::writecontent(
+                $this->documentid,
+                'questions.json',
+                json_encode(['questions' => $questions])
+            );
             if (!$success) {
                 redirect(
                     (
@@ -598,8 +606,6 @@ class module
                 null,
                 $success ? \core\output\notification::NOTIFY_SUCCESS : \core\output\notification::NOTIFY_ERROR
             );
-        } else {
-            // Data not valid, display the form.
         }
 
         echo $OUTPUT->header();
@@ -665,7 +671,11 @@ class module
                 }
             }
 
-            $success = \local_nolej\api\api::writecontent($this->documentid, 'summary.json', json_encode($summary));
+            $success = \local_nolej\api\api::writecontent(
+                $this->documentid,
+                'summary.json',
+                json_encode($summary)
+            );
             if (!$success) {
                 redirect(
                     (
@@ -699,8 +709,6 @@ class module
                 null,
                 $success ? \core\output\notification::NOTIFY_SUCCESS : \core\output\notification::NOTIFY_ERROR
             );
-        } else {
-            // Data not valid, display the form.
         }
 
         echo $OUTPUT->header();
@@ -839,7 +847,11 @@ class module
                 }
             }
 
-            $success = \local_nolej\api\api::writecontent($this->documentid, 'settings.json', json_encode($settingstosave));
+            $success = \local_nolej\api\api::writecontent(
+                $this->documentid,
+                'settings.json',
+                json_encode($settingstosave)
+            );
             if (!$success) {
                 redirect(
                     (
@@ -907,8 +919,6 @@ class module
                     \core\output\notification::NOTIFY_ERROR
                 );
             }
-        } else {
-            // Data not valid, display the form.
         }
 
         echo $OUTPUT->header();
@@ -947,12 +957,12 @@ class module
 
     /**
      * If file already exists add an incremental suffix
-     * 
+     *
      * @param string $filename
      * @param string $directory
-     * 
+     *
      * @return string unique filename
-     * 
+     *
      * @see https://forums.phpfreaks.com/topic/103941-solved-auto-increment-if-file-exists/
      */
     protected function uniquefilename($filename, $directory)
