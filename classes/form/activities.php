@@ -58,13 +58,13 @@ class activities extends \moodleform
         $mform->setType('step', PARAM_ALPHA);
 
         // Download activities settings
-        $result = \local_nolej\api\api::getcontent(
+        $result = \local_nolej\api::getcontent(
             $documentid,
             'settings',
             'settings.json'
         );
 
-        $json = \local_nolej\api\api::readcontent($documentid, 'settings.json');
+        $json = \local_nolej\api::readcontent($documentid, 'settings.json');
         if (!$json) {
             redirect(
                 new \moodle_url('/local/nolej/manage.php'),

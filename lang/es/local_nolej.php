@@ -52,16 +52,16 @@ $string['genericerror'] = 'Se produjo un error: <pre>{$a->error}</pre>';
 $string['moduleview'] = 'Ver módulo';
 
 // Status
-$string['status_0'] = 'Nuevo módulo';
-$string['status_1'] = 'Transcripción en progreso';
-$string['status_2'] = 'Transcripción completada';
-$string['status_3'] = 'Análisis en progreso';
-$string['status_4'] = 'Análisis completado';
-$string['status_5'] = 'Revisión en progreso';
-$string['status_6'] = 'Revisión completada';
-$string['status_7'] = 'Generación de actividades en progreso';
-$string['status_8'] = 'Actividades generadas';
-$string['status_9'] = 'Error';
+$string['statuscreation'] = 'Nuevo módulo';
+$string['statuscreationpending'] = 'Transcripción en progreso';
+$string['statusanalysis'] = 'Transcripción completada';
+$string['statusanalysispending'] = 'Análisis en progreso';
+$string['statusrevision'] = 'Análisis completado';
+$string['statusrevisionpending'] = 'Revisión en progreso';
+$string['statusactivities'] = 'Revisión completada';
+$string['statusactivitiespending'] = 'Generación de actividades en progreso';
+$string['statuscompleted'] = 'Actividades generadas';
+$string['statusfailed'] = 'Error';
 
 // Notifications
 $string['eventwebhookcalled'] = 'El webhook de Nolej ha sido llamado.';

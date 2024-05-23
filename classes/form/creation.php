@@ -68,9 +68,9 @@ class creation extends \moodleform
             $OUTPUT->render_from_template(
                 'local_nolej/contentlimits',
                 (object) [
-                    'audioformats' => join(', ', \local_nolej\api\api::TYPE_AUDIO),
-                    'videoformats' => join(', ', \local_nolej\api\api::TYPE_VIDEO),
-                    'docformats' => join(', ', \local_nolej\api\api::TYPE_DOC),
+                    'audioformats' => join(', ', \local_nolej\api::TYPE_AUDIO),
+                    'videoformats' => join(', ', \local_nolej\api::TYPE_VIDEO),
+                    'docformats' => join(', ', \local_nolej\api::TYPE_DOC),
                 ]
             )
         );
@@ -83,7 +83,7 @@ class creation extends \moodleform
             null,
             [
                 'maxbytes' => 500000,
-                'accepted_types' => join(',', \local_nolej\api\api::allowedtypes()),
+                'accepted_types' => join(',', \local_nolej\api::allowedtypes()),
             ]
         );
         $mform->hideIf('sourcefile', 'sourcetype', 'neq', 'file');

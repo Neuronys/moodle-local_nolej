@@ -52,16 +52,16 @@ $string['genericerror'] = 'Er is een fout opgetreden: <pre>{$a->error}</pre>';
 $string['moduleview'] = 'Bekijk module';
 
 // Status
-$string['status_0'] = 'Nieuwe module';
-$string['status_1'] = 'Transcriptie bezig';
-$string['status_2'] = 'Transcriptie voltooid';
-$string['status_3'] = 'Analyse bezig';
-$string['status_4'] = 'Analyse voltooid';
-$string['status_5'] = 'Revisie bezig';
-$string['status_6'] = 'Revisie voltooid';
-$string['status_7'] = 'Activiteiten genereren bezig';
-$string['status_8'] = 'Activiteiten gegenereerd';
-$string['status_9'] = 'Mislukt';
+$string['statuscreation'] = 'Nieuwe module';
+$string['statuscreationpending'] = 'Transcriptie bezig';
+$string['statusanalysis'] = 'Transcriptie voltooid';
+$string['statusanalysispending'] = 'Analyse bezig';
+$string['statusrevision'] = 'Analyse voltooid';
+$string['statusrevisionpending'] = 'Revisie bezig';
+$string['statusactivities'] = 'Revisie voltooid';
+$string['statusactivitiespending'] = 'Activiteiten genereren bezig';
+$string['statuscompleted'] = 'Activiteiten gegenereerd';
+$string['statusfailed'] = 'Mislukt';
 
 // Notifications
 $string['eventwebhookcalled'] = 'Nolej webhook is opgeroepen.';

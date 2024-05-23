@@ -52,13 +52,13 @@ class questions extends \moodleform
         $mform->setType('step', PARAM_ALPHA);
 
         // Download questions
-        $result = \local_nolej\api\api::getcontent(
+        $result = \local_nolej\api::getcontent(
             $documentid,
             'questions',
             'questions.json'
         );
 
-        $json = \local_nolej\api\api::readcontent($documentid, 'questions.json');
+        $json = \local_nolej\api::readcontent($documentid, 'questions.json');
         if (!$json) {
             redirect(
                 new \moodle_url('/local/nolej/manage.php'),

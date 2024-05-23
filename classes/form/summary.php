@@ -52,13 +52,13 @@ class summary extends \moodleform
         $mform->setType('step', PARAM_ALPHA);
 
         // Download summary
-        $result = \local_nolej\api\api::getcontent(
+        $result = \local_nolej\api::getcontent(
             $documentid,
             'summary',
             'summary.json'
         );
 
-        $json = \local_nolej\api\api::readcontent($documentid, 'summary.json');
+        $json = \local_nolej\api::readcontent($documentid, 'summary.json');
         if (!$json) {
             redirect(
                 new \moodle_url('/local/nolej/manage.php'),

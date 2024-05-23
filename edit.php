@@ -32,7 +32,7 @@ require_capability('local/nolej:usenolej', $context);
 require_once ($CFG->dirroot . '/local/nolej/classes/api.php');
 require_once ($CFG->dirroot . '/local/nolej/classes/module.php');
 
-if (!\local_nolej\api\api::haskey()) {
+if (!\local_nolej\api::haskey()) {
     // API key missing
     redirect(
         new \moodle_url('/local/nolej/manage.php'),
@@ -61,12 +61,12 @@ $PAGE->requires->css('/local/nolej/styles.css');
 
 if (
     empty($documentid) ||
-    \local_nolej\api\api::lookupdocumentstatus($documentid, $USER->id) <= \local_nolej\api\api::STATUS_CREATION
+    \local_nolej\api::lookupdocumentstatus($documentid, $USER->id) <= \local_nolej\module::STATUS_CREATION
 ) {
     // Create a new document
-    $PAGE->set_heading(get_string('status_0', 'local_nolej'));
-    $PAGE->set_title(get_string('status_0', 'local_nolej'));
-    $module = new \local_nolej\module\module();
+    $PAGE->set_heading(\local_nolej\module::getstatusname(0));
+    $PAGE->set_title(\local_nolej\module::getstatusname(0));
+    $module = new \local_nolej\module();
     $module->creation();
 
 } else {
@@ -90,17 +90,20 @@ if (
         );
     }
 
-    $module = new \local_nolej\module\module($document, $step);
+    $module = new \local_nolej\module($document, $step);
 
-    $PAGE->set_heading(get_string('status_' . $document->status, 'local_nolej'));
-    $PAGE->set_title(empty($document->title) ? get_string('status_0', 'local_nolej') : $document->title);
+    $PAGE->set_heading(\local_nolej\module::getstatusname((int) $document->status));
+    $PAGE->set_title(empty($document->title) ? \local_nolej\module::getstatusname(0) : $document->title);
 
     switch ($document->status) {
-        case \local_nolej\api\api::STATUS_CREATION_PENDING:
-        case \local_nolej\api\api::STATUS_ANALYSIS_PENDING:
-        case \local_nolej\api\api::STATUS_ACTIVITIES_PENDING:
+        case \local_nolej\module::STATUS_CREATION_PENDING:
+        case \local_nolej\module::STATUS_ANALYSIS_PENDING:
+        case \local_nolej\module::STATUS_ACTIVITIES_PENDING:
             // Document is pending, print info and exit
-            \core\notification::add(get_string('status_' . $document->status, 'local_nolej'), \core\output\notification::NOTIFY_INFO);
+            \core\notification::add(
+                \local_nolej\module::getstatusname((int) $document->status),
+                \core\output\notification::NOTIFY_INFO
+            );
             echo $OUTPUT->header();
             $module->printinfo();
             echo $OUTPUT->footer();
@@ -108,40 +111,40 @@ if (
     }
 
     switch ($step) {
-        case \local_nolej\module\module::STEP_ANALYSIS:
+        case \local_nolej\module::STEP_ANALYSIS:
             // Analysis can be executed only if the document is not yet in revision
-            if ($document->status < \local_nolej\api\api::STATUS_REVISION) {
+            if ($document->status < \local_nolej\module::STATUS_REVISION) {
                 // Step is set, execute as requested
                 $module->analysis();
             } else {
                 // Step not valid, execute default
-                $module->setstep(\local_nolej\module\module::STEP_CONCEPTS);
+                $module->setstep(\local_nolej\module::STEP_CONCEPTS);
                 $module->concepts();
             }
             break;
 
-        case \local_nolej\module\module::STEP_CONCEPTS:
-        case \local_nolej\module\module::STEP_QUESTIONS:
-        case \local_nolej\module\module::STEP_SUMMARY:
-        case \local_nolej\module\module::STEP_ACTIVITIES:
+        case \local_nolej\module::STEP_CONCEPTS:
+        case \local_nolej\module::STEP_QUESTIONS:
+        case \local_nolej\module::STEP_SUMMARY:
+        case \local_nolej\module::STEP_ACTIVITIES:
             // These revision steps can be executed only if the document is in revision
-            if ($document->status >= \local_nolej\api\api::STATUS_REVISION) {
+            if ($document->status >= \local_nolej\module::STATUS_REVISION) {
                 // Step is set, execute as requested
                 $module->$step();
             } else {
                 // Step not valid, execute default
-                $module->setstep(\local_nolej\module\module::STEP_ANALYSIS);
+                $module->setstep(\local_nolej\module::STEP_ANALYSIS);
                 $module->analysis();
             }
             break;
 
         default:
             // Step is not set, execute default depending on the status
-            if ($document->status < \local_nolej\api\api::STATUS_REVISION) {
-                $module->setstep(\local_nolej\module\module::STEP_ANALYSIS);
+            if ($document->status < \local_nolej\module::STATUS_REVISION) {
+                $module->setstep(\local_nolej\module::STEP_ANALYSIS);
                 $module->analysis();
             } else {
-                $module->setstep(\local_nolej\module\module::STEP_CONCEPTS);
+                $module->setstep(\local_nolej\module::STEP_CONCEPTS);
                 $module->concepts();
             }
     }

@@ -52,13 +52,13 @@ class concepts extends \moodleform
         $mform->setType('step', PARAM_ALPHA);
 
         // Download concepts
-        $result = \local_nolej\api\api::getcontent(
+        $result = \local_nolej\api::getcontent(
             $documentid,
             'concepts',
             'concepts.json'
         );
 
-        $json = \local_nolej\api\api::readcontent($documentid, 'concepts.json');
+        $json = \local_nolej\api::readcontent($documentid, 'concepts.json');
         if (!$json) {
             redirect(
                 new \moodle_url('/local/nolej/manage.php'),

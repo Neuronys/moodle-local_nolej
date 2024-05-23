@@ -27,7 +27,7 @@ require_once (__DIR__ . '/../../config.php');
 
 require_once ($CFG->dirroot . '/local/nolej/classes/api.php');
 
-use local_nolej\api\api;
+use local_nolej\api;
 
 // Deliver file if exists (public for 2 hours, after that the user need to be logged in)
 $timelimit = 2 * 3600;

@@ -23,40 +23,39 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_nolej\api;
+namespace local_nolej;
 
 defined('MOODLE_INTERNAL') || die();
 
 require_once ($CFG->dirroot . '/local/nolej/classes/event/webhook_called.php');
+require_once ($CFG->dirroot . '/local/nolej/classes/module.php');
 
 /**
  * Nolej API class
  */
 class api
 {
-    const STATUS_CREATION = 0;
-    const STATUS_CREATION_PENDING = 1;
-    const STATUS_ANALYSIS = 2;
-    const STATUS_ANALYSIS_PENDING = 3;
-    const STATUS_REVISION = 4;
-    const STATUS_REVISION_PENDING = 5;
-    const STATUS_ACTIVITIES = 6;
-    const STATUS_ACTIVITIES_PENDING = 7;
-    const STATUS_COMPLETED = 8;
-    const STATUS_FAILED = 9;
 
+    /** Allowed audio formats */
     const TYPE_AUDIO = ['mp3', 'wav', 'opus', 'ogg', 'oga', 'm4a'];
+
+    /** Allowed video formats */
     const TYPE_VIDEO = ['m4v', 'mp4', 'ogv', 'avi', 'webm'];
+
+    /** Allowed document formats */
     const TYPE_DOC = ['pdf', 'doc', 'docx', 'odt'];
+
+    /** Allowed text file formats */
     const TYPE_TEXT = ['txt', 'htm', 'html'];
 
+    /** Nolej API URL */
     const API_URL = 'https://api-live.nolej.io';
 
     /** @var array */
     protected $data;
 
     /** @var bool */
-    protected $should_exit = false;
+    protected $shouldexit = false;
 
     /**
      * Check that the API key has been set
@@ -452,7 +451,7 @@ class api
         if ($data == null) {
             header('Content-type: application/json; charset=UTF-8');
             $data = json_decode(file_get_contents('php://input'), true);
-            $this->should_exit = true;
+            $this->shouldexit = true;
         }
 
         if (
@@ -505,12 +504,12 @@ class api
     ) {
         if (!empty($message)) {
             $this->log('Replied to Nolej with message: ' . $message);
-            if ($this->should_exit) {
+            if ($this->shouldexit) {
                 echo json_encode(['message' => $message]);
             }
         }
 
-        if (!$this->should_exit) {
+        if (!$this->shouldexit) {
             return false;
         }
 
@@ -570,7 +569,7 @@ class api
 
         $documentid = $this->data['documentID'];
 
-        $document = $this->lookupdocumentwithstatus($documentid, self::STATUS_CREATION_PENDING);
+        $document = $this->lookupdocumentwithstatus($documentid, module::STATUS_CREATION_PENDING);
         if (!$document) {
             $this->respondwithmessage(404, 'Document ID not found.');
             return;
@@ -591,7 +590,7 @@ class api
                 (object) [
                     'id' => $document->id,
                     'document_id' => $documentid,
-                    'status' => self::STATUS_FAILED,
+                    'status' => module::STATUS_FAILED,
                     'consumed_credit' => $this->data['consumedCredit'],
                 ]
             );
@@ -622,7 +621,7 @@ class api
             (object) [
                 'id' => $document->id,
                 'document_id' => $documentid,
-                'status' => self::STATUS_ANALYSIS,
+                'status' => module::STATUS_ANALYSIS,
                 'consumed_credit' => $this->data['consumedCredit'],
             ]
         );
@@ -681,7 +680,7 @@ class api
 
         $documentid = $this->data['documentID'];
 
-        $document = $this->lookupdocumentwithstatus($documentid, self::STATUS_ANALYSIS_PENDING);
+        $document = $this->lookupdocumentwithstatus($documentid, module::STATUS_ANALYSIS_PENDING);
         if (!$document) {
             $this->respondwithmessage(404, 'Document ID not found.');
             return;
@@ -702,7 +701,7 @@ class api
                 (object) [
                     'id' => $document->id,
                     'document_id' => $documentid,
-                    'status' => self::STATUS_FAILED,
+                    'status' => module::STATUS_FAILED,
                     'consumed_credit' => $this->data['consumedCredit'],
                 ]
             );
@@ -733,7 +732,7 @@ class api
             (object) [
                 'id' => $document->id,
                 'document_id' => $documentid,
-                'status' => self::STATUS_REVISION,
+                'status' => module::STATUS_REVISION,
                 'consumed_credit' => $this->data['consumedCredit'],
             ]
         );
@@ -792,7 +791,7 @@ class api
 
         $documentid = $this->data['documentID'];
 
-        $document = $this->lookupdocumentwithstatus($documentid, self::STATUS_ACTIVITIES_PENDING);
+        $document = $this->lookupdocumentwithstatus($documentid, module::STATUS_ACTIVITIES_PENDING);
         if (!$document) {
             $this->respondwithmessage(404, 'Document ID not found.');
             return;
@@ -813,7 +812,7 @@ class api
                 (object) [
                     'id' => $document->id,
                     'document_id' => $documentid,
-                    'status' => self::STATUS_ACTIVITIES,
+                    'status' => module::STATUS_ACTIVITIES,
                     'consumed_credit' => $this->data['consumedCredit'],
                 ]
             );
@@ -844,7 +843,7 @@ class api
             (object) [
                 'id' => $document->id,
                 'document_id' => $documentid,
-                'status' => self::STATUS_COMPLETED,
+                'status' => module::STATUS_COMPLETED,
                 'consumed_credit' => $this->data['consumedCredit'],
             ]
         );

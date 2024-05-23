@@ -52,7 +52,7 @@ class transcription extends \moodleform
         $mform->setType('step', PARAM_ALPHA);
 
         // Download transcription
-        $result = \local_nolej\api\api::get(
+        $result = \local_nolej\api::get(
             sprintf('/documents/%s/transcription', $documentid)
         );
 
@@ -78,7 +78,7 @@ class transcription extends \moodleform
 
         // Download transcription
         $transcription = file_get_contents($result->result);
-        $success = \local_nolej\api\api::writecontent(
+        $success = \local_nolej\api::writecontent(
             $documentid,
             'transcription.htm',
             $transcription
