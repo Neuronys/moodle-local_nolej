@@ -56,6 +56,7 @@ $PAGE->set_url(
 );
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
+$PAGE->requires->css('/local/nolej/styles.css');
 
 
 if (

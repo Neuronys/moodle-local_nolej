@@ -39,6 +39,7 @@ $PAGE->set_heading(get_string('modules', 'local_nolej'));
 $PAGE->set_title(get_string('library', 'local_nolej'));
 
 $PAGE->requires->js_call_amd('local_nolej/delete');
+$PAGE->requires->css('/local/nolej/styles.css');
 
 global $DB;
 
