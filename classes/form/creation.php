@@ -143,7 +143,7 @@ class creation extends \moodleform
         $this->add_action_buttons(true, get_string('create', 'local_nolej'));
     }
 
-    function validation($data, $files)
+    public function validation($data, $files)
     {
         return [];
     }

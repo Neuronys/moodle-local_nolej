@@ -122,7 +122,7 @@ class transcription extends \moodleform
         $mform->closeHeaderBefore('buttonar');
     }
 
-    function validation($data, $files)
+    public function validation($data, $files)
     {
         return [];
     }

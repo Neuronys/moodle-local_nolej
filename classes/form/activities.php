@@ -290,7 +290,7 @@ class activities extends \moodleform
         $this->add_action_buttons(true, get_string('generate', 'local_nolej'));
     }
 
-    function validation($data, $files)
+    public function validation($data, $files)
     {
         return [];
     }

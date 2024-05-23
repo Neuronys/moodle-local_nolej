@@ -745,7 +745,7 @@ class api
         $this->respondwithmessage(200, 'Analysis received!');
     }
 
-    function checkactivities()
+    protected function checkactivities()
     {
         global $DB;
 

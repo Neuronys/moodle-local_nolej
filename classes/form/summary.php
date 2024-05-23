@@ -112,7 +112,7 @@ class summary extends \moodleform
         $this->add_action_buttons(true, get_string('savesummary', 'local_nolej'));
     }
 
-    function validation($data, $files)
+    public function validation($data, $files)
     {
         return [];
     }
