@@ -58,7 +58,6 @@ class range_form_element extends HTML_QuickForm_text
      * @param mixed $attributes (optional) Either a typical HTML attribute string or an associative array
      * @param mixed $options (optional) Range input options
      *
-     * @access public
      * @return void
      */
     public function __construct($elementname = null, $elementlabel = null, $attributes = null, $options = null)
@@ -78,6 +77,9 @@ class range_form_element extends HTML_QuickForm_text
 
     /**
      * Returns the element value.
+     * @param array $submitValues
+     * @param bool $assoc
+     * @param int $nesting
      *
      * @return mixed
      */

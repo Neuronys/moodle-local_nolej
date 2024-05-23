@@ -27,6 +27,8 @@ defined('MOODLE_INTERNAL') || die();
 
 /**
  * Add a link to the library in the global navigation.
+ * @param global_navigation $navigation
+ * @return void
  */
 function local_nolej_extend_navigation(global_navigation $navigation)
 {

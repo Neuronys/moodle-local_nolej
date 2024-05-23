@@ -43,7 +43,8 @@ class webhook_called extends \core\event\base
     }
 
     /**
-     * @return string Localised event name.
+     * Get the localised event name
+     * @return string
      */
     public static function get_name()
     {
@@ -51,7 +52,8 @@ class webhook_called extends \core\event\base
     }
 
     /**
-     * @return array description is the retrieved data from the webhook.
+     * Return data received.
+     * @return array
      */
     public function get_description()
     {
@@ -59,7 +61,8 @@ class webhook_called extends \core\event\base
     }
 
     /**
-     * @return \moodle_url to the module.
+     * Url to Nolej module
+     * @return ?\moodle_url
      */
     public function get_url()
     {
