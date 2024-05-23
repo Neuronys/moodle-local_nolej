@@ -60,7 +60,8 @@ class module
     /**
      * Constructor
      *
-     * @param object|null $document
+     * @param object|null $document default null
+     * @param string $step default ''
      */
     public function __construct(?object $document = null, string $step = '')
     {
