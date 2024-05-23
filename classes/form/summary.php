@@ -30,6 +30,9 @@ defined('MOODLE_INTERNAL') || die();
 require_once ($CFG->libdir . '/formslib.php');
 require_once ($CFG->dirroot . '/local/nolej/classes/api.php');
 
+/**
+ * Summary edit form
+ */
 class summary extends \moodleform
 {
 

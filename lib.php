@@ -25,6 +25,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Add a link to the library in the global navigation.
+ */
 function local_nolej_extend_navigation(global_navigation $navigation)
 {
     if (!has_capability('local/nolej:usenolej', context_system::instance())) {

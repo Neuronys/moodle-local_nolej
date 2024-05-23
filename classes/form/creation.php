@@ -30,6 +30,9 @@ defined('MOODLE_INTERNAL') || die();
 require_once ($CFG->libdir . '/formslib.php');
 require_once ($CFG->dirroot . '/local/nolej/classes/api.php');
 
+/**
+ * Module creation form
+ */
 class creation extends \moodleform
 {
 

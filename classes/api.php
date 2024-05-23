@@ -29,6 +29,9 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once ($CFG->dirroot . '/local/nolej/classes/event/webhook_called.php');
 
+/**
+ * Nolej API class
+ */
 class api
 {
     const STATUS_CREATION = 0;
@@ -208,6 +211,7 @@ class api
     }
 
     /**
+     * Return all the allowed formats
      * @return array
      */
     public static function allowedtypes()
@@ -533,6 +537,11 @@ class api
         );
     }
 
+    /**
+     * Check the transcription result
+     *
+     * @return void
+     */
     public function checktranscription()
     {
         global $DB;
@@ -639,6 +648,11 @@ class api
         $this->respondwithmessage(200, 'Transcription received!');
     }
 
+    /**
+     * Check the analysis result
+     *
+     * @return void
+     */
     public function checkanalysis()
     {
         global $DB;
@@ -745,6 +759,11 @@ class api
         $this->respondwithmessage(200, 'Analysis received!');
     }
 
+    /**
+     * Check the activities result
+     *
+     * @return void
+     */
     protected function checkactivities()
     {
         global $DB;
@@ -1066,6 +1085,11 @@ class api
         $this->log('Message sent with ID: ' . $messageid . ' to user ' . $userid);
     }
 
+    /**
+     * Set the language of the user
+     * @param int $userid
+     * @return void
+     */
     protected function setlanguageofuser(int $userid)
     {
         global $DB, $CFG, $USER;
@@ -1101,8 +1125,10 @@ class api
     /**
      * Download the file
      * @see https://stackoverflow.com/a/2882523
+     * 
+     * @param string $filepath
      */
-    public static function deliverfile($filepath)
+    public static function deliverfile(string $filepath)
     {
         header('Content-Description: File Transfer');
         header('Content-Type: application/octet-stream');

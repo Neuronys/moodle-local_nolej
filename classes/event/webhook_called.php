@@ -27,6 +27,9 @@ namespace local_nolej\event;
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * The webhook_called event class.
+ */
 class webhook_called extends \core\event\base
 {
     protected function init()

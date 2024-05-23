@@ -30,6 +30,9 @@ global $CFG;
 require_once ($CFG->libdir . '/formslib.php');
 require_once ($CFG->libdir . '/form/text.php');
 
+/**
+ * Range input custom form element
+ */
 class range_form_element extends HTML_QuickForm_text
 {
 

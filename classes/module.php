@@ -27,6 +27,9 @@ namespace local_nolej\module;
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Nolej module class
+ */
 class module
 {
 
