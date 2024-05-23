@@ -923,8 +923,9 @@ class module
      */
     public function printinfo()
     {
-        global $OUTPUT;
+        global $OUTPUT, $PAGE;
 
+        $PAGE->requires->js_call_amd('local_nolej/toggleinfo');
         $reviewavailable = $this->document->status >= \local_nolej\api\api::STATUS_REVISION;
 
         echo $OUTPUT->render_from_template(

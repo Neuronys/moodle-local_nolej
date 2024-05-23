@@ -52,8 +52,11 @@
             <div class='card-header' style='border-bottom: none;' id='headingOne'>
                 <nav class='navbar navbar-expand-lg navbar-default navbar-light' style='box-shadow:none;'>
                     <ul class='nav navbar-nav w-100'>
-                        <li class='mb-2'>
-                            <a class='nav-link btn btn-default rounded px-2' role="button" href='{{manageurl}}'><i class='fa fa-chevron-left mr-2'></i> {{#str}} back, moodle {{/str}}</a>
+                        <li class='mr-2 mb-2'>
+                            <a class='nav-link btn btn-default rounded px-2' role="button" href='{{manageurl}}'>
+                                <i class='fa fa-chevron-left mr-2'></i>
+                                {{#str}} back, moodle {{/str}}
+                            </a>
                         </li>
                         {{#review}}
                         <li class='mr-2 mb-2'>
@@ -82,10 +85,10 @@
                         </li>
                         {{/review}}
                         <li class='mr-2 mb-2'>
-                            <a class='nav-link btn btn-default' href='#' data-toggle='collapse' data-target='#collapseOne' aria-expanded='true' aria-controls='collapseOne' onclick='toggleChevron()'>
-                                <i class='fa fa-info'></i>
+                            <a class='nav-link btn btn-default' id='toggleinfo' href='#' data-toggle='collapse' data-target='#collapseOne' aria-expanded='true' aria-controls='collapseOne'>
+                                <i class='fa fa-info mr-2'></i>
                                 {{#str}} documentinfo, local_nolej {{/str}}
-                                <i id='chevronIcon' class='fa fa-chevron-down'></i>
+                                <i id='chevronIcon' class='fa fa-chevron-down ml-2'></i>
                             </a>
                         </li>
                     </ul>
@@ -122,16 +125,3 @@
     </div>
 </div>
 <br>
-
-<script>
-    function toggleChevron() {
-        var chevronIcon = document.getElementById('chevronIcon');
-        if (chevronIcon.classList.contains('fa-chevron-down')) {
-            chevronIcon.classList.remove('fa-chevron-down');
-            chevronIcon.classList.add('fa-chevron-up');
-        } else {
-            chevronIcon.classList.remove('fa-chevron-up');
-            chevronIcon.classList.add('fa-chevron-down');
-        }
-    }
-</script>
