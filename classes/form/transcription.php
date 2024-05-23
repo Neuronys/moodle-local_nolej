@@ -111,10 +111,10 @@ class transcription extends \moodleform
 
         $mform->addRule('title', get_string('error'), 'required', null, 'server', false, false);
         $mform->addRule('transcription', get_string('error'), 'required', null, 'server', false, false);
-        // $mform->addRule('transcription', get_string('error'), 'maxlength', 50000, 'server', false, false);
-        // $mform->addRule('transcription', get_string('error'), 'minlength', 500, 'server', false, false);
+        $mform->addRule('transcription', get_string('error'), 'maxlength', 50000, 'server', false, false);
+        $mform->addRule('transcription', get_string('error'), 'minlength', 500, 'server', false, false);
 
-        // $this->add_action_buttons(true, get_string('analyze', 'local_nolej'));
+        // Add custom submit buttons
         $buttonarray = array();
         $buttonarray[] = &$mform->createElement('submit', 'confirmanalysis', get_string('analyze', 'local_nolej'));
         $buttonarray[] = &$mform->createElement('cancel');
