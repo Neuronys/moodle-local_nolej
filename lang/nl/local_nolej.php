@@ -32,6 +32,7 @@ $string['nolej:usenolej'] = 'Activiteiten maken met Nolej';
 // Settings
 $string['apikey'] = 'API-sleutel';
 $string['apikeyinfo'] = 'Uw Nolej API-sleutel.';
+$string['apikeyhowto'] = 'Om een API-sleutel te verkrijgen, moet u eerst een account aanmaken op live.nolej.io en vervolgens contact opnemen met Nolej via info@nolej.io, waarbij u een API-sleutel aanvraagt voor uw geregistreerde e-mailadres.';
 $string['apikeymissing'] = 'Nolej API-sleutel ontbreekt. U moet deze instellen in de plug-inconfiguratie.';
 
 // Manage

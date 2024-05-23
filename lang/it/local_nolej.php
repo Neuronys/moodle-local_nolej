@@ -32,6 +32,7 @@ $string['nolej:usenolej'] = 'Crea attività con Nolej';
 // Settings
 $string['apikey'] = 'Chiave API';
 $string['apikeyinfo'] = 'La tua chiave API di Nolej.';
+$string['apikeyhowto'] = 'Per ottenere una chiave API, crea un account su live.nolej.io, quindi contatta Nolej all\'indirizzo info@nolej.io, richiedendo una chiave API per il tuo indirizzo email registrato.';
 $string['apikeymissing'] = 'Manca la chiave API di Nolej. È necessario impostarla nella configurazione del plugin.';
 
 // Manage

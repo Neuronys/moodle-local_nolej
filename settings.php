@@ -29,6 +29,14 @@ if ($hassiteconfig) { // needs this condition or there is error on login page
     $settings = new admin_settingpage('local_nolej', get_string('pluginname', 'local_nolej'));
     $ADMIN->add('localplugins', $settings);
 
+    $settingsgeneral->add(
+        new admin_setting_heading(
+            'local_nolej_api_key_info',
+            '',
+            get_string('apikeyhowto', 'local_nolej')
+        )
+    );
+
     $settings->add(
         new admin_setting_configpasswordunmask(
             'local_nolej/api_key',
