@@ -36,12 +36,18 @@ require_once ($CFG->libdir . '/form/text.php');
 class range_form_element extends HTML_QuickForm_text
 {
 
+    /**
+     * @var array Range input options
+     */
     protected $_options = [
         'min' => 0,
         'max' => 100,
         'step' => 1,
     ];
 
+    /**
+     * @var string Element label
+     */
     protected $elementlabel = '';
 
     /**
@@ -70,6 +76,11 @@ class range_form_element extends HTML_QuickForm_text
         $this->_type = 'range';
     }
 
+    /**
+     * Returns the element value.
+     *
+     * @return mixed
+     */
     public function exportValue(&$submitValues, $assoc = false, $nesting = 0)
     {
         $value = parent::exportValue($submitValues, $assoc, $nesting);

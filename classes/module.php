@@ -32,29 +32,61 @@ defined('MOODLE_INTERNAL') || die();
  */
 class module
 {
+    /** @var int */
     const STATUS_CREATION = 0;
+
+    /** @var int */
     const STATUS_CREATION_PENDING = 1;
+
+    /** @var int */
     const STATUS_ANALYSIS = 2;
+
+    /** @var int */
     const STATUS_ANALYSIS_PENDING = 3;
+
+    /** @var int */
     const STATUS_REVISION = 4;
+
+    /** @var int */
     const STATUS_REVISION_PENDING = 5;
+
+    /** @var int */
     const STATUS_ACTIVITIES = 6;
+
+    /** @var int */
     const STATUS_ACTIVITIES_PENDING = 7;
+
+    /** @var int */
     const STATUS_COMPLETED = 8;
+
+    /** @var int */
     const STATUS_FAILED = 9;
 
+    /** @var string */
     const STEP_CREATION = 'creation';
+
+    /** @var string */
     const STEP_ANALYSIS = 'analysis';
+
+    /** @var string */
     const STEP_CONCEPTS = 'concepts';
+
+    /** @var string */
     const STEP_QUESTIONS = 'questions';
+
+    /** @var string */
     const STEP_SUMMARY = 'summary';
+
+    /** @var string */
     const STEP_ACTIVITIES = 'activities';
 
-
+    /** @var ?object */
     protected ?object $document;
 
+    /** @var ?string */
     protected ?string $documentid;
 
+    /** @var string */
     protected string $step;
 
     /**

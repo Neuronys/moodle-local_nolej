@@ -32,6 +32,9 @@ defined('MOODLE_INTERNAL') || die();
  */
 class webhook_called extends \core\event\base
 {
+    /**
+     * Init the event
+     */
     protected function init()
     {
         $this->data['context'] = \context_system::instance();
@@ -39,16 +42,25 @@ class webhook_called extends \core\event\base
         $this->data['edulevel'] = self::LEVEL_OTHER;
     }
 
+    /**
+     * @return string Localised event name.
+     */
     public static function get_name()
     {
         return get_string('eventwebhookcalled', 'local_nolej');
     }
 
+    /**
+     * @return array description is the retrieved data from the webhook.
+     */
     public function get_description()
     {
         return $this->other['message'];
     }
 
+    /**
+     * @return \moodle_url to the module.
+     */
     public function get_url()
     {
         if ($this->other['documentid'] == null) {

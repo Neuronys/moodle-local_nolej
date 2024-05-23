@@ -36,6 +36,9 @@ require_once ($CFG->dirroot . '/local/nolej/classes/api.php');
 class transcription extends \moodleform
 {
 
+    /**
+     * Form definition
+     */
     public function definition()
     {
         global $CFG;

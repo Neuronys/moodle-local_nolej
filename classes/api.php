@@ -36,19 +36,19 @@ require_once ($CFG->dirroot . '/local/nolej/classes/module.php');
 class api
 {
 
-    /** Allowed audio formats */
+    /** @var string[] Allowed audio formats */
     const TYPE_AUDIO = ['mp3', 'wav', 'opus', 'ogg', 'oga', 'm4a'];
 
-    /** Allowed video formats */
+    /** @var string[] Allowed video formats */
     const TYPE_VIDEO = ['m4v', 'mp4', 'ogv', 'avi', 'webm'];
 
-    /** Allowed document formats */
+    /** @var string[] Allowed document formats */
     const TYPE_DOC = ['pdf', 'doc', 'docx', 'odt'];
 
-    /** Allowed text file formats */
+    /** @var string[] Allowed text file formats */
     const TYPE_TEXT = ['txt', 'htm', 'html'];
 
-    /** Nolej API URL */
+    /** @var string Nolej API URL */
     const API_URL = 'https://api-live.nolej.io';
 
     /** @var array */
