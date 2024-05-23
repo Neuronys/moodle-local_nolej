@@ -128,6 +128,13 @@ class transcription extends \moodleform
         $mform->closeHeaderBefore('buttonar');
     }
 
+    /**
+     * Form validation
+     *
+     * @param array $data
+     * @param array $files
+     * @return array of errors
+     */
     public function validation($data, $files)
     {
         return [];
