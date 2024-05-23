@@ -25,7 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-if ($hassiteconfig) { // needs this condition or there is error on login page
+if ($hassiteconfig) { // Needs this condition or there is error on login page
     $settings = new admin_settingpage('local_nolej', get_string('pluginname', 'local_nolej'));
     $ADMIN->add('localplugins', $settings);
 

@@ -96,7 +96,7 @@ foreach ($modules as $module) {
         'nolej_activity',
         [
             'user_id' => $USER->id,
-            'document_id' => $module->document_id
+            'document_id' => $module->document_id,
         ],
         'tstamp DESC',
         '*',
