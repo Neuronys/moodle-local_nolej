@@ -106,6 +106,7 @@ $string['create'] = 'Criar módulo';
 $string['modulenotcreated'] = 'Módulo não criado';
 $string['modulecreated'] = 'Módulo criado, transcrição em andamento...';
 $string['modulenotfound'] = 'Módulo não encontrado';
+$string['errdatamissing'] = 'Faltam alguns dados';
 $string['errdocument'] = 'Ocorreu um erro durante a criação do módulo Nolej:<br><pre>{$a}</pre><br>Por favor, tente novamente ou entre em contato com um administrador se esse erro persistir.';
 
 // Content limits

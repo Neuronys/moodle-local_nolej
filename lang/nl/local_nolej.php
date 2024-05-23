@@ -106,6 +106,7 @@ $string['create'] = 'Module maken';
 $string['modulenotcreated'] = 'Module niet gemaakt';
 $string['modulecreated'] = 'Module gemaakt, transcriptie bezig...';
 $string['modulenotfound'] = 'Module niet gevonden';
+$string['errdatamissing'] = 'Sommige gegevens ontbreken';
 $string['errdocument'] = 'Er is een fout opgetreden bij het maken van de Nolej-module:<br><pre>{$a}</pre><br>Probeer het opnieuw of neem contact op met een beheerder als deze fout aanhoudt.';
 
 // Content limits

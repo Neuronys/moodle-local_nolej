@@ -225,7 +225,10 @@ class module
                     );
                 }
             } else {
-                \core\notification::add('Some data missing', \core\output\notification::NOTIFY_ERROR);
+                \core\notification::add(
+                    get_string('errdatamissing', 'local_nolej'),
+                    \core\output\notification::NOTIFY_ERROR
+                );
             }
         } else {
             // Display form
