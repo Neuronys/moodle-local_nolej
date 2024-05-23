@@ -42,7 +42,7 @@ $document = $DB->get_record(
     'nolej_module',
     [
         'document_id' => $documentid,
-        'user_id' => $USER->id
+        'user_id' => $USER->id,
     ]
 );
 

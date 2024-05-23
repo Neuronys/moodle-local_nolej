@@ -49,7 +49,7 @@ class creation extends \moodleform
             [
                 $mform->createElement('radio', 'sourcetype', '', get_string('sourcetypefile', 'local_nolej'), 'file', ''),
                 $mform->createElement('radio', 'sourcetype', '', get_string('sourcetypeweb', 'local_nolej'), 'web', ''),
-                $mform->createElement('radio', 'sourcetype', '', get_string('sourcetypetext', 'local_nolej'), 'text', '')
+                $mform->createElement('radio', 'sourcetype', '', get_string('sourcetypetext', 'local_nolej'), 'text', ''),
             ],
             'sourcetypegroup',
             get_string('sourcetype', 'local_nolej'),
@@ -67,7 +67,7 @@ class creation extends \moodleform
                 (object) [
                     'audioformats' => join(', ', \local_nolej\api\api::TYPE_AUDIO),
                     'videoformats' => join(', ', \local_nolej\api\api::TYPE_VIDEO),
-                    'docformats' => join(', ', \local_nolej\api\api::TYPE_DOC)
+                    'docformats' => join(', ', \local_nolej\api\api::TYPE_DOC),
                 ]
             )
         );
@@ -97,7 +97,7 @@ class creation extends \moodleform
             [
                 'audio' => get_string('sourceaudio', 'local_nolej'),
                 'video' => get_string('sourcevideo', 'local_nolej'),
-                'web' => get_string('sourceweb', 'local_nolej')
+                'web' => get_string('sourceweb', 'local_nolej'),
             ]
         );
 
@@ -116,7 +116,7 @@ class creation extends \moodleform
                 'trusttext' => false,
                 'context' => null,
                 'collapsed' => true,
-                'canUseHtmlEditor' => false
+                'canUseHtmlEditor' => false,
             ]
         );
         $mform->setType('sourcetext', PARAM_CLEANHTML);
@@ -135,7 +135,7 @@ class creation extends \moodleform
                 'de' => $languages['de'],
                 'pt' => $languages['pt'],
                 'es' => $languages['es'],
-                'nl' => $languages['nl']
+                'nl' => $languages['nl'],
             ]
         );
         $mform->addElement('static', 'languagedesc', '', get_string('languagedesc', 'local_nolej'));

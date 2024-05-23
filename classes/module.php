@@ -117,9 +117,7 @@ class module
                         chmod($dest, 0775);
                         $webhook = new \moodle_url(
                             '/local/nolej/webhook.php',
-                            [
-                                'fileid' => $filename
-                            ]
+                            ['fileid' => $filename]
                         );
                         $url = $webhook->out(false);
                     }
@@ -136,9 +134,7 @@ class module
                         chmod($dest, 0775);
                         $webhook = new \moodle_url(
                             '/local/nolej/webhook.php',
-                            [
-                                'fileid' => $filename
-                            ]
+                            ['fileid' => $filename]
                         );
                         $url = $webhook->out(false);
                         $format = 'freetext';
@@ -161,7 +157,7 @@ class module
                         'webhookURL' => $webhook->out(false),
                         'mediaType' => $format,
                         'automaticMode' => $automaticmode,
-                        'language' => $language
+                        'language' => $language,
                     ],
                     true
                 );
@@ -196,7 +192,7 @@ class module
                             'doc_url' => $url,
                             'media_type' => $format,
                             'automatic_mode' => $automaticmode,
-                            'language' => $language
+                            'language' => $language,
                         ],
                         false
                     );
@@ -212,7 +208,7 @@ class module
                             'code' => 200,
                             'error_message' => '',
                             'consumed_credit' => $consumedcredit,
-                            'notified' => false
+                            'notified' => false,
                         ],
                         false
                     );
@@ -255,7 +251,7 @@ class module
                     '/local/nolej/edit.php',
                     [
                         'documentid' => $this->documentid,
-                        'step' => 'analysis'
+                        'step' => 'analysis',
                     ]
                 )
             )->out(false),
@@ -280,7 +276,7 @@ class module
                         '/local/nolej/webhook.php',
                         [
                             'documentid' => $this->documentid,
-                            'fileid' => 'transcription.htm'
+                            'fileid' => 'transcription.htm',
                         ]
                     )
                 )->out(false);
@@ -289,7 +285,7 @@ class module
                     "/documents/{$this->documentid}/transcription",
                     [
                         's3URL' => $webhook,
-                        'automaticMode' => false
+                        'automaticMode' => false,
                     ],
                     true,
                     true
@@ -318,7 +314,7 @@ class module
                         'id' => $this->document->id,
                         'document_id' => $this->documentid,
                         'status' => \local_nolej\api\api::STATUS_ANALYSIS_PENDING,
-                        'title' => $title
+                        'title' => $title,
                     ]
                 );
 
@@ -333,7 +329,7 @@ class module
                         'code' => 200,
                         'error_message' => '',
                         'consumed_credit' => 0,
-                        'notified' => true
+                        'notified' => true,
                     ],
                     false
                 );
@@ -351,7 +347,7 @@ class module
                             '/local/nolej/edit.php',
                             [
                                 'documentid' => $this->documentid,
-                                'step' => 'analysis'
+                                'step' => 'analysis',
                             ]
                         )
                     )->out(false),
@@ -385,7 +381,7 @@ class module
                     '/local/nolej/edit.php',
                     [
                         'documentid' => $this->documentid,
-                        'step' => 'concepts'
+                        'step' => 'concepts',
                     ]
                 )
             )->out(false),
@@ -455,7 +451,7 @@ class module
                             '/local/nolej/edit.php',
                             [
                                 'documentid' => $this->documentid,
-                                'step' => 'concepts'
+                                'step' => 'concepts',
                             ]
                         )
                     )->out(false),
@@ -473,7 +469,7 @@ class module
                         '/local/nolej/edit.php',
                         [
                             'documentid' => $this->documentid,
-                            'step' => 'concepts'
+                            'step' => 'concepts',
                         ]
                     )
                 )->out(false),
@@ -505,7 +501,7 @@ class module
                     '/local/nolej/edit.php',
                     [
                         'documentid' => $this->documentid,
-                        'step' => 'questions'
+                        'step' => 'questions',
                     ]
                 )
             )->out(false),
@@ -576,7 +572,7 @@ class module
                             '/local/nolej/edit.php',
                             [
                                 'documentid' => $this->documentid,
-                                'step' => 'questions'
+                                'step' => 'questions',
                             ]
                         )
                     )->out(false),
@@ -594,7 +590,7 @@ class module
                         '/local/nolej/edit.php',
                         [
                             'documentid' => $this->documentid,
-                            'step' => 'questions'
+                            'step' => 'questions',
                         ]
                     )
                 )->out(false),
@@ -626,7 +622,7 @@ class module
                     '/local/nolej/edit.php',
                     [
                         'documentid' => $this->documentid,
-                        'step' => 'summary'
+                        'step' => 'summary',
                     ]
                 )
             )->out(false),
@@ -642,7 +638,7 @@ class module
             $summary = [
                 'summary' => [],
                 'abstract' => '',
-                'keypoints' => []
+                'keypoints' => [],
             ];
 
             $summarycount = $fromform->summarycount;
@@ -652,7 +648,7 @@ class module
                 if (!empty($title) && !empty($txt)) {
                     $summary['summary'][] = [
                         'title' => $title,
-                        'text' => $txt
+                        'text' => $txt,
                     ];
                 }
             }
@@ -677,7 +673,7 @@ class module
                             '/local/nolej/edit.php',
                             [
                                 'documentid' => $this->documentid,
-                                'step' => 'summary'
+                                'step' => 'summary',
                             ]
                         )
                     )->out(false),
@@ -695,7 +691,7 @@ class module
                         '/local/nolej/edit.php',
                         [
                             'documentid' => $this->documentid,
-                            'step' => 'summary'
+                            'step' => 'summary',
                         ]
                     )
                 )->out(false),
@@ -727,7 +723,7 @@ class module
                     '/local/nolej/edit.php',
                     [
                         'documentid' => $this->documentid,
-                        'step' => 'activities'
+                        'step' => 'activities',
                     ]
                 )
             )->out(false),
@@ -763,7 +759,7 @@ class module
             $settingstosave = [
                 'settings' => $settings['settings'],
                 'avaible_packages' => $availableactivities,
-                'desired_packages' => []
+                'desired_packages' => [],
             ];
 
             for ($i = 0, $len = count($availableactivities); $i < $len; $i++) {
@@ -851,7 +847,7 @@ class module
                             '/local/nolej/edit.php',
                             [
                                 'documentid' => $this->documentid,
-                                'step' => 'settings'
+                                'step' => 'settings',
                             ]
                         )
                     )->out(false),
@@ -869,7 +865,7 @@ class module
                     (object) [
                         'id' => $this->document->id,
                         'document_id' => $this->documentid,
-                        'status' => \local_nolej\api\api::STATUS_ACTIVITIES_PENDING
+                        'status' => \local_nolej\api\api::STATUS_ACTIVITIES_PENDING,
                     ]
                 );
 
@@ -884,7 +880,7 @@ class module
                         'code' => 200,
                         'error_message' => '',
                         'consumed_credit' => 0,
-                        'notified' => true
+                        'notified' => true,
                     ],
                     false
                 );
@@ -902,7 +898,7 @@ class module
                             '/local/nolej/edit.php',
                             [
                                 'documentid' => $this->documentid,
-                                'step' => 'settings'
+                                'step' => 'settings',
                             ]
                         )
                     )->out(false),
@@ -944,7 +940,7 @@ class module
                 'summary' => $this->step == 'summary',
                 'settings' => $this->step == 'activities',
                 'editurl' => (new \moodle_url('/local/nolej/edit.php', ['documentid' => $this->document->document_id]))->out(false),
-                'manageurl' => (new \moodle_url('/local/nolej/manage.php'))->out(false)
+                'manageurl' => (new \moodle_url('/local/nolej/manage.php'))->out(false),
             ]
         );
     }

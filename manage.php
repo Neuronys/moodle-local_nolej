@@ -58,10 +58,8 @@ $status2form = [
 
 $modules = $DB->get_records(
     'nolej_module',
-    [
-        'user_id' => $USER->id
-    ],
-    'tstamp DESC',
+    ['user_id' => $USER->id],
+    'tstamp DESC'
 );
 
 $modulearray = [];
@@ -79,7 +77,7 @@ foreach ($modules as $module) {
                     '/local/nolej/edit.php',
                     [
                         'documentid' => $module->document_id,
-                        'step' => $status2form[$module->status]
+                        'step' => $status2form[$module->status],
                     ]
                 )
             )->out(false)
@@ -90,7 +88,7 @@ foreach ($modules as $module) {
                 ['documentid' => $module->document_id]
             )
         )->out(false),
-        'contextid' => null
+        'contextid' => null,
     ];
 
     // Check last update
@@ -146,7 +144,7 @@ foreach ($modules as $module) {
 
 $templatecontext = (object) [
     'modules' => $modulearray,
-    'createurl' => (new moodle_url('/local/nolej/edit.php'))->out(false)
+    'createurl' => (new moodle_url('/local/nolej/edit.php'))->out(false),
 ];
 
 echo $OUTPUT->header();

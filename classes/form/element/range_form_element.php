@@ -36,7 +36,7 @@ class range_form_element extends HTML_QuickForm_text
     protected $_options = [
         'min' => 0,
         'max' => 100,
-        'step' => 1
+        'step' => 1,
     ];
 
     protected $elementlabel = '';

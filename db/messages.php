@@ -31,41 +31,41 @@ $messageproviders = [
         'defaults' => [
             'pop-up' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
             'email' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
-        ]
+        ],
     ],
     'transcription_ko' => [
         'capability' => 'local/nolej:usenolej',
         'defaults' => [
             'pop-up' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
             'email' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
-        ]
+        ],
     ],
     'analysis_ok' => [
         'capability' => 'local/nolej:usenolej',
         'defaults' => [
             'pop-up' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
             'email' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
-        ]
+        ],
     ],
     'analysis_ko' => [
         'capability' => 'local/nolej:usenolej',
         'defaults' => [
             'pop-up' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
             'email' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
-        ]
+        ],
     ],
     'activities_ok' => [
         'capability' => 'local/nolej:usenolej',
         'defaults' => [
             'pop-up' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
             'email' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
-        ]
+        ],
     ],
     'activities_ko' => [
         'capability' => 'local/nolej:usenolej',
         'defaults' => [
             'pop-up' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
             'email' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
-        ]
+        ],
     ],
 ];

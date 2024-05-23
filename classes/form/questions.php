@@ -84,7 +84,6 @@ class questions extends \moodleform
                 $formquestions[$questiontype] = [];
             }
 
-            // $questions[$i]->local_id = $i;
             $formquestions[$questiontype][] = $questions[$i];
         }
 
@@ -109,9 +108,6 @@ class questions extends \moodleform
                         get_string('questiontype' . $questiontype, 'local_nolej')
                     )
                 );
-
-                // $mform->addElement('hidden', 'question_' . $questions[$i]->id . '_id')->setValue($questions[$i]->id);
-                // $mform->setType('question_' . $questions[$i]->id . '_id', PARAM_INT);
 
                 if ($questiontype != 'tf') {
                     $mform->addElement(

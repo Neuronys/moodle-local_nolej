@@ -122,9 +122,6 @@ class concepts extends \moodleform
 
                 $games = [];
 
-                // var_dump($concepts[$i]->use_for_cw);die();
-                // var_export($concepts[$i]->use_for_cw);die();
-
                 if (in_array('cw', $availablegames)) {
                     $games[] = &$mform->createElement(
                         'advcheckbox',

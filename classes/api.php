@@ -53,7 +53,7 @@ class api
     protected $data;
 
     /** @var bool */
-    protected $shouldDie = false;
+    protected $should_exit = false;
 
     /**
      * Check that the API key has been set
@@ -89,17 +89,17 @@ class api
         $encodeddata = empty($data) ? null : ($encodeinput ? json_encode($data) : $data);
 
         $options = [
-            'CURLOPT_CUSTOMREQUEST' => 'GET', // Need a GET request with POST data
+            'CURLOPT_CUSTOMREQUEST' => 'GET', // Need a GET request with POST data.
             'RETURNTRANSFER' => 1,
             'HEADER' => 0,
-            'FAILONERROR' => 0
+            'FAILONERROR' => 0,
         ];
 
         $header = [
             'Content-Type: application/json',
             'Accept: application/json',
             'Authorization: X-API-KEY ' . $apikey,
-            'User-Agent: Moodle Plugin'
+            'User-Agent: Moodle Plugin',
         ];
 
         $curl = new \curl();
@@ -139,14 +139,14 @@ class api
         $options = [
             'RETURNTRANSFER' => 1,
             'HEADER' => 0,
-            'FAILONERROR' => 0
+            'FAILONERROR' => 0,
         ];
 
         $header = [
             'Content-Type: application/json',
             'Accept: application/json',
             'Authorization: X-API-KEY ' . $apikey,
-            'User-Agent: Moodle Plugin'
+            'User-Agent: Moodle Plugin',
         ];
 
         $curl = new \curl();
@@ -185,14 +185,14 @@ class api
         $options = [
             'RETURNTRANSFER' => 1,
             'HEADER' => 0,
-            'FAILONERROR' => 0
+            'FAILONERROR' => 0,
         ];
 
         $header = [
             'Content-Type: application/json',
             'Accept: application/json',
             'Authorization: X-API-KEY ' . $apikey,
-            'User-Agent: Moodle Plugin'
+            'User-Agent: Moodle Plugin',
         ];
 
         $curl = new \curl();
@@ -403,7 +403,7 @@ class api
                 'nolej_module',
                 [
                     'document_id' => $documentid,
-                    'user_id' => $userid
+                    'user_id' => $userid,
                 ]
             );
         } else {
@@ -432,8 +432,8 @@ class api
                 'context' => \context_system::instance(),
                 'other' => [
                     'documentid' => $documentid,
-                    'message' => $msg
-                ]
+                    'message' => $msg,
+                ],
             ]
         );
         $event->trigger();
@@ -448,7 +448,7 @@ class api
         if ($data == null) {
             header('Content-type: application/json; charset=UTF-8');
             $data = json_decode(file_get_contents('php://input'), true);
-            $this->shouldDie = true;
+            $this->should_exit = true;
         }
 
         if (
@@ -456,7 +456,7 @@ class api
             !isset($data['action']) ||
             !is_string($data['action'])
         ) {
-            $this->diemessage(400, 'Request not valid.');
+            $this->respondwithmessage(400, 'Request not valid.');
             $this->log('Received invalid request: ' . var_export($data, true));
         }
 
@@ -495,18 +495,18 @@ class api
      * @param int $code
      * @param string $message
      */
-    protected function diemessage(
+    protected function respondwithmessage(
         $code = 400,
         $message = ''
     ) {
         if (!empty($message)) {
             $this->log('Replied to Nolej with message: ' . $message);
-            if ($this->shouldDie) {
+            if ($this->should_exit) {
                 echo json_encode(['message' => $message]);
             }
         }
 
-        if (!$this->shouldDie) {
+        if (!$this->should_exit) {
             return false;
         }
 
@@ -528,7 +528,7 @@ class api
             'nolej_module',
             [
                 'document_id' => $documentid,
-                'status' => $status
+                'status' => $status,
             ]
         );
     }
@@ -555,7 +555,7 @@ class api
             !is_integer($this->data['code']) ||
             !is_integer($this->data['consumedCredit'])
         ) {
-            $this->diemessage(400, 'Request not valid.');
+            $this->respondwithmessage(400, 'Request not valid.');
             return;
         }
 
@@ -563,14 +563,13 @@ class api
 
         $document = $this->lookupdocumentwithstatus($documentid, self::STATUS_CREATION_PENDING);
         if (!$document) {
-            $this->diemessage(404, 'Document ID not found.');
+            $this->respondwithmessage(404, 'Document ID not found.');
             return;
         }
 
         $this->setLanguageOfUser((int) $document->user_id);
 
         $now = time();
-        // $this->setUserLang($document['user_id']);
 
         if (
             $this->data['status'] != '\'ok\'' &&
@@ -584,11 +583,11 @@ class api
                     'id' => $document->id,
                     'document_id' => $documentid,
                     'status' => self::STATUS_FAILED,
-                    'consumed_credit' => $this->data['consumedCredit']
+                    'consumed_credit' => $this->data['consumedCredit'],
                 ]
             );
             if (!$success) {
-                $this->diemessage(404, 'Document not found.');
+                $this->respondwithmessage(404, 'Document not found.');
             }
 
             $this->sendnotification(
@@ -603,7 +602,7 @@ class api
                 (object) [
                     'title' => $document->title,
                     'tstamp' => userdate($now, get_string('strftimedatetimeshortaccurate', 'core_langconfig')),
-                    'errormessage' => $this->data['error_message']
+                    'errormessage' => $this->data['error_message'],
                 ]
             );
             return;
@@ -615,11 +614,11 @@ class api
                 'id' => $document->id,
                 'document_id' => $documentid,
                 'status' => self::STATUS_ANALYSIS,
-                'consumed_credit' => $this->data['consumedCredit']
+                'consumed_credit' => $this->data['consumedCredit'],
             ]
         );
         if (!$success) {
-            $this->diemessage(404, 'Document not found.');
+            $this->respondwithmessage(404, 'Document not found.');
         }
 
         $this->sendnotification(
@@ -633,11 +632,11 @@ class api
             'action_transcription_ok_body',
             (object) [
                 'title' => $document->title,
-                'tstamp' => userdate($now, get_string('strftimedatetimeshortaccurate', 'core_langconfig'))
+                'tstamp' => userdate($now, get_string('strftimedatetimeshortaccurate', 'core_langconfig')),
             ]
         );
 
-        $this->diemessage(200, 'Transcription received!');
+        $this->respondwithmessage(200, 'Transcription received!');
     }
 
     public function checkanalysis()
@@ -662,7 +661,7 @@ class api
             !is_integer($this->data['code']) ||
             !is_integer($this->data['consumedCredit'])
         ) {
-            $this->diemessage(400, 'Request not valid.');
+            $this->respondwithmessage(400, 'Request not valid.');
             return;
         }
 
@@ -670,14 +669,13 @@ class api
 
         $document = $this->lookupdocumentwithstatus($documentid, self::STATUS_ANALYSIS_PENDING);
         if (!$document) {
-            $this->diemessage(404, 'Document ID not found.');
+            $this->respondwithmessage(404, 'Document ID not found.');
             return;
         }
 
         $this->setLanguageOfUser((int) $document->user_id);
 
         $now = time();
-        // $this->setUserLang($document['user_id']);
 
         if (
             $this->data['status'] != '\'ok\'' &&
@@ -691,11 +689,11 @@ class api
                     'id' => $document->id,
                     'document_id' => $documentid,
                     'status' => self::STATUS_FAILED,
-                    'consumed_credit' => $this->data['consumedCredit']
+                    'consumed_credit' => $this->data['consumedCredit'],
                 ]
             );
             if (!$success) {
-                $this->diemessage(404, 'Document not found.');
+                $this->respondwithmessage(404, 'Document not found.');
             }
 
             $this->sendnotification(
@@ -710,7 +708,7 @@ class api
                 (object) [
                     'title' => $document->title,
                     'tstamp' => userdate($now, get_string('strftimedatetimeshortaccurate', 'core_langconfig')),
-                    'errormessage' => $this->data['error_message']
+                    'errormessage' => $this->data['error_message'],
                 ]
             );
             return;
@@ -722,11 +720,11 @@ class api
                 'id' => $document->id,
                 'document_id' => $documentid,
                 'status' => self::STATUS_REVISION,
-                'consumed_credit' => $this->data['consumedCredit']
+                'consumed_credit' => $this->data['consumedCredit'],
             ]
         );
         if (!$success) {
-            $this->diemessage(404, 'Document not found.');
+            $this->respondwithmessage(404, 'Document not found.');
         }
 
         $this->sendnotification(
@@ -740,11 +738,11 @@ class api
             'action_analysis_ok_body',
             (object) [
                 'title' => $document->title,
-                'tstamp' => userdate($now, get_string('strftimedatetimeshortaccurate', 'core_langconfig'))
+                'tstamp' => userdate($now, get_string('strftimedatetimeshortaccurate', 'core_langconfig')),
             ]
         );
 
-        $this->diemessage(200, 'Analysis received!');
+        $this->respondwithmessage(200, 'Analysis received!');
     }
 
     function checkactivities()
@@ -769,7 +767,7 @@ class api
             !is_integer($this->data['code']) ||
             !is_integer($this->data['consumedCredit'])
         ) {
-            $this->diemessage(400, 'Request not valid.');
+            $this->respondwithmessage(400, 'Request not valid.');
             return;
         }
 
@@ -777,14 +775,13 @@ class api
 
         $document = $this->lookupdocumentwithstatus($documentid, self::STATUS_ACTIVITIES_PENDING);
         if (!$document) {
-            $this->diemessage(404, 'Document ID not found.');
+            $this->respondwithmessage(404, 'Document ID not found.');
             return;
         }
 
         $this->setLanguageOfUser((int) $document->user_id);
 
         $now = time();
-        // $this->setUserLang($document['user_id']);
 
         if (
             $this->data['status'] != '\'ok\'' &&
@@ -798,11 +795,11 @@ class api
                     'id' => $document->id,
                     'document_id' => $documentid,
                     'status' => self::STATUS_ACTIVITIES,
-                    'consumed_credit' => $this->data['consumedCredit']
+                    'consumed_credit' => $this->data['consumedCredit'],
                 ]
             );
             if (!$success) {
-                $this->diemessage(404, 'Document not found.');
+                $this->respondwithmessage(404, 'Document not found.');
             }
 
             $this->sendnotification(
@@ -817,7 +814,7 @@ class api
                 (object) [
                     'title' => $document->title,
                     'tstamp' => userdate($now, get_string('strftimedatetimeshortaccurate', 'core_langconfig')),
-                    'errormessage' => $this->data['error_message']
+                    'errormessage' => $this->data['error_message'],
                 ]
             );
             return;
@@ -829,11 +826,11 @@ class api
                 'id' => $document->id,
                 'document_id' => $documentid,
                 'status' => self::STATUS_COMPLETED,
-                'consumed_credit' => $this->data['consumedCredit']
+                'consumed_credit' => $this->data['consumedCredit'],
             ]
         );
         if (!$success) {
-            $this->diemessage(404, 'Document not found.');
+            $this->respondwithmessage(404, 'Document not found.');
         }
 
         $errors = $this->downloadactivities($document);
@@ -849,11 +846,11 @@ class api
                 $this->data['consumedCredit'],
                 'err_activities_get',
                 (object) [
-                    'errors' => '<ul><li>' . join('</li><li>', $errors) . '</li></ul>'
+                    'errors' => '<ul><li>' . join('</li><li>', $errors) . '</li></ul>',
                 ]
             );
 
-            $this->diemessage(200, 'Activities received, but something went wrong while retrieving them.');
+            $this->respondwithmessage(200, 'Activities received, but something went wrong while retrieving them.');
             return;
         }
 
@@ -868,11 +865,11 @@ class api
             'action_activities_ok_body',
             (object) [
                 'title' => $document->title,
-                'tstamp' => userdate($now, get_string('strftimedatetimeshortaccurate', 'core_langconfig'))
+                'tstamp' => userdate($now, get_string('strftimedatetimeshortaccurate', 'core_langconfig')),
             ]
         );
 
-        $this->diemessage(200, 'Activities received!');
+        $this->respondwithmessage(200, 'Activities received!');
     }
 
     /**
@@ -893,7 +890,7 @@ class api
             'name' => 'Nolej',
             'description' => 'This category contains Nolej h5p contents',
             'parent' => 0,
-            'visible' => 0
+            'visible' => 0,
         ]);
         $categoryid = $nolejcategory->id;
         set_config('categoryid', $categoryid, 'local_nolej');
@@ -937,7 +934,7 @@ class api
         $modulecategory = \core_course_category::create((object) [
             'name' => sprintf('%s (%s)', $document->title, userdate($now, get_string('strftimedatetimeshortaccurate', 'core_langconfig'))),
             'description' => userdate($now, get_string('strftimedatetimeshortaccurate', 'core_langconfig')),
-            'parent' => $nolejcategoryid
+            'parent' => $nolejcategoryid,
         ]);
         $modulecontext = \context_coursecat::instance($modulecategory->id);
 
@@ -965,7 +962,7 @@ class api
                     'author' => $document->user_id,
                     'type' => $activity->activity_name,
                     'contextid' => $modulecontext->id,
-                    'filepath' => '/'
+                    'filepath' => '/',
                 ];
                 $contenttype = new \contenttype_h5p\contenttype($modulecontext);
                 $h5pcontent = $contenttype->create_content($record);
@@ -990,7 +987,7 @@ class api
                         'document_id' => $document->document_id,
                         'tstamp' => $now,
                         'type' => $activity->activity_name,
-                        'content_id' => $h5pcontent->get_id()
+                        'content_id' => $h5pcontent->get_id(),
                     ],
                     false
                 );
@@ -1040,7 +1037,7 @@ class api
                 'code' => $code,
                 'error_message' => $errormessage,
                 'consumed_credit' => $credits,
-                'notified' => false
+                'notified' => false,
             ],
             false
         );

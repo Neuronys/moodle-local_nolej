@@ -50,7 +50,7 @@ $PAGE->set_url(
         '/local/nolej/edit.php',
         [
             'documentid' => $documentid,
-            'step' => $step
+            'step' => $step,
         ]
     )
 );
@@ -76,7 +76,7 @@ if (
         'nolej_module',
         [
             'document_id' => $documentid,
-            'user_id' => $USER->id
+            'user_id' => $USER->id,
         ]
     );
 
