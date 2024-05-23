@@ -166,7 +166,7 @@ class module
 
                     // An error occurred
                     \core\notification::add(
-                        get_string('errdocument', 'local_nolej', print_r($result, true)),
+                        get_string('errdocument', 'local_nolej', var_export($result, true)),
                         core\output\notification::NOTIFY_ERROR
                     );
 
@@ -302,7 +302,7 @@ class module
                 ) {
                     redirect(
                         new \moodle_url('/local/nolej/manage.php'),
-                        get_string('genericerror', 'local_nolej', (object) ['error' => print_r($result, true)]),
+                        get_string('genericerror', 'local_nolej', (object) ['error' => var_export($result, true)]),
                         null,
                         \core\output\notification::NOTIFY_ERROR
                     );
@@ -405,7 +405,7 @@ class module
             if (!$json) {
                 redirect(
                     new \moodle_url('/local/nolej/manage.php'),
-                    get_string('genericerror', 'local_nolej', ['error' => print_r($result, true)]),
+                    get_string('genericerror', 'local_nolej', ['error' => var_export($result, true)]),
                     null,
                     \core\output\notification::NOTIFY_ERROR
                 );
@@ -525,7 +525,7 @@ class module
             if (!$json) {
                 redirect(
                     new \moodle_url('/local/nolej/manage.php'),
-                    get_string('genericerror', 'local_nolej', ['error' => print_r($result, true)]),
+                    get_string('genericerror', 'local_nolej', ['error' => var_export($result, true)]),
                     null,
                     \core\output\notification::NOTIFY_ERROR
                 );
@@ -747,7 +747,7 @@ class module
             if (!$json) {
                 redirect(
                     new \moodle_url('/local/nolej/manage.php'),
-                    get_string('genericerror', 'local_nolej', ['error' => print_r($result, true)]),
+                    get_string('genericerror', 'local_nolej', ['error' => var_export($result, true)]),
                     null,
                     \core\output\notification::NOTIFY_ERROR
                 );

@@ -65,7 +65,7 @@ class activities extends \moodleform
         if (!$json) {
             redirect(
                 new \moodle_url('/local/nolej/manage.php'),
-                get_string('genericerror', 'local_nolej', ['error' => print_r($result, true)]),
+                get_string('genericerror', 'local_nolej', ['error' => var_export($result, true)]),
                 null,
                 \core\output\notification::NOTIFY_ERROR
             );

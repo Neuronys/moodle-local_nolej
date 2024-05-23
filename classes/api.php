@@ -932,7 +932,11 @@ class api
 
         // Create category
         $modulecategory = \core_course_category::create((object) [
-            'name' => sprintf('%s (%s)', $document->title, userdate($now, get_string('strftimedatetimeshortaccurate', 'core_langconfig'))),
+            'name' => sprintf(
+                '%s (%s)',
+                $document->title,
+                userdate($now, get_string('strftimedatetimeshortaccurate', 'core_langconfig'))
+            ),
             'description' => userdate($now, get_string('strftimedatetimeshortaccurate', 'core_langconfig')),
             'parent' => $nolejcategoryid,
         ]);
@@ -993,7 +997,7 @@ class api
                 );
 
             } catch (\Exception $e) {
-                $errors[] = sprintf('%s (%s)', $activity->activity_name, 'Exception: ' . print_r($e));
+                $errors[] = sprintf('%s (%s)', $activity->activity_name, 'Exception: ' . var_export($e, true));
             }
         }
 
