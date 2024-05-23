@@ -120,7 +120,7 @@ class concepts extends \moodleform
                     get_string('conceptuseforgaming', 'local_nolej')
                 )->setValue($concepts[$i]->use_for_gaming);
 
-                $games = array();
+                $games = [];
 
                 // var_dump($concepts[$i]->use_for_cw);die();
                 // var_export($concepts[$i]->use_for_cw);die();
@@ -159,7 +159,7 @@ class concepts extends \moodleform
                     $games,
                     'concept_' . $concepts[$i]->id . '_games',
                     get_string('conceptuseingames', 'local_nolej'),
-                    array(' '),
+                    [' '],
                     true
                 );
 

@@ -134,7 +134,7 @@ class activities extends \moodleform
                         'FTW_number_word_current',
                         get_string('activitiesftwwords', 'local_nolej'),
                         null,
-                        array('min' => 3, 'max' => $settings->FTW_number_word_max)
+                        ['min' => 3, 'max' => $settings->FTW_number_word_max]
                     );
                     $mform->setType('FTW_number_word_current', PARAM_INT);
                     $mform->setDefault('FTW_number_word_current', $settings->FTW_number_word_current);
@@ -155,7 +155,7 @@ class activities extends \moodleform
                         'DTW_number_word_current',
                         get_string('activitiesdtwwords', 'local_nolej'),
                         null,
-                        array('min' => 3, 'max' => $settings->DTW_number_word_max)
+                        ['min' => 3, 'max' => $settings->DTW_number_word_max]
                     );
                     $mform->setType('DTW_number_word_current', PARAM_INT);
                     $mform->setDefault('DTW_number_word_current', $settings->DTW_number_word_current);
@@ -168,7 +168,7 @@ class activities extends \moodleform
                         'CW_number_word_current',
                         get_string('activitiescwwords', 'local_nolej'),
                         null,
-                        array('min' => 3, 'max' => $settings->CW_number_word_max)
+                        ['min' => 3, 'max' => $settings->CW_number_word_max]
                     );
                     $mform->setType('CW_number_word_current', PARAM_INT);
                     $mform->setDefault('CW_number_word_current', $settings->CW_number_word_current);
@@ -189,7 +189,7 @@ class activities extends \moodleform
                         'Practice_number_flashcard_current',
                         get_string('activitiespracticeflashcards', 'local_nolej'),
                         null,
-                        array('min' => 0, 'max' => $settings->Practice_number_flashcard_max)
+                        ['min' => 0, 'max' => $settings->Practice_number_flashcard_max]
                     );
                     $mform->setType('Practice_number_flashcard_current', PARAM_INT);
                     $mform->setDefault('Practice_number_flashcard_current', $settings->Practice_number_flashcard_current);
@@ -210,7 +210,7 @@ class activities extends \moodleform
                         'PracticeQ_number_flashcard_current',
                         get_string('activitiespracticeqflashcards', 'local_nolej'),
                         null,
-                        array('min' => 0, 'max' => $settings->PracticeQ_number_flashcard_max)
+                        ['min' => 0, 'max' => $settings->PracticeQ_number_flashcard_max]
                     );
                     $mform->setType('PracticeQ_number_flashcard_current', PARAM_INT);
                     $mform->setDefault('PracticeQ_number_flashcard_current', $settings->PracticeQ_number_flashcard_current);
@@ -231,7 +231,7 @@ class activities extends \moodleform
                         'Grade_number_question_current',
                         get_string('activitiesgradequestions', 'local_nolej'),
                         null,
-                        array('min' => 0, 'max' => $settings->Grade_number_question_max)
+                        ['min' => 0, 'max' => $settings->Grade_number_question_max]
                     );
                     $mform->setType('Grade_number_question_current', PARAM_INT);
                     $mform->setDefault('Grade_number_question_current', $settings->Grade_number_question_current);
@@ -252,7 +252,7 @@ class activities extends \moodleform
                         'GradeQ_number_question_current',
                         get_string('activitiesgradeqquestions', 'local_nolej'),
                         null,
-                        array('min' => 0, 'max' => $settings->GradeQ_number_question_max)
+                        ['min' => 0, 'max' => $settings->GradeQ_number_question_max]
                     );
                     $mform->setType('GradeQ_number_question_current', PARAM_INT);
                     $mform->setDefault('GradeQ_number_question_current', $settings->GradeQ_number_question_current);
@@ -265,7 +265,7 @@ class activities extends \moodleform
                         'Flashcards_number_flashcard_current',
                         get_string('activitiesflashcardsflashcards', 'local_nolej'),
                         null,
-                        array('min' => 0, 'max' => $settings->Flashcards_number_flashcard_max)
+                        ['min' => 0, 'max' => $settings->Flashcards_number_flashcard_max]
                     );
                     $mform->setType('Flashcards_number_flashcard_current', PARAM_INT);
                     $mform->setDefault('Flashcards_number_flashcard_current', $settings->Flashcards_number_flashcard_current);
@@ -278,7 +278,7 @@ class activities extends \moodleform
                         'IV_number_question_perset_current',
                         get_string('activitiesivideoquestions', 'local_nolej'),
                         null,
-                        array('min' => 0, 'max' => $settings->IV_number_question_perset_max)
+                        ['min' => 0, 'max' => $settings->IV_number_question_perset_max]
                     );
                     $mform->setType('IV_number_question_perset_current', PARAM_INT);
                     $mform->setDefault('IV_number_question_perset_current', $settings->IV_number_question_perset_current);

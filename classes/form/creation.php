@@ -53,7 +53,7 @@ class creation extends \moodleform
             ],
             'sourcetypegroup',
             get_string('sourcetype', 'local_nolej'),
-            array(' '),
+            [' '],
             false
         );
         $mform->setDefault('sourcetype', 'file');
@@ -110,14 +110,14 @@ class creation extends \moodleform
             'sourcetext',
             get_string('sourcefreetext', 'local_nolej'),
             null,
-            array(
+            [
                 'maxfiles' => 0,
                 'maxbytes' => 0,
                 'trusttext' => false,
                 'context' => null,
                 'collapsed' => true,
                 'canUseHtmlEditor' => false
-            )
+            ]
         );
         $mform->setType('sourcetext', PARAM_CLEANHTML);
         $mform->hideIf('sourcetext', 'sourcetype', 'neq', 'text');

@@ -96,7 +96,7 @@ class transcription extends \moodleform
             'transcription',
             get_string('transcription', 'local_nolej'),
             null,
-            array(
+            [
                 'subdirs' => 0,
                 'maxbytes' => 0,
                 'maxfiles' => 0,
@@ -105,7 +105,7 @@ class transcription extends \moodleform
                 'noclean' => 0,
                 'trusttext' => 0,
                 'enable_filemanagement' => false,
-            )
+            ]
         )->setValue(['text' => $transcription]);
         $mform->setType('transcription', PARAM_CLEANHTML);
 
@@ -115,10 +115,10 @@ class transcription extends \moodleform
         $mform->addRule('transcription', get_string('error'), 'minlength', 500, 'server', false, false);
 
         // Add custom submit buttons
-        $buttonarray = array();
+        $buttonarray = [];
         $buttonarray[] = &$mform->createElement('submit', 'confirmanalysis', get_string('analyze', 'local_nolej'));
         $buttonarray[] = &$mform->createElement('cancel');
-        $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
+        $mform->addGroup($buttonarray, 'buttonar', '', [' '], false);
         $mform->closeHeaderBefore('buttonar');
     }
 

@@ -88,19 +88,19 @@ class api
         $url = self::API_URL . $path;
         $encodeddata = empty($data) ? null : ($encodeinput ? json_encode($data) : $data);
 
-        $options = array(
+        $options = [
             'CURLOPT_CUSTOMREQUEST' => 'GET', // Need a GET request with POST data
             'RETURNTRANSFER' => 1,
             'HEADER' => 0,
             'FAILONERROR' => 0
-        );
+        ];
 
-        $header = array(
+        $header = [
             'Content-Type: application/json',
             'Accept: application/json',
             'Authorization: X-API-KEY ' . $apikey,
             'User-Agent: Moodle Plugin'
-        );
+        ];
 
         $curl = new \curl();
         $curl->setHeader($header);
@@ -125,7 +125,7 @@ class api
      */
     public static function post(
         $path,
-        $data = array(),
+        $data = [],
         $decode = true
     ) {
         $apikey = get_config('local_nolej', 'api_key');
@@ -136,18 +136,18 @@ class api
         $jsondata = json_encode($data);
         $url = self::API_URL . $path;
 
-        $options = array(
+        $options = [
             'RETURNTRANSFER' => 1,
             'HEADER' => 0,
             'FAILONERROR' => 0
-        );
+        ];
 
-        $header = array(
+        $header = [
             'Content-Type: application/json',
             'Accept: application/json',
             'Authorization: X-API-KEY ' . $apikey,
             'User-Agent: Moodle Plugin'
-        );
+        ];
 
         $curl = new \curl();
         $curl->setHeader($header);
@@ -170,7 +170,7 @@ class api
      */
     public static function put(
         $path,
-        $data = array(),
+        $data = [],
         $encode = false,
         $decode = true
     ) {
@@ -182,18 +182,18 @@ class api
         $jsondata = $encode ? json_encode($data) : $data;
         $url = self::API_URL . $path;
 
-        $options = array(
+        $options = [
             'RETURNTRANSFER' => 1,
             'HEADER' => 0,
             'FAILONERROR' => 0
-        );
+        ];
 
-        $header = array(
+        $header = [
             'Content-Type: application/json',
             'Accept: application/json',
             'Authorization: X-API-KEY ' . $apikey,
             'User-Agent: Moodle Plugin'
-        );
+        ];
 
         $curl = new \curl();
         $curl->setHeader($header);
@@ -1067,7 +1067,10 @@ class api
     protected function setLanguageOfUser(int $userid)
     {
         global $DB, $CFG, $USER;
-        $user = $DB->get_record('user', array('id' => $userid));
+        $user = $DB->get_record(
+            'user',
+            ['id' => $userid]
+        );
         $preferred_language = $user->lang;
 
         if (isloggedin()) {
