@@ -45,12 +45,12 @@ class creation extends \moodleform
 
         $mform = $this->_form;
 
-        // Document title
+        // Document title.
         $mform->addElement('text', 'title', get_string('title', 'local_nolej'), 'style="width:100%;"');
         $mform->setType('title', PARAM_NOTAGS);
         $mform->addElement('static', 'titledesc', '', get_string('titledesc', 'local_nolej'));
 
-        // Select source
+        // Source selection.
         $mform->addGroup(
             [
                 $mform->createElement('radio', 'sourcetype', '', get_string('sourcetypefile', 'local_nolej'), 'file', ''),
@@ -78,7 +78,7 @@ class creation extends \moodleform
             )
         );
 
-        // Source: file
+        // Source: file.
         $mform->addElement(
             'filepicker',
             'sourcefile',
@@ -91,7 +91,7 @@ class creation extends \moodleform
         );
         $mform->hideIf('sourcefile', 'sourcetype', 'neq', 'file');
 
-        // Source: web
+        // Source: web.
         $mform->addElement('text', 'sourceurl', get_string('sourceurl', 'local_nolej'), 'style="width:100%;"');
         $mform->setType('sourceurl', PARAM_URL);
         $mform->addElement('static', 'sourceurldesc', '', get_string('sourceurldesc', 'local_nolej'));
@@ -110,7 +110,7 @@ class creation extends \moodleform
         $mform->hideIf('sourceurl', 'sourcetype', 'neq', 'web');
         $mform->hideIf('sourceurltype', 'sourcetype', 'neq', 'web');
 
-        // Source: text
+        // Source: text.
         $mform->addElement(
             'editor',
             'sourcetext',
@@ -128,7 +128,7 @@ class creation extends \moodleform
         $mform->setType('sourcetext', PARAM_CLEANHTML);
         $mform->hideIf('sourcetext', 'sourcetype', 'neq', 'text');
 
-        // Language
+        // Language.
         $languages = $this->getlanguages();
         $mform->addElement(
             'select',

@@ -92,7 +92,7 @@ foreach ($modules as $module) {
         'contextid' => null,
     ];
 
-    // Check last update
+    // Check last update.
     $activities = $DB->get_records(
         'nolej_activity',
         [
@@ -109,7 +109,7 @@ foreach ($modules as $module) {
         $moduledata['lastupdate'] = userdate($lastactivity->tstamp);
     }
 
-    // Check last generated activity content bank folder
+    // Check last generated activity content bank folder.
     if ($module->status == \local_nolej\module::STATUS_COMPLETED) {
         $h5pcontents = $DB->get_records(
             'nolej_h5p',

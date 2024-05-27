@@ -45,16 +45,16 @@ class concepts extends \moodleform
 
         $mform = $this->_form;
 
-        // Document ID
+        // Document ID.
         $documentid = $this->_customdata['documentid'];
         $mform->addElement('hidden', 'documentid')->setValue($documentid);
         $mform->setType('documentid', PARAM_ALPHANUMEXT);
 
-        // Step
+        // Step.
         $mform->addElement('hidden', 'step')->setValue('concepts');
         $mform->setType('step', PARAM_ALPHA);
 
-        // Download concepts
+        // Download concepts.
         $result = \local_nolej\api::getcontent(
             $documentid,
             'concepts',
@@ -81,7 +81,7 @@ class concepts extends \moodleform
             return;
         }
 
-        // Sort concepts alphabetically
+        // Sort concepts alphabetically.
         usort($concepts, function ($a, $b) {
             return strcmp(
                 $a->concept->label,

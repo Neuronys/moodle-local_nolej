@@ -903,7 +903,7 @@ class api
             return (int) $categoryid;
         }
 
-        // Create context if not exists
+        // Create Nolej context if not exists.
         $nolejcategory = \core_course_category::create((object) [
             'name' => 'Nolej',
             'description' => 'This category contains Nolej h5p contents',
@@ -948,7 +948,7 @@ class api
         $activities = json_decode($json);
         $activities = $activities->activities;
 
-        // Create category
+        // Create category.
         $modulecategory = \core_course_category::create((object) [
             'name' => sprintf(
                 '%s (%s)',
@@ -963,7 +963,7 @@ class api
         foreach ($activities as $activity) {
             $filepath = sprintf('%s/%s.h5p', $h5pdir, $activity->activity_name);
 
-            // Download activity
+            // Download the h5p activity.
             $success = file_put_contents(
                 $filepath,
                 file_get_contents($activity->url)
@@ -1074,7 +1074,7 @@ class api
         $message->fullmessageformat = FORMAT_HTML;
         $message->fullmessagehtml = get_string($body, 'local_nolej', $vars);
         $message->smallmessage = get_string('action_' . $action, 'local_nolej');
-        $message->notification = 1; // Notification generated from Moodle, not a user-to-user message
+        $message->notification = 1; // Notification generated from Moodle, not a user-to-user message.
         $message->contexturl = substr($action, -2) == 'ok'
             ? (new \moodle_url('/local/nolej/edit.php', ['documentid' => $documentid]))->out(false)
             : (new \moodle_url('/local/nolej/manage.php'))->out(false);

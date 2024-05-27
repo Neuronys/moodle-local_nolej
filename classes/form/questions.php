@@ -45,16 +45,16 @@ class questions extends \moodleform
 
         $mform = $this->_form;
 
-        // Document ID
+        // Document ID.
         $documentid = $this->_customdata['documentid'];
         $mform->addElement('hidden', 'documentid')->setValue($documentid);
         $mform->setType('documentid', PARAM_ALPHANUMEXT);
 
-        // Step
+        // Step.
         $mform->addElement('hidden', 'step')->setValue('questions');
         $mform->setType('step', PARAM_ALPHA);
 
-        // Download questions
+        // Download questions.
         $result = \local_nolej\api::getcontent(
             $documentid,
             'questions',
@@ -81,7 +81,7 @@ class questions extends \moodleform
             return;
         }
 
-        // Sort questions by type
+        // Sort questions by type.
         $formquestions = [];
         for ($i = 0, $questionscount = count($questions); $i < $questionscount; $i++) {
             $questiontype = $questions[$i]->question_type;
@@ -105,7 +105,7 @@ class questions extends \moodleform
 
             for ($i = 0, $questionscount = count($questions); $i < $questionscount; $i++) {
 
-                // Open question card
+                // Open question card.
                 $mform->addElement(
                     'html',
                     sprintf(
@@ -175,7 +175,7 @@ class questions extends \moodleform
                     )->setValue(empty($questions[$i]->selected_distractor) ? '' : 'usefalse');
                 }
 
-                // Close question card
+                // Close question card.
                 $mform->addElement('html', '</div>');
             }
         }

@@ -34,7 +34,7 @@ require_once ($CFG->dirroot . '/local/nolej/classes/api.php');
 $documentid = optional_param('documentid', null, PARAM_ALPHANUMEXT);
 
 if ($documentid == null) {
-    // Document not set
+    // Document not set.
     redirect(new \moodle_url('/local/nolej/edit.php'));
 }
 
@@ -47,7 +47,7 @@ $document = $DB->get_record(
 );
 
 if (!$document) {
-    // Document does not exist
+    // Document does not exist.
     redirect(
         new \moodle_url('/local/nolej/manage.php'),
         get_string('modulenotfound', 'local_nolej'),

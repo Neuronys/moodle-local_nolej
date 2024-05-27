@@ -25,17 +25,17 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-// Plugin
+// Plugin.
 $string['pluginname'] = 'Nolej';
 $string['nolej:usenolej'] = 'Activiteiten maken met Nolej';
 
-// Settings
+// Settings.
 $string['apikey'] = 'API-sleutel';
 $string['apikeyinfo'] = 'Uw Nolej API-sleutel.';
 $string['apikeyhowto'] = 'Om een API-sleutel te verkrijgen, moet u eerst een account aanmaken op live.nolej.io en vervolgens contact opnemen met Nolej via moodle@nolej.io, waarbij u een API-sleutel aanvraagt voor uw geregistreerde e-mailadres.';
 $string['apikeymissing'] = 'Nolej API-sleutel ontbreekt. U moet deze instellen in de plug-inconfiguratie.';
 
-// Manage
+// Manage.
 $string['library'] = 'Nolej-bibliotheek';
 $string['modules'] = 'Uw Nolej-modules';
 $string['status'] = 'Status';
@@ -51,7 +51,7 @@ $string['documentinfo'] = 'Module-informatie';
 $string['genericerror'] = 'Er is een fout opgetreden: <pre>{$a->error}</pre>';
 $string['moduleview'] = 'Bekijk module';
 
-// Status
+// Status.
 $string['statuscreation'] = 'Nieuwe module';
 $string['statuscreationpending'] = 'Transcriptie bezig';
 $string['statusanalysis'] = 'Transcriptie voltooid';
@@ -63,7 +63,7 @@ $string['statusactivitiespending'] = 'Activiteiten genereren bezig';
 $string['statuscompleted'] = 'Activiteiten gegenereerd';
 $string['statusfailed'] = 'Mislukt';
 
-// Notifications
+// Notifications.
 $string['eventwebhookcalled'] = 'Nolej webhook is opgeroepen.';
 $string['messageprovider:transcription_ok'] = 'Transcriptie voltooid';
 $string['messageprovider:transcription_ko'] = 'Transcriptie mislukt';
@@ -84,7 +84,7 @@ $string['action_activities_ok_body'] = 'Activiteiten van document "{$a->title}" 
 $string['action_activities_ko'] = 'Genereren van activiteiten mislukt';
 $string['action_activities_ko_body'] = 'Helaas is het genereren van activiteiten voor document "{$a->title}" mislukt op {$a->tstamp}. Foutmelding: {$a->errormessage}';
 
-// Creation
+// Creation.
 $string['title'] = 'Titel';
 $string['titledesc'] = 'Kies een titel of laat het leeg en Nolej zal een titel voor u kiezen.';
 $string['source'] = 'Bron';
@@ -110,7 +110,7 @@ $string['modulenotfound'] = 'Module niet gevonden';
 $string['errdatamissing'] = 'Sommige gegevens ontbreken';
 $string['errdocument'] = 'Er is een fout opgetreden bij het maken van de Nolej-module:<br><pre>{$a}</pre><br>Probeer het opnieuw of neem contact op met een beheerder als deze fout aanhoudt.';
 
-// Content limits
+// Content limits.
 $string['limitcontent'] = 'Inhoudsbeperkingen';
 $string['limitaudio'] = 'Audio beperkingen';
 $string['limitvideo'] = 'Videobeperkingen';
@@ -122,7 +122,7 @@ $string['limitmincharacters'] = 'Minimale tekens';
 $string['limitmaxcharacters'] = 'Maximale tekens';
 $string['limittype'] = 'Toegestane typen';
 
-// Analysis
+// Analysis.
 $string['analyze'] = 'Start analyse';
 $string['analysisconfirm'] = 'Waarschuwing: heeft u de transcriptie grondig bekeken voordat u verder gaat? Zodra de analyse begint, kunnen er geen wijzigingen meer worden aangebracht. Zorg ervoor dat alles nauwkeurig is voordat u doorgaat.';
 $string['transcription'] = 'Transcriptie';
@@ -130,7 +130,7 @@ $string['missingtranscription'] = 'Transcriptie ontbreekt';
 $string['analysisstart'] = 'Analyse gestart';
 $string['cannotwritetranscription'] = 'Kan transcriptie niet op schijf opslaan, neem contact op met een beheerder als deze fout aanhoudt.';
 
-// Summary
+// Summary.
 $string['savesummary'] = 'Samenvatting opslaan';
 $string['summary'] = 'Samenvatting';
 $string['abstract'] = 'Abstract';
@@ -139,7 +139,7 @@ $string['cannotwritesummary'] = 'Kan samenvatting niet op schijf opslaan, neem c
 $string['summarynotsaved'] = 'Kon de samenvatting niet bijwerken. Neem contact op met een beheerder als deze fout aanhoudt.';
 $string['summarysaved'] = 'Samenvatting is opgeslagen.';
 
-// Questions
+// Questions.
 $string['questions'] = 'Vragen';
 $string['savequestions'] = 'Vragen opslaan';
 $string['questionssaved'] = 'Vragen opgeslagen.';
@@ -161,7 +161,7 @@ $string['questionanswerfalse'] = 'Onjuiste bewering';
 $string['questiondistractor'] = 'Distractor';
 $string['questionusedistractor'] = 'Bewering om weer te geven';
 
-// Concepts
+// Concepts.
 $string['concepts'] = 'Concepten';
 $string['saveconcepts'] = 'Concepten opslaan';
 $string['cannotwriteconcepts'] = 'Kan concepten niet op schijf opslaan, neem contact op met een beheerder als deze fout aanhoudt.';
@@ -177,7 +177,7 @@ $string['conceptusefordtw'] = 'Sleep het woord';
 $string['conceptuseingames'] = 'Beschikbare games';
 $string['conceptuseforpractice'] = 'Gebruik voor oefenen';
 
-// Activities
+// Activities.
 $string['settings'] = 'Genereren';
 $string['activities'] = 'Voorbeeld';
 $string['generate'] = 'Activiteiten genereren';

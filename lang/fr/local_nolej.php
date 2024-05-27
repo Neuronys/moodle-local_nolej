@@ -25,17 +25,17 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-// Plugin
+// Plugin.
 $string['pluginname'] = 'Nolej';
 $string['nolej:usenolej'] = 'Créez vos activités avec Nolej';
 
-// Settings
+// Settings.
 $string['apikey'] = 'Clé API';
 $string['apikeyinfo'] = 'Votre clé API Nolej.';
 $string['apikeyhowto'] = 'Pour obtenir une clé API, vous devez d\'abord créer un compte sur live.nolej.io, puis contacter Nolej à moodle@nolej.io, en demandant une clé API pour votre adresse e-mail enregistrée.';
 $string['apikeymissing'] = 'La clé API Nolej est manquante. Rendez-vous dans les paramètres du plugin pour renseigner votre clé.';
 
-// Manage
+// Manage.
 $string['library'] = 'Bibliothèque Nolej';
 $string['modules'] = 'Vos modules Nolej';
 $string['status'] = 'État';
@@ -51,7 +51,7 @@ $string['documentinfo'] = 'Informations du Module';
 $string['genericerror'] = 'Une erreur est survenue: <pre>{$a->error}</pre>';
 $string['moduleview'] = 'Voir le module';
 
-// Status
+// Status.
 $string['statuscreation'] = 'Nouveau module';
 $string['statuscreationpending'] = 'Transcription en cours';
 $string['statusanalysis'] = 'Transcription terminée';
@@ -63,7 +63,7 @@ $string['statusactivitiespending'] = 'Génération de l\'activité en cours';
 $string['statuscompleted'] = 'Activité générée';
 $string['statusfailed'] = 'Échec';
 
-// Notifications
+// Notifications.
 $string['eventwebhookcalled'] = 'Le webhook Nolej a été appelé.';
 $string['messageprovider:transcription_ok'] = 'Transcription terminée';
 $string['messageprovider:transcription_ko'] = 'Transcription échouée';
@@ -84,7 +84,7 @@ $string['action_activities_ok_body'] = 'Les activitées du document "{$a->title}
 $string['action_activities_ko'] = 'La génération d\'activités a échoué';
 $string['action_activities_ko_body'] = 'Malheureusement, la génération des activités du document "{$a->title}" a échoué le {$a->tstamp}. Message d\'erreur: {$a->errormessage}';
 
-// Creation
+// Creation.
 $string['title'] = 'Titre';
 $string['titledesc'] = 'Choisissez un titre ou laissez le champ vide pour que Nolej s\'en charge.';
 $string['source'] = 'Source';
@@ -110,7 +110,7 @@ $string['modulenotfound'] = 'Aucun module trouvé';
 $string['errdatamissing'] = 'Certaines données manquent';
 $string['errdocument'] = 'Une erreur est arrivée au cours de la création du module Nolej:<br><pre>{$a}</pre><br>Veuillez réessayer ou contacter un administrateur si l\'erreur persiste.';
 
-// Content limits
+// Content limits.
 $string['limitcontent'] = 'Limitations de contenu';
 $string['limitaudio'] = 'Limites Audio';
 $string['limitvideo'] = 'Limites Video';
@@ -122,7 +122,7 @@ $string['limitmincharacters'] = 'Nombre minimal de caractères';
 $string['limitmaxcharacters'] = 'Nombre maximal de caractères';
 $string['limittype'] = 'Types permis';
 
-// Analysis
+// Analysis.
 $string['analyze'] = 'Commencer l\'analyse';
 $string['analysisconfirm'] = 'Attention: Avant de continuer, avez-vous bien vérifié la transcription? Once the analysis begins, modifications cannot be made. Please ensure accuracy before continuing.';
 $string['transcription'] = 'Transcription';
@@ -130,7 +130,7 @@ $string['missingtranscription'] = 'Transcription manquante';
 $string['analysisstart'] = 'Analyse commencée';
 $string['cannotwritetranscription'] = 'Impossible de sauvegarder la transcription sur le disque, veuillez contacter un Administrateur si l\'erreur persiste.';
 
-// Summary
+// Summary.
 $string['savesummary'] = 'Enregistrer le résumé';
 $string['summary'] = 'Résumé';
 $string['abstract'] = 'Abstrait';
@@ -139,7 +139,7 @@ $string['cannotwritesummary'] = 'Impossible de sauvegarder le résumé sur le di
 $string['summarynotsaved'] = 'Échec de la mise à jour du résumé, veuillez contacter un Administrateur si l\'erreur persiste';
 $string['summarysaved'] = 'Résumé enregistré.';
 
-// Questions
+// Questions.
 $string['questions'] = 'Questions';
 $string['savequestions'] = 'Enregistrer les questions';
 $string['questionssaved'] = 'Questions enregistrées.';
@@ -161,7 +161,7 @@ $string['questionanswerfalse'] = 'Affirmation erronée';
 $string['questiondistractor'] = 'Fausse piste';
 $string['questionusedistractor'] = 'Affirmation à afficher';
 
-// Concepts
+// Concepts.
 $string['concepts'] = 'Concepts';
 $string['saveconcepts'] = 'Enregistrer les concepts';
 $string['cannotwriteconcepts'] = 'Impossible de sauvegarder les concepts sur le disque, veuillez contacter un Administrateur si l\'erreur persiste.';
@@ -177,7 +177,7 @@ $string['conceptusefordtw'] = 'Glisser-déposer';
 $string['conceptuseingames'] = 'Jeux disponibles';
 $string['conceptuseforpractice'] = 'Utiliser comme entraînement';
 
-// Activities
+// Activities.
 $string['settings'] = 'Générer';
 $string['activities'] = 'Aperçu';
 $string['generate'] = 'Générer les activités';

@@ -45,16 +45,16 @@ class summary extends \moodleform
 
         $mform = $this->_form;
 
-        // Document ID
+        // Document ID.
         $documentid = $this->_customdata['documentid'];
         $mform->addElement('hidden', 'documentid')->setValue($documentid);
         $mform->setType('documentid', PARAM_ALPHANUMEXT);
 
-        // Step
+        // Step.
         $mform->addElement('hidden', 'step')->setValue('summary');
         $mform->setType('step', PARAM_ALPHA);
 
-        // Download summary
+        // Download summary.
         $result = \local_nolej\api::getcontent(
             $documentid,
             'summary',
@@ -77,7 +77,7 @@ class summary extends \moodleform
             return;
         }
 
-        // Summary
+        // Summary.
         $mform->addElement('header', 'summaryheader', get_string('summary', 'local_nolej'));
 
         $summarycount = count($summary->summary);
@@ -94,7 +94,7 @@ class summary extends \moodleform
             $mform->setDefault('summary_' . $i . '_text', $summary->summary[$i]->text);
         }
 
-        // Abstract
+        // Abstract.
         if ($summarycount > 1) {
             $mform->addElement('header', 'abstractheader', get_string('abstract', 'local_nolej'));
             $mform->addElement('textarea', "abstract", '', 'wrap="virtual" rows="15"');
@@ -102,7 +102,7 @@ class summary extends \moodleform
             $mform->setDefault("abstract", $summary->abstract);
         }
 
-        // Keypoints
+        // Keypoints.
         $mform->addElement('header', 'keypointsheader', get_string('keypoints', 'local_nolej'));
 
         $keypointscount = count($summary->keypoints);

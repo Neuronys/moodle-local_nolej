@@ -29,7 +29,7 @@ require_once ($CFG->dirroot . '/local/nolej/classes/api.php');
 
 use local_nolej\api;
 
-// Deliver file if exists (public for 2 hours, after that the user need to be logged in)
+// Deliver file if exists (public for 2 hours, after that the user need to be logged in).
 $timelimit = 2 * 3600;
 $filename = optional_param('fileid', null, PARAM_FILE);
 $documentid = optional_param('documentid', null, PARAM_ALPHANUMEXT);
@@ -53,7 +53,7 @@ if ($filename != null) {
     exit('Forbidden ' . $dest);
 }
 
-// Parse POST data
+// Parse POST data.
 $nolej = new api();
 $nolej->parse();
 exit();

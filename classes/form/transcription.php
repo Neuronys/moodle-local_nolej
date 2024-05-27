@@ -45,16 +45,16 @@ class transcription extends \moodleform
 
         $mform = $this->_form;
 
-        // Document ID
+        // Document ID.
         $documentid = $this->_customdata['documentid'];
         $mform->addElement('hidden', 'documentid')->setValue($documentid);
         $mform->setType('documentid', PARAM_ALPHANUMEXT);
 
-        // Step
+        // Step.
         $mform->addElement('hidden', 'step')->setValue('analysis');
         $mform->setType('step', PARAM_ALPHA);
 
-        // Download transcription
+        // Download transcription.
         $result = \local_nolej\api::get(
             sprintf('/documents/%s/transcription', $documentid)
         );
@@ -74,12 +74,12 @@ class transcription extends \moodleform
             );
         }
 
-        // Document title
+        // Document title.
         $mform->addElement('text', 'title', get_string('title', 'local_nolej'), 'style="width:100%;"');
         $mform->setType('title', PARAM_NOTAGS);
         $mform->setDefault('title', $result->title);
 
-        // Download transcription
+        // Download transcription.
         $transcription = file_get_contents($result->result);
         $success = \local_nolej\api::writecontent(
             $documentid,
@@ -96,7 +96,7 @@ class transcription extends \moodleform
             );
         }
 
-        // Transcription
+        // Transcription.
         $mform->addElement(
             'editor',
             'transcription',
@@ -120,7 +120,7 @@ class transcription extends \moodleform
         $mform->addRule('transcription', get_string('error'), 'maxlength', 50000, 'server', false, false);
         $mform->addRule('transcription', get_string('error'), 'minlength', 500, 'server', false, false);
 
-        // Add custom submit buttons
+        // Use custom submit buttons.
         $buttonarray = [];
         $buttonarray[] = &$mform->createElement('submit', 'confirmanalysis', get_string('analyze', 'local_nolej'));
         $buttonarray[] = &$mform->createElement('cancel');

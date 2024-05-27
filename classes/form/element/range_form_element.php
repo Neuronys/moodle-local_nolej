@@ -64,7 +64,7 @@ class range_form_element extends HTML_QuickForm_text
     {
         parent::__construct($elementname, $elementlabel, $attributes);
 
-        // Hide default label
+        // Hide default label.
         $this->elementlabel = $elementlabel;
         $this->_label = '';
 

@@ -150,11 +150,11 @@ class module
     {
         global $OUTPUT, $PAGE, $DB, $USER, $SITE, $context;
 
-        // Display and handle creation form
+        // Display and handle creation form.
         $mform = new \local_nolej\form\creation();
 
         if ($mform->is_cancelled()) {
-            // Cancelled
+            // Cancelled.
             redirect(
                 new \moodle_url('/local/nolej/manage.php'),
                 get_string('modulenotcreated', 'local_nolej'),
@@ -162,7 +162,7 @@ class module
                 \core\output\notification::NOTIFY_INFO
             );
         } else if ($fromform = $mform->get_data()) {
-            // Submitted and validated
+            // Submitted and validated.
             $success = true;
 
             $title = $fromform->title;
@@ -222,7 +222,7 @@ class module
             }
 
             if (!empty($url) && !empty($format)) {
-                // Call Nolej creation API
+                // Call Nolej creation API.
                 $webhook = new \moodle_url('/local/nolej/webhook.php');
 
                 $result = \local_nolej\api::post(
@@ -243,7 +243,7 @@ class module
 
                 if (!is_object($result) || !property_exists($result, 'id') || !is_string($result->id)) {
 
-                    // An error occurred
+                    // An error occurred.
                     \core\notification::add(
                         get_string('errdocument', 'local_nolej', var_export($result, true)),
                         core\output\notification::NOTIFY_ERROR
@@ -255,7 +255,7 @@ class module
                         !empty($dest) &&
                         is_file($dest)
                     ) {
-                        // Remove the uploaded file
+                        // Remove the uploaded file.
                         unlink($dest);
                     }
                 } else {
@@ -321,7 +321,7 @@ class module
     {
         global $OUTPUT, $DB, $USER, $PAGE;
 
-        // Display and handle creation form
+        // Display and handle analysis form.
         $mform = new \local_nolej\form\transcription(
             (
                 new \moodle_url(
@@ -336,10 +336,10 @@ class module
         );
 
         if ($mform->is_cancelled()) {
-            // Cancelled
+            // Cancelled.
             redirect(new \moodle_url('/local/nolej/manage.php'));
         } else if ($fromform = $mform->get_data()) {
-            // Submitted and validated
+            // Submitted and validated.
 
             $title = $fromform->title;
             $transcription = $fromform->transcription;
@@ -351,7 +351,7 @@ class module
                     $transcription
                 );
 
-                // Call Nolej analysis API
+                // Call Nolej analysis API.
                 $webhook = (
                     new \moodle_url(
                         '/local/nolej/webhook.php',
@@ -438,7 +438,7 @@ class module
                 );
             }
         } else {
-            // Data not valid
+            // Data not valid.
             $PAGE->requires->js_call_amd('local_nolej/confirmanalysis');
         }
 
@@ -455,7 +455,7 @@ class module
     {
         global $OUTPUT, $DB, $USER;
 
-        // Display and handle creation form
+        // Display and handle concepts form.
         $mform = new \local_nolej\form\concepts(
             (
                 new \moodle_url(
@@ -470,12 +470,14 @@ class module
         );
 
         if ($mform->is_cancelled()) {
-            // Cancelled
-            redirect(new \moodle_url('/local/nolej/manage.php'));
-        } else if ($fromform = $mform->get_data()) {
-            // Submitted and validated
 
-            // Download concepts
+            // Cancelled.
+            redirect(new \moodle_url('/local/nolej/manage.php'));
+
+        } else if ($fromform = $mform->get_data()) {
+            // Submitted and validated.
+
+            // Download concepts.
             $result = \local_nolej\api::getcontent(
                 $this->documentid,
                 'concepts',
@@ -577,7 +579,7 @@ class module
     {
         global $OUTPUT, $DB, $USER;
 
-        // Display and handle creation form
+        // Display and handle questions form.
         $mform = new \local_nolej\form\questions(
             (
                 new \moodle_url(
@@ -592,12 +594,14 @@ class module
         );
 
         if ($mform->is_cancelled()) {
-            // Cancelled
-            redirect(new \moodle_url('/local/nolej/manage.php'));
-        } else if ($fromform = $mform->get_data()) {
-            // Submitted and validated
 
-            // Download questions
+            // Cancelled.
+            redirect(new \moodle_url('/local/nolej/manage.php'));
+
+        } else if ($fromform = $mform->get_data()) {
+            // Submitted and validated.
+
+            // Download questions.
             $result = \local_nolej\api::getcontent(
                 $this->documentid,
                 'questions',
@@ -700,7 +704,7 @@ class module
     {
         global $OUTPUT, $DB, $USER;
 
-        // Display and handle creation form
+        // Display and handle summary form.
         $mform = new \local_nolej\form\summary(
             (
                 new \moodle_url(
@@ -715,10 +719,12 @@ class module
         );
 
         if ($mform->is_cancelled()) {
-            // Cancelled
+
+            // Cancelled.
             redirect(new \moodle_url('/local/nolej/manage.php'));
+
         } else if ($fromform = $mform->get_data()) {
-            // Submitted and validated
+            // Submitted and validated.
 
             $summary = [
                 'summary' => [],
@@ -803,7 +809,7 @@ class module
     {
         global $OUTPUT, $DB, $USER;
 
-        // Display and handle creation form
+        // Display and handle activities form.
         $mform = new \local_nolej\form\activities(
             (
                 new \moodle_url(
@@ -818,12 +824,14 @@ class module
         );
 
         if ($mform->is_cancelled()) {
-            // Cancelled
-            redirect(new \moodle_url('/local/nolej/manage.php'));
-        } else if ($fromform = $mform->get_data()) {
-            // Submitted and validated
 
-            // Download settings
+            // Cancelled.
+            redirect(new \moodle_url('/local/nolej/manage.php'));
+
+        } else if ($fromform = $mform->get_data()) {
+            // Submitted and validated.
+
+            // Download settings.
             $result = \local_nolej\api::getcontent(
                 $this->documentid,
                 'settings',
@@ -852,7 +860,7 @@ class module
             for ($i = 0, $len = count($availableactivities); $i < $len; $i++) {
                 $useactivity = (bool) $fromform->{'activity_' . $availableactivities[$i]};
                 if (!$useactivity) {
-                    // Activity not to be generated, skip related settings
+                    // Activity not to be generated, skip related settings.
                     continue;
                 }
 

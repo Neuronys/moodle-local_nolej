@@ -25,17 +25,17 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-// Plugin
+// Plugin.
 $string['pluginname'] = 'Nolej';
 $string['nolej:usenolej'] = 'Create activities with Nolej';
 
-// Settings
+// Settings.
 $string['apikey'] = 'API Key';
 $string['apikeyinfo'] = 'Your Nolej API Key.';
 $string['apikeyhowto'] = 'To obtain an API key, you have to create an account on live.nolej.io first and then contact Nolej at moodle@nolej.io, requesting an API key for your registered email address.';
 $string['apikeymissing'] = 'Nolej API key is missing. You need to set it in the plugin configuration.';
 
-// Manage
+// Manage.
 $string['library'] = 'Nolej library';
 $string['modules'] = 'Your Nolej modules';
 $string['status'] = 'Status';
@@ -51,7 +51,7 @@ $string['documentinfo'] = 'Module info';
 $string['genericerror'] = 'An error occurred: <pre>{$a->error}</pre>';
 $string['moduleview'] = 'View module';
 
-// Status
+// Status.
 $string['statuscreation'] = 'New module';
 $string['statuscreationpending'] = 'Transcription in progress';
 $string['statusanalysis'] = 'Transcription completed';
@@ -63,7 +63,7 @@ $string['statusactivitiespending'] = 'Activities generation in progress';
 $string['statuscompleted'] = 'Activities generated';
 $string['statusfailed'] = 'Failed';
 
-// Notifications
+// Notifications.
 $string['eventwebhookcalled'] = 'Nolej webhook has been called.';
 $string['messageprovider:transcription_ok'] = 'Transcription completed';
 $string['messageprovider:transcription_ko'] = 'Transcription failed';
@@ -84,7 +84,7 @@ $string['action_activities_ok_body'] = 'Activities of document "{$a->title}" hav
 $string['action_activities_ko'] = 'Activity generation failed';
 $string['action_activities_ko_body'] = 'Unfortunately, activities generation of document "{$a->title}" has failed on {$a->tstamp}. Error message: {$a->errormessage}';
 
-// Creation
+// Creation.
 $string['title'] = 'Title';
 $string['titledesc'] = 'Choose a title or leave it blank and Nolej will choose a title for you.';
 $string['source'] = 'Source';
@@ -110,7 +110,7 @@ $string['modulenotfound'] = 'Module not found';
 $string['errdatamissing'] = 'Some data missing';
 $string['errdocument'] = 'An error accurred during the creation of Nolej module:<br><pre>{$a}</pre><br>Please try again or contact an administrator if this error persists.';
 
-// Content limits
+// Content limits.
 $string['limitcontent'] = 'Content limitations';
 $string['limitaudio'] = 'Audio limits';
 $string['limitvideo'] = 'Video limits';
@@ -122,7 +122,7 @@ $string['limitmincharacters'] = 'Minimum characters';
 $string['limitmaxcharacters'] = 'Maximum characters';
 $string['limittype'] = 'Allowed types';
 
-// Analysis
+// Analysis.
 $string['analyze'] = 'Start analysis';
 $string['analysisconfirm'] = 'Warning: Before proceeding, have you thoroughly reviewed the transcription? Once the analysis begins, modifications cannot be made. Please ensure accuracy before continuing.';
 $string['transcription'] = 'Transcription';
@@ -130,7 +130,7 @@ $string['missingtranscription'] = 'Missing transcription';
 $string['analysisstart'] = 'Analysis started';
 $string['cannotwritetranscription'] = 'Cannot save transcription on disk, please contact an Administrator if this error persists.';
 
-// Summary
+// Summary.
 $string['savesummary'] = 'Save summary';
 $string['summary'] = 'Summary';
 $string['abstract'] = 'Abstract';
@@ -139,7 +139,7 @@ $string['cannotwritesummary'] = 'Cannot save summary on disk, please contact an 
 $string['summarynotsaved'] = 'Could not update the summary. Please contact an Administrator if this error persists.';
 $string['summarysaved'] = 'Summary has been saved.';
 
-// Questions
+// Questions.
 $string['questions'] = 'Questions';
 $string['savequestions'] = 'Save questions';
 $string['questionssaved'] = 'Questions saved.';
@@ -161,7 +161,7 @@ $string['questionanswerfalse'] = 'False statement';
 $string['questiondistractor'] = 'Distractor';
 $string['questionusedistractor'] = 'Statement to display';
 
-// Concepts
+// Concepts.
 $string['concepts'] = 'Concepts';
 $string['saveconcepts'] = 'Save concepts';
 $string['cannotwriteconcepts'] = 'Cannot save concepts on disk, please contact an Administrator if this error persists.';
@@ -177,7 +177,7 @@ $string['conceptusefordtw'] = 'Drag the word';
 $string['conceptuseingames'] = 'Available games';
 $string['conceptuseforpractice'] = 'Use for practice';
 
-// Activities
+// Activities.
 $string['settings'] = 'Generate';
 $string['activities'] = 'Preview';
 $string['generate'] = 'Generate activities';

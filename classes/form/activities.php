@@ -51,16 +51,16 @@ class activities extends \moodleform
             'range_form_element'
         );
 
-        // Document ID
+        // Document ID.
         $documentid = $this->_customdata['documentid'];
         $mform->addElement('hidden', 'documentid')->setValue($documentid);
         $mform->setType('documentid', PARAM_ALPHANUMEXT);
 
-        // Step
+        // Step.
         $mform->addElement('hidden', 'step')->setValue('activities');
         $mform->setType('step', PARAM_ALPHA);
 
-        // Download activities settings
+        // Download activities settings.
         $result = \local_nolej\api::getcontent(
             $documentid,
             'settings',
@@ -86,7 +86,7 @@ class activities extends \moodleform
 
         $settings = $settings->settings;
 
-        // Sort activities alphabetically
+        // Sort activities alphabetically.
         usort($availableactivities, function ($a, $b) {
             return strcmp(
                 get_string('activities' . $a, 'local_nolej'),
@@ -111,7 +111,7 @@ class activities extends \moodleform
 
             switch ($availableactivities[$i]) {
                 case 'ibook':
-                    // Nothing to add
+                    // Nothing to add.
                     break;
 
                 case 'glossary':
