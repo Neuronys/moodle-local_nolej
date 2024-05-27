@@ -180,11 +180,11 @@ class module
                     break;
 
                 case 'file':
-                    $uploaddir = \local_nolej\api::uploaddir();
+                    $uploaddir = api::uploaddir();
 
                     $filename = $mform->get_new_filename('sourcefile');
                     $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
-                    $format = \local_nolej\api::formatfromextension($extension);
+                    $format = api::formatfromextension($extension);
                     if (empty($format)) {
                         break;
                     }
@@ -203,7 +203,7 @@ class module
                     break;
 
                 case 'text':
-                    $uploaddir = \local_nolej\api::uploaddir();
+                    $uploaddir = api::uploaddir();
 
                     $filename = $USER->id . '.' . random_string(10) . '.htm';
                     $filename = $this->uniquefilename($filename, $uploaddir . '/');
@@ -225,7 +225,7 @@ class module
                 // Call Nolej creation API.
                 $webhook = new \moodle_url('/local/nolej/webhook.php');
 
-                $result = \local_nolej\api::post(
+                $result = api::post(
                     '/documents',
                     [
                         'userID' => (int) $USER->id,
@@ -345,7 +345,7 @@ class module
             $transcription = $fromform->transcription;
 
             if (!empty($transcription)) {
-                \local_nolej\api::writecontent(
+                api::writecontent(
                     $this->documentid,
                     'transcription.htm',
                     $transcription
@@ -362,7 +362,7 @@ class module
                     )
                 )->out(false);
 
-                $result = \local_nolej\api::put(
+                $result = api::put(
                     "/documents/{$this->documentid}/transcription",
                     [
                         's3URL' => $webhook,
@@ -478,13 +478,13 @@ class module
             // Submitted and validated.
 
             // Download concepts.
-            $result = \local_nolej\api::getcontent(
+            $result = api::getcontent(
                 $this->documentid,
                 'concepts',
                 'concepts.json'
             );
 
-            $json = \local_nolej\api::readcontent($this->documentid, 'concepts.json');
+            $json = api::readcontent($this->documentid, 'concepts.json');
             if (!$json) {
                 redirect(
                     new \moodle_url('/local/nolej/manage.php'),
@@ -526,7 +526,7 @@ class module
                 $concepts[$i]->use_for_practice = (bool) $fromform->{'concept_' . $id . '_use_for_practice'};
             }
 
-            $success = \local_nolej\api::writecontent(
+            $success = api::writecontent(
                 $this->documentid,
                 'concepts.json',
                 json_encode(['concepts' => $concepts])
@@ -549,7 +549,7 @@ class module
                 return;
             }
 
-            $success = \local_nolej\api::putcontent($this->documentid, 'concepts', 'concepts.json');
+            $success = api::putcontent($this->documentid, 'concepts', 'concepts.json');
             redirect(
                 (
                     new \moodle_url(
@@ -602,13 +602,13 @@ class module
             // Submitted and validated.
 
             // Download questions.
-            $result = \local_nolej\api::getcontent(
+            $result = api::getcontent(
                 $this->documentid,
                 'questions',
                 'questions.json'
             );
 
-            $json = \local_nolej\api::readcontent($this->documentid, 'questions.json');
+            $json = api::readcontent($this->documentid, 'questions.json');
             if (!$json) {
                 redirect(
                     new \moodle_url('/local/nolej/manage.php'),
@@ -651,7 +651,7 @@ class module
                 $questions[$i]->distractors = $distractors;
             }
 
-            $success = \local_nolej\api::writecontent(
+            $success = api::writecontent(
                 $this->documentid,
                 'questions.json',
                 json_encode(['questions' => $questions])
@@ -674,7 +674,7 @@ class module
                 return;
             }
 
-            $success = \local_nolej\api::putcontent($this->documentid, 'questions', 'questions.json');
+            $success = api::putcontent($this->documentid, 'questions', 'questions.json');
             redirect(
                 (
                     new \moodle_url(
@@ -756,7 +756,7 @@ class module
                 }
             }
 
-            $success = \local_nolej\api::writecontent(
+            $success = api::writecontent(
                 $this->documentid,
                 'summary.json',
                 json_encode($summary)
@@ -779,7 +779,7 @@ class module
                 return;
             }
 
-            $success = \local_nolej\api::putcontent($this->documentid, 'summary', 'summary.json');
+            $success = api::putcontent($this->documentid, 'summary', 'summary.json');
             redirect(
                 (
                     new \moodle_url(
@@ -832,13 +832,13 @@ class module
             // Submitted and validated.
 
             // Download settings.
-            $result = \local_nolej\api::getcontent(
+            $result = api::getcontent(
                 $this->documentid,
                 'settings',
                 'settings.json'
             );
 
-            $json = \local_nolej\api::readcontent($this->documentid, 'settings.json');
+            $json = api::readcontent($this->documentid, 'settings.json');
             if (!$json) {
                 redirect(
                     new \moodle_url('/local/nolej/manage.php'),
@@ -934,7 +934,7 @@ class module
                 }
             }
 
-            $success = \local_nolej\api::writecontent(
+            $success = api::writecontent(
                 $this->documentid,
                 'settings.json',
                 json_encode($settingstosave)
@@ -957,7 +957,7 @@ class module
                 return;
             }
 
-            $success = \local_nolej\api::putcontent($this->documentid, 'settings', 'settings.json');
+            $success = api::putcontent($this->documentid, 'settings', 'settings.json');
             if ($success) {
                 $DB->update_record(
                     'nolej_module',
@@ -1030,7 +1030,7 @@ class module
                 'title' => $this->document->title,
                 'source' => $this->document->doc_url,
                 'sourcetype' => get_string('source' . $this->document->media_type, 'local_nolej'),
-                'transcription' => $reviewavailable ? \local_nolej\api::readcontent($this->document->document_id, 'transcription.htm') : null,
+                'transcription' => $reviewavailable ? api::readcontent($this->document->document_id, 'transcription.htm') : null,
                 'review' => $reviewavailable,
                 'concepts' => $this->step == 'concepts',
                 'questions' => $this->step == 'questions',
