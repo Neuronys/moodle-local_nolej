@@ -185,21 +185,26 @@ class module
                     $filename = $mform->get_new_filename('sourcefile');
                     $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
                     $format = api::formatfromextension($extension);
-                    if (empty($format)) {
+                    if ($format == null) {
+                        // Unsupported file format.
                         break;
                     }
+
                     $filename = $USER->id . '.' . random_string(10) . '.' . $extension;
                     $filename = $this->uniquefilename($filename, $uploaddir . '/');
                     $dest = $uploaddir . '/' . $filename;
                     $success = $mform->save_file('sourcefile', $dest);
-                    if ($success) {
-                        chmod($dest, 0775);
-                        $webhook = new \moodle_url(
-                            '/local/nolej/webhook.php',
-                            ['fileid' => $filename]
-                        );
-                        $url = $webhook->out(false);
+                    if (!$success) {
+                        // Error uploading file.
+                        break;
                     }
+
+                    $url = (
+                        new \moodle_url(
+                            '/local/nolej/webhook.php',
+                            ['fileid' => $filename],
+                        )
+                    )->out(false);
                     break;
 
                 case 'text':
@@ -209,21 +214,25 @@ class module
                     $filename = $this->uniquefilename($filename, $uploaddir . '/');
                     $dest = $uploaddir . '/' . $filename;
                     $success = file_put_contents($dest, $fromform->sourcetext);
-                    if ($success) {
-                        chmod($dest, 0775);
-                        $webhook = new \moodle_url(
-                            '/local/nolej/webhook.php',
-                            ['fileid' => $filename]
-                        );
-                        $url = $webhook->out(false);
-                        $format = 'freetext';
+                    if (!$success) {
+                        // Error saving file.
+                        break;
                     }
+
+                    $url = (
+                        new \moodle_url(
+                            '/local/nolej/webhook.php',
+                            ['fileid' => $filename],
+                        )
+                    )->out(false);
+                    $format = 'freetext';
                     break;
             }
 
             if (!empty($url) && !empty($format)) {
                 // Call Nolej creation API.
-                $webhook = new \moodle_url('/local/nolej/webhook.php');
+                $now = time();
+                $shorturl = shorten_text($url, 200);
 
                 $result = api::post(
                     '/documents',
@@ -233,7 +242,7 @@ class module
                         'title' => $title,
                         'decrementedCredit' => $consumedcredit,
                         'docURL' => $url,
-                        'webhookURL' => $webhook->out(false),
+                        'webhookURL' => (new \moodle_url('/local/nolej/webhook.php'))->out(false),
                         'mediaType' => $format,
                         'automaticMode' => $automaticmode,
                         'language' => $language,
@@ -264,11 +273,11 @@ class module
                         (object) [
                             'document_id' => $result->id,
                             'user_id' => $USER->id,
-                            'tstamp' => time(),
+                            'tstamp' => $now,
                             'status' => self::STATUS_CREATION_PENDING,
                             'title' => $title,
                             'consumed_credit' => $consumedcredit,
-                            'doc_url' => $url,
+                            'doc_url' => $shorturl,
                             'media_type' => $format,
                             'automatic_mode' => $automaticmode,
                             'language' => $language,

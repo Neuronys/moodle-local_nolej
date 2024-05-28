@@ -224,9 +224,9 @@ class api
     }
 
     /**
-     * Return the format given the extension, or empty string if not valid.
+     * Return the format given the extension, or null if not valid.
      * @param string $extension
-     * @return string
+     * @return ?string
      */
     public static function formatfromextension($extension)
     {
@@ -242,7 +242,7 @@ class api
         if (in_array($extension, self::TYPE_TEXT)) {
             return 'freetext';
         }
-        return '';
+        return null;
     }
 
     /**
@@ -498,7 +498,7 @@ class api
      * @param int $code
      * @param string $message
      */
-    protected function respondwithmessage(
+    public function respondwithmessage(
         $code = 400,
         $message = ''
     ) {
