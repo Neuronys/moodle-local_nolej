@@ -36,6 +36,9 @@ require_once ($CFG->dirroot . '/local/nolej/classes/module.php');
 class api
 {
 
+    /** @var string Nolej API endpoint */
+    const ENDPOINT = 'https://api-live.nolej.io';
+
     /** @var string[] Allowed audio formats */
     const TYPE_AUDIO = ['mp3', 'wav', 'opus', 'ogg', 'oga', 'm4a'];
 
@@ -47,9 +50,6 @@ class api
 
     /** @var string[] Allowed text file formats */
     const TYPE_TEXT = ['txt', 'htm', 'html'];
-
-    /** @var string Nolej API URL */
-    const API_URL = 'https://api-live.nolej.io';
 
     /** @var array */
     protected $data;
@@ -87,7 +87,7 @@ class api
             return null;
         }
 
-        $url = self::API_URL . $path;
+        $url = self::ENDPOINT . $path;
         $encodeddata = empty($data) ? null : ($encodeinput ? json_encode($data) : $data);
 
         $options = [
@@ -136,7 +136,7 @@ class api
         }
 
         $jsondata = json_encode($data);
-        $url = self::API_URL . $path;
+        $url = self::ENDPOINT . $path;
 
         $options = [
             'RETURNTRANSFER' => 1,
@@ -182,7 +182,7 @@ class api
         }
 
         $jsondata = $encode ? json_encode($data) : $data;
-        $url = self::API_URL . $path;
+        $url = self::ENDPOINT . $path;
 
         $options = [
             'RETURNTRANSFER' => 1,

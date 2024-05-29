@@ -462,7 +462,7 @@ class module
      */
     public function concepts()
     {
-        global $OUTPUT, $DB, $USER;
+        global $OUTPUT;
 
         // Display and handle concepts form.
         $mform = new \local_nolej\form\concepts(
@@ -586,7 +586,7 @@ class module
      */
     public function questions()
     {
-        global $OUTPUT, $DB, $USER;
+        global $OUTPUT;
 
         // Display and handle questions form.
         $mform = new \local_nolej\form\questions(
@@ -711,7 +711,7 @@ class module
      */
     public function summary()
     {
-        global $OUTPUT, $DB, $USER;
+        global $OUTPUT;
 
         // Display and handle summary form.
         $mform = new \local_nolej\form\summary(

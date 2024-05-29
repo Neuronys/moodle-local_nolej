@@ -29,6 +29,18 @@ defined('MOODLE_INTERNAL') || die();
 $string['pluginname'] = 'Nolej';
 $string['nolej:usenolej'] = 'Créez vos activités avec Nolej';
 
+// Privacy API.
+$string['privacy:metadata:nolej_module'] = 'Informations sur l\'auteur du module Nolej.';
+$string['privacy:metadata:nolej_module:user_id'] = 'L\'ID de l\'utilisateur qui a créé le module.';
+$string['privacy:metadata:nolej_module:tstamp'] = 'L\'horodatage lorsque l\'utilisateur a créé le module.';
+$string['privacy:metadata:nolej_activity'] = 'Informations sur l\'utilisateur qui a appelé l\'API Nolej.';
+$string['privacy:metadata:nolej_activity:user_id'] = 'L\'ID de l\'utilisateur qui a appelé l\'API.';
+$string['privacy:metadata:nolej_activity:tstamp'] = 'L\'horodatage lorsque l\'utilisateur a appelé l\'API.';
+$string['privacy:metadata:nolej_activity:action'] = 'L\'API que l\'utilisateur a appelée.';
+$string['privacy:metadata:endpoint'] = 'Pour s\'intégrer à Nolej, des données utilisateur doivent être échangées avec ce service.';
+$string['privacy:metadata:endpoint:user_id'] = 'L\'ID utilisateur est envoyé depuis Moodle pour vous permettre d\'accéder à vos données sur le système distant.';
+$string['privacy:metadata:core_files'] = 'Le plugin Nolej stocke des fichiers qui ont été téléchargés par l\'utilisateur pour créer des modules et être analysés par l\'IA.';
+
 // Settings.
 $string['apikey'] = 'Clé API';
 $string['apikeyinfo'] = 'Votre clé API Nolej.';

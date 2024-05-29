@@ -32,6 +32,8 @@ require_capability('local/nolej:usenolej', $context);
 require_once ($CFG->dirroot . '/local/nolej/classes/api.php');
 require_once ($CFG->dirroot . '/local/nolej/classes/module.php');
 
+global $DB, $PAGE, $USER, $OUTPUT;
+
 $PAGE->set_url(new moodle_url('/local/nolej/manage.php'));
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
@@ -41,8 +43,6 @@ $PAGE->set_title(get_string('library', 'local_nolej'));
 
 $PAGE->requires->js_call_amd('local_nolej/delete');
 $PAGE->requires->css('/local/nolej/styles.css');
-
-global $DB;
 
 $status2form = [
     \local_nolej\module::STATUS_CREATION => '',

@@ -29,6 +29,18 @@ defined('MOODLE_INTERNAL') || die();
 $string['pluginname'] = 'Nolej';
 $string['nolej:usenolej'] = 'Activiteiten maken met Nolej';
 
+// Privacy API.
+$string['privacy:metadata:nolej_module'] = 'Informatie over de auteur van de Nolej-module.';
+$string['privacy:metadata:nolej_module:user_id'] = 'De ID van de gebruiker die de module heeft gemaakt.';
+$string['privacy:metadata:nolej_module:tstamp'] = 'De tijdstempel toen de gebruiker de module maakte.';
+$string['privacy:metadata:nolej_activity'] = 'Informatie over de gebruiker die de Nolej API heeft aangeroepen.';
+$string['privacy:metadata:nolej_activity:user_id'] = 'De ID van de gebruiker die de API heeft aangeroepen.';
+$string['privacy:metadata:nolej_activity:tstamp'] = 'De tijdstempel toen de gebruiker de API aanriep.';
+$string['privacy:metadata:nolej_activity:action'] = 'De API die de gebruiker heeft aangeroepen.';
+$string['privacy:metadata:endpoint'] = 'Om te integreren met Nolej, moeten gebruikersgegevens met die service worden uitgewisseld.';
+$string['privacy:metadata:endpoint:user_id'] = 'De gebruikers-ID wordt vanuit Moodle verzonden om u toegang te geven tot uw gegevens op het externe systeem.';
+$string['privacy:metadata:core_files'] = 'De Nolej-plugin slaat bestanden op die door de gebruiker zijn geüpload om modules te maken en te worden geanalyseerd door AI.';
+
 // Settings.
 $string['apikey'] = 'API-sleutel';
 $string['apikeyinfo'] = 'Uw Nolej API-sleutel.';
