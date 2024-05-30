@@ -432,7 +432,6 @@ class api
     {
         $event = \local_nolej\event\webhook_called::create(
             [
-                'context' => \context_system::instance(),
                 'other' => [
                     'documentid' => $documentid,
                     'message' => $message,
