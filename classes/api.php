@@ -425,17 +425,17 @@ class api
 
     /**
      * Log the event
-     * @param string $msg
+     * @param string $message
      * @param ?string $documentid
      */
-    public function log($msg, $documentid = null)
+    public function log($message, $documentid = null)
     {
         $event = \local_nolej\event\webhook_called::create(
             [
                 'context' => \context_system::instance(),
                 'other' => [
                     'documentid' => $documentid,
-                    'message' => $msg,
+                    'message' => $message,
                 ],
             ]
         );
@@ -450,12 +450,12 @@ class api
     {
         if ($data == null) {
             header('Content-type: application/json; charset=UTF-8');
+            $this->shouldexit = true;
             try {
                 $data = json_decode(file_get_contents('php://input'), true);
             } catch (\Exception $e) {
                 $this->respondwithmessage(400, 'Request not valid.');
             }
-            $this->shouldexit = true;
         }
 
         if (
