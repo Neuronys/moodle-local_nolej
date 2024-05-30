@@ -1127,7 +1127,7 @@ class api
     /**
      * Download the file
      * @see https://stackoverflow.com/a/2882523
-     * 
+     *
      * @param string $filepath
      */
     public static function deliverfile(string $filepath)
