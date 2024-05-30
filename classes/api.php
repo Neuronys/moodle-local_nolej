@@ -450,7 +450,11 @@ class api
     {
         if ($data == null) {
             header('Content-type: application/json; charset=UTF-8');
-            $data = json_decode(file_get_contents('php://input'), true);
+            try {
+                $data = json_decode(file_get_contents('php://input'), true);
+            } catch (\Exception $e) {
+                $this->respondwithmessage(400, 'Request not valid.');
+            }
             $this->shouldexit = true;
         }
 
