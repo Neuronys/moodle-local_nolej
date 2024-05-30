@@ -463,8 +463,8 @@ class api
             !isset($data['action']) ||
             !is_string($data['action'])
         ) {
-            $this->respondwithmessage(400, 'Request not valid.');
             $this->log('Received invalid request: ' . var_export($data, true));
+            $this->respondwithmessage(400, 'Request not valid.');
         }
 
         $this->data = $data;
