@@ -27,6 +27,10 @@ namespace local_nolej\form;
 
 defined('MOODLE_INTERNAL') || die();
 
+use moodle_url;
+use core\output\notification;
+use local_nolej\api;
+
 require_once ($CFG->libdir . '/formslib.php');
 require_once ($CFG->dirroot . '/local/nolej/classes/api.php');
 
@@ -55,7 +59,7 @@ class transcription extends \moodleform
         $mform->setType('step', PARAM_ALPHA);
 
         // Download transcription.
-        $result = \local_nolej\api::get(
+        $result = api::get(
             sprintf('/documents/%s/transcription', $documentid)
         );
 
@@ -67,10 +71,10 @@ class transcription extends \moodleform
             !is_string($result->result)
         ) {
             redirect(
-                new \moodle_url('/local/nolej/manage.php'),
+                new moodle_url('/local/nolej/manage.php'),
                 get_string('genericerror', 'local_nolej', ['error' => var_export($result, true)]),
                 null,
-                \core\output\notification::NOTIFY_ERROR
+                notification::NOTIFY_ERROR
             );
         }
 
@@ -81,7 +85,7 @@ class transcription extends \moodleform
 
         // Download transcription.
         $transcription = file_get_contents($result->result);
-        $success = \local_nolej\api::writecontent(
+        $success = api::writecontent(
             $documentid,
             'transcription.htm',
             $transcription
@@ -89,10 +93,10 @@ class transcription extends \moodleform
 
         if (!$success) {
             redirect(
-                new \moodle_url('/local/nolej/manage.php'),
+                new moodle_url('/local/nolej/manage.php'),
                 get_string('cannotwritetranscription', 'local_nolej'),
                 null,
-                \core\output\notification::NOTIFY_ERROR
+                notification::NOTIFY_ERROR
             );
         }
 

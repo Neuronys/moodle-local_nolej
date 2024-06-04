@@ -27,6 +27,9 @@ namespace local_nolej;
 
 defined('MOODLE_INTERNAL') || die();
 
+use moodle_url;
+use core\output\notification;
+
 /**
  * Nolej module class
  */
@@ -156,10 +159,10 @@ class module
         if ($mform->is_cancelled()) {
             // Cancelled.
             redirect(
-                new \moodle_url('/local/nolej/manage.php'),
+                new moodle_url('/local/nolej/manage.php'),
                 get_string('modulenotcreated', 'local_nolej'),
                 null,
-                \core\output\notification::NOTIFY_INFO
+                notification::NOTIFY_INFO
             );
         } else if ($fromform = $mform->get_data()) {
             // Submitted and validated.
@@ -200,7 +203,7 @@ class module
                     }
 
                     $url = (
-                        new \moodle_url(
+                        new moodle_url(
                             '/local/nolej/webhook.php',
                             ['fileid' => $filename],
                         )
@@ -220,7 +223,7 @@ class module
                     }
 
                     $url = (
-                        new \moodle_url(
+                        new moodle_url(
                             '/local/nolej/webhook.php',
                             ['fileid' => $filename],
                         )
@@ -242,7 +245,7 @@ class module
                         'title' => $title,
                         'decrementedCredit' => $consumedcredit,
                         'docURL' => $url,
-                        'webhookURL' => (new \moodle_url('/local/nolej/webhook.php'))->out(false),
+                        'webhookURL' => (new moodle_url('/local/nolej/webhook.php'))->out(false),
                         'mediaType' => $format,
                         'automaticMode' => $automaticmode,
                         'language' => $language,
@@ -255,7 +258,7 @@ class module
                     // An error occurred.
                     \core\notification::add(
                         get_string('errdocument', 'local_nolej', var_export($result, true)),
-                        \core\output\notification::NOTIFY_ERROR
+                        notification::NOTIFY_ERROR
                     );
 
                     if (
@@ -302,16 +305,16 @@ class module
                     );
 
                     redirect(
-                        new \moodle_url('/local/nolej/manage.php'),
+                        new moodle_url('/local/nolej/manage.php'),
                         get_string('modulecreated', 'local_nolej'),
                         null,
-                        \core\output\notification::NOTIFY_SUCCESS
+                        notification::NOTIFY_SUCCESS
                     );
                 }
             } else {
                 \core\notification::add(
                     get_string('errdatamissing', 'local_nolej'),
-                    \core\output\notification::NOTIFY_ERROR
+                    notification::NOTIFY_ERROR
                 );
             }
         }
@@ -333,7 +336,7 @@ class module
         // Display and handle analysis form.
         $mform = new \local_nolej\form\transcription(
             (
-                new \moodle_url(
+                new moodle_url(
                     '/local/nolej/edit.php',
                     [
                         'documentid' => $this->documentid,
@@ -346,7 +349,7 @@ class module
 
         if ($mform->is_cancelled()) {
             // Cancelled.
-            redirect(new \moodle_url('/local/nolej/manage.php'));
+            redirect(new moodle_url('/local/nolej/manage.php'));
         } else if ($fromform = $mform->get_data()) {
             // Submitted and validated.
 
@@ -362,7 +365,7 @@ class module
 
                 // Call Nolej analysis API.
                 $webhook = (
-                    new \moodle_url(
+                    new moodle_url(
                         '/local/nolej/webhook.php',
                         [
                             'documentid' => $this->documentid,
@@ -391,10 +394,10 @@ class module
                     )
                 ) {
                     redirect(
-                        new \moodle_url('/local/nolej/manage.php'),
+                        new moodle_url('/local/nolej/manage.php'),
                         get_string('genericerror', 'local_nolej', (object) ['error' => var_export($result, true)]),
                         null,
-                        \core\output\notification::NOTIFY_ERROR
+                        notification::NOTIFY_ERROR
                     );
                 }
 
@@ -425,15 +428,15 @@ class module
                 );
 
                 redirect(
-                    new \moodle_url('/local/nolej/manage.php'),
+                    new moodle_url('/local/nolej/manage.php'),
                     get_string('analysisstart', 'local_nolej'),
                     null,
-                    \core\output\notification::NOTIFY_SUCCESS
+                    notification::NOTIFY_SUCCESS
                 );
             } else {
                 redirect(
                     (
-                        new \moodle_url(
+                        new moodle_url(
                             '/local/nolej/edit.php',
                             [
                                 'documentid' => $this->documentid,
@@ -443,7 +446,7 @@ class module
                     )->out(false),
                     get_string('missingtranscription', 'local_nolej'),
                     null,
-                    \core\output\notification::NOTIFY_ERROR
+                    notification::NOTIFY_ERROR
                 );
             }
         } else {
@@ -467,7 +470,7 @@ class module
         // Display and handle concepts form.
         $mform = new \local_nolej\form\concepts(
             (
-                new \moodle_url(
+                new moodle_url(
                     '/local/nolej/edit.php',
                     [
                         'documentid' => $this->documentid,
@@ -481,7 +484,7 @@ class module
         if ($mform->is_cancelled()) {
 
             // Cancelled.
-            redirect(new \moodle_url('/local/nolej/manage.php'));
+            redirect(new moodle_url('/local/nolej/manage.php'));
 
         } else if ($fromform = $mform->get_data()) {
             // Submitted and validated.
@@ -496,10 +499,10 @@ class module
             $json = api::readcontent($this->documentid, 'concepts.json');
             if (!$json) {
                 redirect(
-                    new \moodle_url('/local/nolej/manage.php'),
+                    new moodle_url('/local/nolej/manage.php'),
                     get_string('genericerror', 'local_nolej', ['error' => var_export($result, true)]),
                     null,
-                    \core\output\notification::NOTIFY_ERROR
+                    notification::NOTIFY_ERROR
                 );
             }
 
@@ -543,7 +546,7 @@ class module
             if (!$success) {
                 redirect(
                     (
-                        new \moodle_url(
+                        new moodle_url(
                             '/local/nolej/edit.php',
                             [
                                 'documentid' => $this->documentid,
@@ -553,7 +556,7 @@ class module
                     )->out(false),
                     get_string('cannotwriteconcepts', 'local_nolej'),
                     null,
-                    \core\output\notification::NOTIFY_ERROR
+                    notification::NOTIFY_ERROR
                 );
                 return;
             }
@@ -561,7 +564,7 @@ class module
             $success = api::putcontent($this->documentid, 'concepts', 'concepts.json');
             redirect(
                 (
-                    new \moodle_url(
+                    new moodle_url(
                         '/local/nolej/edit.php',
                         [
                             'documentid' => $this->documentid,
@@ -571,7 +574,7 @@ class module
                 )->out(false),
                 get_string($success ? 'conceptssaved' : 'conceptsnotsaved', 'local_nolej'),
                 null,
-                $success ? \core\output\notification::NOTIFY_SUCCESS : \core\output\notification::NOTIFY_ERROR
+                $success ? notification::NOTIFY_SUCCESS : notification::NOTIFY_ERROR
             );
         }
 
@@ -591,7 +594,7 @@ class module
         // Display and handle questions form.
         $mform = new \local_nolej\form\questions(
             (
-                new \moodle_url(
+                new moodle_url(
                     '/local/nolej/edit.php',
                     [
                         'documentid' => $this->documentid,
@@ -605,7 +608,7 @@ class module
         if ($mform->is_cancelled()) {
 
             // Cancelled.
-            redirect(new \moodle_url('/local/nolej/manage.php'));
+            redirect(new moodle_url('/local/nolej/manage.php'));
 
         } else if ($fromform = $mform->get_data()) {
             // Submitted and validated.
@@ -620,10 +623,10 @@ class module
             $json = api::readcontent($this->documentid, 'questions.json');
             if (!$json) {
                 redirect(
-                    new \moodle_url('/local/nolej/manage.php'),
+                    new moodle_url('/local/nolej/manage.php'),
                     get_string('genericerror', 'local_nolej', ['error' => var_export($result, true)]),
                     null,
-                    \core\output\notification::NOTIFY_ERROR
+                    notification::NOTIFY_ERROR
                 );
             }
 
@@ -668,7 +671,7 @@ class module
             if (!$success) {
                 redirect(
                     (
-                        new \moodle_url(
+                        new moodle_url(
                             '/local/nolej/edit.php',
                             [
                                 'documentid' => $this->documentid,
@@ -678,7 +681,7 @@ class module
                     )->out(false),
                     get_string('cannotwritequestions', 'local_nolej'),
                     null,
-                    \core\output\notification::NOTIFY_ERROR
+                    notification::NOTIFY_ERROR
                 );
                 return;
             }
@@ -686,7 +689,7 @@ class module
             $success = api::putcontent($this->documentid, 'questions', 'questions.json');
             redirect(
                 (
-                    new \moodle_url(
+                    new moodle_url(
                         '/local/nolej/edit.php',
                         [
                             'documentid' => $this->documentid,
@@ -696,7 +699,7 @@ class module
                 )->out(false),
                 get_string($success ? 'questionssaved' : 'questionsnotsaved', 'local_nolej'),
                 null,
-                $success ? \core\output\notification::NOTIFY_SUCCESS : \core\output\notification::NOTIFY_ERROR
+                $success ? notification::NOTIFY_SUCCESS : notification::NOTIFY_ERROR
             );
         }
 
@@ -716,7 +719,7 @@ class module
         // Display and handle summary form.
         $mform = new \local_nolej\form\summary(
             (
-                new \moodle_url(
+                new moodle_url(
                     '/local/nolej/edit.php',
                     [
                         'documentid' => $this->documentid,
@@ -730,7 +733,7 @@ class module
         if ($mform->is_cancelled()) {
 
             // Cancelled.
-            redirect(new \moodle_url('/local/nolej/manage.php'));
+            redirect(new moodle_url('/local/nolej/manage.php'));
 
         } else if ($fromform = $mform->get_data()) {
             // Submitted and validated.
@@ -773,7 +776,7 @@ class module
             if (!$success) {
                 redirect(
                     (
-                        new \moodle_url(
+                        new moodle_url(
                             '/local/nolej/edit.php',
                             [
                                 'documentid' => $this->documentid,
@@ -783,7 +786,7 @@ class module
                     )->out(false),
                     get_string('cannotwritesummary', 'local_nolej'),
                     null,
-                    \core\output\notification::NOTIFY_ERROR
+                    notification::NOTIFY_ERROR
                 );
                 return;
             }
@@ -791,7 +794,7 @@ class module
             $success = api::putcontent($this->documentid, 'summary', 'summary.json');
             redirect(
                 (
-                    new \moodle_url(
+                    new moodle_url(
                         '/local/nolej/edit.php',
                         [
                             'documentid' => $this->documentid,
@@ -801,7 +804,7 @@ class module
                 )->out(false),
                 get_string($success ? 'summarysaved' : 'summarynotsaved', 'local_nolej'),
                 null,
-                $success ? \core\output\notification::NOTIFY_SUCCESS : \core\output\notification::NOTIFY_ERROR
+                $success ? notification::NOTIFY_SUCCESS : notification::NOTIFY_ERROR
             );
         }
 
@@ -821,7 +824,7 @@ class module
         // Display and handle activities form.
         $mform = new \local_nolej\form\activities(
             (
-                new \moodle_url(
+                new moodle_url(
                     '/local/nolej/edit.php',
                     [
                         'documentid' => $this->documentid,
@@ -835,7 +838,7 @@ class module
         if ($mform->is_cancelled()) {
 
             // Cancelled.
-            redirect(new \moodle_url('/local/nolej/manage.php'));
+            redirect(new moodle_url('/local/nolej/manage.php'));
 
         } else if ($fromform = $mform->get_data()) {
             // Submitted and validated.
@@ -850,10 +853,10 @@ class module
             $json = api::readcontent($this->documentid, 'settings.json');
             if (!$json) {
                 redirect(
-                    new \moodle_url('/local/nolej/manage.php'),
+                    new moodle_url('/local/nolej/manage.php'),
                     get_string('genericerror', 'local_nolej', ['error' => var_export($result, true)]),
                     null,
-                    \core\output\notification::NOTIFY_ERROR
+                    notification::NOTIFY_ERROR
                 );
             }
 
@@ -951,7 +954,7 @@ class module
             if (!$success) {
                 redirect(
                     (
-                        new \moodle_url(
+                        new moodle_url(
                             '/local/nolej/edit.php',
                             [
                                 'documentid' => $this->documentid,
@@ -961,7 +964,7 @@ class module
                     )->out(false),
                     get_string('cannotwritesettings', 'local_nolej'),
                     null,
-                    \core\output\notification::NOTIFY_ERROR
+                    notification::NOTIFY_ERROR
                 );
                 return;
             }
@@ -994,15 +997,15 @@ class module
                 );
 
                 redirect(
-                    (new \moodle_url('/local/nolej/manage.php'))->out(false),
+                    (new moodle_url('/local/nolej/manage.php'))->out(false),
                     get_string('generationstarted', 'local_nolej'),
                     null,
-                    \core\output\notification::NOTIFY_SUCCESS
+                    notification::NOTIFY_SUCCESS
                 );
             } else {
                 redirect(
                     (
-                        new \moodle_url(
+                        new moodle_url(
                             '/local/nolej/edit.php',
                             [
                                 'documentid' => $this->documentid,
@@ -1012,7 +1015,7 @@ class module
                     )->out(false),
                     get_string('settingsnotsaved', 'local_nolej'),
                     null,
-                    \core\output\notification::NOTIFY_ERROR
+                    notification::NOTIFY_ERROR
                 );
             }
         }
@@ -1045,8 +1048,8 @@ class module
                 'questions' => $this->step == 'questions',
                 'summary' => $this->step == 'summary',
                 'settings' => $this->step == 'activities',
-                'editurl' => (new \moodle_url('/local/nolej/edit.php', ['documentid' => $this->document->document_id]))->out(false),
-                'manageurl' => (new \moodle_url('/local/nolej/manage.php'))->out(false),
+                'editurl' => (new moodle_url('/local/nolej/edit.php', ['documentid' => $this->document->document_id]))->out(false),
+                'manageurl' => (new moodle_url('/local/nolej/manage.php'))->out(false),
             ]
         );
     }

@@ -24,15 +24,14 @@
  */
 
 require_once (__DIR__ . '/../../config.php');
+require_once ($CFG->dirroot . '/local/nolej/classes/api.php');
+require_once ($CFG->dirroot . '/local/nolej/classes/module.php');
+
+use local_nolej\module;
 
 require_login();
 $context = context_system::instance();
 require_capability('local/nolej:usenolej', $context);
-
-require_once ($CFG->dirroot . '/local/nolej/classes/api.php');
-require_once ($CFG->dirroot . '/local/nolej/classes/module.php');
-
-global $DB, $PAGE, $USER, $OUTPUT;
 
 $PAGE->set_url(new moodle_url('/local/nolej/manage.php'));
 $PAGE->set_context($context);
@@ -45,16 +44,16 @@ $PAGE->requires->js_call_amd('local_nolej/delete');
 $PAGE->requires->css('/local/nolej/styles.css');
 
 $status2form = [
-    \local_nolej\module::STATUS_CREATION => '',
-    \local_nolej\module::STATUS_CREATION_PENDING => '',
-    \local_nolej\module::STATUS_ANALYSIS => 'analysis',
-    \local_nolej\module::STATUS_ANALYSIS_PENDING => 'analysis',
-    \local_nolej\module::STATUS_REVISION => 'concepts',
-    \local_nolej\module::STATUS_REVISION_PENDING => 'concepts',
-    \local_nolej\module::STATUS_ACTIVITIES => 'activities',
-    \local_nolej\module::STATUS_ACTIVITIES_PENDING => 'activities',
-    \local_nolej\module::STATUS_COMPLETED => 'activities',
-    \local_nolej\module::STATUS_FAILED => '',
+    module::STATUS_CREATION => '',
+    module::STATUS_CREATION_PENDING => '',
+    module::STATUS_ANALYSIS => 'analysis',
+    module::STATUS_ANALYSIS_PENDING => 'analysis',
+    module::STATUS_REVISION => 'concepts',
+    module::STATUS_REVISION_PENDING => 'concepts',
+    module::STATUS_ACTIVITIES => 'activities',
+    module::STATUS_ACTIVITIES_PENDING => 'activities',
+    module::STATUS_COMPLETED => 'activities',
+    module::STATUS_FAILED => '',
 ];
 
 $modules = $DB->get_records(
@@ -68,11 +67,11 @@ foreach ($modules as $module) {
 
     $moduledata = [
         'title' => $module->title,
-        'status' => \local_nolej\module::getstatusname((int) $module->status),
+        'status' => module::getstatusname((int) $module->status),
         'documentid' => $module->document_id,
         'created' => userdate($module->tstamp),
         'lastupdate' => '-',
-        'editurl' => $module->status != \local_nolej\module::STATUS_FAILED
+        'editurl' => $module->status != module::STATUS_FAILED
             ? (
                 new moodle_url(
                     '/local/nolej/edit.php',
@@ -110,7 +109,7 @@ foreach ($modules as $module) {
     }
 
     // Check last generated activity content bank folder.
-    if ($module->status == \local_nolej\module::STATUS_COMPLETED) {
+    if ($module->status == module::STATUS_COMPLETED) {
         $h5pcontents = $DB->get_records(
             'nolej_h5p',
             ['document_id' => $module->document_id],

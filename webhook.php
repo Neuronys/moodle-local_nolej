@@ -24,7 +24,6 @@
  */
 
 require_once (__DIR__ . '/../../config.php');
-
 require_once ($CFG->dirroot . '/local/nolej/classes/api.php');
 
 use local_nolej\api;

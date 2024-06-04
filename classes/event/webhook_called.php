@@ -27,6 +27,8 @@ namespace local_nolej\event;
 
 defined('MOODLE_INTERNAL') || die();
 
+use moodle_url;
+
 /**
  * The webhook_called event class.
  */
@@ -62,14 +64,14 @@ class webhook_called extends \core\event\base
 
     /**
      * Url to Nolej module
-     * @return ?\moodle_url
+     * @return ?moodle_url
      */
     public function get_url()
     {
         if ($this->other['documentid'] == null) {
             return null;
         }
-        return new \moodle_url(
+        return new moodle_url(
             '/local/nolej/edit.php',
             ['documentid' => $this->other['documentid']]
         );

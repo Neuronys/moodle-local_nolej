@@ -27,6 +27,8 @@ namespace local_nolej\form;
 
 defined('MOODLE_INTERNAL') || die();
 
+use local_nolej\api;
+
 require_once ($CFG->libdir . '/formslib.php');
 require_once ($CFG->dirroot . '/local/nolej/classes/api.php');
 
@@ -71,9 +73,9 @@ class creation extends \moodleform
             $OUTPUT->render_from_template(
                 'local_nolej/contentlimits',
                 (object) [
-                    'audioformats' => join(', ', \local_nolej\api::TYPE_AUDIO),
-                    'videoformats' => join(', ', \local_nolej\api::TYPE_VIDEO),
-                    'docformats' => join(', ', \local_nolej\api::TYPE_DOC),
+                    'audioformats' => join(', ', api::TYPE_AUDIO),
+                    'videoformats' => join(', ', api::TYPE_VIDEO),
+                    'docformats' => join(', ', api::TYPE_DOC),
                 ]
             )
         );
@@ -86,7 +88,7 @@ class creation extends \moodleform
             null,
             [
                 'maxbytes' => 500000,
-                'accepted_types' => join(',', \local_nolej\api::allowedtypes()),
+                'accepted_types' => join(',', api::allowedtypes()),
             ]
         );
         $mform->hideIf('sourcefile', 'sourcetype', 'neq', 'file');

@@ -24,18 +24,20 @@
  */
 
 require_once (__DIR__ . '/../../config.php');
+require_once ($CFG->dirroot . '/local/nolej/classes/api.php');
+
+use moodle_url;
+use core\output\notification;
 
 require_login();
 $context = context_system::instance();
 require_capability('local/nolej:usenolej', $context);
 
-require_once ($CFG->dirroot . '/local/nolej/classes/api.php');
-
 $documentid = optional_param('documentid', null, PARAM_ALPHANUMEXT);
 
 if ($documentid == null) {
     // Document not set.
-    redirect(new \moodle_url('/local/nolej/edit.php'));
+    redirect(new moodle_url('/local/nolej/edit.php'));
 }
 
 $document = $DB->get_record(
@@ -49,10 +51,10 @@ $document = $DB->get_record(
 if (!$document) {
     // Document does not exist.
     redirect(
-        new \moodle_url('/local/nolej/manage.php'),
+        new moodle_url('/local/nolej/manage.php'),
         get_string('modulenotfound', 'local_nolej'),
         null,
-        \core\output\notification::NOTIFY_ERROR
+        notification::NOTIFY_ERROR
     );
 }
 
@@ -67,8 +69,8 @@ $DB->delete_records(
 );
 
 redirect(
-    new \moodle_url('/local/nolej/manage.php'),
+    new moodle_url('/local/nolej/manage.php'),
     get_string('moduledeleted', 'local_nolej'),
     null,
-    \core\output\notification::NOTIFY_SUCCESS
+    notification::SUCCESS
 );

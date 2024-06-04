@@ -27,6 +27,9 @@ namespace local_nolej;
 
 defined('MOODLE_INTERNAL') || die();
 
+use moodle_url;
+use core\output\notification;
+
 require_once ($CFG->dirroot . '/local/nolej/classes/event/webhook_called.php');
 require_once ($CFG->dirroot . '/local/nolej/classes/module.php');
 
@@ -486,7 +489,7 @@ class api
             case 'work in progress':
                 $this->log('Received work in progress.');
                 if (isloggedin() && !isguestuser()) {
-                    \core\notification::add(get_string('work_in_progress', 'local_nolej'), \core\output\notification::NOTIFY_INFO);
+                    \core\notification::add(get_string('work_in_progress', 'local_nolej'), notification::NOTIFY_INFO);
                     return;
                 }
                 break;
@@ -1079,8 +1082,8 @@ class api
         $message->smallmessage = get_string('action_' . $action, 'local_nolej');
         $message->notification = 1; // Notification generated from Moodle, not a user-to-user message.
         $message->contexturl = substr($action, -2) == 'ok'
-            ? (new \moodle_url('/local/nolej/edit.php', ['documentid' => $documentid]))->out(false)
-            : (new \moodle_url('/local/nolej/manage.php'))->out(false);
+            ? (new moodle_url('/local/nolej/edit.php', ['documentid' => $documentid]))->out(false)
+            : (new moodle_url('/local/nolej/manage.php'))->out(false);
         $message->contexturlname = get_string('moduleview', 'local_nolej');
         $messageid = message_send($message);
 

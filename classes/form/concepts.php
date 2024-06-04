@@ -27,6 +27,10 @@ namespace local_nolej\form;
 
 defined('MOODLE_INTERNAL') || die();
 
+use moodle_url;
+use core\output\notification;
+use local_nolej\api;
+
 require_once ($CFG->libdir . '/formslib.php');
 require_once ($CFG->dirroot . '/local/nolej/classes/api.php');
 
@@ -55,19 +59,19 @@ class concepts extends \moodleform
         $mform->setType('step', PARAM_ALPHA);
 
         // Download concepts.
-        $result = \local_nolej\api::getcontent(
+        $result = api::getcontent(
             $documentid,
             'concepts',
             'concepts.json'
         );
 
-        $json = \local_nolej\api::readcontent($documentid, 'concepts.json');
+        $json = api::readcontent($documentid, 'concepts.json');
         if (!$json) {
             redirect(
-                new \moodle_url('/local/nolej/manage.php'),
+                new moodle_url('/local/nolej/manage.php'),
                 get_string('genericerror', 'local_nolej', ['error' => var_export($result, true)]),
                 null,
-                \core\output\notification::NOTIFY_ERROR
+                notification::NOTIFY_ERROR
             );
         }
 
