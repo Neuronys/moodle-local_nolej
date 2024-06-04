@@ -255,7 +255,7 @@ class module
                     // An error occurred.
                     \core\notification::add(
                         get_string('errdocument', 'local_nolej', var_export($result, true)),
-                        core\output\notification::NOTIFY_ERROR
+                        \core\output\notification::NOTIFY_ERROR
                     );
 
                     if (
