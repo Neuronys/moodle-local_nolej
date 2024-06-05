@@ -449,10 +449,9 @@ class module
                     notification::NOTIFY_ERROR
                 );
             }
-        } else {
-            // Data not valid.
-            $PAGE->requires->js_call_amd('local_nolej/confirmanalysis');
         }
+
+        $PAGE->requires->js_call_amd('local_nolej/confirmanalysis');
 
         echo $OUTPUT->header();
         $this->printinfo();
