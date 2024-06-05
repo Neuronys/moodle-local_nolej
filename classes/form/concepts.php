@@ -100,28 +100,37 @@ class concepts extends \moodleform
                 $concepts[$i]->concept->label
             );
 
+            // Concept label.
+            $labelid = 'concept_' . $concepts[$i]->id . '_label';
             $mform->addElement(
                 'text',
-                'concept_' . $concepts[$i]->id . '_label',
+                $labelid,
                 get_string('conceptlabel', 'local_nolej'),
                 'style="width:100%;"'
             )->setValue($concepts[$i]->concept->label);
-            $mform->setType('concept_' . $concepts[$i]->id . '_label', PARAM_TEXT);
+            $mform->setType($labelid, PARAM_TEXT);
+            $mform->addRule($labelid, get_string('required'), 'required', null, 'server', false, false);
 
+            // Concept enable.
+            $enableid = 'concept_' . $concepts[$i]->id . '_enable';
             $mform->addElement(
                 'selectyesno',
-                'concept_' . $concepts[$i]->id . '_enable',
+                $enableid,
                 get_string('conceptenable', 'local_nolej')
             )->setValue($concepts[$i]->enable);
 
+            // Concept definition.
+            $definitionid = 'concept_' . $concepts[$i]->id . '_definition';
             $mform->addElement(
                 'textarea',
-                'concept_' . $concepts[$i]->id . '_definition',
+                $definitionid,
                 get_string('conceptdefinition', 'local_nolej'),
                 'wrap="virtual" rows="3"'
             )->setValue($concepts[$i]->concept->definition);
-            $mform->setType('concept_' . $concepts[$i]->id . '_definition', PARAM_TEXT);
+            $mform->setType($definitionid, PARAM_TEXT);
+            $mform->addRule($definitionid, get_string('required'), 'required', null, 'server', false, false);
 
+            // Concept related games.
             $availablegames = $concepts[$i]->concept->available_games;
             if ($availablegames != null && is_array($availablegames) && count($availablegames) > 0) {
                 $mform->addElement(
@@ -132,6 +141,7 @@ class concepts extends \moodleform
 
                 $games = [];
 
+                // Crossword game.
                 if (in_array('cw', $availablegames)) {
                     $games[] = &$mform->createElement(
                         'advcheckbox',
@@ -142,6 +152,7 @@ class concepts extends \moodleform
                     $mform->setDefault('concept_' . $concepts[$i]->id . '_games[use_for_cw]', (bool) $concepts[$i]->use_for_cw);
                 }
 
+                // Drag the word game.
                 if (in_array('dtw', $availablegames)) {
                     $games[] = &$mform->createElement(
                         'advcheckbox',
@@ -152,6 +163,7 @@ class concepts extends \moodleform
                     $mform->setDefault('concept_' . $concepts[$i]->id . '_games[use_for_dtw]', (bool) $concepts[$i]->use_for_dtw);
                 }
 
+                // Find the word game.
                 if (in_array('ftw', $availablegames)) {
                     $games[] = &$mform->createElement(
                         'advcheckbox',
@@ -178,6 +190,7 @@ class concepts extends \moodleform
                 );
             }
 
+            // Use the concept for practice activity.
             $mform->addElement(
                 'selectyesno',
                 'concept_' . $concepts[$i]->id . '_use_for_practice',
