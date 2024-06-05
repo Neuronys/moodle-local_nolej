@@ -197,6 +197,7 @@ class concepts extends \moodleform
      */
     public function validation($data, $files)
     {
-        return [];
+        $errors = parent::validation($data, $files);
+        return $errors;
     }
 }

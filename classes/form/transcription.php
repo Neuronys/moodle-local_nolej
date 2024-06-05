@@ -119,10 +119,8 @@ class transcription extends \moodleform
         )->setValue(['text' => $transcription]);
         $mform->setType('transcription', PARAM_CLEANHTML);
 
-        $mform->addRule('title', get_string('error'), 'required', null, 'server', false, false);
-        $mform->addRule('transcription', get_string('error'), 'required', null, 'server', false, false);
-        $mform->addRule('transcription', get_string('error'), 'maxlength', 50000, 'server', false, false);
-        $mform->addRule('transcription', get_string('error'), 'minlength', 500, 'server', false, false);
+        $mform->addRule('title', get_string('required'), 'required', null, 'server', false, false);
+        $mform->addRule('transcription', get_string('required'), 'required', null, 'server', false, false);
 
         // Use custom submit buttons.
         $buttonarray = [];
@@ -141,6 +139,17 @@ class transcription extends \moodleform
      */
     public function validation($data, $files)
     {
-        return [];
+        $errors = parent::validation($data, $files);
+
+        // Check transcription limits.
+        if (!isset($data['transcription']['text'])) {
+            $errors['transcription'] = get_string('required');
+        } else if (strlen($data['transcription']['text']) < 500) {
+            $errors['transcription'] = get_string('limitmincharacters', 'local_nolej', 500);
+        } else if (strlen($data['transcription']['text']) > 50000) {
+            $errors['transcription'] = get_string('limitmaxcharacters', 'local_nolej', 50000);
+        }
+
+        return $errors;
     }
 }
