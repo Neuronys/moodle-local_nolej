@@ -271,7 +271,7 @@ class api
             $datadir .= '/' . $documentid;
         }
         if (!file_exists($datadir)) {
-            mkdir($datadir, 0777, true);
+            mkdir($datadir, 0744, true);
         }
         return $datadir;
     }
@@ -285,7 +285,7 @@ class api
         $datadir = self::datadir();
         $uploaddir = $datadir . '/uploads';
         if (!file_exists($uploaddir)) {
-            mkdir($uploaddir, 0777, true);
+            mkdir($uploaddir, 0744, true);
         }
         return $uploaddir;
     }
@@ -300,7 +300,7 @@ class api
         $datadir = self::datadir($documentid);
         $uploaddir = $datadir . '/h5p';
         if (!file_exists($uploaddir)) {
-            mkdir($uploaddir, 0777, true);
+            mkdir($uploaddir, 0744, true);
         }
         return $uploaddir;
     }
