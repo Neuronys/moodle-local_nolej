@@ -132,7 +132,16 @@ class questions extends \moodleform
 
                     // Fill the blanks requires placeholder '____'.
                     if ($questiontype == 'ftb') {
-                        $mform->addRule($questionid, get_string('questiontypeftbmissingblank', 'local_nolej'), 'regex', '/_{4}/', null, 'server', false, false);
+                        $mform->addRule(
+                            $questionid,
+                            get_string('questiontypeftbmissingblank', 'local_nolej'),
+                            'regex',
+                            '/_{4}/',
+                            null,
+                            'server',
+                            false,
+                            false
+                        );
                     }
                 }
 
