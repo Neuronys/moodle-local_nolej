@@ -89,13 +89,17 @@ class summary extends \moodleform
         $mform->setType('summarycount', PARAM_INT);
 
         for ($i = 0; $i < $summarycount; $i++) {
-            $mform->addElement('text', 'summary_' . $i . '_title', '', 'style="width:100%;"');
-            $mform->setType('summary_' . $i . '_title', PARAM_TEXT);
-            $mform->setDefault('summary_' . $i . '_title', $summary->summary[$i]->title);
+            $titleid = 'summary_' . $i . '_title';
+            $mform->addElement('text', $titleid, '', 'style="width:100%;"');
+            $mform->setType($titleid, PARAM_TEXT);
+            $mform->setDefault($titleid, $summary->summary[$i]->title);
+            $mform->addRule($titleid, get_string('required'), 'required', null, 'server', false, false);
 
-            $mform->addElement('textarea', 'summary_' . $i . '_text', '', 'wrap="virtual" rows="6"');
-            $mform->setType('summary_' . $i . '_text', PARAM_TEXT);
-            $mform->setDefault('summary_' . $i . '_text', $summary->summary[$i]->text);
+            $textid = 'summary_' . $i . '_text';
+            $mform->addElement('textarea', $textid, '', 'wrap="virtual" rows="6"');
+            $mform->setType($textid, PARAM_TEXT);
+            $mform->setDefault($textid, $summary->summary[$i]->text);
+            $mform->addRule($textid, get_string('required'), 'required', null, 'server', false, false);
         }
 
         // Abstract.
@@ -103,7 +107,8 @@ class summary extends \moodleform
             $mform->addElement('header', 'abstractheader', get_string('abstract', 'local_nolej'));
             $mform->addElement('textarea', "abstract", '', 'wrap="virtual" rows="15"');
             $mform->setType("abstract", PARAM_TEXT);
-            $mform->setDefault("abstract", $summary->abstract);
+            $mform->setDefault('abstract', $summary->abstract);
+            $mform->addRule('abstract', get_string('required'), 'required', null, 'server', false, false);
         }
 
         // Keypoints.
@@ -114,9 +119,11 @@ class summary extends \moodleform
         $mform->setType('keypointscount', PARAM_INT);
 
         for ($i = 0; $i < $keypointscount; $i++) {
-            $mform->addElement('textarea', 'keypoints_' . $i, '', 'wrap="virtual" rows="2"');
-            $mform->setType('keypoints_' . $i, PARAM_TEXT);
-            $mform->setDefault('keypoints_' . $i, $summary->keypoints[$i]);
+            $keypointid = 'keypoints_' . $i;
+            $mform->addElement('textarea', $keypointid, '', 'wrap="virtual" rows="2"');
+            $mform->setType($keypointid, PARAM_TEXT);
+            $mform->setDefault($keypointid, $summary->keypoints[$i]);
+            $mform->addRule($keypointid, get_string('required'), 'required', null, 'server', false, false);
         }
 
         $this->add_action_buttons(true, get_string('savesummary', 'local_nolej'));
