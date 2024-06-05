@@ -117,7 +117,7 @@ $string['language'] = 'Sprache des Inhalts';
 $string['languagedesc'] = 'Die Auswahl der richtigen Sprache des Supports hilft Nolej bei einer besseren Analyse.';
 $string['create'] = 'Modul erstellen';
 $string['modulenotcreated'] = 'Modul nicht erstellt';
-$string['modulecreated'] = 'Modul erstellt, Transkription läuft...';
+$string['modulecreated'] = 'Modul erstellt, Transkription läuft. Sie erhalten eine Benachrichtigung, wenn die Transkription abgeschlossen ist.';
 $string['modulenotfound'] = 'Modul nicht gefunden';
 $string['errdatamissing'] = 'Einige Daten fehlen';
 $string['errdocument'] = 'Bei der Erstellung des Nolej-Moduls ist ein Fehler aufgetreten:<br><pre>{$a}</pre><br>Bitte versuchen Sie es erneut oder wenden Sie sich an einen Administrator, wenn dieser Fehler weiterhin besteht.';
@@ -139,7 +139,7 @@ $string['analyze'] = 'Analyse starten';
 $string['analysisconfirm'] = 'Warnung: Haben Sie die Transkription gründlich überprüft, bevor Sie fortfahren? Sobald die Analyse beginnt, können keine Änderungen mehr vorgenommen werden. Bitte stellen Sie die Genauigkeit vor der Fortsetzung sicher.';
 $string['transcription'] = 'Transkription';
 $string['missingtranscription'] = 'Transkription fehlt';
-$string['analysisstart'] = 'Analyse gestartet';
+$string['analysisstart'] = 'Analyse gestartet. Sie erhalten eine Benachrichtigung, wenn die Analyse abgeschlossen ist.';
 $string['cannotwritetranscription'] = 'Die Transkription kann nicht auf der Festplatte gespeichert werden. Bitte wenden Sie sich an einen Administrator, wenn dieser Fehler weiterhin besteht.';
 
 // Summary.
@@ -223,7 +223,7 @@ $string['minvalue'] = 'Mindestwert';
 $string['maxvalue'] = 'Maximalwert';
 $string['cannotwritesettings'] = 'Die Einstellungen können nicht auf der Festplatte gespeichert werden. Bitte wenden Sie sich an einen Administrator, wenn dieser Fehler weiterhin besteht.';
 $string['settingsnotsaved'] = 'Die Einstellungen konnten nicht aktualisiert werden. Bitte wenden Sie sich an einen Administrator, wenn dieser Fehler weiterhin besteht.';
-$string['generationstarted'] = 'Generierung gestartet';
+$string['generationstarted'] = 'Generierung gestartet. Sie erhalten eine Benachrichtigung, wenn die Aufgaben fertig sind.';
 $string['erractivitiesdecode'] = 'Entschlüsselung der Aktivitätsdaten fehlgeschlagen';
 $string['erractivitydownload'] = 'Speichern der Aktivität auf der Festplatte fehlgeschlagen';
 $string['errh5psave'] = 'Speichern des h5p-Pakets fehlgeschlagen';

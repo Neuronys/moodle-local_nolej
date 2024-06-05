@@ -117,7 +117,7 @@ $string['language'] = 'Lingua del contenuto';
 $string['languagedesc'] = 'Scegliere la lingua corretta del supporto aiuta Nolej ad analizzarlo meglio.';
 $string['create'] = 'Crea modulo';
 $string['modulenotcreated'] = 'Modulo non creato';
-$string['modulecreated'] = 'Modulo creato, trascrizione in corso...';
+$string['modulecreated'] = 'Modulo creato, trascrizione in corso. Riceverai una notifica quando sarà pronta.';
 $string['modulenotfound'] = 'Modulo non trovato';
 $string['errdatamissing'] = 'Mancano alcuni dati';
 $string['errdocument'] = 'Si è verificato un errore durante la creazione del modulo Nolej:<br><pre>{$a}</pre><br>Si prega di riprovare o contattare un amministratore se questo errore persiste.';
@@ -139,7 +139,7 @@ $string['analyze'] = 'Avvia analisi';
 $string['analysisconfirm'] = 'Attenzione: Prima di procedere, hai revisionato attentamente la trascrizione? Una volta avviata l\'analisi, non sarà possibile apportare modifiche. Assicurati dell\'accuratezza prima di continuare.';
 $string['transcription'] = 'Trascrizione';
 $string['missingtranscription'] = 'Trascrizione mancante';
-$string['analysisstart'] = 'Analisi avviata';
+$string['analysisstart'] = 'Analisi avviata. Riceverai una notifica quando sarà pronta.';
 $string['cannotwritetranscription'] = 'Impossibile salvare la trascrizione su disco, contatta un amministratore se questo errore persiste.';
 
 // Summary.
@@ -223,7 +223,7 @@ $string['minvalue'] = 'Valore minimo';
 $string['maxvalue'] = 'Valore massimo';
 $string['cannotwritesettings'] = 'Impossibile salvare le impostazioni su disco, contatta un amministratore se questo errore persiste.';
 $string['settingsnotsaved'] = 'Impossibile aggiornare le impostazioni. Contatta un amministratore se questo errore persiste.';
-$string['generationstarted'] = 'Generazione avviata';
+$string['generationstarted'] = 'Generazione avviata. Riceverai una notifica quando le attività saranno pronte.';
 $string['erractivitiesdecode'] = 'Decodifica dati attività non riuscita';
 $string['erractivitydownload'] = 'Impossibile salvare l\'attività su disco';
 $string['errh5psave'] = 'Impossibile salvare il pacchetto h5p';

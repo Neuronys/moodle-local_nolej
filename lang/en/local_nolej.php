@@ -117,7 +117,7 @@ $string['language'] = 'Content language';
 $string['languagedesc'] = 'Choosing the correct language of the media helps Nolej to better analyze it.';
 $string['create'] = 'Create module';
 $string['modulenotcreated'] = 'Module not created';
-$string['modulecreated'] = 'Module created, transcription in progress...';
+$string['modulecreated'] = 'Module created, transcription in progress. You will receive a notification when the transcription is completed.';
 $string['modulenotfound'] = 'Module not found';
 $string['errdatamissing'] = 'Some data missing';
 $string['errdocument'] = 'An error accurred during the creation of Nolej module:<br><pre>{$a}</pre><br>Please try again or contact an administrator if this error persists.';
@@ -139,7 +139,7 @@ $string['analyze'] = 'Start analysis';
 $string['analysisconfirm'] = 'Warning: Before proceeding, have you thoroughly reviewed the transcription? Once the analysis begins, modifications cannot be made. Please ensure accuracy before continuing.';
 $string['transcription'] = 'Transcription';
 $string['missingtranscription'] = 'Missing transcription';
-$string['analysisstart'] = 'Analysis started';
+$string['analysisstart'] = 'Analysis started. You will receive a notification when the analysis is completed.';
 $string['cannotwritetranscription'] = 'Cannot save transcription on disk, please contact an Administrator if this error persists.';
 
 // Summary.
@@ -223,7 +223,7 @@ $string['minvalue'] = 'Minimum value';
 $string['maxvalue'] = 'Maximum value';
 $string['cannotwritesettings'] = 'Cannot save settings on disk, please contact an Administrator if this error persists.';
 $string['settingsnotsaved'] = 'Could not update the settings. Please contact an Administrator if this error persists.';
-$string['generationstarted'] = 'Generation started';
+$string['generationstarted'] = 'Generation started. You will receive a notification when the activities are ready.';
 $string['erractivitiesdecode'] = 'Failed to decode activities data';
 $string['erractivitydownload'] = 'Failed to save activity on disk';
 $string['errh5psave'] = 'Failed to save h5p package';

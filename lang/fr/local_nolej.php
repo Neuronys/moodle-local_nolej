@@ -117,7 +117,7 @@ $string['language'] = 'Langue du contenu';
 $string['languagedesc'] = 'Choisissez la langue du média pour permettre à Nolej de mieux vous aider.';
 $string['create'] = 'Créer un module';
 $string['modulenotcreated'] = 'Module non créé';
-$string['modulecreated'] = 'Module créé, transcription en cours...';
+$string['modulecreated'] = 'Module créé, transcription en cours. Vous recevrez une notification lorsque la transcription sera terminée.';
 $string['modulenotfound'] = 'Aucun module trouvé';
 $string['errdatamissing'] = 'Certaines données manquent';
 $string['errdocument'] = 'Une erreur est arrivée au cours de la création du module Nolej:<br><pre>{$a}</pre><br>Veuillez réessayer ou contacter un administrateur si l\'erreur persiste.';
@@ -139,7 +139,7 @@ $string['analyze'] = 'Commencer l\'analyse';
 $string['analysisconfirm'] = 'Attention: Avant de continuer, avez-vous bien vérifié la transcription? Once the analysis begins, modifications cannot be made. Please ensure accuracy before continuing.';
 $string['transcription'] = 'Transcription';
 $string['missingtranscription'] = 'Transcription manquante';
-$string['analysisstart'] = 'Analyse commencée';
+$string['analysisstart'] = 'Analyse commencée. Vous recevrez une notification lorsque l\'analyse sera terminée.';
 $string['cannotwritetranscription'] = 'Impossible de sauvegarder la transcription sur le disque, veuillez contacter un Administrateur si l\'erreur persiste.';
 
 // Summary.
@@ -223,7 +223,7 @@ $string['minvalue'] = 'Valeur minimale';
 $string['maxvalue'] = 'Valeur maximale';
 $string['cannotwritesettings'] = 'Impossible de sauvegarder les paramètres sur le disque, veuillez contacter un Administrateur si l\'erreur persiste.';
 $string['settingsnotsaved'] = 'Échec de la mise à jour des paramètres, veuillez contacter un Administrateur si l\'erreur persiste.';
-$string['generationstarted'] = 'Génération commencée';
+$string['generationstarted'] = 'Génération commencée. Vous recevrez une notification lorsque les activités seront prêtes.';
 $string['erractivitiesdecode'] = 'Échec du décodage des données des activités';
 $string['erractivitydownload'] = 'Échec de la sauvegarde de l\'activité sur le disque';
 $string['errh5psave'] = 'Échec de la sauvegarde du paquet H5P';

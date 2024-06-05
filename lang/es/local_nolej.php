@@ -117,7 +117,7 @@ $string['language'] = 'Idioma del contenido';
 $string['languagedesc'] = 'Elegir el idioma correcto del contenido ayuda a Nolej a analizarlo mejor.';
 $string['create'] = 'Crear módulo';
 $string['modulenotcreated'] = 'Módulo no creado';
-$string['modulecreated'] = 'Módulo creado, transcripción en progreso...';
+$string['modulecreated'] = 'Módulo creado, transcripción en progreso. Recibirás una notificación cuando se complete la transcripción.';
 $string['modulenotfound'] = 'Módulo no encontrado';
 $string['errdatamissing'] = 'Faltan algunos datos';
 $string['errdocument'] = 'Se produjo un error durante la creación del módulo de Nolej:<br><pre>{$a}</pre><br>Por favor, inténtalo de nuevo o ponte en contacto con un administrador si este error persiste.';
@@ -139,7 +139,7 @@ $string['analyze'] = 'Iniciar análisis';
 $string['analysisconfirm'] = 'Advertencia: ¿Has revisado minuciosamente la transcripción antes de continuar? Una vez que comience el análisis, no se pueden realizar modificaciones. Por favor, asegúrate de la precisión antes de continuar.';
 $string['transcription'] = 'Transcripción';
 $string['missingtranscription'] = 'Transcripción faltante';
-$string['analysisstart'] = 'Análisis iniciado';
+$string['analysisstart'] = 'Análisis iniciado. Recibirás una notificación cuando se complete el análisis.';
 $string['cannotwritetranscription'] = 'No se puede guardar la transcripción en el disco, por favor, ponte en contacto con un administrador si este error persiste.';
 
 // Summary.
@@ -223,7 +223,7 @@ $string['minvalue'] = 'Valor mínimo';
 $string['maxvalue'] = 'Valor máximo';
 $string['cannotwritesettings'] = 'No se pueden guardar las configuraciones en el disco, por favor, ponte en contacto con un administrador si este error persiste.';
 $string['settingsnotsaved'] = 'No se pudo actualizar las configuraciones. Por favor, ponte en contacto con un administrador si este error persiste.';
-$string['generationstarted'] = 'Generación iniciada';
+$string['generationstarted'] = 'Generación iniciada. Recibirás una notificación cuando se completen las actividades.';
 $string['erractivitiesdecode'] = 'Error al decodificar los datos de actividades';
 $string['erractivitydownload'] = 'Error al guardar la actividad en el disco';
 $string['errh5psave'] = 'Error al guardar el paquete h5p';
