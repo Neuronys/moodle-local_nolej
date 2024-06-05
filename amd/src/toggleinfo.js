@@ -24,6 +24,6 @@
 define(['jquery'], function ($) {
     $('#toggleinfo').click(function () {
         $('#chevronIcon').toggleClass('fa-chevron-down');
-        $('#chevronIcon').toggleClass('fa-chevron-up');
+        $('#chevronIcon').toggleClass('fa-chevron-right');
     });
 });
