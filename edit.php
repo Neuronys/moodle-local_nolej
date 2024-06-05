@@ -47,7 +47,7 @@ if (!api::haskey()) {
 }
 
 $documentid = optional_param('documentid', null, PARAM_ALPHANUMEXT);
-$step = empty($documentid) ? null : optional_param('step', null, PARAM_ALPHA);
+$step = empty($documentid) ? '' : optional_param('step', '', PARAM_ALPHA);
 
 $PAGE->set_url(
     new moodle_url(
