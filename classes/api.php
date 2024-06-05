@@ -27,8 +27,18 @@ namespace local_nolej;
 
 defined('MOODLE_INTERNAL') || die();
 
+use curl;
 use moodle_url;
+use context_coursecat;
+use core_course_category;
+use core_user;
+use Exception;
+use core\message\message;
 use core\output\notification;
+use core_h5p\factory;
+use core_h5p\file_storage;
+use contenttype_h5p\contenttype;
+use local_nolej\event\webhook_called;
 
 require_once ($CFG->dirroot . '/local/nolej/classes/event/webhook_called.php');
 require_once ($CFG->dirroot . '/local/nolej/classes/module.php');
@@ -107,7 +117,7 @@ class api
             'User-Agent: Moodle Plugin',
         ];
 
-        $curl = new \curl();
+        $curl = new curl();
         $curl->setHeader($header);
         $response = $curl->post($url, $encodeddata, $options);
 
@@ -154,7 +164,7 @@ class api
             'User-Agent: Moodle Plugin',
         ];
 
-        $curl = new \curl();
+        $curl = new curl();
         $curl->setHeader($header);
         $jsonresult = $curl->post($url, $jsondata, $options);
 
@@ -200,7 +210,7 @@ class api
             'User-Agent: Moodle Plugin',
         ];
 
-        $curl = new \curl();
+        $curl = new curl();
         $curl->setHeader($header);
         $jsonresult = $curl->put($url, $jsondata, $options);
 
@@ -433,7 +443,7 @@ class api
      */
     public function log($message, $documentid = null)
     {
-        $event = \local_nolej\event\webhook_called::create(
+        $event = webhook_called::create(
             [
                 'other' => [
                     'documentid' => $documentid,
@@ -455,7 +465,7 @@ class api
             $this->shouldexit = true;
             try {
                 $data = json_decode(file_get_contents('php://input'), true);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->respondwithmessage(400, 'Request not valid.');
             }
         }
@@ -489,7 +499,10 @@ class api
             case 'work in progress':
                 $this->log('Received work in progress.');
                 if (isloggedin() && !isguestuser()) {
-                    \core\notification::add(get_string('work_in_progress', 'local_nolej'), notification::NOTIFY_INFO);
+                    \core\notification::add(
+                        get_string('work_in_progress', 'local_nolej'),
+                        notification::NOTIFY_INFO
+                    );
                     return;
                 }
                 break;
@@ -905,12 +918,12 @@ class api
     {
         $categoryid = get_config('local_nolej', 'categoryid');
 
-        if (!empty($categoryid) && \core_course_category::get($categoryid, IGNORE_MISSING, true) != null) {
+        if (!empty($categoryid) && core_course_category::get($categoryid, IGNORE_MISSING, true) != null) {
             return (int) $categoryid;
         }
 
         // Create Nolej context if not exists.
-        $nolejcategory = \core_course_category::create((object) [
+        $nolejcategory = core_course_category::create((object) [
             'name' => 'Nolej',
             'description' => 'This category contains Nolej h5p contents',
             'parent' => 0,
@@ -938,7 +951,7 @@ class api
         $now = time();
 
         $fs = get_file_storage();
-        $h5pfactory = new \core_h5p\factory();
+        $h5pfactory = new factory();
 
         $json = self::getcontent(
             $document->document_id,
@@ -955,7 +968,7 @@ class api
         $activities = $activities->activities;
 
         // Create category.
-        $modulecategory = \core_course_category::create((object) [
+        $modulecategory = core_course_category::create((object) [
             'name' => sprintf(
                 '%s (%s)',
                 $document->title,
@@ -964,7 +977,7 @@ class api
             'description' => userdate($now, get_string('strftimedatetimeshortaccurate', 'core_langconfig')),
             'parent' => $nolejcategoryid,
         ]);
-        $modulecontext = \context_coursecat::instance($modulecategory->id);
+        $modulecontext = context_coursecat::instance($modulecategory->id);
 
         foreach ($activities as $activity) {
             $filepath = sprintf('%s/%s.h5p', $h5pdir, $activity->activity_name);
@@ -992,13 +1005,13 @@ class api
                     'contextid' => $modulecontext->id,
                     'filepath' => '/',
                 ];
-                $contenttype = new \contenttype_h5p\contenttype($modulecontext);
+                $contenttype = new contenttype($modulecontext);
                 $h5pcontent = $contenttype->create_content($record);
 
                 $filerecord = (object) [
                     'contextid' => $modulecontext->id,
-                    'component' => \core_h5p\file_storage::COMPONENT,
-                    'filearea' => \core_h5p\file_storage::CONTENT_FILEAREA,
+                    'component' => file_storage::COMPONENT,
+                    'filearea' => file_storage::CONTENT_FILEAREA,
                     'itemid' => $h5pcontent->get_id(),
                     'filepath' => '/',
                     'filename' => get_string('activities' . $activity->activity_name, 'local_nolej') . '.h5p',
@@ -1020,7 +1033,7 @@ class api
                     false
                 );
 
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $errors[] = sprintf('%s (%s)', $activity->activity_name, 'Exception: ' . var_export($e, true));
             }
         }
@@ -1070,10 +1083,10 @@ class api
             false
         );
 
-        $message = new \core\message\message();
+        $message = new message();
         $message->component = 'local_nolej';
         $message->name = $action;
-        $message->userfrom = \core_user::get_noreply_user();
+        $message->userfrom = core_user::get_noreply_user();
         $message->userto = $userid;
         $message->subject = get_string('action_' . $action, 'local_nolej');
         $message->fullmessage = get_string('action_' . $action . '_body', 'local_nolej', $vars);
