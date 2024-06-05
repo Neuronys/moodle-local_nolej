@@ -127,12 +127,12 @@ $string['limitcontent'] = 'Content limitations';
 $string['limitaudio'] = 'Audio limits';
 $string['limitvideo'] = 'Video limits';
 $string['limitdoc'] = 'Document limits';
-$string['limitmaxduration'] = 'Max duration: {$a->minutes} minutes.';
-$string['limitmaxpages'] = 'Maximum number of pages: {$a->pages}.';
-$string['limitmaxsize'] = 'File maximum size: {$a->gb} GB.';
-$string['limitmincharacters'] = 'Minimum characters: {$a->characters}.';
-$string['limitmaxcharacters'] = 'Maximum characters: {$a->characters}.';
-$string['limittype'] = 'Allowed types: {$a->formats}.';
+$string['limitmaxduration'] = 'Max duration: {$a} minutes.';
+$string['limitmaxpages'] = 'Maximum number of pages: {$a}.';
+$string['limitmaxsize'] = 'File maximum size: {$a} GB.';
+$string['limitmincharacters'] = 'Minimum characters: {$a}.';
+$string['limitmaxcharacters'] = 'Maximum characters: {$a}.';
+$string['limittype'] = 'Allowed types: {$a}.';
 
 // Analysis.
 $string['analyze'] = 'Start analysis';
