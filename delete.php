@@ -72,5 +72,5 @@ redirect(
     new moodle_url('/local/nolej/manage.php'),
     get_string('moduledeleted', 'local_nolej'),
     null,
-    notification::SUCCESS
+    notification::NOTIFY_SUCCESS
 );
