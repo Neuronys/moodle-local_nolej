@@ -119,21 +119,32 @@ class questions extends \moodleform
                     )
                 );
 
+                // Text of the question.
                 if ($questiontype != 'tf') {
+                    $questionid = 'question_' . $questions[$i]->id . '_question';
                     $mform->addElement(
                         'textarea',
-                        'question_' . $questions[$i]->id . '_question',
+                        $questionid,
                         get_string('question', 'local_nolej'),
                         'wrap="virtual" rows="2"'
                     )->setValue($questions[$i]->question);
+                    $mform->addRule($questionid, get_string('required'), 'required', null, 'server', false, false);
+
+                    if ($questiontype == 'ftb') {
+                        $mform->addRule($questionid, get_string('required'), 'regex', '/_{4}/', null, 'server', false, false);
+                    }
                 }
 
-                $mform->addElement('hidden', 'question_' . $questions[$i]->id . '_type')->setValue($questions[$i]->question_type);
-                $mform->setType('question_' . $questions[$i]->id . '_type', PARAM_ALPHA);
+                // Question type.
+                $typeid = 'question_' . $questions[$i]->id . '_type';
+                $mform->addElement('hidden', $typeid)->setValue($questions[$i]->question_type);
+                $mform->setType($typeid, PARAM_ALPHA);
 
+                // Enable question.
+                $enableid = 'question_' . $questions[$i]->id . '_enable';
                 $mform->addElement(
                     'selectyesno',
-                    'question_' . $questions[$i]->id . '_enable',
+                    $enableid,
                     get_string(
                         $questiontype == 'open' ? 'questionenable' : 'questionuseforgrading',
                         'local_nolej'
@@ -144,33 +155,41 @@ class questions extends \moodleform
                         : $questions[$i]->use_for_grading
                     );
 
+                // Text of the answer.
                 if ($questiontype != 'hoq') {
+                    $answerid = 'question_' . $questions[$i]->id . '_answer';
                     $mform->addElement(
                         $questiontype == 'ftb' ? 'text' : 'textarea',
-                        'question_' . $questions[$i]->id . '_answer',
+                        $answerid,
                         get_string($questiontype == 'tf' ? 'questionanswertrue' : 'questionanswer', 'local_nolej'),
                         $questiontype == 'ftb' ? '' : 'wrap="virtual" rows="3"'
                     )->setValue($questions[$i]->answer);
-                    $mform->setType('question_' . $questions[$i]->id . '_answer', PARAM_TEXT);
+                    $mform->setType($answerid, PARAM_TEXT);
+                    $mform->addRule($answerid, get_string('required'), 'required', null, 'server', false, false);
                 }
 
+                // Distractors.
                 $distractorscount = count($questions[$i]->distractors);
                 $mform->addElement('hidden', 'question_' . $questions[$i]->id . '_distractors')->setValue($distractorscount);
                 $mform->setType('question_' . $questions[$i]->id . '_distractors', PARAM_INT);
 
                 for ($j = 0; $j < $distractorscount; $j++) {
+                    $distractorid = 'question_' . $questions[$i]->id . '_distractor_' . $j;
                     $mform->addElement(
                         'textarea',
-                        'question_' . $questions[$i]->id . '_distractor_' . $j,
+                        $distractorid,
                         get_string($questiontype == 'tf' ? 'questionanswerfalse' : 'questiondistractor', 'local_nolej'),
                         'wrap="virtual" rows="3"'
                     )->setValue($questions[$i]->distractors[$j]);
+                    $mform->addRule($distractorid, get_string('required'), 'required', null, 'server', false, false);
                 }
 
+                // Choose distractor.
                 if ($questiontype == 'tf') {
+                    $selecteddistractorid = 'question_' . $questions[$i]->id . '_selected_distractor';
                     $mform->addElement(
                         'select',
-                        'question_' . $questions[$i]->id . '_selected_distractor',
+                        $selecteddistractorid,
                         get_string('questionusedistractor', 'local_nolej'),
                         [
                             '' => get_string('questionanswertrue', 'local_nolej'),
