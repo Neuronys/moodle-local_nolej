@@ -77,7 +77,7 @@ class range_form_element extends HTML_QuickForm_text
 
     /**
      * Returns the element value.
-     * @param array $submitValues
+     * @param array $submitvalues
      * @param bool $assoc
      * @param int $nesting
      *
