@@ -162,6 +162,7 @@ $string['question'] = 'Pergunta';
 $string['questiontype'] = 'Tipo de pergunta';
 $string['questiontypeopen'] = 'Resposta aberta';
 $string['questiontypeftb'] = 'Preencher lacunas';
+$string['questiontypeftbmissingblank'] = 'A atividade "Preencher lacunas" requer um espaço reservado para a palavra que falta. Utilize 4 (quatro) caracteres sublinhados “____” para indicar a palavra que falta.';
 $string['questiontypetf'] = 'Verdadeiro ou falso';
 $string['questiontypemcq'] = 'Pergunta de múltipla escolha';
 $string['questiontypehoq'] = 'Pergunta de alto nível';

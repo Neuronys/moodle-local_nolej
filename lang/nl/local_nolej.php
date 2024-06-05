@@ -162,6 +162,7 @@ $string['question'] = 'Vraag';
 $string['questiontype'] = 'Soort vraag';
 $string['questiontypeopen'] = 'Open antwoord';
 $string['questiontypeftb'] = 'Vul de lege plekken in';
+$string['questiontypeftbmissingblank'] = 'Voor de activiteit "Vul de lege plekken in" is een tijdelijke aanduiding voor het ontbrekende woord vereist. Gebruik 4 (vier) onderstrepingstekens "____" om het ontbrekende woord aan te geven.';
 $string['questiontypetf'] = 'Waar of niet waar';
 $string['questiontypemcq'] = 'Meerkeuzevraag';
 $string['questiontypehoq'] = 'Vraag van hogere orde';

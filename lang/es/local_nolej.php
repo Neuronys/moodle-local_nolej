@@ -162,6 +162,7 @@ $string['question'] = 'Pregunta';
 $string['questiontype'] = 'Tipo de pregunta';
 $string['questiontypeopen'] = 'Respuesta abierta';
 $string['questiontypeftb'] = 'Completar los espacios en blanco';
+$string['questiontypeftbmissingblank'] = 'La actividad "Completar los espacios en blanco" requiere un marcador de posición para la palabra que falta. Utilice 4 (cuatro) caracteres de guión bajo "____" para indicar la palabra que falta.';
 $string['questiontypetf'] = 'Verdadero o falso';
 $string['questiontypemcq'] = 'Pregunta de opción múltiple';
 $string['questiontypehoq'] = 'Pregunta de alto nivel';

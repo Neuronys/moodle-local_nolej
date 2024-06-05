@@ -162,6 +162,7 @@ $string['question'] = 'Question';
 $string['questiontype'] = 'Type de question';
 $string['questiontypeopen'] = 'Réponse ouverte';
 $string['questiontypeftb'] = 'Texte à trou';
+$string['questiontypeftbmissingblank'] = 'L\'activité « Texte à trou » nécessite un espace réservé pour le mot manquant. Utilisez 4 (quatre) caractères de soulignement « ____ » pour indiquer le mot manquant.';
 $string['questiontypetf'] = 'Vrai ou Faux';
 $string['questiontypemcq'] = 'QCM';
 $string['questiontypehoq'] = 'Question de haut niveau';

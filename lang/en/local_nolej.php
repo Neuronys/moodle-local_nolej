@@ -162,6 +162,7 @@ $string['question'] = 'Question';
 $string['questiontype'] = 'Question type';
 $string['questiontypeopen'] = 'Open answer';
 $string['questiontypeftb'] = 'Fill the blanks';
+$string['questiontypeftbmissingblank'] = 'The "Fill the blanks" activity requires a placeholder for the missing word. Use 4 (four) underscore characters "____" to indicate the missing word.';
 $string['questiontypetf'] = 'True or false';
 $string['questiontypemcq'] = 'Multiple choice question';
 $string['questiontypehoq'] = 'High order question';

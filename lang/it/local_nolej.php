@@ -162,6 +162,7 @@ $string['question'] = 'Domanda';
 $string['questiontype'] = 'Tipo di domanda';
 $string['questiontypeopen'] = 'Risposta aperta';
 $string['questiontypeftb'] = 'Riempi gli spazi';
+$string['questiontypeftbmissingblank'] = 'L\'attività "Riempi gli spazi" richiede un segnaposto per la parola mancante. Utilizzare 4 (quattro) trattini bassi "____" per indicare la parola mancante.';
 $string['questiontypetf'] = 'Vero o falso';
 $string['questiontypemcq'] = 'Domanda a risposta multipla';
 $string['questiontypehoq'] = 'Domanda di alto livello';

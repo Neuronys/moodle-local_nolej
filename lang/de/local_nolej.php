@@ -162,6 +162,7 @@ $string['question'] = 'Frage';
 $string['questiontype'] = 'Fragetyp';
 $string['questiontypeopen'] = 'Offene Antwort';
 $string['questiontypeftb'] = 'Lücken ausfüllen';
+$string['questiontypeftbmissingblank'] = 'Für die Aktivität „Fill the blanks“ ist ein Platzhalter für das fehlende Wort erforderlich. Verwenden Sie bitte 4 (vier) Unterstriche „____“, um das fehlende Wort anzugeben';
 $string['questiontypetf'] = 'Richtig oder Falsch';
 $string['questiontypemcq'] = 'Mehrfachauswahlfrage';
 $string['questiontypehoq'] = 'Hochstufungsfrage';
