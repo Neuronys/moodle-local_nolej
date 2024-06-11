@@ -87,7 +87,7 @@ class range_form_element extends HTML_QuickForm_text
     {
         $value = parent::exportValue($submitvalues, $assoc, $nesting);
         if (is_numeric($value)) {
-            return $value;
+            return trim($value);
         }
         return false;
     }
