@@ -51,7 +51,7 @@ class activities extends \moodleform
 
         \MoodleQuickForm::registerElementType(
             'range',
-            "$CFG->dirroot/local/nolej/classes/form/element/range_form_element.php",
+            $CFG->dirroot . '/local/nolej/classes/form/element/range_form_element.php',
             'range_form_element'
         );
 
