@@ -115,29 +115,24 @@ class module
      */
     public static function getstatusname(int $status)
     {
-        switch ($status) {
-            case self::STATUS_CREATION:
-                return get_string('statuscreation', 'local_nolej');
-            case self::STATUS_CREATION_PENDING:
-                return get_string('statuscreationpending', 'local_nolej');
-            case self::STATUS_ANALYSIS:
-                return get_string('statusanalysis', 'local_nolej');
-            case self::STATUS_ANALYSIS_PENDING:
-                return get_string('statusanalysispending', 'local_nolej');
-            case self::STATUS_REVISION:
-                return get_string('statusrevision', 'local_nolej');
-            case self::STATUS_REVISION_PENDING:
-                return get_string('statusrevisionpending', 'local_nolej');
-            case self::STATUS_ACTIVITIES:
-                return get_string('statusactivities', 'local_nolej');
-            case self::STATUS_ACTIVITIES_PENDING:
-                return get_string('statusactivitiespending', 'local_nolej');
-            case self::STATUS_COMPLETED:
-                return get_string('statuscompleted', 'local_nolej');
-            case self::STATUS_FAILED:
-            default:
-                return get_string('statusfailed', 'local_nolej');
+        $statusmap = [
+            self::STATUS_CREATION => 'statuscreation',
+            self::STATUS_CREATION_PENDING => 'statuscreationpending',
+            self::STATUS_ANALYSIS => 'statusanalysis',
+            self::STATUS_ANALYSIS_PENDING => 'statusanalysispending',
+            self::STATUS_REVISION => 'statusrevision',
+            self::STATUS_REVISION_PENDING => 'statusrevisionpending',
+            self::STATUS_ACTIVITIES => 'statusactivities',
+            self::STATUS_ACTIVITIES_PENDING => 'statusactivitiespending',
+            self::STATUS_COMPLETED => 'statuscompleted',
+            self::STATUS_FAILED => 'statusfailed',
+        ];
+
+        if (array_key_exists($status, $statusmap)) {
+            return get_string($statusmap[$status], 'local_nolej');
         }
+
+        return get_string('statusfailed', 'local_nolej');
     }
 
     /**
@@ -1063,8 +1058,6 @@ class module
      * @param string $directory
      *
      * @return string unique filename
-     *
-     * @see https://forums.phpfreaks.com/topic/103941-solved-auto-increment-if-file-exists/
      */
     protected function uniquefilename($filename, $directory)
     {
