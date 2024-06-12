@@ -30,42 +30,42 @@ $messageproviders = [
     'transcription_ok' => [ // Transctiption completed.
         'capability' => 'local/nolej:usenolej',
         'defaults' => [
-            'pop-up' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
+            'popup' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
             'email' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
         ],
     ],
     'transcription_ko' => [ // Transctiption failed.
         'capability' => 'local/nolej:usenolej',
         'defaults' => [
-            'pop-up' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
+            'popup' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
             'email' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
         ],
     ],
     'analysis_ok' => [ // Analysis completed.
         'capability' => 'local/nolej:usenolej',
         'defaults' => [
-            'pop-up' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
+            'popup' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
             'email' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
         ],
     ],
     'analysis_ko' => [ // Analysis failed.
         'capability' => 'local/nolej:usenolej',
         'defaults' => [
-            'pop-up' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
+            'popup' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
             'email' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
         ],
     ],
     'activities_ok' => [ // Activities generation completed.
         'capability' => 'local/nolej:usenolej',
         'defaults' => [
-            'pop-up' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
+            'popup' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
             'email' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
         ],
     ],
     'activities_ko' => [ // Activities generation failed.
         'capability' => 'local/nolej:usenolej',
         'defaults' => [
-            'pop-up' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
+            'popup' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
             'email' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
         ],
     ],
