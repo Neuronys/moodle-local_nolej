@@ -1137,7 +1137,7 @@ class api
     public static function sanitizefilename($filename)
     {
         $filename = mb_ereg_replace("([^\w\d\-_\(\).])", '', $filename);
-        $filename = mb_ereg_replace("([\.]{2,})", '', $filename);
+        $filename = mb_ereg_replace("([\.]{2,})", '.', $filename);
         return $filename;
     }
 
