@@ -40,6 +40,7 @@ use core_h5p\file_storage;
 use contenttype_h5p\contenttype;
 use local_nolej\event\webhook_called;
 
+global $CFG;
 require_once ($CFG->dirroot . '/local/nolej/classes/event/webhook_called.php');
 require_once ($CFG->dirroot . '/local/nolej/classes/module.php');
 

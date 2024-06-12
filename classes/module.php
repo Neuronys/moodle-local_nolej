@@ -30,6 +30,9 @@ defined('MOODLE_INTERNAL') || die();
 use moodle_url;
 use core\output\notification;
 
+global $CFG;
+require_once ($CFG->dirroot . '/local/nolej/classes/api.php');
+
 /**
  * Nolej module class
  */
