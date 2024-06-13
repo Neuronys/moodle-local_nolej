@@ -37,6 +37,7 @@ function xmldb_local_nolej_upgrade($oldversion)
 
     $dbman = $DB->get_manager();
 
+    // Update user_id field precision.
     if ($oldversion < 2024061301) {
 
         // Update user_id field precision for table nolej_module.
@@ -55,6 +56,51 @@ function xmldb_local_nolej_upgrade($oldversion)
 
         // Nolej savepoint reached.
         upgrade_plugin_savepoint(true, 2024061301, 'local', 'nolej');
+    }
+
+    // Rename tables and re-define foreign keys.
+    if ($oldversion < 2024061302) {
+
+        // Rename table nolej_module to local_nolej_module.
+        $table = new xmldb_table('nolej_module');
+        if ($dbman->table_exists($table)) {
+            $dbman->rename_table($table, 'local_nolej_module');
+        }
+
+        // Rename table nolej_activity to local_nolej_activity.
+        $table = new xmldb_table('nolej_activity');
+        if ($dbman->table_exists($table)) {
+            $dbman->rename_table($table, 'local_nolej_activity');
+        }
+
+        // Rename table nolej_h5p to local_nolej_h5p.
+        $table = new xmldb_table('nolej_h5p');
+        if ($dbman->table_exists($table)) {
+            $dbman->rename_table($table, 'local_nolej_h5p');
+        }
+
+        // Define key document_id (foreign) to be dropped from local_nolej_activity.
+        $table = new xmldb_table('local_nolej_activity');
+        $key = new xmldb_key('document_id', XMLDB_KEY_FOREIGN, ['document_id'], 'local_nolej_module', ['document_id']);
+
+        // Re-define foreign keys.
+        if ($dbman->table_exists($table)) {
+            $dbman->drop_key($table, $key);
+            $dbman->add_key($table, $key);
+        }
+
+        // Define key document_id (foreign) to be dropped from local_nolej_h5p.
+        $table = new xmldb_table('local_nolej_h5p');
+        $key = new xmldb_key('document_id', XMLDB_KEY_FOREIGN, ['document_id'], 'local_nolej_module', ['document_id']);
+
+        // Re-define foreign keys.
+        if ($dbman->table_exists($table)) {
+            $dbman->drop_key($table, $key);
+            $dbman->add_key($table, $key);
+        }
+
+        // Update the version number to the current version.
+        upgrade_plugin_savepoint(true, 2024061302, 'local', 'nolej');
     }
 
     return true;
