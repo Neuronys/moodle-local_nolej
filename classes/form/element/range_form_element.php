@@ -93,7 +93,7 @@ class range_form_element extends HTML_QuickForm_text
         // Make sure value is within the range.
         if ($value <= $this->_options['min']) {
             return $this->_options['min'];
-        } elseif ($value >= $this->_options['max']) {
+        } else if ($value >= $this->_options['max']) {
             return $this->_options['max'];
         }
 
