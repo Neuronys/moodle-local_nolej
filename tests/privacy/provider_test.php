@@ -24,8 +24,17 @@ use core_privacy\local\request\userlist;
 use core_privacy\local\request\writer;
 use core_privacy\tests\provider_testcase;
 use local_nolej\module;
-use local_nolej\api;
 
+/**
+ * Test script for classes/privacy/provider.php.
+ *
+ * @package     local_nolej
+ * @author      Vincenzo Padula <vincenzo@oc-group.eu>
+ * @copyright   2024 OC Open Consulting SB Srl
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @category    test
+ * @coversDefaultClass \local_nolej\privacy\provider
+ */
 class provider_test extends provider_testcase
 {
 
