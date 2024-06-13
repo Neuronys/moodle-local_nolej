@@ -28,7 +28,7 @@ define(['jquery', 'core/modal_factory', 'core/str', 'core/modal_events'], functi
         title: String.get_string('deletemodule', 'local_nolej'),
         body: String.get_string('deletemoduledescription', 'local_nolej'),
         preShowCallback: function (triggerElement, modal) {
-            var triggerElement = $(triggerElement);
+            triggerElement = $(triggerElement);
             modal.params = {
                 'documentid': triggerElement[0].getAttribute('data-documentid')
             };
