@@ -1,13 +1,32 @@
 /* Document info */
 
+.card-header {
+    border-bottom: none;
+}
+
+.card-header nav {
+    box-shadow: none;
+}
+
 .table-accordion tr:first-child td {
     border-top: none;
 }
+
+/* Document creation */
+
+#fitem_id_sourcetext .atto_image_button,
+#fitem_id_sourcetext .atto_h5p_button {
+    display: none;
+}
+
+/* Document analysis */
 
 #fitem_id_transcription .atto_image_button,
 #fitem_id_transcription .atto_h5p_button {
     display: none;
 }
+
+/* Questions form */
 
 .local_nolej_question {
     background: #fff;
@@ -53,16 +72,15 @@
     border-left: 2px solid #7db5b9;
 }
 
-/* Document creation */
-
-#fitem_id_sourcetext .atto_image_button,
-#fitem_id_sourcetext .atto_h5p_button {
-    display: none;
-}
-
 /* Content limits */
 
 .limit-container {
     margin-bottom: 20px;
     margin-top: calc(0.375rem + 1px);
+}
+
+/* Range form element */
+
+div.form-group.row.fitem {
+    margin-top: -1.5rem;
 }
