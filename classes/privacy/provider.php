@@ -147,7 +147,7 @@ class provider implements
             // Export the nolej_module user's data.
             foreach ($modules as $module) {
                 writer::with_context($context)->export_data(
-                    'privacy:metadata:nolej_module',
+                    [get_string('privacy:metadata:nolej_module', 'local_nolej')],
                     $module
                 );
             }
@@ -162,7 +162,7 @@ class provider implements
             // Export the nolej_activity user's data.
             foreach ($activities as $activity) {
                 writer::with_context($context)->export_data(
-                    'privacy:metadata:nolej_activity',
+                    [get_string('privacy:metadata:nolej_activity', 'local_nolej')],
                     $activity
                 );
             }
