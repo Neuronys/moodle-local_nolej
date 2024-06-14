@@ -58,8 +58,7 @@ class range_form_element extends HTML_QuickForm_text {
      *
      * @return void
      */
-    public function __construct($elementname = null, $elementlabel = null, $options = null)
-    {
+    public function __construct($elementname = null, $elementlabel = null, $options = null) {
         parent::__construct($elementname, $elementlabel, null);
 
         // Hide default label.
@@ -81,8 +80,7 @@ class range_form_element extends HTML_QuickForm_text {
      *
      * @return mixed
      */
-    public function exportValue(&$submitvalues, $assoc = false, $nesting = 0)
-    {
+    public function exportValue(&$submitvalues, $assoc = false, $nesting = 0) {
         $value = $this->_findValue($submitvalues);
 
         // Make sure is integer.
@@ -109,8 +107,7 @@ class range_form_element extends HTML_QuickForm_text {
      *
      * @return string
      */
-    public function toHtml()
-    {
+    public function toHtml() {
         global $OUTPUT;
 
         $this->_generateId();

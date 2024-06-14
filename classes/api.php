@@ -74,8 +74,7 @@ class api {
      * Check that the API key has been set
      * @return bool
      */
-    public static function haskey()
-    {
+    public static function haskey() {
         return !empty(get_config('local_nolej', 'api_key'));
     }
 
@@ -226,8 +225,7 @@ class api {
      * Return all the allowed formats
      * @return array
      */
-    public static function allowedtypes()
-    {
+    public static function allowedtypes() {
         return array_merge(
             self::TYPE_AUDIO,
             self::TYPE_VIDEO,
@@ -241,8 +239,7 @@ class api {
      * @param string $extension
      * @return ?string
      */
-    public static function formatfromextension($extension)
-    {
+    public static function formatfromextension($extension) {
         if (in_array($extension, self::TYPE_AUDIO)) {
             return 'audio';
         }
@@ -263,8 +260,7 @@ class api {
      * @param ?string $documentid (optional)
      * @return string
      */
-    public static function datadir($documentid = null)
-    {
+    public static function datadir($documentid = null) {
         global $CFG;
         $datadir = $CFG->dataroot . '/local_nolej';
         if ($documentid != null) {
@@ -280,8 +276,7 @@ class api {
      * Return the Nolej upload directory
      * @return string
      */
-    public static function uploaddir()
-    {
+    public static function uploaddir() {
         $datadir = self::datadir();
         $uploaddir = $datadir . '/uploads';
         if (!file_exists($uploaddir)) {
@@ -295,8 +290,7 @@ class api {
      * @param string $documentid
      * @return string
      */
-    public static function h5pdir($documentid)
-    {
+    public static function h5pdir($documentid) {
         $datadir = self::datadir($documentid);
         $uploaddir = $datadir . '/h5p';
         if (!file_exists($uploaddir)) {
@@ -356,8 +350,7 @@ class api {
      * @return string|false return the content if the file exists,
      * false otherwise.
      */
-    public static function readcontent($documentid, $filename)
-    {
+    public static function readcontent($documentid, $filename) {
         $path = self::datadir($documentid) . '/' . $filename;
         if (!file_exists($path)) {
             return false;
@@ -374,8 +367,7 @@ class api {
      *
      * @return bool true on success, false on failure
      */
-    public static function putcontent($documentid, $pathname, $filename)
-    {
+    public static function putcontent($documentid, $pathname, $filename) {
         $content = self::readcontent($documentid, $filename);
         if (!$content) {
             return false;
@@ -396,8 +388,7 @@ class api {
      *
      * @return bool returns true on success, false on failure.
      */
-    public static function writecontent($documentid, $filename, $content)
-    {
+    public static function writecontent($documentid, $filename, $content) {
         return file_put_contents(
             self::datadir($documentid) . '/' . $filename,
             $content
@@ -410,8 +401,7 @@ class api {
      * @param int $userid (optional)
      * @return int status
      */
-    public static function lookupdocumentstatus($documentid, $userid = null)
-    {
+    public static function lookupdocumentstatus($documentid, $userid = null) {
         global $DB;
 
         if ($userid != null) {
@@ -441,8 +431,7 @@ class api {
      * @param string $message
      * @param ?string $documentid
      */
-    public function log($message, $documentid = null)
-    {
+    public function log($message, $documentid = null) {
         $event = webhook_called::create(
             [
                 'other' => [
@@ -458,8 +447,7 @@ class api {
      * Parse the request from POST content if
      * @param mixed $data is not null
      */
-    public function parse($data = null)
-    {
+    public function parse($data = null) {
         if ($data == null) {
             header('Content-type: application/json; charset=UTF-8');
             $this->shouldexit = true;
@@ -542,8 +530,7 @@ class api {
      * @param int $status
      * @return object|false
      */
-    public function lookupdocumentwithstatus($documentid, $status)
-    {
+    public function lookupdocumentwithstatus($documentid, $status) {
         global $DB;
 
         return $DB->get_record(
@@ -560,8 +547,7 @@ class api {
      *
      * @return void
      */
-    public function checktranscription()
-    {
+    public function checktranscription() {
         global $DB;
 
         if ($this->data['consumedCredit'] == null) {
@@ -671,8 +657,7 @@ class api {
      *
      * @return void
      */
-    public function checkanalysis()
-    {
+    public function checkanalysis() {
         global $DB;
 
         if ($this->data['consumedCredit'] == null) {
@@ -782,8 +767,7 @@ class api {
      *
      * @return void
      */
-    protected function checkactivities()
-    {
+    protected function checkactivities() {
         global $DB;
 
         if ($this->data['consumedCredit'] == null) {
@@ -914,8 +898,7 @@ class api {
      * create it if not exists.
      * @return int
      */
-    protected static function getnolejcategoryid()
-    {
+    protected static function getnolejcategoryid() {
         $categoryid = get_config('local_nolej', 'categoryid');
 
         if (!empty($categoryid) && core_course_category::get($categoryid, IGNORE_MISSING, true) != null) {
@@ -940,8 +923,7 @@ class api {
      * @param object $document
      * @return array of errors
      */
-    public function downloadactivities($document)
-    {
+    public function downloadactivities($document) {
         global $CFG, $DB;
 
         $errors = [];
@@ -1108,8 +1090,7 @@ class api {
      * @param int $userid
      * @return void
      */
-    protected function setlanguageofuser(int $userid)
-    {
+    protected function setlanguageofuser(int $userid) {
         global $DB, $CFG, $USER;
         $user = $DB->get_record(
             'user',
@@ -1133,8 +1114,7 @@ class api {
      * @param string $filename
      * @return string
      */
-    public static function sanitizefilename($filename)
-    {
+    public static function sanitizefilename($filename) {
         $filename = mb_ereg_replace("([^\w\d\-_\(\).])", '', $filename);
         $filename = mb_ereg_replace("([\.]{2,})", '.', $filename);
         return $filename;
@@ -1146,8 +1126,7 @@ class api {
      *
      * @param string $filepath
      */
-    public static function deliverfile(string $filepath)
-    {
+    public static function deliverfile(string $filepath) {
         header('Content-Description: File Transfer');
         header('Content-Type: application/octet-stream');
         header('Content-Disposition: attachment; filename=' . basename($filepath));

@@ -30,8 +30,7 @@ defined('MOODLE_INTERNAL') || die();
  * @param global_navigation $navigation
  * @return void
  */
-function local_nolej_extend_navigation(global_navigation $navigation)
-{
+function local_nolej_extend_navigation(global_navigation $navigation) {
     if (!has_capability('local/nolej:usenolej', context_system::instance())) {
         return;
     }

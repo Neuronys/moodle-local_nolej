@@ -37,8 +37,7 @@ class webhook_called extends \core\event\base {
     /**
      * Init the event
      */
-    protected function init()
-    {
+    protected function init() {
         $this->context = \context_system::instance();
         $this->data['crud'] = 'c'; // Create, Read, Update, Delete.
         $this->data['edulevel'] = \core\event\base::LEVEL_OTHER;
@@ -48,8 +47,7 @@ class webhook_called extends \core\event\base {
      * Get the localised event name
      * @return string
      */
-    public static function get_name()
-    {
+    public static function get_name() {
         return get_string('eventwebhookcalled', 'local_nolej');
     }
 
@@ -57,8 +55,7 @@ class webhook_called extends \core\event\base {
      * Return data received.
      * @return array
      */
-    public function get_description()
-    {
+    public function get_description() {
         return $this->other['message'];
     }
 
@@ -66,8 +63,7 @@ class webhook_called extends \core\event\base {
      * Url to Nolej module
      * @return ?moodle_url
      */
-    public function get_url()
-    {
+    public function get_url() {
         if ($this->other['documentid'] == null) {
             return null;
         }

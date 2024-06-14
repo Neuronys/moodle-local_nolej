@@ -40,8 +40,7 @@ class provider_test extends provider_testcase {
     /**
      * PHPUnit test setup: reset after every test.
      */
-    protected function setUp(): void
-    {
+    protected function setUp(): void {
         $this->resetAfterTest();
     }
 
@@ -50,8 +49,7 @@ class provider_test extends provider_testcase {
      *
      * @covers ::get_metadata
      */
-    public function test_get_metadata()
-    {
+    public function test_get_metadata() {
         $collection = new collection('local_nolej');
         $items = provider::get_metadata($collection)->get_collection();
         $this->assertCount(4, $items);
@@ -62,8 +60,7 @@ class provider_test extends provider_testcase {
      *
      * @covers ::get_contexts_for_userid
      */
-    public function test_get_contexts_for_userid()
-    {
+    public function test_get_contexts_for_userid() {
         global $DB;
 
         $userid = 1;
@@ -114,8 +111,7 @@ class provider_test extends provider_testcase {
      *
      * @covers ::export_user_data
      */
-    public function test_export_user_data()
-    {
+    public function test_export_user_data() {
         global $DB;
 
         $user = $this->getDataGenerator()->create_user();
@@ -174,8 +170,7 @@ class provider_test extends provider_testcase {
      *
      * @covers ::delete_data_for_all_users_in_context
      */
-    public function test_delete_data_for_all_users_in_context()
-    {
+    public function test_delete_data_for_all_users_in_context() {
         global $DB;
 
         $context = \context_system::instance();
@@ -225,8 +220,7 @@ class provider_test extends provider_testcase {
      *
      * @covers ::delete_data_for_user
      */
-    public function test_delete_data_for_user()
-    {
+    public function test_delete_data_for_user() {
         global $DB;
 
         $user = $this->getDataGenerator()->create_user();
@@ -278,8 +272,7 @@ class provider_test extends provider_testcase {
      *
      * @covers ::get_users_in_context
      */
-    public function test_get_users_in_context()
-    {
+    public function test_get_users_in_context() {
         global $DB;
 
         $context = \context_system::instance();
@@ -328,8 +321,7 @@ class provider_test extends provider_testcase {
      *
      * @covers ::delete_data_for_users
      */
-    public function test_delete_data_for_users()
-    {
+    public function test_delete_data_for_users() {
         global $DB;
 
         $context = \context_system::instance();

@@ -101,8 +101,7 @@ class module {
      * @param object|null $document default null
      * @param string $step default ''
      */
-    public function __construct(?object $document = null, string $step = '')
-    {
+    public function __construct(?object $document = null, string $step = '') {
         $this->document = $document;
         $this->documentid = $document != null ? $document->document_id : null;
         $this->step = $step;
@@ -113,8 +112,7 @@ class module {
      * @param int $status
      * @return string
      */
-    public static function getstatusname(int $status)
-    {
+    public static function getstatusname(int $status) {
         $statusmap = [
             self::STATUS_CREATION => 'statuscreation',
             self::STATUS_CREATION_PENDING => 'statuscreationpending',
@@ -139,16 +137,14 @@ class module {
      * Set module step
      * @param string $step
      */
-    public function setstep(string $step)
-    {
+    public function setstep(string $step) {
         $this->step = $step;
     }
 
     /**
      * Handle creation form
      */
-    public function creation()
-    {
+    public function creation() {
         global $OUTPUT, $PAGE, $DB, $USER, $SITE, $context;
 
         // Display and handle creation form.
@@ -327,8 +323,7 @@ class module {
     /**
      * Handle analysis form
      */
-    public function analysis()
-    {
+    public function analysis() {
         global $OUTPUT, $DB, $USER, $PAGE;
 
         // Display and handle analysis form.
@@ -460,8 +455,7 @@ class module {
     /**
      * Handle review concepts form
      */
-    public function concepts()
-    {
+    public function concepts() {
         global $OUTPUT;
 
         // Display and handle concepts form.
@@ -584,8 +578,7 @@ class module {
     /**
      * Handle review questions form
      */
-    public function questions()
-    {
+    public function questions() {
         global $OUTPUT;
 
         // Display and handle questions form.
@@ -709,8 +702,7 @@ class module {
     /**
      * Handle review summary form
      */
-    public function summary()
-    {
+    public function summary() {
         global $OUTPUT;
 
         // Display and handle summary form.
@@ -814,8 +806,7 @@ class module {
     /**
      * Handle activities form
      */
-    public function activities()
-    {
+    public function activities() {
         global $OUTPUT, $DB, $USER;
 
         // Display and handle activities form.
@@ -1026,8 +1017,7 @@ class module {
     /**
      * Print module info
      */
-    public function printinfo()
-    {
+    public function printinfo() {
         global $OUTPUT, $PAGE;
 
         $PAGE->requires->js_call_amd('local_nolej/toggleinfo');
@@ -1059,8 +1049,7 @@ class module {
      *
      * @return string unique filename
      */
-    protected function uniquefilename($filename, $directory)
-    {
+    protected function uniquefilename($filename, $directory) {
         $basename = pathinfo($filename, PATHINFO_FILENAME);
         $extension = pathinfo($filename, PATHINFO_EXTENSION);
 

@@ -43,8 +43,7 @@ class activities extends \moodleform {
     /**
      * Form definition
      */
-    public function definition()
-    {
+    public function definition() {
         global $CFG;
 
         $mform = $this->_form;
@@ -298,8 +297,7 @@ class activities extends \moodleform {
      * @param array $files
      * @return array of errors
      */
-    public function validation($data, $files)
-    {
+    public function validation($data, $files) {
         $errors = parent::validation($data, $files);
         return $errors;
     }

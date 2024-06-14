@@ -41,8 +41,7 @@ class creation extends \moodleform {
     /**
      * Form definition
      */
-    public function definition()
-    {
+    public function definition() {
         global $CFG, $OUTPUT;
 
         $mform = $this->_form;
@@ -158,8 +157,7 @@ class creation extends \moodleform {
      * @param array $files
      * @return array of errors
      */
-    public function validation($data, $files)
-    {
+    public function validation($data, $files) {
         $errors = parent::validation($data, $files);
         return $errors;
     }
@@ -168,8 +166,7 @@ class creation extends \moodleform {
      * Get all available languages as an associative array
      * @return array
      */
-    protected function getlanguages()
-    {
+    protected function getlanguages() {
         $controller = new \tool_langimport\controller();
         $availablelangs = $controller->availablelangs;
         $languages = [];

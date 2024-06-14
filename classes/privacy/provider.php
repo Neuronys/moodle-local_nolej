@@ -47,8 +47,7 @@ class provider implements
      * @param collection $collection
      * @return collection
      */
-    public static function get_metadata(collection $collection): collection
-    {
+    public static function get_metadata(collection $collection): collection {
 
         // Nolej module table.
         $collection->add_database_table(
@@ -96,8 +95,7 @@ class provider implements
      * @param int $userid the userid.
      * @return contextlist the list of contexts containing user info for the user.
      */
-    public static function get_contexts_for_userid(int $userid): contextlist
-    {
+    public static function get_contexts_for_userid(int $userid): contextlist {
         global $DB;
 
         $contextlist = new contextlist();
@@ -123,8 +121,7 @@ class provider implements
      *
      * @param approved_contextlist $contextlist a list of contexts approved for export.
      */
-    public static function export_user_data(approved_contextlist $contextlist)
-    {
+    public static function export_user_data(approved_contextlist $contextlist) {
         global $DB;
 
         $userid = $contextlist->get_user()->id;
@@ -173,8 +170,7 @@ class provider implements
      *
      * @param \context $context the context to delete in.
      */
-    public static function delete_data_for_all_users_in_context(\context $context)
-    {
+    public static function delete_data_for_all_users_in_context(\context $context) {
         global $DB;
 
         if ($context->contextlevel != CONTEXT_SYSTEM) {
@@ -192,8 +188,7 @@ class provider implements
      *
      * @param approved_contextlist $contextlist a list of contexts approved for deletion.
      */
-    public static function delete_data_for_user(approved_contextlist $contextlist)
-    {
+    public static function delete_data_for_user(approved_contextlist $contextlist) {
         global $DB;
 
         if (empty($contextlist->count())) {
@@ -221,8 +216,7 @@ class provider implements
      *
      * @param userlist $userlist The userlist containing the list of users who have data in this context/plugin combination.
      */
-    public static function get_users_in_context(userlist $userlist)
-    {
+    public static function get_users_in_context(userlist $userlist) {
         global $DB;
 
         $context = $userlist->get_context();
@@ -254,8 +248,7 @@ class provider implements
      *
      * @param approved_userlist $userlist The approved context and user information to delete information for.
      */
-    public static function delete_data_for_users(approved_userlist $userlist)
-    {
+    public static function delete_data_for_users(approved_userlist $userlist) {
         global $DB;
 
         $context = $userlist->get_context();

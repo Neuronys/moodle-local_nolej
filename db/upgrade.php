@@ -31,8 +31,7 @@ defined('MOODLE_INTERNAL') || die();
  * @param int $oldversion the version we are upgrading from.
  * @return bool result.
  */
-function xmldb_local_nolej_upgrade($oldversion)
-{
+function xmldb_local_nolej_upgrade($oldversion) {
     global $DB;
 
     $dbman = $DB->get_manager();
