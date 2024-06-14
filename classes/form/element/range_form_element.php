@@ -84,10 +84,10 @@ class range_form_element extends HTML_QuickForm_text
      */
     public function exportValue(&$submitvalues, $assoc = false, $nesting = 0)
     {
-        $value = parent::exportValue($submitvalues, $assoc, $nesting);
+        $value = $this->_findValue($submitvalues);
 
         // Make sure is integer.
-        $value = clean_param($value[$this->getName()], PARAM_INT);
+        $value = clean_param($value, PARAM_INT);
 
         // Make sure value is within the range.
         if ($value <= $this->_options['min']) {
