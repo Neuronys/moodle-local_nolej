@@ -45,7 +45,6 @@ class range_form_element_test extends \advanced_testcase
         $element = new \range_form_element(
             'testel',
             null,
-            null,
             ['min' => $min, 'max' => $max, 'step' => $step]
         );
 
