@@ -47,7 +47,9 @@
             <output name="out_{{elementname}}" for="{{elementname}}" class="col-md-6 col-sm-9 w-100 text-center">{{value}}</output>
         </div>
         <div class="row">
-            <input type="range" name="{{elementname}}" value="{{value}}" id="id_{{elementname}}" class="col-md-6 col-sm-9 w-100 mr-3 ml-3" min="{{min}}" max="{{max}}" step="{{step}}" oninput="out_{{elementname}}.value=parseInt(id_{{elementname}}.value)">
+            <input type="range" name="{{elementname}}" value="{{value}}" id="id_{{elementname}}"
+                class="col-md-6 col-sm-9 w-100 mr-3 ml-3" min="{{min}}" max="{{max}}" step="{{step}}"
+                oninput="out_{{elementname}}.value=parseInt(id_{{elementname}}.value)">
         </div>
         <div class="small row">
             <div class="col-md-3">{{#str}} minvalue, local_nolej {{/str}}: {{min}}</div>
