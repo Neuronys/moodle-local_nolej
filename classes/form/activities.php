@@ -76,7 +76,7 @@ class activities extends \moodleform
         if (!$json) {
             redirect(
                 new moodle_url('/local/nolej/manage.php'),
-                get_string('genericerror', 'local_nolej', ['error' => var_export($result, TRUE)]),
+                get_string('genericerror', 'local_nolej', ['error' => var_export($result, true)]),
                 null,
                 notification::NOTIFY_ERROR
             );
@@ -112,7 +112,7 @@ class activities extends \moodleform
                 get_string('activitiesenable', 'local_nolej', get_string('activities' . $availableactivities[$i], 'local_nolej'))
             );
             $mform->setType('activity_' . $availableactivities[$i], PARAM_BOOL);
-            $mform->setDefault('activity_' . $availableactivities[$i], TRUE);
+            $mform->setDefault('activity_' . $availableactivities[$i], true);
 
             switch ($availableactivities[$i]) {
                 case 'ibook':
@@ -289,7 +289,7 @@ class activities extends \moodleform
             }
         }
 
-        $this->add_action_buttons(TRUE, get_string('generate', 'local_nolej'));
+        $this->add_action_buttons(true, get_string('generate', 'local_nolej'));
     }
 
     /**

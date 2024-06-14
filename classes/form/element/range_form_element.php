@@ -82,7 +82,7 @@ class range_form_element extends HTML_QuickForm_text
      *
      * @return mixed
      */
-    public function exportValue(&$submitvalues, $assoc = FALSE, $nesting = 0)
+    public function exportValue(&$submitvalues, $assoc = false, $nesting = 0)
     {
         $value = parent::exportValue($submitvalues, $assoc, $nesting);
 
@@ -102,7 +102,7 @@ class range_form_element extends HTML_QuickForm_text
             return $value;
         }
 
-        return FALSE;
+        return false;
     }
 
     /**
