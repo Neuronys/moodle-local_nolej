@@ -45,7 +45,7 @@
 }}
 
 <div class="text-right mb-3 mt-2">
-    <input type="button" class="btn btn-primary" value="{{#str}} createmodule, local_nolej {{/str}}" onclick="location.href='{{{createurl}}}'" />
+    <input type="button" class="btn btn-primary" value="{{#str}} createmodule, local_nolej {{/str}}" onclick="location.href='{{{createurl}}}'">
 </div>
 
 <div class="table-responsive-xl">
@@ -68,12 +68,12 @@
                 <td>{{lastupdate}}</td>
                 <td>
                     {{#activitiesurl}}
-                    <input type="button" class="btn btn-primary mr-2 mb-2 local_nolej_activities" value="{{#str}} activities, local_nolej {{/str}}" onclick="location.href='{{{activitiesurl}}}'" />
+                    <input type="button" class="btn btn-primary mr-2 mb-2 local_nolej_activities" value="{{#str}} activities, local_nolej {{/str}}" onclick="location.href='{{{activitiesurl}}}'">
                     {{/activitiesurl}}
                     {{#editurl}}
-                    <input type="button" class="btn btn-secondary mr-2 mb-2 local_nolej_edit" value="{{#str}} editmodule, local_nolej {{/str}}" onclick="location.href='{{{editurl}}}'" />
+                    <input type="button" class="btn btn-secondary mr-2 mb-2 local_nolej_edit" value="{{#str}} editmodule, local_nolej {{/str}}" onclick="location.href='{{{editurl}}}'">
                     {{/editurl}}
-                    <input type="button" class="btn btn-danger mr-2 mb-2 local_nolej_delete" data-documentid="{{documentid}}" value="{{#str}} deletemodule, local_nolej {{/str}}" />
+                    <input type="button" class="btn btn-danger mr-2 mb-2 local_nolej_delete" data-documentid="{{documentid}}" value="{{#str}} deletemodule, local_nolej {{/str}}">
                 </td>
             </tr>
         {{/modules}}
