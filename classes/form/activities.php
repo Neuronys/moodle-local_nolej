@@ -76,7 +76,7 @@ class activities extends \moodleform
         if (!$json) {
             redirect(
                 new moodle_url('/local/nolej/manage.php'),
-                get_string('genericerror', 'local_nolej', ['error' => var_export($result, true)]),
+                get_string('genericerror', 'local_nolej', ['error' => var_export($result, TRUE)]),
                 null,
                 notification::NOTIFY_ERROR
             );
@@ -112,7 +112,7 @@ class activities extends \moodleform
                 get_string('activitiesenable', 'local_nolej', get_string('activities' . $availableactivities[$i], 'local_nolej'))
             );
             $mform->setType('activity_' . $availableactivities[$i], PARAM_BOOL);
-            $mform->setDefault('activity_' . $availableactivities[$i], true);
+            $mform->setDefault('activity_' . $availableactivities[$i], TRUE);
 
             switch ($availableactivities[$i]) {
                 case 'ibook':
@@ -144,7 +144,6 @@ class activities extends \moodleform
                         'range',
                         'FTW_number_word_current',
                         get_string('activitiesftwwords', 'local_nolej'),
-                        null,
                         ['min' => 3, 'max' => $settings->FTW_number_word_max]
                     );
                     $mform->setType('FTW_number_word_current', PARAM_INT);
@@ -165,7 +164,6 @@ class activities extends \moodleform
                         'range',
                         'DTW_number_word_current',
                         get_string('activitiesdtwwords', 'local_nolej'),
-                        null,
                         ['min' => 3, 'max' => $settings->DTW_number_word_max]
                     );
                     $mform->setType('DTW_number_word_current', PARAM_INT);
@@ -178,7 +176,6 @@ class activities extends \moodleform
                         'range',
                         'CW_number_word_current',
                         get_string('activitiescwwords', 'local_nolej'),
-                        null,
                         ['min' => 3, 'max' => $settings->CW_number_word_max]
                     );
                     $mform->setType('CW_number_word_current', PARAM_INT);
@@ -199,7 +196,6 @@ class activities extends \moodleform
                         'range',
                         'Practice_number_flashcard_current',
                         get_string('activitiespracticeflashcards', 'local_nolej'),
-                        null,
                         ['min' => 0, 'max' => $settings->Practice_number_flashcard_max]
                     );
                     $mform->setType('Practice_number_flashcard_current', PARAM_INT);
@@ -220,7 +216,6 @@ class activities extends \moodleform
                         'range',
                         'PracticeQ_number_flashcard_current',
                         get_string('activitiespracticeqflashcards', 'local_nolej'),
-                        null,
                         ['min' => 0, 'max' => $settings->PracticeQ_number_flashcard_max]
                     );
                     $mform->setType('PracticeQ_number_flashcard_current', PARAM_INT);
@@ -241,7 +236,6 @@ class activities extends \moodleform
                         'range',
                         'Grade_number_question_current',
                         get_string('activitiesgradequestions', 'local_nolej'),
-                        null,
                         ['min' => 0, 'max' => $settings->Grade_number_question_max]
                     );
                     $mform->setType('Grade_number_question_current', PARAM_INT);
@@ -262,7 +256,6 @@ class activities extends \moodleform
                         'range',
                         'GradeQ_number_question_current',
                         get_string('activitiesgradeqquestions', 'local_nolej'),
-                        null,
                         ['min' => 0, 'max' => $settings->GradeQ_number_question_max]
                     );
                     $mform->setType('GradeQ_number_question_current', PARAM_INT);
@@ -275,7 +268,6 @@ class activities extends \moodleform
                         'range',
                         'Flashcards_number_flashcard_current',
                         get_string('activitiesflashcardsflashcards', 'local_nolej'),
-                        null,
                         ['min' => 0, 'max' => $settings->Flashcards_number_flashcard_max]
                     );
                     $mform->setType('Flashcards_number_flashcard_current', PARAM_INT);
@@ -288,7 +280,6 @@ class activities extends \moodleform
                         'range',
                         'IV_number_question_perset_current',
                         get_string('activitiesivideoquestions', 'local_nolej'),
-                        null,
                         ['min' => 0, 'max' => $settings->IV_number_question_perset_max]
                     );
                     $mform->setType('IV_number_question_perset_current', PARAM_INT);
@@ -298,7 +289,7 @@ class activities extends \moodleform
             }
         }
 
-        $this->add_action_buttons(true, get_string('generate', 'local_nolej'));
+        $this->add_action_buttons(TRUE, get_string('generate', 'local_nolej'));
     }
 
     /**

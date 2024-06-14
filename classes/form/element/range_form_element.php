@@ -55,14 +55,13 @@ class range_form_element extends HTML_QuickForm_text
      *
      * @param string $elementname (optional) Input field name attribute
      * @param string $elementlabel (optional) Input field label
-     * @param mixed $attributes (optional) Either a typical HTML attribute string or an associative array
      * @param mixed $options (optional) Range input options
      *
      * @return void
      */
-    public function __construct($elementname = null, $elementlabel = null, $attributes = null, $options = null)
+    public function __construct($elementname = null, $elementlabel = null, $options = null)
     {
-        parent::__construct($elementname, $elementlabel, $attributes);
+        parent::__construct($elementname, $elementlabel, null);
 
         // Hide default label.
         $this->elementlabel = $elementlabel;
@@ -83,7 +82,7 @@ class range_form_element extends HTML_QuickForm_text
      *
      * @return mixed
      */
-    public function exportValue(&$submitvalues, $assoc = false, $nesting = 0)
+    public function exportValue(&$submitvalues, $assoc = FALSE, $nesting = 0)
     {
         $value = parent::exportValue($submitvalues, $assoc, $nesting);
 
@@ -103,7 +102,7 @@ class range_form_element extends HTML_QuickForm_text
             return $value;
         }
 
-        return false;
+        return FALSE;
     }
 
     /**
@@ -126,7 +125,6 @@ class range_form_element extends HTML_QuickForm_text
                 'max' => $this->_options['max'],
                 'step' => $this->_options['step'],
                 'value' => $this->getValue(),
-                'attributes' => $this->_getAttrString($this->_attributes),
                 'errormessage' => '',
             ]
         );
