@@ -87,7 +87,7 @@ class range_form_element extends HTML_QuickForm_text
         $value = parent::exportValue($submitvalues, $assoc, $nesting);
 
         // Make sure is integer.
-        $value = clean_param($value, PARAM_INT);
+        $value = clean_param($value[$this->elementlabel], PARAM_INT);
 
         // Make sure value is within the range.
         if ($value <= $this->_options['min']) {
