@@ -18,48 +18,63 @@
  * Nolej API
  *
  * @package     local_nolej
- * @author      2023 Vincenzo Padula <vincenzo@oc-group.eu>
+ * @author      Vincenzo Padula <vincenzo@oc-group.eu>
+ * @copyright   2024 OC Open Consulting SB Srl
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_nolej\api;
+namespace local_nolej;
 
 defined('MOODLE_INTERNAL') || die();
 
+use curl;
+use moodle_url;
+use context_coursecat;
+use core_course_category;
+use core_user;
+use Exception;
+use core\message\message;
+use core\output\notification;
+use core_h5p\factory;
+use core_h5p\file_storage;
+use contenttype_h5p\contenttype;
+use local_nolej\event\webhook_called;
+
+global $CFG;
 require_once($CFG->dirroot . '/local/nolej/classes/event/webhook_called.php');
+require_once($CFG->dirroot . '/local/nolej/classes/module.php');
 
-class api
-{
-    const STATUS_CREATION = 0;
-    const STATUS_CREATION_PENDING = 1;
-    const STATUS_ANALYSIS = 2;
-    const STATUS_ANALYSIS_PENDING = 3;
-    const STATUS_REVISION = 4;
-    const STATUS_REVISION_PENDING = 5;
-    const STATUS_ACTIVITIES = 6;
-    const STATUS_ACTIVITIES_PENDING = 7;
-    const STATUS_COMPLETED = 8;
-    const STATUS_FAILED = 9;
+/**
+ * Nolej API class
+ */
+class api {
 
+    /** @var string Nolej API endpoint */
+    const ENDPOINT = 'https://api-live.nolej.io';
+
+    /** @var string[] Allowed audio formats */
     const TYPE_AUDIO = ['mp3', 'wav', 'opus', 'ogg', 'oga', 'm4a'];
-    const TYPE_VIDEO = ['m4v', 'mp4', 'ogv', 'avi', 'webm'];
-    const TYPE_DOC = ['pdf', 'doc', 'docx', 'odt'];
-    const TYPE_TEXT = ['txt', 'htm', 'html'];
 
-    const API_URL = 'https://api-live.nolej.io';
+    /** @var string[] Allowed video formats */
+    const TYPE_VIDEO = ['m4v', 'mp4', 'ogv', 'avi', 'webm'];
+
+    /** @var string[] Allowed document formats */
+    const TYPE_DOC = ['pdf', 'doc', 'docx', 'odt'];
+
+    /** @var string[] Allowed text file formats */
+    const TYPE_TEXT = ['txt', 'htm', 'html'];
 
     /** @var array */
     protected $data;
 
     /** @var bool */
-    protected $shouldDie = false;
+    protected $shouldexit = false;
 
     /**
      * Check that the API key has been set
      * @return bool
      */
-    public static function haskey()
-    {
+    public static function haskey() {
         return !empty(get_config('local_nolej', 'api_key'));
     }
 
@@ -84,24 +99,24 @@ class api
             return null;
         }
 
-        $url = self::API_URL . $path;
+        $url = self::ENDPOINT . $path;
         $encodeddata = empty($data) ? null : ($encodeinput ? json_encode($data) : $data);
 
-        $options = array(
-            'CURLOPT_CUSTOMREQUEST' => 'GET', // Need a GET request with POST data
+        $options = [
+            'CURLOPT_CUSTOMREQUEST' => 'GET', // Need a GET request with POST data.
             'RETURNTRANSFER' => 1,
             'HEADER' => 0,
-            'FAILONERROR' => 0
-        );
+            'FAILONERROR' => 0,
+        ];
 
-        $header = array(
+        $header = [
             'Content-Type: application/json',
             'Accept: application/json',
             'Authorization: X-API-KEY ' . $apikey,
-            'User-Agent: Moodle Plugin'
-        );
+            'User-Agent: Moodle Plugin',
+        ];
 
-        $curl = new \curl();
+        $curl = new curl();
         $curl->setHeader($header);
         $response = $curl->post($url, $encodeddata, $options);
 
@@ -124,7 +139,7 @@ class api
      */
     public static function post(
         $path,
-        $data = array(),
+        $data = [],
         $decode = true
     ) {
         $apikey = get_config('local_nolej', 'api_key');
@@ -133,22 +148,22 @@ class api
         }
 
         $jsondata = json_encode($data);
-        $url = self::API_URL . $path;
+        $url = self::ENDPOINT . $path;
 
-        $options = array(
+        $options = [
             'RETURNTRANSFER' => 1,
             'HEADER' => 0,
-            'FAILONERROR' => 0
-        );
+            'FAILONERROR' => 0,
+        ];
 
-        $header = array(
+        $header = [
             'Content-Type: application/json',
             'Accept: application/json',
             'Authorization: X-API-KEY ' . $apikey,
-            'User-Agent: Moodle Plugin'
-        );
+            'User-Agent: Moodle Plugin',
+        ];
 
-        $curl = new \curl();
+        $curl = new curl();
         $curl->setHeader($header);
         $jsonresult = $curl->post($url, $jsondata, $options);
 
@@ -169,7 +184,7 @@ class api
      */
     public static function put(
         $path,
-        $data = array(),
+        $data = [],
         $encode = false,
         $decode = true
     ) {
@@ -178,24 +193,23 @@ class api
             return null;
         }
 
-        // TODO: send a PUT request
         $jsondata = $encode ? json_encode($data) : $data;
-        $url = self::API_URL . $path;
+        $url = self::ENDPOINT . $path;
 
-        $options = array(
+        $options = [
             'RETURNTRANSFER' => 1,
             'HEADER' => 0,
-            'FAILONERROR' => 0
-        );
+            'FAILONERROR' => 0,
+        ];
 
-        $header = array(
+        $header = [
             'Content-Type: application/json',
             'Accept: application/json',
             'Authorization: X-API-KEY ' . $apikey,
-            'User-Agent: Moodle Plugin'
-        );
+            'User-Agent: Moodle Plugin',
+        ];
 
-        $curl = new \curl();
+        $curl = new curl();
         $curl->setHeader($header);
         $jsonresult = $curl->put($url, $jsondata, $options);
 
@@ -208,10 +222,10 @@ class api
     }
 
     /**
+     * Return all the allowed formats
      * @return array
      */
-    public static function allowedtypes()
-    {
+    public static function allowedtypes() {
         return array_merge(
             self::TYPE_AUDIO,
             self::TYPE_VIDEO,
@@ -221,12 +235,11 @@ class api
     }
 
     /**
-     * Return the format given the extension, or empty string if not valid.
+     * Return the format given the extension, or null if not valid.
      * @param string $extension
-     * @return string
+     * @return ?string
      */
-    public static function formatfromextension($extension)
-    {
+    public static function formatfromextension($extension) {
         if (in_array($extension, self::TYPE_AUDIO)) {
             return 'audio';
         }
@@ -239,7 +252,7 @@ class api
         if (in_array($extension, self::TYPE_TEXT)) {
             return 'freetext';
         }
-        return '';
+        return null;
     }
 
     /**
@@ -247,15 +260,14 @@ class api
      * @param ?string $documentid (optional)
      * @return string
      */
-    public static function datadir($documentid = null)
-    {
+    public static function datadir($documentid = null) {
         global $CFG;
         $datadir = $CFG->dataroot . '/local_nolej';
         if ($documentid != null) {
             $datadir .= '/' . $documentid;
         }
         if (!file_exists($datadir)) {
-            mkdir($datadir, 0777, true);
+            mkdir($datadir, 0744, true);
         }
         return $datadir;
     }
@@ -264,12 +276,11 @@ class api
      * Return the Nolej upload directory
      * @return string
      */
-    public static function uploaddir()
-    {
+    public static function uploaddir() {
         $datadir = self::datadir();
         $uploaddir = $datadir . '/uploads';
         if (!file_exists($uploaddir)) {
-            mkdir($uploaddir, 0777, true);
+            mkdir($uploaddir, 0744, true);
         }
         return $uploaddir;
     }
@@ -279,12 +290,11 @@ class api
      * @param string $documentid
      * @return string
      */
-    public static function h5pdir($documentid)
-    {
+    public static function h5pdir($documentid) {
         $datadir = self::datadir($documentid);
         $uploaddir = $datadir . '/h5p';
         if (!file_exists($uploaddir)) {
-            mkdir($uploaddir, 0777, true);
+            mkdir($uploaddir, 0744, true);
         }
         return $uploaddir;
     }
@@ -340,8 +350,7 @@ class api
      * @return string|false return the content if the file exists,
      * false otherwise.
      */
-    public static function readcontent($documentid, $filename)
-    {
+    public static function readcontent($documentid, $filename) {
         $path = self::datadir($documentid) . '/' . $filename;
         if (!file_exists($path)) {
             return false;
@@ -358,8 +367,7 @@ class api
      *
      * @return bool true on success, false on failure
      */
-    public static function putcontent($documentid, $pathname, $filename)
-    {
+    public static function putcontent($documentid, $pathname, $filename) {
         $content = self::readcontent($documentid, $filename);
         if (!$content) {
             return false;
@@ -380,8 +388,7 @@ class api
      *
      * @return bool returns true on success, false on failure.
      */
-    public static function writecontent($documentid, $filename, $content)
-    {
+    public static function writecontent($documentid, $filename, $content) {
         return file_put_contents(
             self::datadir($documentid) . '/' . $filename,
             $content
@@ -394,21 +401,20 @@ class api
      * @param int $userid (optional)
      * @return int status
      */
-    public static function lookupdocumentstatus($documentid, $userid = null)
-    {
+    public static function lookupdocumentstatus($documentid, $userid = null) {
         global $DB;
 
         if ($userid != null) {
             $document = $DB->get_record(
-                'nolej_module',
+                'local_nolej_module',
                 [
                     'document_id' => $documentid,
-                    'user_id' => $userid
+                    'user_id' => $userid,
                 ]
             );
         } else {
             $document = $DB->get_record(
-                'nolej_module',
+                'local_nolej_module',
                 ['document_id' => $documentid]
             );
         }
@@ -421,19 +427,17 @@ class api
     }
 
     /**
-     * @param string $msg
+     * Log the event
+     * @param string $message
      * @param ?string $documentid
      */
-    public function log($msg, $documentid = null)
-    {
-        // TODO
-        $event = \local_nolej\event\webhook_called::create(
+    public function log($message, $documentid = null) {
+        $event = webhook_called::create(
             [
-                'context' => \context_system::instance(),
                 'other' => [
                     'documentid' => $documentid,
-                    'message' => $msg
-                ]
+                    'message' => $message,
+                ],
             ]
         );
         $event->trigger();
@@ -443,12 +447,15 @@ class api
      * Parse the request from POST content if
      * @param mixed $data is not null
      */
-    public function parse($data = null)
-    {
+    public function parse($data = null) {
         if ($data == null) {
             header('Content-type: application/json; charset=UTF-8');
-            $data = json_decode(file_get_contents('php://input'), true);
-            $this->shouldDie = true;
+            $this->shouldexit = true;
+            try {
+                $data = json_decode(file_get_contents('php://input'), true);
+            } catch (Exception $e) {
+                $this->respondwithmessage(400, 'Request not valid.');
+            }
         }
 
         if (
@@ -456,8 +463,8 @@ class api
             !isset($data['action']) ||
             !is_string($data['action'])
         ) {
-            $this->diemessage(400, 'Request not valid.');
             $this->log('Received invalid request: ' . var_export($data, true));
+            $this->respondwithmessage(400, 'Request not valid.');
         }
 
         $this->data = $data;
@@ -480,7 +487,10 @@ class api
             case 'work in progress':
                 $this->log('Received work in progress.');
                 if (isloggedin() && !isguestuser()) {
-                    \core\notification::add(get_string('work_in_progress', 'local_nolej'), \core\output\notification::NOTIFY_INFO);
+                    \core\notification::add(
+                        get_string('work_in_progress', 'local_nolej'),
+                        notification::NOTIFY_INFO
+                    );
                     return;
                 }
                 break;
@@ -495,18 +505,18 @@ class api
      * @param int $code
      * @param string $message
      */
-    protected function diemessage(
+    public function respondwithmessage(
         $code = 400,
         $message = ''
     ) {
         if (!empty($message)) {
             $this->log('Replied to Nolej with message: ' . $message);
-            if ($this->shouldDie) {
+            if ($this->shouldexit) {
                 echo json_encode(['message' => $message]);
             }
         }
 
-        if (!$this->shouldDie) {
+        if (!$this->shouldexit) {
             return false;
         }
 
@@ -520,21 +530,24 @@ class api
      * @param int $status
      * @return object|false
      */
-    public function lookupdocumentwithstatus($documentid, $status)
-    {
+    public function lookupdocumentwithstatus($documentid, $status) {
         global $DB;
 
         return $DB->get_record(
-            'nolej_module',
+            'local_nolej_module',
             [
                 'document_id' => $documentid,
-                'status' => $status
+                'status' => $status,
             ]
         );
     }
 
-    public function checktranscription()
-    {
+    /**
+     * Check the transcription result
+     *
+     * @return void
+     */
+    public function checktranscription() {
         global $DB;
 
         if ($this->data['consumedCredit'] == null) {
@@ -543,34 +556,33 @@ class api
 
         if (
             !isset(
-                $this->data['documentID'],
-                $this->data['status'],
-                $this->data['code'],
-                $this->data['error_message'],
-                $this->data['consumedCredit']
-            ) ||
+            $this->data['documentID'],
+            $this->data['status'],
+            $this->data['code'],
+            $this->data['error_message'],
+            $this->data['consumedCredit']
+        ) ||
             !is_string($this->data['documentID']) ||
             !is_string($this->data['status']) ||
             !is_string($this->data['error_message']) ||
             !is_integer($this->data['code']) ||
             !is_integer($this->data['consumedCredit'])
         ) {
-            $this->diemessage(400, 'Request not valid.');
+            $this->respondwithmessage(400, 'Request not valid.');
             return;
         }
 
         $documentid = $this->data['documentID'];
 
-        $document = $this->lookupdocumentwithstatus($documentid, self::STATUS_CREATION_PENDING);
+        $document = $this->lookupdocumentwithstatus($documentid, module::STATUS_CREATION_PENDING);
         if (!$document) {
-            $this->diemessage(404, 'Document ID not found.');
+            $this->respondwithmessage(404, 'Document ID not found.');
             return;
         }
 
-        $this->setLanguageOfUser((int) $document->user_id);
+        $this->setlanguageofuser((int) $document->user_id);
 
         $now = time();
-        // $this->setUserLang($document['user_id']);
 
         if (
             $this->data['status'] != '\'ok\'' &&
@@ -579,16 +591,16 @@ class api
             $this->log('Result: ko');
 
             $success = $DB->update_record(
-                'nolej_module',
+                'local_nolej_module',
                 (object) [
                     'id' => $document->id,
                     'document_id' => $documentid,
-                    'status' => self::STATUS_FAILED,
-                    'consumed_credit' => $this->data['consumedCredit']
+                    'status' => module::STATUS_FAILED,
+                    'consumed_credit' => $this->data['consumedCredit'],
                 ]
             );
             if (!$success) {
-                $this->diemessage(404, 'Document not found.');
+                $this->respondwithmessage(404, 'Document not found.');
             }
 
             $this->sendnotification(
@@ -603,23 +615,23 @@ class api
                 (object) [
                     'title' => $document->title,
                     'tstamp' => userdate($now, get_string('strftimedatetimeshortaccurate', 'core_langconfig')),
-                    'errormessage' => $this->data['error_message']
+                    'errormessage' => $this->data['error_message'],
                 ]
             );
             return;
         }
 
         $success = $DB->update_record(
-            'nolej_module',
+            'local_nolej_module',
             (object) [
                 'id' => $document->id,
                 'document_id' => $documentid,
-                'status' => self::STATUS_ANALYSIS,
-                'consumed_credit' => $this->data['consumedCredit']
+                'status' => module::STATUS_ANALYSIS,
+                'consumed_credit' => $this->data['consumedCredit'],
             ]
         );
         if (!$success) {
-            $this->diemessage(404, 'Document not found.');
+            $this->respondwithmessage(404, 'Document not found.');
         }
 
         $this->sendnotification(
@@ -633,15 +645,19 @@ class api
             'action_transcription_ok_body',
             (object) [
                 'title' => $document->title,
-                'tstamp' => userdate($now, get_string('strftimedatetimeshortaccurate', 'core_langconfig'))
+                'tstamp' => userdate($now, get_string('strftimedatetimeshortaccurate', 'core_langconfig')),
             ]
         );
 
-        $this->diemessage(200, 'Transcription received!');
+        $this->respondwithmessage(200, 'Transcription received!');
     }
 
-    public function checkanalysis()
-    {
+    /**
+     * Check the analysis result
+     *
+     * @return void
+     */
+    public function checkanalysis() {
         global $DB;
 
         if ($this->data['consumedCredit'] == null) {
@@ -650,34 +666,33 @@ class api
 
         if (
             !isset(
-                $this->data['documentID'],
-                $this->data['status'],
-                $this->data['code'],
-                $this->data['error_message'],
-                $this->data['consumedCredit']
-            ) ||
+            $this->data['documentID'],
+            $this->data['status'],
+            $this->data['code'],
+            $this->data['error_message'],
+            $this->data['consumedCredit']
+        ) ||
             !is_string($this->data['documentID']) ||
             !is_string($this->data['status']) ||
             !is_string($this->data['error_message']) ||
             !is_integer($this->data['code']) ||
             !is_integer($this->data['consumedCredit'])
         ) {
-            $this->diemessage(400, 'Request not valid.');
+            $this->respondwithmessage(400, 'Request not valid.');
             return;
         }
 
         $documentid = $this->data['documentID'];
 
-        $document = $this->lookupdocumentwithstatus($documentid, self::STATUS_ANALYSIS_PENDING);
+        $document = $this->lookupdocumentwithstatus($documentid, module::STATUS_ANALYSIS_PENDING);
         if (!$document) {
-            $this->diemessage(404, 'Document ID not found.');
+            $this->respondwithmessage(404, 'Document ID not found.');
             return;
         }
 
-        $this->setLanguageOfUser((int) $document->user_id);
+        $this->setlanguageofuser((int) $document->user_id);
 
         $now = time();
-        // $this->setUserLang($document['user_id']);
 
         if (
             $this->data['status'] != '\'ok\'' &&
@@ -686,16 +701,16 @@ class api
             $this->log('Result: ko');
 
             $success = $DB->update_record(
-                'nolej_module',
+                'local_nolej_module',
                 (object) [
                     'id' => $document->id,
                     'document_id' => $documentid,
-                    'status' => self::STATUS_FAILED,
-                    'consumed_credit' => $this->data['consumedCredit']
+                    'status' => module::STATUS_FAILED,
+                    'consumed_credit' => $this->data['consumedCredit'],
                 ]
             );
             if (!$success) {
-                $this->diemessage(404, 'Document not found.');
+                $this->respondwithmessage(404, 'Document not found.');
             }
 
             $this->sendnotification(
@@ -710,23 +725,23 @@ class api
                 (object) [
                     'title' => $document->title,
                     'tstamp' => userdate($now, get_string('strftimedatetimeshortaccurate', 'core_langconfig')),
-                    'errormessage' => $this->data['error_message']
+                    'errormessage' => $this->data['error_message'],
                 ]
             );
             return;
         }
 
         $success = $DB->update_record(
-            'nolej_module',
+            'local_nolej_module',
             (object) [
                 'id' => $document->id,
                 'document_id' => $documentid,
-                'status' => self::STATUS_REVISION,
-                'consumed_credit' => $this->data['consumedCredit']
+                'status' => module::STATUS_REVISION,
+                'consumed_credit' => $this->data['consumedCredit'],
             ]
         );
         if (!$success) {
-            $this->diemessage(404, 'Document not found.');
+            $this->respondwithmessage(404, 'Document not found.');
         }
 
         $this->sendnotification(
@@ -740,15 +755,19 @@ class api
             'action_analysis_ok_body',
             (object) [
                 'title' => $document->title,
-                'tstamp' => userdate($now, get_string('strftimedatetimeshortaccurate', 'core_langconfig'))
+                'tstamp' => userdate($now, get_string('strftimedatetimeshortaccurate', 'core_langconfig')),
             ]
         );
 
-        $this->diemessage(200, 'Analysis received!');
+        $this->respondwithmessage(200, 'Analysis received!');
     }
 
-    function checkactivities()
-    {
+    /**
+     * Check the activities result
+     *
+     * @return void
+     */
+    protected function checkactivities() {
         global $DB;
 
         if ($this->data['consumedCredit'] == null) {
@@ -757,34 +776,33 @@ class api
 
         if (
             !isset(
-                $this->data['documentID'],
-                $this->data['status'],
-                $this->data['code'],
-                $this->data['error_message'],
-                $this->data['consumedCredit']
-            ) ||
+            $this->data['documentID'],
+            $this->data['status'],
+            $this->data['code'],
+            $this->data['error_message'],
+            $this->data['consumedCredit']
+        ) ||
             !is_string($this->data['documentID']) ||
             !is_string($this->data['status']) ||
             !is_string($this->data['error_message']) ||
             !is_integer($this->data['code']) ||
             !is_integer($this->data['consumedCredit'])
         ) {
-            $this->diemessage(400, 'Request not valid.');
+            $this->respondwithmessage(400, 'Request not valid.');
             return;
         }
 
         $documentid = $this->data['documentID'];
 
-        $document = $this->lookupdocumentwithstatus($documentid, self::STATUS_ACTIVITIES_PENDING);
+        $document = $this->lookupdocumentwithstatus($documentid, module::STATUS_ACTIVITIES_PENDING);
         if (!$document) {
-            $this->diemessage(404, 'Document ID not found.');
+            $this->respondwithmessage(404, 'Document ID not found.');
             return;
         }
 
-        $this->setLanguageOfUser((int) $document->user_id);
+        $this->setlanguageofuser((int) $document->user_id);
 
         $now = time();
-        // $this->setUserLang($document['user_id']);
 
         if (
             $this->data['status'] != '\'ok\'' &&
@@ -793,16 +811,16 @@ class api
             $this->log('Result: ko');
 
             $success = $DB->update_record(
-                'nolej_module',
+                'local_nolej_module',
                 (object) [
                     'id' => $document->id,
                     'document_id' => $documentid,
-                    'status' => self::STATUS_ACTIVITIES,
-                    'consumed_credit' => $this->data['consumedCredit']
+                    'status' => module::STATUS_ACTIVITIES,
+                    'consumed_credit' => $this->data['consumedCredit'],
                 ]
             );
             if (!$success) {
-                $this->diemessage(404, 'Document not found.');
+                $this->respondwithmessage(404, 'Document not found.');
             }
 
             $this->sendnotification(
@@ -817,23 +835,23 @@ class api
                 (object) [
                     'title' => $document->title,
                     'tstamp' => userdate($now, get_string('strftimedatetimeshortaccurate', 'core_langconfig')),
-                    'errormessage' => $this->data['error_message']
+                    'errormessage' => $this->data['error_message'],
                 ]
             );
             return;
         }
 
         $success = $DB->update_record(
-            'nolej_module',
+            'local_nolej_module',
             (object) [
                 'id' => $document->id,
                 'document_id' => $documentid,
-                'status' => self::STATUS_COMPLETED,
-                'consumed_credit' => $this->data['consumedCredit']
+                'status' => module::STATUS_COMPLETED,
+                'consumed_credit' => $this->data['consumedCredit'],
             ]
         );
         if (!$success) {
-            $this->diemessage(404, 'Document not found.');
+            $this->respondwithmessage(404, 'Document not found.');
         }
 
         $errors = $this->downloadactivities($document);
@@ -849,11 +867,11 @@ class api
                 $this->data['consumedCredit'],
                 'err_activities_get',
                 (object) [
-                    'errors' => '<ul><li>' . join('</li><li>', $errors) . '</li></ul>'
+                    'errors' => '<ul><li>' . join('</li><li>', $errors) . '</li></ul>',
                 ]
             );
 
-            $this->diemessage(200, 'Activities received, but something went wrong while retrieving them.');
+            $this->respondwithmessage(200, 'Activities received, but something went wrong while retrieving them.');
             return;
         }
 
@@ -868,11 +886,11 @@ class api
             'action_activities_ok_body',
             (object) [
                 'title' => $document->title,
-                'tstamp' => userdate($now, get_string('strftimedatetimeshortaccurate', 'core_langconfig'))
+                'tstamp' => userdate($now, get_string('strftimedatetimeshortaccurate', 'core_langconfig')),
             ]
         );
 
-        $this->diemessage(200, 'Activities received!');
+        $this->respondwithmessage(200, 'Activities received!');
     }
 
     /**
@@ -880,20 +898,19 @@ class api
      * create it if not exists.
      * @return int
      */
-    protected static function getnolejcategoryid()
-    {
+    protected static function getnolejcategoryid() {
         $categoryid = get_config('local_nolej', 'categoryid');
 
-        if (!empty($categoryid) && \core_course_category::get($categoryid, IGNORE_MISSING, true) != null) {
+        if (!empty($categoryid) && core_course_category::get($categoryid, IGNORE_MISSING, true) != null) {
             return (int) $categoryid;
         }
 
-        // Create context if not exists
-        $nolejcategory = \core_course_category::create((object) [
+        // Create Nolej context if not exists.
+        $nolejcategory = core_course_category::create((object) [
             'name' => 'Nolej',
             'description' => 'This category contains Nolej h5p contents',
             'parent' => 0,
-            'visible' => 0
+            'visible' => 0,
         ]);
         $categoryid = $nolejcategory->id;
         set_config('categoryid', $categoryid, 'local_nolej');
@@ -902,12 +919,11 @@ class api
 
     /**
      * Download activities and save them in the Content Box
-     * 
+     *
      * @param object $document
      * @return array of errors
      */
-    public function downloadactivities($document)
-    {
+    public function downloadactivities($document) {
         global $CFG, $DB;
 
         $errors = [];
@@ -917,7 +933,7 @@ class api
         $now = time();
 
         $fs = get_file_storage();
-        $h5pfactory = new \core_h5p\factory();
+        $h5pfactory = new factory();
 
         $json = self::getcontent(
             $document->document_id,
@@ -933,34 +949,22 @@ class api
         $activities = json_decode($json);
         $activities = $activities->activities;
 
-        // Create category
-        $modulecategory = \core_course_category::create((object) [
-            'name' => sprintf('%s (%s)', $document->title, userdate($now, get_string('strftimedatetimeshortaccurate', 'core_langconfig'))),
+        // Create category.
+        $modulecategory = core_course_category::create((object) [
+            'name' => sprintf(
+                '%s (%s)',
+                $document->title,
+                userdate($now, get_string('strftimedatetimeshortaccurate', 'core_langconfig'))
+            ),
             'description' => userdate($now, get_string('strftimedatetimeshortaccurate', 'core_langconfig')),
-            'parent' => $nolejcategoryid
+            'parent' => $nolejcategoryid,
         ]);
-        $modulecontext = \context_coursecat::instance($modulecategory->id);
-
-        // $enrol = enrol_get_plugin('manual');
-        // $instances = enrol_get_instances($modulecategory->id, true);
-        // foreach ($instances as $instance) {
-        //     if ($instance->enrol === 'manual') {
-        //         break;
-        //     }
-        // }
-        // if ($instance->enrol !== 'manual') {
-        //     throw new \Exception('No manual enrol plugin in course');
-        // }
-        // $enrol->enrol_user($instance, $document->user_id, 0, $now, 0, ENROL_USER_ACTIVE, 0);
-
-        // // Limit access
-        // $role = get_config('moodle', 'defaultcourseroleid');
-        // assign_capability('moodle/category:viewcourselist', CAP_ALLOW, $role, $modulecontext);
+        $modulecontext = context_coursecat::instance($modulecategory->id);
 
         foreach ($activities as $activity) {
             $filepath = sprintf('%s/%s.h5p', $h5pdir, $activity->activity_name);
 
-            // Download activity
+            // Download the h5p activity.
             $success = file_put_contents(
                 $filepath,
                 file_get_contents($activity->url)
@@ -981,18 +985,18 @@ class api
                     'author' => $document->user_id,
                     'type' => $activity->activity_name,
                     'contextid' => $modulecontext->id,
-                    'filepath'  => '/'
+                    'filepath' => '/',
                 ];
-                $contenttype = new \contenttype_h5p\contenttype($modulecontext);
+                $contenttype = new contenttype($modulecontext);
                 $h5pcontent = $contenttype->create_content($record);
 
                 $filerecord = (object) [
                     'contextid' => $modulecontext->id,
-                    'component' => \core_h5p\file_storage::COMPONENT,
-                    'filearea'  => \core_h5p\file_storage::CONTENT_FILEAREA,
-                    'itemid'    => $h5pcontent->get_id(),
-                    'filepath'  => '/',
-                    'filename'  => get_string('activities' . $activity->activity_name, 'local_nolej') . '.h5p',
+                    'component' => file_storage::COMPONENT,
+                    'filearea' => file_storage::CONTENT_FILEAREA,
+                    'itemid' => $h5pcontent->get_id(),
+                    'filepath' => '/',
+                    'filename' => get_string('activities' . $activity->activity_name, 'local_nolej') . '.h5p',
                 ];
 
                 $file = $fs->create_file_from_pathname($filerecord, $filepath);
@@ -1001,52 +1005,18 @@ class api
                 $h5pcontent->import_file($file);
 
                 $DB->insert_record(
-                    'nolej_h5p',
+                    'local_nolej_h5p',
                     (object) [
                         'document_id' => $document->document_id,
                         'tstamp' => $now,
                         'type' => $activity->activity_name,
-                        'content_id' => $h5pcontent->get_id()
+                        'content_id' => $h5pcontent->get_id(),
                     ],
                     false
                 );
 
-                /**
-                 * Normal h5p object, not for content bank
-                 */
-                // $config = (object) [];
-                // $h5pid = \core_h5p\helper::save_h5p($h5pfactory, $file, $config);
-                // if ($h5pid == null) {
-                //     $errors[] = sprintf('%s (%s)', $activity->activity_name, get_string('errh5psave', 'local_nolej'));
-                //     continue;
-                // }
-                // if ($h5pid === false) {
-                //     $errors[] = sprintf('%s (%s)', $activity->activity_name, get_string('errh5pvalidation', 'local_nolej'));
-                //     continue;
-                // }
-                // $errors[] = sprintf('%s (%s %d)', $activity->activity_name, 'File saved with h5p id', $h5pid);
-
-                // if ($file && $h5pcontent) {
-                //     $updatedfilerecord = (object) [
-                //         'id' => $file->get_id(),
-                //         'itemid' => $h5pcontent->get_id()
-                //     ];
-                //     // As itemid changed, the pathnamehash has to be updated in the file table.
-                //     $pathnamehash = \file_storage::get_pathname_hash(
-                //         $file->get_contextid(),
-                //         $file->get_component(),
-                //         $file->get_filearea(),
-                //         $updatedfilerecord->itemid,
-                //         $file->get_filepath(),
-                //         $file->get_filename()
-                //     );
-                //     $updatedfilerecord->pathnamehash = $pathnamehash;
-                //     $DB->update_record('files', $updatedfilerecord);
-                //     // The pathnamehash in the h5p table must match the file pathnamehash.
-                //     $h5pfactory->get_framework()->updateContentFields($h5pid, ['pathnamehash' => $pathnamehash]);
-                // }
-            } catch (\Exception $e) {
-                $errors[] = sprintf('%s (%s)', $activity->activity_name, 'Exception: ' . print_r($e));
+            } catch (Exception $e) {
+                $errors[] = sprintf('%s (%s)', $activity->activity_name, 'Exception: ' . var_export($e, true));
             }
         }
 
@@ -1080,7 +1050,7 @@ class api
         global $DB;
 
         $DB->insert_record(
-            'nolej_activity',
+            'local_nolej_activity',
             (object) [
                 'document_id' => $documentid,
                 'user_id' => $userid,
@@ -1090,48 +1060,84 @@ class api
                 'code' => $code,
                 'error_message' => $errormessage,
                 'consumed_credit' => $credits,
-                'notified' => false
+                'notified' => false,
             ],
             false
         );
 
-        $message = new \core\message\message();
-        $message->component = 'local_nolej'; // Your plugin's name
-        $message->name = $action; // Your notification name from message.php
-        $message->userfrom = \core_user::get_noreply_user(); // If the message is 'from' a specific user you can set them here
+        $message = new message();
+        $message->component = 'local_nolej';
+        $message->name = $action;
+        $message->userfrom = core_user::get_noreply_user();
         $message->userto = $userid;
         $message->subject = get_string('action_' . $action, 'local_nolej');
         $message->fullmessage = get_string('action_' . $action . '_body', 'local_nolej', $vars);
         $message->fullmessageformat = FORMAT_HTML;
         $message->fullmessagehtml = get_string($body, 'local_nolej', $vars);
         $message->smallmessage = get_string('action_' . $action, 'local_nolej');
-        $message->notification = 1; // Because this is a notification generated from Moodle, not a user-to-user message
-        $message->contexturl = substr($action, -2) == 'ok' // A relevant URL for the notification
-            ? (new \moodle_url('/local/nolej/edit.php', ['documentid' => $documentid]))->out(false)
-            : (new \moodle_url('/local/nolej/manage.php'))->out(false);
-        $message->contexturlname = get_string('moduleview', 'local_nolej'); // Link title explaining where users get to for the contexturl
-        // Extra content for specific processor
-        // $content = [
-        // '*' => [
-        //     'header' => ' test ',
-        //     'footer' => ' test ',
-        // ],
-        // ];
-        // $message->set_additional_content('email', $content);
+        $message->notification = 1; // Notification generated from Moodle, not a user-to-user message.
+        $message->contexturl = substr($action, -2) == 'ok'
+            ? (new moodle_url('/local/nolej/edit.php', ['documentid' => $documentid]))->out(false)
+            : (new moodle_url('/local/nolej/manage.php'))->out(false);
+        $message->contexturlname = get_string('moduleview', 'local_nolej');
         $messageid = message_send($message);
+
         $this->log('Message sent with ID: ' . $messageid . ' to user ' . $userid);
     }
 
-    protected function setLanguageOfUser(int $userid)
-    {
+    /**
+     * Set the language of the user
+     * @param int $userid
+     * @return void
+     */
+    protected function setlanguageofuser(int $userid) {
         global $DB, $CFG, $USER;
-        $user = $DB->get_record('user', array('id' => $userid));
-        $preferred_language = $user->lang;
+        $user = $DB->get_record(
+            'user',
+            ['id' => $userid]
+        );
+        $preferredlanguage = $user->lang;
 
         if (isloggedin()) {
-            $USER->lang = $preferred_language;
+            $USER->lang = $preferredlanguage;
         } else {
-            $CFG->lang = $preferred_language;
+            $CFG->lang = $preferredlanguage;
         }
+    }
+
+    /**
+     * Remove anything which isn't a word, number
+     * or any of the following caracters -_().
+     * Remove any runs of periods.
+     * @see https://stackoverflow.com/a/2021729
+     *
+     * @param string $filename
+     * @return string
+     */
+    public static function sanitizefilename($filename) {
+        $filename = mb_ereg_replace("([^\w\d\-_\(\).])", '', $filename);
+        $filename = mb_ereg_replace("([\.]{2,})", '.', $filename);
+        return $filename;
+    }
+
+    /**
+     * Download the file
+     * @see https://stackoverflow.com/a/2882523
+     *
+     * @param string $filepath
+     */
+    public static function deliverfile(string $filepath) {
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename=' . basename($filepath));
+        header('Content-Transfer-Encoding: binary');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($filepath));
+        ob_clean();
+        flush();
+        readfile($filepath);
+        exit;
     }
 }

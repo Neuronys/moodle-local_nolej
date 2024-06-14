@@ -1,0 +1,6 @@
+{
+    "files.eol": "\n",
+    "files.trimTrailingWhitespace": true,
+    "editor.tabSize": 4,
+    "javascript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false
+}

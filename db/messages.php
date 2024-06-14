@@ -18,53 +18,55 @@
  * Add Nolej message provider
  *
  * @package     local_nolej
- * @author      2023 Vincenzo Padula <vincenzo@oc-group.eu>
+ * @author      Vincenzo Padula <vincenzo@oc-group.eu>
+ * @copyright   2024 OC Open Consulting SB Srl
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
+// Each message provider requires local/nolej:usenolej capability.
 $messageproviders = [
-    'transcription_ok' => [
+    'transcription_ok' => [ // Transctiption completed.
         'capability' => 'local/nolej:usenolej',
         'defaults' => [
-            'pop-up' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
+            'popup' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
             'email' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
-        ]
+        ],
     ],
-    'transcription_ko' => [
+    'transcription_ko' => [ // Transctiption failed.
         'capability' => 'local/nolej:usenolej',
         'defaults' => [
-            'pop-up' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
+            'popup' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
             'email' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
-        ]
+        ],
     ],
-    'analysis_ok' => [
+    'analysis_ok' => [ // Analysis completed.
         'capability' => 'local/nolej:usenolej',
         'defaults' => [
-            'pop-up' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
+            'popup' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
             'email' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
-        ]
+        ],
     ],
-    'analysis_ko' => [
+    'analysis_ko' => [ // Analysis failed.
         'capability' => 'local/nolej:usenolej',
         'defaults' => [
-            'pop-up' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
+            'popup' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
             'email' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
-        ]
+        ],
     ],
-    'activities_ok' => [
+    'activities_ok' => [ // Activities generation completed.
         'capability' => 'local/nolej:usenolej',
         'defaults' => [
-            'pop-up' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
+            'popup' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
             'email' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
-        ]
+        ],
     ],
-    'activities_ko' => [
+    'activities_ko' => [ // Activities generation failed.
         'capability' => 'local/nolej:usenolej',
         'defaults' => [
-            'pop-up' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
+            'popup' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
             'email' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
-        ]
+        ],
     ],
 ];

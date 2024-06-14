@@ -18,7 +18,8 @@
  * Questions edit form
  *
  * @package     local_nolej
- * @author      2023 Vincenzo Padula <vincenzo@oc-group.eu>
+ * @author      Vincenzo Padula <vincenzo@oc-group.eu>
+ * @copyright   2024 OC Open Consulting SB Srl
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -26,41 +27,50 @@ namespace local_nolej\form;
 
 defined('MOODLE_INTERNAL') || die();
 
+use moodle_url;
+use core\output\notification;
+use local_nolej\api;
+
+global $CFG;
 require_once($CFG->libdir . '/formslib.php');
 require_once($CFG->dirroot . '/local/nolej/classes/api.php');
 
-class questions extends \moodleform
-{
+/**
+ * Questions edit form
+ */
+class questions extends \moodleform {
 
-    public function definition()
-    {
+    /**
+     * Form definition
+     */
+    public function definition() {
         global $CFG;
 
         $mform = $this->_form;
 
-        // Document ID
+        // Document ID.
         $documentid = $this->_customdata['documentid'];
         $mform->addElement('hidden', 'documentid')->setValue($documentid);
         $mform->setType('documentid', PARAM_ALPHANUMEXT);
 
-        // Step
+        // Step.
         $mform->addElement('hidden', 'step')->setValue('questions');
         $mform->setType('step', PARAM_ALPHA);
 
-        // Download questions
-        $result = \local_nolej\api\api::getcontent(
+        // Download questions.
+        $result = api::getcontent(
             $documentid,
             'questions',
             'questions.json'
         );
 
-        $json = \local_nolej\api\api::readcontent($documentid, 'questions.json');
+        $json = api::readcontent($documentid, 'questions.json');
         if (!$json) {
             redirect(
-                new \moodle_url('/local/nolej/manage.php'),
-                get_string('genericerror', 'local_nolej', ['error' => print_r($result, true)]),
+                new moodle_url('/local/nolej/manage.php'),
+                get_string('genericerror', 'local_nolej', ['error' => var_export($result, true)]),
                 null,
-                \core\output\notification::NOTIFY_ERROR
+                notification::NOTIFY_ERROR
             );
         }
 
@@ -74,7 +84,7 @@ class questions extends \moodleform
             return;
         }
 
-        // Sort questions by type
+        // Sort questions by type.
         $formquestions = [];
         for ($i = 0, $questionscount = count($questions); $i < $questionscount; $i++) {
             $questiontype = $questions[$i]->question_type;
@@ -83,7 +93,6 @@ class questions extends \moodleform
                 $formquestions[$questiontype] = [];
             }
 
-            // $questions[$i]->local_id = $i;
             $formquestions[$questiontype][] = $questions[$i];
         }
 
@@ -99,7 +108,7 @@ class questions extends \moodleform
 
             for ($i = 0, $questionscount = count($questions); $i < $questionscount; $i++) {
 
-                // Open question card
+                // Open question card.
                 $mform->addElement(
                     'html',
                     sprintf(
@@ -109,61 +118,87 @@ class questions extends \moodleform
                     )
                 );
 
-                // $mform->addElement('hidden', 'question_' . $questions[$i]->id . '_id')->setValue($questions[$i]->id);
-                // $mform->setType('question_' . $questions[$i]->id . '_id', PARAM_INT);
-
+                // Text of the question.
                 if ($questiontype != 'tf') {
+                    $questionid = 'question_' . $questions[$i]->id . '_question';
                     $mform->addElement(
                         'textarea',
-                        'question_' . $questions[$i]->id . '_question',
+                        $questionid,
                         get_string('question', 'local_nolej'),
                         'wrap="virtual" rows="2"'
                     )->setValue($questions[$i]->question);
+                    $mform->addRule($questionid, get_string('required'), 'required', null, 'server', false, false);
+
+                    // Fill the blanks requires placeholder '____'.
+                    if ($questiontype == 'ftb') {
+                        $mform->addRule(
+                            $questionid,
+                            get_string('questiontypeftbmissingblank', 'local_nolej'),
+                            'regex',
+                            '/_{4}/',
+                            null,
+                            'server',
+                            false,
+                            false
+                        );
+                    }
                 }
 
-                $mform->addElement('hidden', 'question_' . $questions[$i]->id . '_type')->setValue($questions[$i]->question_type);
-                $mform->setType('question_' . $questions[$i]->id . '_type', PARAM_ALPHA);
+                // Question type.
+                $typeid = 'question_' . $questions[$i]->id . '_type';
+                $mform->addElement('hidden', $typeid)->setValue($questions[$i]->question_type);
+                $mform->setType($typeid, PARAM_ALPHA);
 
+                // Enable question.
+                $enableid = 'question_' . $questions[$i]->id . '_enable';
                 $mform->addElement(
                     'selectyesno',
-                    'question_' . $questions[$i]->id . '_enable',
+                    $enableid,
                     get_string(
                         $questiontype == 'open' ? 'questionenable' : 'questionuseforgrading',
                         'local_nolej'
                     )
                 )->setValue(
-                    $questiontype == 'open'
+                        $questiontype == 'open'
                         ? $questions[$i]->enable
                         : $questions[$i]->use_for_grading
-                );
+                    );
 
+                // Text of the answer.
                 if ($questiontype != 'hoq') {
+                    $answerid = 'question_' . $questions[$i]->id . '_answer';
                     $mform->addElement(
                         $questiontype == 'ftb' ? 'text' : 'textarea',
-                        'question_' . $questions[$i]->id . '_answer',
+                        $answerid,
                         get_string($questiontype == 'tf' ? 'questionanswertrue' : 'questionanswer', 'local_nolej'),
                         $questiontype == 'ftb' ? '' : 'wrap="virtual" rows="3"'
                     )->setValue($questions[$i]->answer);
-                    $mform->setType('question_' . $questions[$i]->id . '_answer', PARAM_TEXT);
+                    $mform->setType($answerid, PARAM_TEXT);
+                    $mform->addRule($answerid, get_string('required'), 'required', null, 'server', false, false);
                 }
 
+                // Distractors.
                 $distractorscount = count($questions[$i]->distractors);
                 $mform->addElement('hidden', 'question_' . $questions[$i]->id . '_distractors')->setValue($distractorscount);
                 $mform->setType('question_' . $questions[$i]->id . '_distractors', PARAM_INT);
 
                 for ($j = 0; $j < $distractorscount; $j++) {
+                    $distractorid = 'question_' . $questions[$i]->id . '_distractor_' . $j;
                     $mform->addElement(
                         'textarea',
-                        'question_' . $questions[$i]->id . '_distractor_' . $j,
+                        $distractorid,
                         get_string($questiontype == 'tf' ? 'questionanswerfalse' : 'questiondistractor', 'local_nolej'),
                         'wrap="virtual" rows="3"'
                     )->setValue($questions[$i]->distractors[$j]);
+                    $mform->addRule($distractorid, get_string('required'), 'required', null, 'server', false, false);
                 }
 
+                // Choose distractor.
                 if ($questiontype == 'tf') {
+                    $selecteddistractorid = 'question_' . $questions[$i]->id . '_selected_distractor';
                     $mform->addElement(
                         'select',
-                        'question_' . $questions[$i]->id . '_selected_distractor',
+                        $selecteddistractorid,
                         get_string('questionusedistractor', 'local_nolej'),
                         [
                             '' => get_string('questionanswertrue', 'local_nolej'),
@@ -172,7 +207,7 @@ class questions extends \moodleform
                     )->setValue(empty($questions[$i]->selected_distractor) ? '' : 'usefalse');
                 }
 
-                // Close question card
+                // Close question card.
                 $mform->addElement('html', '</div>');
             }
         }
@@ -180,8 +215,15 @@ class questions extends \moodleform
         $this->add_action_buttons(true, get_string('savequestions', 'local_nolej'));
     }
 
-    function validation($data, $files)
-    {
-        return [];
+    /**
+     * Form validation
+     *
+     * @param array $data
+     * @param array $files
+     * @return array of errors
+     */
+    public function validation($data, $files) {
+        $errors = parent::validation($data, $files);
+        return $errors;
     }
 }

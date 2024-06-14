@@ -18,22 +18,36 @@
  * Strings for local_nolej
  *
  * @package     local_nolej
- * @author      2023 Vincenzo Padula <vincenzo@oc-group.eu>
+ * @author      Vincenzo Padula <vincenzo@oc-group.eu>
+ * @copyright   2024 OC Open Consulting SB Srl
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-// Plugin
+// Plugin.
 $string['pluginname'] = 'Nolej';
 $string['nolej:usenolej'] = 'Créez vos activités avec Nolej';
 
-// Settings
+// Privacy API.
+$string['privacy:metadata:nolej_module'] = 'Informations sur l\'auteur du module Nolej.';
+$string['privacy:metadata:nolej_module:user_id'] = 'L\'ID de l\'utilisateur qui a créé le module.';
+$string['privacy:metadata:nolej_module:tstamp'] = 'L\'horodatage lorsque l\'utilisateur a créé le module.';
+$string['privacy:metadata:nolej_activity'] = 'Informations sur l\'utilisateur qui a appelé l\'API Nolej.';
+$string['privacy:metadata:nolej_activity:user_id'] = 'L\'ID de l\'utilisateur qui a appelé l\'API.';
+$string['privacy:metadata:nolej_activity:tstamp'] = 'L\'horodatage lorsque l\'utilisateur a appelé l\'API.';
+$string['privacy:metadata:nolej_activity:action'] = 'L\'API que l\'utilisateur a appelée.';
+$string['privacy:metadata:endpoint'] = 'Pour s\'intégrer à Nolej, des données utilisateur doivent être échangées avec ce service.';
+$string['privacy:metadata:endpoint:user_id'] = 'L\'ID utilisateur est envoyé depuis Moodle pour vous permettre d\'accéder à vos données sur le système distant.';
+$string['privacy:metadata:core_files'] = 'Le plugin Nolej stocke des fichiers qui ont été téléchargés par l\'utilisateur pour créer des modules et être analysés par l\'IA.';
+
+// Settings.
 $string['apikey'] = 'Clé API';
 $string['apikeyinfo'] = 'Votre clé API Nolej.';
+$string['apikeyhowto'] = 'Pour obtenir une clé API, vous devez d\'abord créer un compte sur live.nolej.io, puis contacter Nolej à moodle@nolej.io, en demandant une clé API pour votre adresse e-mail enregistrée.';
 $string['apikeymissing'] = 'La clé API Nolej est manquante. Rendez-vous dans les paramètres du plugin pour renseigner votre clé.';
 
-// Manage
+// Manage.
 $string['library'] = 'Bibliothèque Nolej';
 $string['modules'] = 'Vos modules Nolej';
 $string['status'] = 'État';
@@ -49,19 +63,19 @@ $string['documentinfo'] = 'Informations du Module';
 $string['genericerror'] = 'Une erreur est survenue: <pre>{$a->error}</pre>';
 $string['moduleview'] = 'Voir le module';
 
-// Status
-$string['status_0'] = 'Nouveau module';
-$string['status_1'] = 'Transcription en cours';
-$string['status_2'] = 'Transcription terminée';
-$string['status_3'] = 'Analyse en cours';
-$string['status_4'] = 'Analysis terminée';
-$string['status_5'] = 'Révision en cours';
-$string['status_6'] = 'Révision terminée';
-$string['status_7'] = 'Génération de l\'activité en cours';
-$string['status_8'] = 'Activité générée';
-$string['status_9'] = 'Échec';
+// Status.
+$string['statuscreation'] = 'Nouveau module';
+$string['statuscreationpending'] = 'Transcription en cours';
+$string['statusanalysis'] = 'Transcription terminée';
+$string['statusanalysispending'] = 'Analyse en cours';
+$string['statusrevision'] = 'Analysis terminée';
+$string['statusrevisionpending'] = 'Révision en cours';
+$string['statusactivities'] = 'Révision terminée';
+$string['statusactivitiespending'] = 'Génération de l\'activité en cours';
+$string['statuscompleted'] = 'Activité générée';
+$string['statusfailed'] = 'Échec';
 
-// Notifications
+// Notifications.
 $string['eventwebhookcalled'] = 'Le webhook Nolej a été appelé.';
 $string['messageprovider:transcription_ok'] = 'Transcription terminée';
 $string['messageprovider:transcription_ko'] = 'Transcription échouée';
@@ -82,7 +96,7 @@ $string['action_activities_ok_body'] = 'Les activitées du document "{$a->title}
 $string['action_activities_ko'] = 'La génération d\'activités a échoué';
 $string['action_activities_ko_body'] = 'Malheureusement, la génération des activités du document "{$a->title}" a échoué le {$a->tstamp}. Message d\'erreur: {$a->errormessage}';
 
-// Creation
+// Creation.
 $string['title'] = 'Titre';
 $string['titledesc'] = 'Choisissez un titre ou laissez le champ vide pour que Nolej s\'en charge.';
 $string['source'] = 'Source';
@@ -103,31 +117,32 @@ $string['language'] = 'Langue du contenu';
 $string['languagedesc'] = 'Choisissez la langue du média pour permettre à Nolej de mieux vous aider.';
 $string['create'] = 'Créer un module';
 $string['modulenotcreated'] = 'Module non créé';
-$string['modulecreated'] = 'Module créé, transcription en cours...';
+$string['modulecreated'] = 'Module créé, transcription en cours. Vous recevrez une notification lorsque la transcription sera terminée.';
 $string['modulenotfound'] = 'Aucun module trouvé';
+$string['errdatamissing'] = 'Certaines données manquent';
 $string['errdocument'] = 'Une erreur est arrivée au cours de la création du module Nolej:<br><pre>{$a}</pre><br>Veuillez réessayer ou contacter un administrateur si l\'erreur persiste.';
 
-// Content limits
+// Content limits.
 $string['limitcontent'] = 'Limitations de contenu';
 $string['limitaudio'] = 'Limites Audio';
 $string['limitvideo'] = 'Limites Video';
 $string['limitdoc'] = 'Limites de Document';
-$string['limitmaxduration'] = 'Durée maximale';
-$string['limitmaxpages'] = 'Nombre maximal de pages';
-$string['limitmaxsize'] = 'Taille maximale de fichier';
-$string['limitmincharacters'] = 'Nombre minimal de caractères';
-$string['limitmaxcharacters'] = 'Nombre maximal de caractères';
-$string['limittype'] = 'Types permis';
+$string['limitmaxduration'] = 'Durée maximale: {$a} minutes.';
+$string['limitmaxpages'] = 'Nombre maximal de pages: {$a}.';
+$string['limitmaxsize'] = 'Taille maximale de fichier: {$a} GB.';
+$string['limitmincharacters'] = 'Nombre minimal de caractères: {$a}.';
+$string['limitmaxcharacters'] = 'Nombre maximal de caractères: {$a}.';
+$string['limittype'] = 'Types permis: {$a}.';
 
-// Analysis
+// Analysis.
 $string['analyze'] = 'Commencer l\'analyse';
 $string['analysisconfirm'] = 'Attention: Avant de continuer, avez-vous bien vérifié la transcription? Once the analysis begins, modifications cannot be made. Please ensure accuracy before continuing.';
 $string['transcription'] = 'Transcription';
 $string['missingtranscription'] = 'Transcription manquante';
-$string['analysisstart'] = 'Analyse commencée';
+$string['analysisstart'] = 'Analyse commencée. Vous recevrez une notification lorsque l\'analyse sera terminée.';
 $string['cannotwritetranscription'] = 'Impossible de sauvegarder la transcription sur le disque, veuillez contacter un Administrateur si l\'erreur persiste.';
 
-// Summary
+// Summary.
 $string['savesummary'] = 'Enregistrer le résumé';
 $string['summary'] = 'Résumé';
 $string['abstract'] = 'Abstrait';
@@ -136,7 +151,7 @@ $string['cannotwritesummary'] = 'Impossible de sauvegarder le résumé sur le di
 $string['summarynotsaved'] = 'Échec de la mise à jour du résumé, veuillez contacter un Administrateur si l\'erreur persiste';
 $string['summarysaved'] = 'Résumé enregistré.';
 
-// Questions
+// Questions.
 $string['questions'] = 'Questions';
 $string['savequestions'] = 'Enregistrer les questions';
 $string['questionssaved'] = 'Questions enregistrées.';
@@ -147,6 +162,7 @@ $string['question'] = 'Question';
 $string['questiontype'] = 'Type de question';
 $string['questiontypeopen'] = 'Réponse ouverte';
 $string['questiontypeftb'] = 'Texte à trou';
+$string['questiontypeftbmissingblank'] = 'L\'activité « Texte à trou » nécessite un espace réservé pour le mot manquant. Utilisez 4 (quatre) caractères de soulignement « ____ » pour indiquer le mot manquant.';
 $string['questiontypetf'] = 'Vrai ou Faux';
 $string['questiontypemcq'] = 'QCM';
 $string['questiontypehoq'] = 'Question de haut niveau';
@@ -158,7 +174,7 @@ $string['questionanswerfalse'] = 'Affirmation erronée';
 $string['questiondistractor'] = 'Fausse piste';
 $string['questionusedistractor'] = 'Affirmation à afficher';
 
-// Concepts
+// Concepts.
 $string['concepts'] = 'Concepts';
 $string['saveconcepts'] = 'Enregistrer les concepts';
 $string['cannotwriteconcepts'] = 'Impossible de sauvegarder les concepts sur le disque, veuillez contacter un Administrateur si l\'erreur persiste.';
@@ -174,7 +190,7 @@ $string['conceptusefordtw'] = 'Glisser-déposer';
 $string['conceptuseingames'] = 'Jeux disponibles';
 $string['conceptuseforpractice'] = 'Utiliser comme entraînement';
 
-// Activities
+// Activities.
 $string['settings'] = 'Générer';
 $string['activities'] = 'Aperçu';
 $string['generate'] = 'Générer les activités';
@@ -208,7 +224,7 @@ $string['minvalue'] = 'Valeur minimale';
 $string['maxvalue'] = 'Valeur maximale';
 $string['cannotwritesettings'] = 'Impossible de sauvegarder les paramètres sur le disque, veuillez contacter un Administrateur si l\'erreur persiste.';
 $string['settingsnotsaved'] = 'Échec de la mise à jour des paramètres, veuillez contacter un Administrateur si l\'erreur persiste.';
-$string['generationstarted'] = 'Génération commencée';
+$string['generationstarted'] = 'Génération commencée. Vous recevrez une notification lorsque les activités seront prêtes.';
 $string['erractivitiesdecode'] = 'Échec du décodage des données des activités';
 $string['erractivitydownload'] = 'Échec de la sauvegarde de l\'activité sur le disque';
 $string['errh5psave'] = 'Échec de la sauvegarde du paquet H5P';

@@ -18,14 +18,19 @@
  * Defines various library functions.
  *
  * @package     local_nolej
- * @author      2023 Vincenzo Padula <vincenzo@oc-group.eu>
+ * @author      Vincenzo Padula <vincenzo@oc-group.eu>
+ * @copyright   2024 OC Open Consulting SB Srl
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-function local_nolej_extend_navigation(global_navigation $navigation)
-{
+/**
+ * Add a link to the library in the global navigation.
+ * @param global_navigation $navigation
+ * @return void
+ */
+function local_nolej_extend_navigation(global_navigation $navigation) {
     if (!has_capability('local/nolej:usenolej', context_system::instance())) {
         return;
     }

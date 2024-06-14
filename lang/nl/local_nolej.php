@@ -18,22 +18,36 @@
  * Strings for local_nolej
  *
  * @package     local_nolej
- * @author      2023 Vincenzo Padula <vincenzo@oc-group.eu>
+ * @author      Vincenzo Padula <vincenzo@oc-group.eu>
+ * @copyright   2024 OC Open Consulting SB Srl
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-// Plugin
+// Plugin.
 $string['pluginname'] = 'Nolej';
 $string['nolej:usenolej'] = 'Activiteiten maken met Nolej';
 
-// Settings
+// Privacy API.
+$string['privacy:metadata:nolej_module'] = 'Informatie over de auteur van de Nolej-module.';
+$string['privacy:metadata:nolej_module:user_id'] = 'De ID van de gebruiker die de module heeft gemaakt.';
+$string['privacy:metadata:nolej_module:tstamp'] = 'De tijdstempel toen de gebruiker de module maakte.';
+$string['privacy:metadata:nolej_activity'] = 'Informatie over de gebruiker die de Nolej API heeft aangeroepen.';
+$string['privacy:metadata:nolej_activity:user_id'] = 'De ID van de gebruiker die de API heeft aangeroepen.';
+$string['privacy:metadata:nolej_activity:tstamp'] = 'De tijdstempel toen de gebruiker de API aanriep.';
+$string['privacy:metadata:nolej_activity:action'] = 'De API die de gebruiker heeft aangeroepen.';
+$string['privacy:metadata:endpoint'] = 'Om te integreren met Nolej, moeten gebruikersgegevens met die service worden uitgewisseld.';
+$string['privacy:metadata:endpoint:user_id'] = 'De gebruikers-ID wordt vanuit Moodle verzonden om u toegang te geven tot uw gegevens op het externe systeem.';
+$string['privacy:metadata:core_files'] = 'De Nolej-plugin slaat bestanden op die door de gebruiker zijn geüpload om modules te maken en te worden geanalyseerd door AI.';
+
+// Settings.
 $string['apikey'] = 'API-sleutel';
 $string['apikeyinfo'] = 'Uw Nolej API-sleutel.';
+$string['apikeyhowto'] = 'Om een API-sleutel te verkrijgen, moet u eerst een account aanmaken op live.nolej.io en vervolgens contact opnemen met Nolej via moodle@nolej.io, waarbij u een API-sleutel aanvraagt voor uw geregistreerde e-mailadres.';
 $string['apikeymissing'] = 'Nolej API-sleutel ontbreekt. U moet deze instellen in de plug-inconfiguratie.';
 
-// Manage
+// Manage.
 $string['library'] = 'Nolej-bibliotheek';
 $string['modules'] = 'Uw Nolej-modules';
 $string['status'] = 'Status';
@@ -49,19 +63,19 @@ $string['documentinfo'] = 'Module-informatie';
 $string['genericerror'] = 'Er is een fout opgetreden: <pre>{$a->error}</pre>';
 $string['moduleview'] = 'Bekijk module';
 
-// Status
-$string['status_0'] = 'Nieuwe module';
-$string['status_1'] = 'Transcriptie bezig';
-$string['status_2'] = 'Transcriptie voltooid';
-$string['status_3'] = 'Analyse bezig';
-$string['status_4'] = 'Analyse voltooid';
-$string['status_5'] = 'Revisie bezig';
-$string['status_6'] = 'Revisie voltooid';
-$string['status_7'] = 'Activiteiten genereren bezig';
-$string['status_8'] = 'Activiteiten gegenereerd';
-$string['status_9'] = 'Mislukt';
+// Status.
+$string['statuscreation'] = 'Nieuwe module';
+$string['statuscreationpending'] = 'Transcriptie bezig';
+$string['statusanalysis'] = 'Transcriptie voltooid';
+$string['statusanalysispending'] = 'Analyse bezig';
+$string['statusrevision'] = 'Analyse voltooid';
+$string['statusrevisionpending'] = 'Revisie bezig';
+$string['statusactivities'] = 'Revisie voltooid';
+$string['statusactivitiespending'] = 'Activiteiten genereren bezig';
+$string['statuscompleted'] = 'Activiteiten gegenereerd';
+$string['statusfailed'] = 'Mislukt';
 
-// Notifications
+// Notifications.
 $string['eventwebhookcalled'] = 'Nolej webhook is opgeroepen.';
 $string['messageprovider:transcription_ok'] = 'Transcriptie voltooid';
 $string['messageprovider:transcription_ko'] = 'Transcriptie mislukt';
@@ -82,7 +96,7 @@ $string['action_activities_ok_body'] = 'Activiteiten van document "{$a->title}" 
 $string['action_activities_ko'] = 'Genereren van activiteiten mislukt';
 $string['action_activities_ko_body'] = 'Helaas is het genereren van activiteiten voor document "{$a->title}" mislukt op {$a->tstamp}. Foutmelding: {$a->errormessage}';
 
-// Creation
+// Creation.
 $string['title'] = 'Titel';
 $string['titledesc'] = 'Kies een titel of laat het leeg en Nolej zal een titel voor u kiezen.';
 $string['source'] = 'Bron';
@@ -103,31 +117,32 @@ $string['language'] = 'Inhoudstaal';
 $string['languagedesc'] = 'Het kiezen van de juiste taal van de media helpt Nolej om het beter te analyseren.';
 $string['create'] = 'Module maken';
 $string['modulenotcreated'] = 'Module niet gemaakt';
-$string['modulecreated'] = 'Module gemaakt, transcriptie bezig...';
+$string['modulecreated'] = 'Module gemaakt, transcriptie bezig. U ontvangt een melding wanneer de transcriptie is voltooid.';
 $string['modulenotfound'] = 'Module niet gevonden';
+$string['errdatamissing'] = 'Sommige gegevens ontbreken';
 $string['errdocument'] = 'Er is een fout opgetreden bij het maken van de Nolej-module:<br><pre>{$a}</pre><br>Probeer het opnieuw of neem contact op met een beheerder als deze fout aanhoudt.';
 
-// Content limits
+// Content limits.
 $string['limitcontent'] = 'Inhoudsbeperkingen';
 $string['limitaudio'] = 'Audio beperkingen';
 $string['limitvideo'] = 'Videobeperkingen';
 $string['limitdoc'] = 'Documentbeperkingen';
-$string['limitmaxduration'] = 'Maximale duur';
-$string['limitmaxpages'] = 'Maximaal aantal pagina\'s';
-$string['limitmaxsize'] = 'Maximale bestandsgrootte';
-$string['limitmincharacters'] = 'Minimale tekens';
-$string['limitmaxcharacters'] = 'Maximale tekens';
-$string['limittype'] = 'Toegestane typen';
+$string['limitmaxduration'] = 'Maximale duur: {$a} minuten.';
+$string['limitmaxpages'] = 'Maximaal aantal pagina\'s: {$a}.';
+$string['limitmaxsize'] = 'Maximale bestandsgrootte: {$a} GB.';
+$string['limitmincharacters'] = 'Minimale tekens: {$a}.';
+$string['limitmaxcharacters'] = 'Maximale tekens: {$a}.';
+$string['limittype'] = 'Toegestane typen: {$a}.';
 
-// Analysis
+// Analysis.
 $string['analyze'] = 'Start analyse';
 $string['analysisconfirm'] = 'Waarschuwing: heeft u de transcriptie grondig bekeken voordat u verder gaat? Zodra de analyse begint, kunnen er geen wijzigingen meer worden aangebracht. Zorg ervoor dat alles nauwkeurig is voordat u doorgaat.';
 $string['transcription'] = 'Transcriptie';
 $string['missingtranscription'] = 'Transcriptie ontbreekt';
-$string['analysisstart'] = 'Analyse gestart';
+$string['analysisstart'] = 'Analyse gestart. U ontvangt een melding wanneer de analyse is voltooid.';
 $string['cannotwritetranscription'] = 'Kan transcriptie niet op schijf opslaan, neem contact op met een beheerder als deze fout aanhoudt.';
 
-// Summary
+// Summary.
 $string['savesummary'] = 'Samenvatting opslaan';
 $string['summary'] = 'Samenvatting';
 $string['abstract'] = 'Abstract';
@@ -136,7 +151,7 @@ $string['cannotwritesummary'] = 'Kan samenvatting niet op schijf opslaan, neem c
 $string['summarynotsaved'] = 'Kon de samenvatting niet bijwerken. Neem contact op met een beheerder als deze fout aanhoudt.';
 $string['summarysaved'] = 'Samenvatting is opgeslagen.';
 
-// Questions
+// Questions.
 $string['questions'] = 'Vragen';
 $string['savequestions'] = 'Vragen opslaan';
 $string['questionssaved'] = 'Vragen opgeslagen.';
@@ -147,6 +162,7 @@ $string['question'] = 'Vraag';
 $string['questiontype'] = 'Soort vraag';
 $string['questiontypeopen'] = 'Open antwoord';
 $string['questiontypeftb'] = 'Vul de lege plekken in';
+$string['questiontypeftbmissingblank'] = 'Voor de activiteit "Vul de lege plekken in" is een tijdelijke aanduiding voor het ontbrekende woord vereist. Gebruik 4 (vier) onderstrepingstekens "____" om het ontbrekende woord aan te geven.';
 $string['questiontypetf'] = 'Waar of niet waar';
 $string['questiontypemcq'] = 'Meerkeuzevraag';
 $string['questiontypehoq'] = 'Vraag van hogere orde';
@@ -158,7 +174,7 @@ $string['questionanswerfalse'] = 'Onjuiste bewering';
 $string['questiondistractor'] = 'Distractor';
 $string['questionusedistractor'] = 'Bewering om weer te geven';
 
-// Concepts
+// Concepts.
 $string['concepts'] = 'Concepten';
 $string['saveconcepts'] = 'Concepten opslaan';
 $string['cannotwriteconcepts'] = 'Kan concepten niet op schijf opslaan, neem contact op met een beheerder als deze fout aanhoudt.';
@@ -174,7 +190,7 @@ $string['conceptusefordtw'] = 'Sleep het woord';
 $string['conceptuseingames'] = 'Beschikbare games';
 $string['conceptuseforpractice'] = 'Gebruik voor oefenen';
 
-// Activities
+// Activities.
 $string['settings'] = 'Genereren';
 $string['activities'] = 'Voorbeeld';
 $string['generate'] = 'Activiteiten genereren';
@@ -208,7 +224,7 @@ $string['minvalue'] = 'Minimale waarde';
 $string['maxvalue'] = 'Maximale waarde';
 $string['cannotwritesettings'] = 'Kan instellingen niet op schijf opslaan, neem contact op met een beheerder als deze fout aanhoudt.';
 $string['settingsnotsaved'] = 'Kon de instellingen niet bijwerken. Neem contact op met een beheerder als deze fout aanhoudt.';
-$string['generationstarted'] = 'Generatie gestart';
+$string['generationstarted'] = 'Generatie gestart. U ontvangt een melding wanneer de activiteiten zijn gegenereerd.';
 $string['erractivitiesdecode'] = 'Kan activiteitengegevens niet decoderen';
 $string['erractivitydownload'] = 'Kan activiteit niet op schijf opslaan';
 $string['errh5psave'] = 'Kan h5p-pakket niet opslaan';

@@ -18,7 +18,8 @@
  * Copcepts edit form
  *
  * @package     local_nolej
- * @author      2023 Vincenzo Padula <vincenzo@oc-group.eu>
+ * @author      Vincenzo Padula <vincenzo@oc-group.eu>
+ * @copyright   2024 OC Open Consulting SB Srl
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -26,41 +27,50 @@ namespace local_nolej\form;
 
 defined('MOODLE_INTERNAL') || die();
 
+use moodle_url;
+use core\output\notification;
+use local_nolej\api;
+
+global $CFG;
 require_once($CFG->libdir . '/formslib.php');
 require_once($CFG->dirroot . '/local/nolej/classes/api.php');
 
-class concepts extends \moodleform
-{
+/**
+ * Concepts edit form
+ */
+class concepts extends \moodleform {
 
-    public function definition()
-    {
+    /**
+     * Form definition
+     */
+    public function definition() {
         global $CFG;
 
         $mform = $this->_form;
 
-        // Document ID
+        // Document ID.
         $documentid = $this->_customdata['documentid'];
         $mform->addElement('hidden', 'documentid')->setValue($documentid);
         $mform->setType('documentid', PARAM_ALPHANUMEXT);
 
-        // Step
+        // Step.
         $mform->addElement('hidden', 'step')->setValue('concepts');
         $mform->setType('step', PARAM_ALPHA);
 
-        // Download concepts
-        $result = \local_nolej\api\api::getcontent(
+        // Download concepts.
+        $result = api::getcontent(
             $documentid,
             'concepts',
             'concepts.json'
         );
 
-        $json = \local_nolej\api\api::readcontent($documentid, 'concepts.json');
+        $json = api::readcontent($documentid, 'concepts.json');
         if (!$json) {
             redirect(
-                new \moodle_url('/local/nolej/manage.php'),
-                get_string('genericerror', 'local_nolej', ['error' => print_r($result, true)]),
+                new moodle_url('/local/nolej/manage.php'),
+                get_string('genericerror', 'local_nolej', ['error' => var_export($result, true)]),
                 null,
-                \core\output\notification::NOTIFY_ERROR
+                notification::NOTIFY_ERROR
             );
         }
 
@@ -74,7 +84,7 @@ class concepts extends \moodleform
             return;
         }
 
-        // Sort concepts alphabetically
+        // Sort concepts alphabetically.
         usort($concepts, function ($a, $b) {
             return strcmp(
                 $a->concept->label,
@@ -89,28 +99,37 @@ class concepts extends \moodleform
                 $concepts[$i]->concept->label
             );
 
+            // Concept label.
+            $labelid = 'concept_' . $concepts[$i]->id . '_label';
             $mform->addElement(
                 'text',
-                'concept_' . $concepts[$i]->id . '_label',
+                $labelid,
                 get_string('conceptlabel', 'local_nolej'),
                 'style="width:100%;"'
             )->setValue($concepts[$i]->concept->label);
-            $mform->setType('concept_' . $concepts[$i]->id . '_label', PARAM_TEXT);
+            $mform->setType($labelid, PARAM_TEXT);
+            $mform->addRule($labelid, get_string('required'), 'required', null, 'server', false, false);
 
+            // Concept enable.
+            $enableid = 'concept_' . $concepts[$i]->id . '_enable';
             $mform->addElement(
                 'selectyesno',
-                'concept_' . $concepts[$i]->id . '_enable',
+                $enableid,
                 get_string('conceptenable', 'local_nolej')
             )->setValue($concepts[$i]->enable);
 
+            // Concept definition.
+            $definitionid = 'concept_' . $concepts[$i]->id . '_definition';
             $mform->addElement(
                 'textarea',
-                'concept_' . $concepts[$i]->id . '_definition',
+                $definitionid,
                 get_string('conceptdefinition', 'local_nolej'),
                 'wrap="virtual" rows="3"'
             )->setValue($concepts[$i]->concept->definition);
-            $mform->setType('concept_' . $concepts[$i]->id . '_definition', PARAM_TEXT);
+            $mform->setType($definitionid, PARAM_TEXT);
+            $mform->addRule($definitionid, get_string('required'), 'required', null, 'server', false, false);
 
+            // Concept related games.
             $availablegames = $concepts[$i]->concept->available_games;
             if ($availablegames != null && is_array($availablegames) && count($availablegames) > 0) {
                 $mform->addElement(
@@ -119,11 +138,9 @@ class concepts extends \moodleform
                     get_string('conceptuseforgaming', 'local_nolej')
                 )->setValue($concepts[$i]->use_for_gaming);
 
-                $games = array();
+                $games = [];
 
-                // var_dump($concepts[$i]->use_for_cw);die();
-                // var_export($concepts[$i]->use_for_cw);die();
-
+                // Crossword game.
                 if (in_array('cw', $availablegames)) {
                     $games[] = &$mform->createElement(
                         'advcheckbox',
@@ -134,6 +151,7 @@ class concepts extends \moodleform
                     $mform->setDefault('concept_' . $concepts[$i]->id . '_games[use_for_cw]', (bool) $concepts[$i]->use_for_cw);
                 }
 
+                // Drag the word game.
                 if (in_array('dtw', $availablegames)) {
                     $games[] = &$mform->createElement(
                         'advcheckbox',
@@ -144,6 +162,7 @@ class concepts extends \moodleform
                     $mform->setDefault('concept_' . $concepts[$i]->id . '_games[use_for_dtw]', (bool) $concepts[$i]->use_for_dtw);
                 }
 
+                // Find the word game.
                 if (in_array('ftw', $availablegames)) {
                     $games[] = &$mform->createElement(
                         'advcheckbox',
@@ -158,7 +177,7 @@ class concepts extends \moodleform
                     $games,
                     'concept_' . $concepts[$i]->id . '_games',
                     get_string('conceptuseingames', 'local_nolej'),
-                    array(' '),
+                    [' '],
                     true
                 );
 
@@ -170,6 +189,7 @@ class concepts extends \moodleform
                 );
             }
 
+            // Use the concept for practice activity.
             $mform->addElement(
                 'selectyesno',
                 'concept_' . $concepts[$i]->id . '_use_for_practice',
@@ -180,8 +200,15 @@ class concepts extends \moodleform
         $this->add_action_buttons(true, get_string('saveconcepts', 'local_nolej'));
     }
 
-    function validation($data, $files)
-    {
-        return [];
+    /**
+     * Form validation
+     *
+     * @param array $data
+     * @param array $files
+     * @return array of errors
+     */
+    public function validation($data, $files) {
+        $errors = parent::validation($data, $files);
+        return $errors;
     }
 }

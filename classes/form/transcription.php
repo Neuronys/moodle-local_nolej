@@ -18,7 +18,8 @@
  * Transcription edit form
  *
  * @package     local_nolej
- * @author      2023 Vincenzo Padula <vincenzo@oc-group.eu>
+ * @author      Vincenzo Padula <vincenzo@oc-group.eu>
+ * @copyright   2024 OC Open Consulting SB Srl
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -26,29 +27,38 @@ namespace local_nolej\form;
 
 defined('MOODLE_INTERNAL') || die();
 
+use moodle_url;
+use core\output\notification;
+use local_nolej\api;
+
+global $CFG;
 require_once($CFG->libdir . '/formslib.php');
 require_once($CFG->dirroot . '/local/nolej/classes/api.php');
 
-class transcription extends \moodleform
-{
+/**
+ * Transcription edit form
+ */
+class transcription extends \moodleform {
 
-    public function definition()
-    {
+    /**
+     * Form definition
+     */
+    public function definition() {
         global $CFG;
 
         $mform = $this->_form;
 
-        // Document ID
+        // Document ID.
         $documentid = $this->_customdata['documentid'];
         $mform->addElement('hidden', 'documentid')->setValue($documentid);
         $mform->setType('documentid', PARAM_ALPHANUMEXT);
 
-        // Step
+        // Step.
         $mform->addElement('hidden', 'step')->setValue('analysis');
         $mform->setType('step', PARAM_ALPHA);
 
-        // Download transcription
-        $result = \local_nolej\api\api::get(
+        // Download transcription.
+        $result = api::get(
             sprintf('/documents/%s/transcription', $documentid)
         );
 
@@ -60,21 +70,21 @@ class transcription extends \moodleform
             !is_string($result->result)
         ) {
             redirect(
-                new \moodle_url('/local/nolej/manage.php'),
-                get_string('genericerror', 'local_nolej', ['error' => print_r($result, true)]),
+                new moodle_url('/local/nolej/manage.php'),
+                get_string('genericerror', 'local_nolej', ['error' => var_export($result, true)]),
                 null,
-                \core\output\notification::NOTIFY_ERROR
+                notification::NOTIFY_ERROR
             );
         }
 
-        // Document title
+        // Document title.
         $mform->addElement('text', 'title', get_string('title', 'local_nolej'), 'style="width:100%;"');
         $mform->setType('title', PARAM_NOTAGS);
         $mform->setDefault('title', $result->title);
 
-        // Download transcription
+        // Download transcription.
         $transcription = file_get_contents($result->result);
-        $success = \local_nolej\api\api::writecontent(
+        $success = api::writecontent(
             $documentid,
             'transcription.htm',
             $transcription
@@ -82,20 +92,20 @@ class transcription extends \moodleform
 
         if (!$success) {
             redirect(
-                new \moodle_url('/local/nolej/manage.php'),
+                new moodle_url('/local/nolej/manage.php'),
                 get_string('cannotwritetranscription', 'local_nolej'),
                 null,
-                \core\output\notification::NOTIFY_ERROR
+                notification::NOTIFY_ERROR
             );
         }
 
-        // Transcription
+        // Transcription.
         $mform->addElement(
             'editor',
             'transcription',
             get_string('transcription', 'local_nolej'),
             null,
-            array(
+            [
                 'subdirs' => 0,
                 'maxbytes' => 0,
                 'maxfiles' => 0,
@@ -104,25 +114,40 @@ class transcription extends \moodleform
                 'noclean' => 0,
                 'trusttext' => 0,
                 'enable_filemanagement' => false,
-            )
+            ]
         )->setValue(['text' => $transcription]);
         $mform->setType('transcription', PARAM_CLEANHTML);
 
-        $mform->addRule('title', get_string('error'), 'required', null, 'server', false, false);
-        $mform->addRule('transcription', get_string('error'), 'required', null, 'server', false, false);
-        // $mform->addRule('transcription', get_string('error'), 'maxlength', 50000, 'server', false, false);
-        // $mform->addRule('transcription', get_string('error'), 'minlength', 500, 'server', false, false);
+        $mform->addRule('title', get_string('required'), 'required', null, 'server', false, false);
+        $mform->addRule('transcription', get_string('required'), 'required', null, 'server', false, false);
 
-        // $this->add_action_buttons(true, get_string('analyze', 'local_nolej'));
-        $buttonarray = array();
+        // Use custom submit buttons.
+        $buttonarray = [];
         $buttonarray[] = &$mform->createElement('submit', 'confirmanalysis', get_string('analyze', 'local_nolej'));
         $buttonarray[] = &$mform->createElement('cancel');
-        $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
+        $mform->addGroup($buttonarray, 'buttonar', '', [' '], false);
         $mform->closeHeaderBefore('buttonar');
     }
 
-    function validation($data, $files)
-    {
-        return [];
+    /**
+     * Form validation
+     *
+     * @param array $data
+     * @param array $files
+     * @return array of errors
+     */
+    public function validation($data, $files) {
+        $errors = parent::validation($data, $files);
+
+        // Check transcription limits.
+        if (!isset($data['transcription']['text'])) {
+            $errors['transcription'] = get_string('required');
+        } else if (strlen($data['transcription']['text']) < 500) {
+            $errors['transcription'] = get_string('limitmincharacters', 'local_nolej', 500);
+        } else if (strlen($data['transcription']['text']) > 50000) {
+            $errors['transcription'] = get_string('limitmaxcharacters', 'local_nolej', 50000);
+        }
+
+        return $errors;
     }
 }

@@ -18,56 +18,59 @@
  * Nolej module edit steps, from creation to activity generation.
  *
  * @package     local_nolej
- * @author      2023 Vincenzo Padula <vincenzo@oc-group.eu>
+ * @author      Vincenzo Padula <vincenzo@oc-group.eu>
+ * @copyright   2024 OC Open Consulting SB Srl
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require_once(__DIR__ . '/../../config.php');
+require_once($CFG->dirroot . '/local/nolej/classes/api.php');
+
+use moodle_url;
+use core\output\notification;
 
 require_login();
 $context = context_system::instance();
 require_capability('local/nolej:usenolej', $context);
 
-require_once($CFG->dirroot . '/local/nolej/classes/api.php');
-
 $documentid = optional_param('documentid', null, PARAM_ALPHANUMEXT);
 
 if ($documentid == null) {
-    // Document not set
-    redirect(new \moodle_url('/local/nolej/edit.php'));
+    // Document not set.
+    redirect(new moodle_url('/local/nolej/edit.php'));
 }
 
 $document = $DB->get_record(
-    'nolej_module',
+    'local_nolej_module',
     [
         'document_id' => $documentid,
-        'user_id' => $USER->id
+        'user_id' => $USER->id,
     ]
 );
 
 if (!$document) {
-    // Document does not exist
+    // Document does not exist.
     redirect(
-        new \moodle_url('/local/nolej/manage.php'),
+        new moodle_url('/local/nolej/manage.php'),
         get_string('modulenotfound', 'local_nolej'),
         null,
-        \core\output\notification::NOTIFY_ERROR
+        notification::NOTIFY_ERROR
     );
 }
 
 $DB->delete_records(
-    'nolej_module',
+    'local_nolej_module',
     ['document_id' => $documentid]
 );
 
 $DB->delete_records(
-    'nolej_activity',
+    'local_nolej_activity',
     ['document_id' => $documentid]
 );
 
 redirect(
-    new \moodle_url('/local/nolej/manage.php'),
+    new moodle_url('/local/nolej/manage.php'),
     get_string('moduledeleted', 'local_nolej'),
     null,
-    \core\output\notification::NOTIFY_SUCCESS
+    notification::NOTIFY_SUCCESS
 );

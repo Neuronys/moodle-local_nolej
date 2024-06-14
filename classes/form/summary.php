@@ -18,7 +18,8 @@
  * Summary edit form
  *
  * @package     local_nolej
- * @author      2023 Vincenzo Padula <vincenzo@oc-group.eu>
+ * @author      Vincenzo Padula <vincenzo@oc-group.eu>
+ * @copyright   2024 OC Open Consulting SB Srl
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -26,41 +27,50 @@ namespace local_nolej\form;
 
 defined('MOODLE_INTERNAL') || die();
 
+use moodle_url;
+use core\output\notification;
+use local_nolej\api;
+
+global $CFG;
 require_once($CFG->libdir . '/formslib.php');
 require_once($CFG->dirroot . '/local/nolej/classes/api.php');
 
-class summary extends \moodleform
-{
+/**
+ * Summary edit form
+ */
+class summary extends \moodleform {
 
-    public function definition()
-    {
+    /**
+     * Form definition
+     */
+    public function definition() {
         global $CFG;
 
         $mform = $this->_form;
 
-        // Document ID
+        // Document ID.
         $documentid = $this->_customdata['documentid'];
         $mform->addElement('hidden', 'documentid')->setValue($documentid);
         $mform->setType('documentid', PARAM_ALPHANUMEXT);
 
-        // Step
+        // Step.
         $mform->addElement('hidden', 'step')->setValue('summary');
         $mform->setType('step', PARAM_ALPHA);
 
-        // Download summary
-        $result = \local_nolej\api\api::getcontent(
+        // Download summary.
+        $result = api::getcontent(
             $documentid,
             'summary',
             'summary.json'
         );
 
-        $json = \local_nolej\api\api::readcontent($documentid, 'summary.json');
+        $json = api::readcontent($documentid, 'summary.json');
         if (!$json) {
             redirect(
-                new \moodle_url('/local/nolej/manage.php'),
-                get_string('genericerror', 'local_nolej', ['error' => print_r($result, true)]),
+                new moodle_url('/local/nolej/manage.php'),
+                get_string('genericerror', 'local_nolej', ['error' => var_export($result, true)]),
                 null,
-                \core\output\notification::NOTIFY_ERROR
+                notification::NOTIFY_ERROR
             );
         }
 
@@ -70,7 +80,7 @@ class summary extends \moodleform
             return;
         }
 
-        // Summary
+        // Summary.
         $mform->addElement('header', 'summaryheader', get_string('summary', 'local_nolej'));
 
         $summarycount = count($summary->summary);
@@ -78,24 +88,29 @@ class summary extends \moodleform
         $mform->setType('summarycount', PARAM_INT);
 
         for ($i = 0; $i < $summarycount; $i++) {
-            $mform->addElement('text', 'summary_' . $i . '_title', '', 'style="width:100%;"');
-            $mform->setType('summary_' . $i . '_title', PARAM_TEXT);
-            $mform->setDefault('summary_' . $i . '_title', $summary->summary[$i]->title);
+            $titleid = 'summary_' . $i . '_title';
+            $mform->addElement('text', $titleid, '', 'style="width:100%;"');
+            $mform->setType($titleid, PARAM_TEXT);
+            $mform->setDefault($titleid, $summary->summary[$i]->title);
+            $mform->addRule($titleid, get_string('required'), 'required', null, 'server', false, false);
 
-            $mform->addElement('textarea', 'summary_' . $i . '_text', '', 'wrap="virtual" rows="6"');
-            $mform->setType('summary_' . $i . '_text', PARAM_TEXT);
-            $mform->setDefault('summary_' . $i . '_text', $summary->summary[$i]->text);
+            $textid = 'summary_' . $i . '_text';
+            $mform->addElement('textarea', $textid, '', 'wrap="virtual" rows="6"');
+            $mform->setType($textid, PARAM_TEXT);
+            $mform->setDefault($textid, $summary->summary[$i]->text);
+            $mform->addRule($textid, get_string('required'), 'required', null, 'server', false, false);
         }
 
-        // Abstract
+        // Abstract.
         if ($summarycount > 1) {
             $mform->addElement('header', 'abstractheader', get_string('abstract', 'local_nolej'));
             $mform->addElement('textarea', "abstract", '', 'wrap="virtual" rows="15"');
             $mform->setType("abstract", PARAM_TEXT);
-            $mform->setDefault("abstract", $summary->abstract);
+            $mform->setDefault('abstract', $summary->abstract);
+            $mform->addRule('abstract', get_string('required'), 'required', null, 'server', false, false);
         }
 
-        // Keypoints
+        // Keypoints.
         $mform->addElement('header', 'keypointsheader', get_string('keypoints', 'local_nolej'));
 
         $keypointscount = count($summary->keypoints);
@@ -103,16 +118,25 @@ class summary extends \moodleform
         $mform->setType('keypointscount', PARAM_INT);
 
         for ($i = 0; $i < $keypointscount; $i++) {
-            $mform->addElement('textarea', 'keypoints_' . $i, '', 'wrap="virtual" rows="2"');
-            $mform->setType('keypoints_' . $i, PARAM_TEXT);
-            $mform->setDefault('keypoints_' . $i, $summary->keypoints[$i]);
+            $keypointid = 'keypoints_' . $i;
+            $mform->addElement('textarea', $keypointid, '', 'wrap="virtual" rows="2"');
+            $mform->setType($keypointid, PARAM_TEXT);
+            $mform->setDefault($keypointid, $summary->keypoints[$i]);
+            $mform->addRule($keypointid, get_string('required'), 'required', null, 'server', false, false);
         }
 
         $this->add_action_buttons(true, get_string('savesummary', 'local_nolej'));
     }
 
-    function validation($data, $files)
-    {
-        return [];
+    /**
+     * Form validation
+     *
+     * @param array $data
+     * @param array $files
+     * @return array of errors
+     */
+    public function validation($data, $files) {
+        $errors = parent::validation($data, $files);
+        return $errors;
     }
 }

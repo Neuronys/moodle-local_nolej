@@ -24,33 +24,21 @@
     * min
     * max
     * step
-    * attributes
     * errormessage
-    * lang
-        * minvalue
-        * maxvalue
 
     Example context (json):
     {
-        'elementname': 'range',
-        'label': 'Course full name',
-        'value': 50,
-        'min': 0,
-        'max': 100,
-        'step': 1,
-        'attributes': '',
-        'errormessage': 'Value too low',
-        'lang': {
-            'minvalue': get_string('minvalue', 'local_nolej'),
-            'maxvalue': get_string('maxvalue', 'local_nolej')
-        }
+        "elementname": "range",
+        "label": "Select a number within the range.",
+        "value": 50,
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "errormessage": "Value too low"
     }
-
-    The "margin-top: -1.5rem" on the first div hides the space that
-    the default moodle's input label occupies. (May there be a better solution)
 }}
 
-<div id="fitem_id_{{elementname}}" class="form-group row fitem" style="margin-top: -1.5rem;">
+<div id="fitem_id_{{elementname}}" class="form-group row fitem range-form-element">
     <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
         <label for="id_{{elementname}}">{{label}}</label>
     </div>
@@ -59,11 +47,13 @@
             <output name="out_{{elementname}}" for="{{elementname}}" class="col-md-6 col-sm-9 w-100 text-center">{{value}}</output>
         </div>
         <div class="row">
-            <input type="range" {{{attributes}}} class="col-md-6 col-sm-9 w-100 mr-3 ml-3" min="{{min}}" max="{{max}}" step="{{step}}" oninput="out_{{elementname}}.value=parseInt(id_{{elementname}}.value)">
+            <input type="range" name="{{elementname}}" value="{{value}}" id="id_{{elementname}}"
+                class="col-md-6 col-sm-9 w-100 mr-3 ml-3" min="{{min}}" max="{{max}}" step="{{step}}"
+                oninput="out_{{elementname}}.value=parseInt(id_{{elementname}}.value)">
         </div>
         <div class="small row">
-            <div class="col-md-3">{{lang.minvalue}}: {{min}}</div>
-            <div class="col-md-3">{{lang.maxvalue}}: {{max}}</div>
+            <div class="col-md-3">{{#str}} minvalue, local_nolej {{/str}}: {{min}}</div>
+            <div class="col-md-3">{{#str}} maxvalue, local_nolej {{/str}}: {{max}}</div>
         </div>
         <div class="form-control-feedback invalid-feedback" id="id_error_{{elementname}}">
             {{errormessage}}

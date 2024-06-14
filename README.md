@@ -1,4 +1,4 @@
-# ![Icon](pix/nolej.svg) Nolej AI for Moodle LMS
+# ![Nolej logo](pix/nolej.svg) Nolej AI for Moodle LMS
 Moodle integration plugin for [Nolej AI](https://nolej.io/).
 
 ## Introduction
@@ -33,8 +33,42 @@ This plugin currently supports the following languages:
 * Moodle 4.1+ (tested with version `20221128`)
 
 ## Installation
-Download and save the `nolej` directory inside the `/local/` directory on your Moodle
-installation; then login to Moodle and follow the update process.
+
+### Installing via uploaded ZIP file
+
+1. Log in to your Moodle site as an admin and go to _Site administration >
+   Plugins > Install plugins_.
+2. Upload the ZIP file with the plugin code. You should only be prompted to add
+   extra details if your plugin type is not automatically detected.
+3. Check the plugin validation report and finish the installation.
+
+### Installing manually
+
+The plugin can be also installed by putting the contents of this directory to
+
+    ```
+    {your/moodle/dirroot}/local/nolej
+    ```
+
+Afterwards, log in to your Moodle site as an admin and go to _Site administration >
+Notifications_ to complete the installation.
+
+Alternatively, you can run
+
+    ```sh
+    $ php admin/cli/upgrade.php
+    ```
+
+to complete the installation from the command line.
+
 
 After the installation, Moodle will redirect you to the plugin setting page,
 where you have to put the API Key.
+
+## After installation
+
+### Where is the library page?
+Depending on the theme installed on your platform, the navigation menu to the libray of Nolej may not appear.
+
+If that's your case, [here's a guide on how to create a link to the library, using Moodle blocks](docs/navigation-block.md).
+

@@ -17,21 +17,22 @@
  * Show a start analysis confirmation modal
  *
  * @module      local_nolej
- * @author      2023 Vincenzo Padula <vincenzo@oc-group.eu>
+ * @author      Vincenzo Padula <vincenzo@oc-group.eu>
+ * @copyright   2024 OC Open Consulting SB Srl
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-define(['jquery', 'core/modal_factory', 'core/str', 'core/modal_events'], function ($, ModalFactory, String, ModalEvents) {
+define(['jquery', 'core/modal_factory', 'core/str', 'core/modal_events'], function($, ModalFactory, String, ModalEvents) {
     var trigger = $('[name=confirmanalysis]');
     ModalFactory.create({
         type: ModalFactory.types.SAVE_CANCEL,
         title: String.get_string('analyze', 'local_nolej'),
         body: String.get_string('analysisconfirm', 'local_nolej'),
-        preShowCallback: function (triggerElement, modal) {
+        preShowCallback: function(triggerElement, modal) {
             modal.setSaveButtonText(String.get_string('analyze', 'local_nolej'));
         }
     }, trigger)
-        .done(function (modal) {
-            modal.getRoot().on(ModalEvents.save, function (e) {
+        .done(function(modal) {
+            modal.getRoot().on(ModalEvents.save, function(e) {
                 e.preventDefault();
                 var form = $('[role=main] .mform');
                 form.trigger('submit');

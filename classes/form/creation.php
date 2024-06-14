@@ -18,7 +18,8 @@
  * Module creation form
  *
  * @package     local_nolej
- * @author      2023 Vincenzo Padula <vincenzo@oc-group.eu>
+ * @author      Vincenzo Padula <vincenzo@oc-group.eu>
+ * @copyright   2024 OC Open Consulting SB Srl
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -26,33 +27,40 @@ namespace local_nolej\form;
 
 defined('MOODLE_INTERNAL') || die();
 
+use local_nolej\api;
+
+global $CFG;
 require_once($CFG->libdir . '/formslib.php');
 require_once($CFG->dirroot . '/local/nolej/classes/api.php');
 
-class creation extends \moodleform
-{
+/**
+ * Module creation form
+ */
+class creation extends \moodleform {
 
-    public function definition()
-    {
+    /**
+     * Form definition
+     */
+    public function definition() {
         global $CFG, $OUTPUT;
 
         $mform = $this->_form;
 
-        // Document title
+        // Document title.
         $mform->addElement('text', 'title', get_string('title', 'local_nolej'), 'style="width:100%;"');
         $mform->setType('title', PARAM_NOTAGS);
         $mform->addElement('static', 'titledesc', '', get_string('titledesc', 'local_nolej'));
 
-        // Select source
+        // Source selection.
         $mform->addGroup(
             [
                 $mform->createElement('radio', 'sourcetype', '', get_string('sourcetypefile', 'local_nolej'), 'file', ''),
                 $mform->createElement('radio', 'sourcetype', '', get_string('sourcetypeweb', 'local_nolej'), 'web', ''),
-                $mform->createElement('radio', 'sourcetype', '', get_string('sourcetypetext', 'local_nolej'), 'text', '')
+                $mform->createElement('radio', 'sourcetype', '', get_string('sourcetypetext', 'local_nolej'), 'text', ''),
             ],
             'sourcetypegroup',
             get_string('sourcetype', 'local_nolej'),
-            array(' '),
+            [' '],
             false
         );
         $mform->setDefault('sourcetype', 'file');
@@ -64,24 +72,14 @@ class creation extends \moodleform
             $OUTPUT->render_from_template(
                 'local_nolej/contentlimits',
                 (object) [
-                    'limitaudio' => get_string('limitaudio', 'local_nolej'),
-                    'limitvideo' => get_string('limitvideo', 'local_nolej'),
-                    'limitdoc' => get_string('limitdoc', 'local_nolej'),
-                    'limitmaxduration' => get_string('limitmaxduration', 'local_nolej'),
-                    'minutes' => get_string('minutes'),
-                    'limitmincharacters' => get_string('limitmincharacters', 'local_nolej'),
-                    'limitmaxcharacters' => get_string('limitmaxcharacters', 'local_nolej'),
-                    'limitmaxsize' => get_string('limitmaxsize', 'local_nolej'),
-                    'limittype' => get_string('limittype', 'local_nolej'),
-                    'limitmaxpages' => get_string('limitmaxpages', 'local_nolej'),
-                    'audioformats' => join(', ', \local_nolej\api\api::TYPE_AUDIO),
-                    'videoformats' => join(', ', \local_nolej\api\api::TYPE_VIDEO),
-                    'docformats' => join(', ', \local_nolej\api\api::TYPE_DOC)
+                    'audioformats' => join(', ', api::TYPE_AUDIO),
+                    'videoformats' => join(', ', api::TYPE_VIDEO),
+                    'docformats' => join(', ', api::TYPE_DOC),
                 ]
             )
         );
 
-        // Source: file
+        // Source: file.
         $mform->addElement(
             'filepicker',
             'sourcefile',
@@ -89,12 +87,12 @@ class creation extends \moodleform
             null,
             [
                 'maxbytes' => 500000,
-                'accepted_types' => join(',', \local_nolej\api\api::allowedtypes()),
+                'accepted_types' => join(',', api::allowedtypes()),
             ]
         );
         $mform->hideIf('sourcefile', 'sourcetype', 'neq', 'file');
 
-        // Source: web
+        // Source: web.
         $mform->addElement('text', 'sourceurl', get_string('sourceurl', 'local_nolej'), 'style="width:100%;"');
         $mform->setType('sourceurl', PARAM_URL);
         $mform->addElement('static', 'sourceurldesc', '', get_string('sourceurldesc', 'local_nolej'));
@@ -106,32 +104,32 @@ class creation extends \moodleform
             [
                 'audio' => get_string('sourceaudio', 'local_nolej'),
                 'video' => get_string('sourcevideo', 'local_nolej'),
-                'web' => get_string('sourceweb', 'local_nolej')
+                'web' => get_string('sourceweb', 'local_nolej'),
             ]
         );
 
         $mform->hideIf('sourceurl', 'sourcetype', 'neq', 'web');
         $mform->hideIf('sourceurltype', 'sourcetype', 'neq', 'web');
 
-        // Source: text
+        // Source: text.
         $mform->addElement(
             'editor',
             'sourcetext',
             get_string('sourcefreetext', 'local_nolej'),
             null,
-            array(
+            [
                 'maxfiles' => 0,
                 'maxbytes' => 0,
                 'trusttext' => false,
                 'context' => null,
                 'collapsed' => true,
-                'canUseHtmlEditor' => false
-            )
+                'canUseHtmlEditor' => false,
+            ]
         );
         $mform->setType('sourcetext', PARAM_CLEANHTML);
         $mform->hideIf('sourcetext', 'sourcetype', 'neq', 'text');
 
-        // Language
+        // Language.
         $languages = $this->getlanguages();
         $mform->addElement(
             'select',
@@ -144,7 +142,7 @@ class creation extends \moodleform
                 'de' => $languages['de'],
                 'pt' => $languages['pt'],
                 'es' => $languages['es'],
-                'nl' => $languages['nl']
+                'nl' => $languages['nl'],
             ]
         );
         $mform->addElement('static', 'languagedesc', '', get_string('languagedesc', 'local_nolej'));
@@ -152,17 +150,23 @@ class creation extends \moodleform
         $this->add_action_buttons(true, get_string('create', 'local_nolej'));
     }
 
-    function validation($data, $files)
-    {
-        return [];
+    /**
+     * Form validation
+     *
+     * @param array $data
+     * @param array $files
+     * @return array of errors
+     */
+    public function validation($data, $files) {
+        $errors = parent::validation($data, $files);
+        return $errors;
     }
 
     /**
      * Get all available languages as an associative array
      * @return array
      */
-    protected function getlanguages()
-    {
+    protected function getlanguages() {
         $controller = new \tool_langimport\controller();
         $availablelangs = $controller->availablelangs;
         $languages = [];

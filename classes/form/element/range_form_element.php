@@ -18,7 +18,8 @@
  * Range input
  *
  * @package     local_nolej
- * @author      2023 Vincenzo Padula <vincenzo@oc-group.eu>
+ * @author      Vincenzo Padula <vincenzo@oc-group.eu>
+ * @copyright   2024 OC Open Consulting SB Srl
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -29,34 +30,39 @@ global $CFG;
 require_once($CFG->libdir . '/formslib.php');
 require_once($CFG->libdir . '/form/text.php');
 
-class range_form_element extends HTML_QuickForm_text
-{
+/**
+ * Range input custom form element
+ */
+class range_form_element extends HTML_QuickForm_text {
 
+    /**
+     * @var array Range input options
+     */
     protected $_options = [
         'min' => 0,
         'max' => 100,
-        'step' => 1
+        'step' => 1,
     ];
 
+    /**
+     * @var string Element label
+     */
     protected $elementlabel = '';
 
     /**
      * Class constructor
-     * 
-     * @param     string    $elementName    (optional)Input field name attribute
-     * @param     string    $elementLabel   (optional)Input field label
-     * @param     mixed     $attributes     (optional)Either a typical HTML attribute string 
-     *                                      or an associative array
-     * @param     mixed     $options        (optional)Range input options
-     * @access    public
-     * @return    void
+     *
+     * @param string $elementname (optional) Input field name attribute
+     * @param string $elementlabel (optional) Input field label
+     * @param mixed $options (optional) Range input options
+     *
+     * @return void
      */
-    public function __construct($elementName = null, $elementLabel = null, $attributes = null, $options = null)
-    {
-        parent::__construct($elementName, $elementLabel, $attributes);
+    public function __construct($elementname = null, $elementlabel = null, $options = null) {
+        parent::__construct($elementname, $elementlabel, null);
 
-        // Hide default label
-        $this->elementlabel = $elementLabel;
+        // Hide default label.
+        $this->elementlabel = $elementlabel;
         $this->_label = '';
 
         if ($options != null && is_array($options)) {
@@ -66,10 +72,34 @@ class range_form_element extends HTML_QuickForm_text
         $this->_type = 'range';
     }
 
-    public function exportValue(&$submitValues, $assoc = false, $nesting = 0)
-    {
-        $value = parent::exportValue($submitValues, $assoc, $nesting);
-        return $value;
+    /**
+     * Returns the element value.
+     * @param array $submitvalues
+     * @param bool $assoc
+     * @param int $nesting
+     *
+     * @return mixed
+     */
+    public function exportValue(&$submitvalues, $assoc = false, $nesting = 0) {
+        $value = $this->_findValue($submitvalues);
+
+        // Make sure is integer.
+        $value = clean_param($value, PARAM_INT);
+
+        // Make sure value is within the range.
+        if ($value <= $this->_options['min']) {
+            return $this->_options['min'];
+        } else if ($value >= $this->_options['max']) {
+            return $this->_options['max'];
+        }
+
+        // Make sure value is a multiple of the step.
+        $normalizedvalue = $value - $this->_options['min'];
+        if ($normalizedvalue % $this->_options['step'] == 0) {
+            return $value;
+        }
+
+        return false;
     }
 
     /**
@@ -77,8 +107,7 @@ class range_form_element extends HTML_QuickForm_text
      *
      * @return string
      */
-    public function toHtml()
-    {
+    public function toHtml() {
         global $OUTPUT;
 
         $this->_generateId();
@@ -92,12 +121,7 @@ class range_form_element extends HTML_QuickForm_text
                 'max' => $this->_options['max'],
                 'step' => $this->_options['step'],
                 'value' => $this->getValue(),
-                'attributes' => $this->_getAttrString($this->_attributes),
                 'errormessage' => '',
-                'lang' => [
-                    'minvalue' => get_string('minvalue', 'local_nolej'),
-                    'maxvalue' => get_string('maxvalue', 'local_nolej')
-                ]
             ]
         );
     }

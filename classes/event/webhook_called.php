@@ -18,7 +18,8 @@
  * Webhook has been called event.
  *
  * @package     local_nolej
- * @author      2023 Vincenzo Padula <vincenzo@oc-group.eu>
+ * @author      Vincenzo Padula <vincenzo@oc-group.eu>
+ * @copyright   2024 OC Open Consulting SB Srl
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -26,35 +27,49 @@ namespace local_nolej\event;
 
 defined('MOODLE_INTERNAL') || die();
 
-class webhook_called extends \core\event\base
-{
-    protected function init()
-    {
-        $this->data['context'] = \context_system::instance();
-        $this->data['crud'] = 'c'; // c(reate), r(ead), u(pdate), d(elete)
-        $this->data['edulevel'] = self::LEVEL_OTHER;
+use moodle_url;
+
+/**
+ * The webhook_called event class.
+ */
+class webhook_called extends \core\event\base {
+
+    /**
+     * Init the event
+     */
+    protected function init() {
+        $this->context = \context_system::instance();
+        $this->data['crud'] = 'c'; // Create, Read, Update, Delete.
+        $this->data['edulevel'] = \core\event\base::LEVEL_OTHER;
     }
 
-    public static function get_name()
-    {
+    /**
+     * Get the localised event name
+     * @return string
+     */
+    public static function get_name() {
         return get_string('eventwebhookcalled', 'local_nolej');
     }
 
-    public function get_description()
-    {
+    /**
+     * Return data received.
+     * @return array
+     */
+    public function get_description() {
         return $this->other['message'];
     }
 
-    public function get_url()
-    {
+    /**
+     * Url to Nolej module
+     * @return ?moodle_url
+     */
+    public function get_url() {
         if ($this->other['documentid'] == null) {
             return null;
         }
-        return new \moodle_url(
+        return new moodle_url(
             '/local/nolej/edit.php',
-            [
-                'documentid' => $this->other['documentid']
-            ]
+            ['documentid' => $this->other['documentid']]
         );
     }
 }

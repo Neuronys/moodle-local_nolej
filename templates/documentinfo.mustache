@@ -24,125 +24,80 @@
     * concepts
     * settings
     * editurl
+    * manageurl
     * title
     * source
     * sourcetype
     * transcription
-    * lang
-        * summary
-        * questions
-        * concepts
-        * settings
-        * documentinfo
-        * title
-        * source
-        * sourcetype
-        * transcription
 
     Example context (json):
     {
-        'review': true,
-        'summary': false,
-        'questions': false,
-        'concepts': true,
-        'settings': false,
-        'title': 'My Nolej Module',
-        'source': 'https://www.youtube.com/...',
-        'sourcetype': 'Video',
-        'transcription': 'This is the transcription of the video',
-        'editurl': 'https://mymoodlesite.com/local/nolej/edit.php?documentid=abcd-efgh'
-        'lang': {
-            'summary': get_string('summary', 'local_nolej'),
-            'questions': get_string('questions', 'local_nolej'),
-            'concepts': get_string('concepts', 'local_nolej'),
-            'settings': get_string('settings', 'local_nolej'),
-            'documentinfo': get_string('documentinfo', 'local_nolej'),
-            'title': get_string('title', 'local_nolej'),
-            'source': get_string('source', 'local_nolej'),
-            'sourcetype': get_string('sourcetype', 'local_nolej'),
-            'transcription': get_string('transcription', 'local_nolej')
-        }
+        "review": true,
+        "summary": false,
+        "questions": false,
+        "concepts": true,
+        "settings": false,
+        "title": "My Nolej Module",
+        "source": "https://www.youtube.com/...",
+        "sourcetype": "Video",
+        "transcription": "This is the transcription of the video",
+        "manageurl": "https://mymoodlesite.com/local/nolej/manage.php",
+        "editurl": "https://mymoodlesite.com/local/nolej/edit.php?documentid=abcd-efgh"
     }
 }}
-
-<style>
-    .table-accordion tr:first-child td {
-        border-top: none;
-    }
-
-    .atto_image_button, .atto_h5p_button {
-        display: none;
-    }
-
-    .local_nolej_question {
-        background: #fff;
-        border-radius: 8px;
-        box-shadow: 0 6px 24px 0 #0000000d,0 0 0 1px #00000014;
-        margin: 1rem;
-        padding: 0.5rem;
-        width: 100%;
-    }
-
-    .local_nolej_question .badge {
-        color: #545659;
-        font-size: 1rem;
-        font-weight: 400;
-        margin: 0 0 0.5rem -0.5rem;
-        padding: 4px 12px;
-        border-radius: 0 6px 6px 0;
-        width: fit-content;
-    }
-
-    .local_nolej_question .badge.open {
-        background-color: #9cd6f552;
-        border-left: 2px solid #9cd6f5;
-    }
-
-    .local_nolej_question .badge.ftb {
-        background-color: #fff9e7;
-        border-left: 2px solid #ffd966;
-    }
-
-    .local_nolej_question .badge.tf {
-        background-color: #e6b8e752;
-        border-left: 2px solid #e6b8e7;
-    }
-
-    .local_nolej_question .badge.mcq {
-        background-color: #c7d2ff52;
-        border-left: 2px solid #c7d2ff;
-    }
-
-    .local_nolej_question .badge.hoq {
-        background-color: #c7f0f3;
-        border-left: 2px solid #7db5b9;
-    }
-</style>
 
 <div class='containerfluid' id='documentinfo'>
     <div id='accordion'>
         <div class='card'>
-            <div class='card-header' style='border-bottom: none;' id='headingOne'>
-                <nav class='navbar navbar-expand-lg navbar-default navbar-light' style='box-shadow:none;'>
-                    {{#review}}
+            <div class='card-header' id='headingOne'>
+                <nav class='navbar navbar-expand-lg navbar-default navbar-light'>
                     <ul class='nav navbar-nav w-100'>
                         <li class='mr-2 mb-2'>
-                            <a class='nav-link btn btn-default rounded btn-outline-secondary px-2 {{#concepts}}active{{/concepts}}' aria-pressed="{{concepts}}" role="button" href='{{editurl}}&step=concepts'><i class='fa fa-lightbulb-o mr-2'></i> {{lang.concepts}}</a>
+                            <a class='nav-link btn btn-default rounded px-2' role="button" href='{{manageurl}}'>
+                                <i class='fa fa-chevron-left mr-2'></i>
+                                {{#str}} back, moodle {{/str}}
+                            </a>
+                        </li>
+                        {{#review}}
+                        <li class='mr-2 mb-2'>
+                            <a class='nav-link btn btn-default rounded btn-outline-secondary px-2 {{#concepts}}active{{/concepts}}'
+                                aria-pressed="{{#concepts}}true{{/concepts}}{{^concepts}}false{{/concepts}}"
+                                role="button" href='{{editurl}}&step=concepts'>
+                                <i class='fa fa-lightbulb-o mr-2'></i>
+                                {{#str}} concepts, local_nolej {{/str}}
+                            </a>
                         </li>
                         <li class='mr-2 mb-2'>
-                            <a class='nav-link btn btn-default rounded btn-outline-secondary px-2 {{#questions}}active{{/questions}}' aria-pressed="{{questions}}" role="button" href='{{editurl}}&step=questions'><i class='fa fa-question mr-2'></i> {{lang.questions}}</a>
+                            <a class='nav-link btn btn-default rounded btn-outline-secondary px-2 {{#questions}}active{{/questions}}'
+                                aria-pressed="{{#questions}}true{{/questions}}{{^questions}}false{{/questions}}"
+                                role="button" href='{{editurl}}&step=questions'>
+                                <i class='fa fa-question mr-2'></i>
+                                {{#str}} questions, local_nolej {{/str}}
+                            </a>
                         </li>
                         <li class='mr-2 mb-2'>
-                            <a class='nav-link btn btn-default rounded btn-outline-secondary px-2 {{#summary}}active{{/summary}}' aria-pressed="{{summary}}" role="button" href='{{editurl}}&step=summary'><i class='fa fa-list mr-2'></i> {{lang.summary}}</a>
+                            <a class='nav-link btn btn-default rounded btn-outline-secondary px-2 {{#summary}}active{{/summary}}'
+                                aria-pressed="{{#summary}}true{{/summary}}{{^summary}}false{{/summary}}"
+                                role="button" href='{{editurl}}&step=summary'>
+                                <i class='fa fa-list mr-2'></i>
+                                {{#str}} summary, local_nolej {{/str}}
+                            </a>
                         </li>
                         <li class='mr-2 mb-2'>
-                            <a class='nav-link btn btn-default rounded btn-outline-secondary px-2 {{#settings}}active{{/settings}}' aria-pressed="{{settings}}" role="button" href='{{editurl}}&step=activities'><i class='fa fa-cog mr-2'></i> {{lang.settings}}</a>
+                            <a class='nav-link btn btn-default rounded btn-outline-secondary px-2 {{#settings}}active{{/settings}}'
+                                aria-pressed="{{#settings}}true{{/settings}}{{^settings}}false{{/settings}}"
+                                role="button" href='{{editurl}}&step=activities'>
+                                <i class='fa fa-cog mr-2'></i>
+                                {{#str}} settings, local_nolej {{/str}}
+                            </a>
                         </li>
-                    </ul>
-                    {{/review}}
-                    <ul class='nav navbar-nav navbar-right'>
-                        <li class='mb-2' style='flex: none;'>
-                            <a class='nav-link btn btn-default' href='#' data-toggle='collapse' data-target='#collapseOne' aria-expanded='true' aria-controls='collapseOne' onclick='toggleChevron()'><i class='fa fa-info'></i> {{lang.documentinfo}} <i id='chevronIcon' class='fa fa-chevron-down'></i></a>
+                        {{/review}}
+                        <li class='mr-2 mb-2'>
+                            <a class='nav-link btn btn-default' id='toggleinfo' href='#' data-toggle='collapse' data-target='#collapseOne' aria-expanded='true' aria-controls='collapseOne'>
+                                <i class='fa fa-info mr-2'></i>
+                                {{#str}} documentinfo, local_nolej {{/str}}
+                                <i id='chevronIcon' class='fa fa-chevron-right ml-2'></i>
+                            </a>
                         </li>
                     </ul>
                 </nav>
@@ -153,20 +108,20 @@
                     <table class='table table-accordion'>
                         <tbody>
                             <tr>
-                                <td><b>{{lang.title}}</b></td>
+                                <td><b>{{#str}} title, local_nolej {{/str}}</b></td>
                                 <td>{{title}}</td>
                             </tr>
                             <tr>
-                                <td><b>{{lang.source}}</b></td>
+                                <td><b>{{#str}} source, local_nolej {{/str}}</b></td>
                                 <td>{{source}}</td>
                             </tr>
                             <tr>
-                                <td><b>{{lang.sourcetype}}</b></td>
+                                <td><b>{{#str}} sourcetype, local_nolej {{/str}}</b></td>
                                 <td>{{sourcetype}}</td>
                             </tr>
                             {{#transcription}}
                                 <tr>
-                                    <td><b>{{lang.transcription}}</b></td>
+                                    <td><b>{{#str}} transcription, local_nolej {{/str}}</b></td>
                                     <td>{{{transcription}}}</td>
                                 </tr>
                             {{/transcription}}
@@ -178,16 +133,3 @@
     </div>
 </div>
 <br>
-
-<script>
-    function toggleChevron() {
-        var chevronIcon = document.getElementById('chevronIcon');
-        if (chevronIcon.classList.contains('fa-chevron-down')) {
-            chevronIcon.classList.remove('fa-chevron-down');
-            chevronIcon.classList.add('fa-chevron-up');
-        } else {
-            chevronIcon.classList.remove('fa-chevron-up');
-            chevronIcon.classList.add('fa-chevron-down');
-        }
-    }
-</script>

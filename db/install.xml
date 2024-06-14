@@ -4,11 +4,11 @@
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
   <TABLES>
-  <TABLE NAME="nolej_module" COMMENT="each record is one nolej module">
+  <TABLE NAME="local_nolej_module" COMMENT="each record is one nolej module">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="document_id" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="user_id" TYPE="int" LENGTH="4" NOTNULL="true" SEQUENCE="false" COMMENT="author id"/>
+        <FIELD NAME="user_id" TYPE="int" LENGTH="11" NOTNULL="true" SEQUENCE="false" COMMENT="author id"/>
         <FIELD NAME="tstamp" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="creation datetime"/>
         <FIELD NAME="status" TYPE="int" LENGTH="4" NOTNULL="true" SEQUENCE="false" COMMENT="0 -> idle, ... 8 -> completed"/>
         <FIELD NAME="title" TYPE="char" LENGTH="250" NOTNULL="false" SEQUENCE="false" COMMENT="null -> Nolej will set a title"/>
@@ -25,11 +25,11 @@
         <INDEX NAME="document_id_idx" UNIQUE="true" FIELDS="document_id" COMMENT="Index to find the module."/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="nolej_activity" COMMENT="each record is a step of a Nolej module">
+    <TABLE NAME="local_nolej_activity" COMMENT="each record is a step of a Nolej module">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="document_id" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="user_id" TYPE="int" LENGTH="4" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="user_id" TYPE="int" LENGTH="11" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="action" TYPE="char" LENGTH="30" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="tstamp" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="status" TYPE="char" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
@@ -40,10 +40,10 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-        <KEY NAME="document_id" TYPE="foreign" FIELDS="document_id" REFTABLE="nolej_module" REFFIELDS="document_id"/>
+        <KEY NAME="document_id" TYPE="foreign" FIELDS="document_id" REFTABLE="local_nolej_module" REFFIELDS="document_id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="nolej_h5p" COMMENT="each record is an h5p in the content bank">
+    <TABLE NAME="local_nolej_h5p" COMMENT="each record is an h5p in the content bank">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="document_id" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false"/>
@@ -53,7 +53,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-        <KEY NAME="document_id" TYPE="foreign" FIELDS="document_id" REFTABLE="nolej_module" REFFIELDS="document_id"/>
+        <KEY NAME="document_id" TYPE="foreign" FIELDS="document_id" REFTABLE="local_nolej_module" REFFIELDS="document_id"/>
       </KEYS>
     </TABLE>
   </TABLES>

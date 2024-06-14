@@ -18,17 +18,20 @@
  * Nolej module list
  *
  * @package     local_nolej
- * @author      2023 Vincenzo Padula <vincenzo@oc-group.eu>
+ * @author      Vincenzo Padula <vincenzo@oc-group.eu>
+ * @copyright   2024 OC Open Consulting SB Srl
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require_once(__DIR__ . '/../../config.php');
+require_once($CFG->dirroot . '/local/nolej/classes/api.php');
+require_once($CFG->dirroot . '/local/nolej/classes/module.php');
+
+use local_nolej\module;
 
 require_login();
 $context = context_system::instance();
 require_capability('local/nolej:usenolej', $context);
-
-require_once($CFG->dirroot . '/local/nolej/classes/api.php');
 
 $PAGE->set_url(new moodle_url('/local/nolej/manage.php'));
 $PAGE->set_context($context);
@@ -38,28 +41,25 @@ $PAGE->set_heading(get_string('modules', 'local_nolej'));
 $PAGE->set_title(get_string('library', 'local_nolej'));
 
 $PAGE->requires->js_call_amd('local_nolej/delete');
-
-global $DB;
+$PAGE->requires->css('/local/nolej/styles.css');
 
 $status2form = [
-    \local_nolej\api\api::STATUS_CREATION => '',
-    \local_nolej\api\api::STATUS_CREATION_PENDING => '',
-    \local_nolej\api\api::STATUS_ANALYSIS => 'analysis',
-    \local_nolej\api\api::STATUS_ANALYSIS_PENDING => 'analysis',
-    \local_nolej\api\api::STATUS_REVISION => 'concepts',
-    \local_nolej\api\api::STATUS_REVISION_PENDING => 'concepts',
-    \local_nolej\api\api::STATUS_ACTIVITIES => 'activities',
-    \local_nolej\api\api::STATUS_ACTIVITIES_PENDING => 'activities',
-    \local_nolej\api\api::STATUS_COMPLETED => 'activities',
-    \local_nolej\api\api::STATUS_FAILED => '',
+    module::STATUS_CREATION => '',
+    module::STATUS_CREATION_PENDING => '',
+    module::STATUS_ANALYSIS => 'analysis',
+    module::STATUS_ANALYSIS_PENDING => 'analysis',
+    module::STATUS_REVISION => 'concepts',
+    module::STATUS_REVISION_PENDING => 'concepts',
+    module::STATUS_ACTIVITIES => 'activities',
+    module::STATUS_ACTIVITIES_PENDING => 'activities',
+    module::STATUS_COMPLETED => 'activities',
+    module::STATUS_FAILED => '',
 ];
 
 $modules = $DB->get_records(
-    'nolej_module',
-    [
-        'user_id' => $USER->id
-    ],
-    'tstamp DESC',
+    'local_nolej_module',
+    ['user_id' => $USER->id],
+    'tstamp DESC'
 );
 
 $modulearray = [];
@@ -67,32 +67,36 @@ foreach ($modules as $module) {
 
     $moduledata = [
         'title' => $module->title,
-        'status' => get_string('status_' . $module->status, 'local_nolej'),
+        'status' => module::getstatusname((int) $module->status),
         'documentid' => $module->document_id,
         'created' => userdate($module->tstamp),
         'lastupdate' => '-',
-        'editurl' => $module->status != \local_nolej\api\api::STATUS_FAILED
-            ? (new moodle_url(
-                '/local/nolej/edit.php',
-                [
-                    'documentid' => $module->document_id,
-                    'step' => $status2form[$module->status]
-                ]
-            ))->out(false)
+        'editurl' => $module->status != module::STATUS_FAILED
+            ? (
+                new moodle_url(
+                    '/local/nolej/edit.php',
+                    [
+                        'documentid' => $module->document_id,
+                        'step' => $status2form[$module->status],
+                    ]
+                )
+            )->out(false)
             : false,
-        'deleteurl' => (new moodle_url(
-            '/local/nolej/delete.php',
-            ['documentid' => $module->document_id]
-        ))->out(false),
-        'contextid' => null
+        'deleteurl' => (
+            new moodle_url(
+                '/local/nolej/delete.php',
+                ['documentid' => $module->document_id]
+            )
+        )->out(false),
+        'contextid' => null,
     ];
 
-    // Check last update
+    // Check last update.
     $activities = $DB->get_records(
-        'nolej_activity',
+        'local_nolej_activity',
         [
             'user_id' => $USER->id,
-            'document_id' => $module->document_id
+            'document_id' => $module->document_id,
         ],
         'tstamp DESC',
         '*',
@@ -104,10 +108,10 @@ foreach ($modules as $module) {
         $moduledata['lastupdate'] = userdate($lastactivity->tstamp);
     }
 
-    // Check last generated activity content bank folder
-    if ($module->status == \local_nolej\api\api::STATUS_COMPLETED) {
+    // Check last generated activity content bank folder.
+    if ($module->status == module::STATUS_COMPLETED) {
         $h5pcontents = $DB->get_records(
-            'nolej_h5p',
+            'local_nolej_h5p',
             ['document_id' => $module->document_id],
             'tstamp DESC',
             'content_id',
@@ -126,10 +130,12 @@ foreach ($modules as $module) {
             );
             $context = $context ? reset($context) : false;
             if ($context && !empty($context->contextid)) {
-                $moduledata['activitiesurl'] = (new moodle_url(
-                    '/contentbank/index.php',
-                    ['contextid' => $context->contextid]
-                ))->out(false);
+                $moduledata['activitiesurl'] = (
+                    new moodle_url(
+                        '/contentbank/index.php',
+                        ['contextid' => $context->contextid]
+                    )
+                )->out(false);
             }
         }
     }
@@ -137,19 +143,8 @@ foreach ($modules as $module) {
 }
 
 $templatecontext = (object) [
-    'lang' => [
-        'title' => get_string('title', 'local_nolej'),
-        'created' => get_string('created', 'local_nolej'),
-        'status' => get_string('status', 'local_nolej'),
-        'lastupdate' => get_string('lastupdate', 'local_nolej'),
-        'action' => get_string('action', 'local_nolej'),
-        'createmodule' => get_string('createmodule', 'local_nolej'),
-        'editmodule' => get_string('editmodule', 'local_nolej'),
-        'deletemodule' => get_string('deletemodule', 'local_nolej'),
-        'activities' => get_string('activities', 'local_nolej')
-    ],
     'modules' => $modulearray,
-    'createurl' => (new moodle_url('/local/nolej/edit.php'))->out(false)
+    'createurl' => (new moodle_url('/local/nolej/edit.php'))->out(false),
 ];
 
 echo $OUTPUT->header();
