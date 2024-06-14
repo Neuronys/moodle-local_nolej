@@ -41,8 +41,8 @@ use contenttype_h5p\contenttype;
 use local_nolej\event\webhook_called;
 
 global $CFG;
-require_once ($CFG->dirroot . '/local/nolej/classes/event/webhook_called.php');
-require_once ($CFG->dirroot . '/local/nolej/classes/module.php');
+require_once($CFG->dirroot . '/local/nolej/classes/event/webhook_called.php');
+require_once($CFG->dirroot . '/local/nolej/classes/module.php');
 
 /**
  * Nolej API class
