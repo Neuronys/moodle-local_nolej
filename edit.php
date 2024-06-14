@@ -77,7 +77,7 @@ if (
 
     // Retrieve document data.
     $document = $DB->get_record(
-        'nolej_module',
+        'local_nolej_module',
         [
             'document_id' => $documentid,
             'user_id' => $USER->id,

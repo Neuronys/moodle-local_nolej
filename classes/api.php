@@ -417,7 +417,7 @@ class api
 
         if ($userid != null) {
             $document = $DB->get_record(
-                'nolej_module',
+                'local_nolej_module',
                 [
                     'document_id' => $documentid,
                     'user_id' => $userid,
@@ -425,7 +425,7 @@ class api
             );
         } else {
             $document = $DB->get_record(
-                'nolej_module',
+                'local_nolej_module',
                 ['document_id' => $documentid]
             );
         }
@@ -548,7 +548,7 @@ class api
         global $DB;
 
         return $DB->get_record(
-            'nolej_module',
+            'local_nolej_module',
             [
                 'document_id' => $documentid,
                 'status' => $status,
@@ -606,7 +606,7 @@ class api
             $this->log('Result: ko');
 
             $success = $DB->update_record(
-                'nolej_module',
+                'local_nolej_module',
                 (object) [
                     'id' => $document->id,
                     'document_id' => $documentid,
@@ -637,7 +637,7 @@ class api
         }
 
         $success = $DB->update_record(
-            'nolej_module',
+            'local_nolej_module',
             (object) [
                 'id' => $document->id,
                 'document_id' => $documentid,
@@ -717,7 +717,7 @@ class api
             $this->log('Result: ko');
 
             $success = $DB->update_record(
-                'nolej_module',
+                'local_nolej_module',
                 (object) [
                     'id' => $document->id,
                     'document_id' => $documentid,
@@ -748,7 +748,7 @@ class api
         }
 
         $success = $DB->update_record(
-            'nolej_module',
+            'local_nolej_module',
             (object) [
                 'id' => $document->id,
                 'document_id' => $documentid,
@@ -828,7 +828,7 @@ class api
             $this->log('Result: ko');
 
             $success = $DB->update_record(
-                'nolej_module',
+                'local_nolej_module',
                 (object) [
                     'id' => $document->id,
                     'document_id' => $documentid,
@@ -859,7 +859,7 @@ class api
         }
 
         $success = $DB->update_record(
-            'nolej_module',
+            'local_nolej_module',
             (object) [
                 'id' => $document->id,
                 'document_id' => $documentid,
@@ -1024,7 +1024,7 @@ class api
                 $h5pcontent->import_file($file);
 
                 $DB->insert_record(
-                    'nolej_h5p',
+                    'local_nolej_h5p',
                     (object) [
                         'document_id' => $document->document_id,
                         'tstamp' => $now,
@@ -1069,7 +1069,7 @@ class api
         global $DB;
 
         $DB->insert_record(
-            'nolej_activity',
+            'local_nolej_activity',
             (object) [
                 'document_id' => $documentid,
                 'user_id' => $userid,

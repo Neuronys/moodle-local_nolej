@@ -57,7 +57,7 @@ $status2form = [
 ];
 
 $modules = $DB->get_records(
-    'nolej_module',
+    'local_nolej_module',
     ['user_id' => $USER->id],
     'tstamp DESC'
 );
@@ -93,7 +93,7 @@ foreach ($modules as $module) {
 
     // Check last update.
     $activities = $DB->get_records(
-        'nolej_activity',
+        'local_nolej_activity',
         [
             'user_id' => $USER->id,
             'document_id' => $module->document_id,
@@ -111,7 +111,7 @@ foreach ($modules as $module) {
     // Check last generated activity content bank folder.
     if ($module->status == module::STATUS_COMPLETED) {
         $h5pcontents = $DB->get_records(
-            'nolej_h5p',
+            'local_nolej_h5p',
             ['document_id' => $module->document_id],
             'tstamp DESC',
             'content_id',

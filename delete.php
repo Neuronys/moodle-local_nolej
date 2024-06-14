@@ -41,7 +41,7 @@ if ($documentid == null) {
 }
 
 $document = $DB->get_record(
-    'nolej_module',
+    'local_nolej_module',
     [
         'document_id' => $documentid,
         'user_id' => $USER->id,
@@ -59,12 +59,12 @@ if (!$document) {
 }
 
 $DB->delete_records(
-    'nolej_module',
+    'local_nolej_module',
     ['document_id' => $documentid]
 );
 
 $DB->delete_records(
-    'nolej_activity',
+    'local_nolej_activity',
     ['document_id' => $documentid]
 );
 

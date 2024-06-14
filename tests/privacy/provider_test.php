@@ -73,7 +73,7 @@ class provider_test extends provider_testcase
         $documentid = '00000000-abcd-1234-5678-000000000000';
 
         $DB->insert_record(
-            'nolej_module',
+            'local_nolej_module',
             (object) [
                 'document_id' => $documentid,
                 'user_id' => $userid,
@@ -88,7 +88,7 @@ class provider_test extends provider_testcase
             ]
         );
         $DB->insert_record(
-            'nolej_activity',
+            'local_nolej_activity',
             (object) [
                 'document_id' => $documentid,
                 'user_id' => $userid,
@@ -127,7 +127,7 @@ class provider_test extends provider_testcase
         $documentid = '00000000-abcd-1234-5678-000000000000';
 
         $DB->insert_record(
-            'nolej_module',
+            'local_nolej_module',
             (object) [
                 'document_id' => $documentid,
                 'user_id' => $user->id,
@@ -142,7 +142,7 @@ class provider_test extends provider_testcase
             ]
         );
         $DB->insert_record(
-            'nolej_activity',
+            'local_nolej_activity',
             (object) [
                 'document_id' => $documentid,
                 'user_id' => $user->id,
@@ -186,7 +186,7 @@ class provider_test extends provider_testcase
         $documentid = '00000000-abcd-1234-5678-000000000000';
 
         $DB->insert_record(
-            'nolej_module',
+            'local_nolej_module',
             (object) [
                 'document_id' => $documentid,
                 'user_id' => $userid,
@@ -201,7 +201,7 @@ class provider_test extends provider_testcase
             ]
         );
         $DB->insert_record(
-            'nolej_activity',
+            'local_nolej_activity',
             (object) [
                 'document_id' => $documentid,
                 'user_id' => $userid,
@@ -217,8 +217,8 @@ class provider_test extends provider_testcase
 
         provider::delete_data_for_all_users_in_context($context);
 
-        $this->assertEmpty($DB->get_records('nolej_module'));
-        $this->assertEmpty($DB->get_records('nolej_activity'));
+        $this->assertEmpty($DB->get_records('local_nolej_module'));
+        $this->assertEmpty($DB->get_records('local_nolej_activity'));
     }
 
     /**
@@ -238,7 +238,7 @@ class provider_test extends provider_testcase
         $documentid = '00000000-abcd-1234-5678-000000000000';
 
         $DB->insert_record(
-            'nolej_module',
+            'local_nolej_module',
             (object) [
                 'document_id' => $documentid,
                 'user_id' => $user->id,
@@ -254,7 +254,7 @@ class provider_test extends provider_testcase
         );
 
         $DB->insert_record(
-            'nolej_activity',
+            'local_nolej_activity',
             (object) [
                 'document_id' => $documentid,
                 'user_id' => $user->id,
@@ -270,8 +270,8 @@ class provider_test extends provider_testcase
 
         provider::delete_data_for_user($contextlist);
 
-        $this->assertEmpty($DB->get_records('nolej_module', ['user_id' => $user->id]));
-        $this->assertEmpty($DB->get_records('nolej_activity', ['user_id' => $user->id]));
+        $this->assertEmpty($DB->get_records('local_nolej_module', ['user_id' => $user->id]));
+        $this->assertEmpty($DB->get_records('local_nolej_activity', ['user_id' => $user->id]));
     }
 
     /**
@@ -288,7 +288,7 @@ class provider_test extends provider_testcase
         $user2 = $this->getDataGenerator()->create_user();
 
         $DB->insert_record(
-            'nolej_module',
+            'local_nolej_module',
             (object) [
                 'document_id' => '00000000-abcd-1234-5678-000000000000',
                 'user_id' => $user1->id,
@@ -303,7 +303,7 @@ class provider_test extends provider_testcase
             ]
         );
         $DB->insert_record(
-            'nolej_module',
+            'local_nolej_module',
             (object) [
                 'document_id' => '00000000-abcd-1234-5678-111111111111',
                 'user_id' => $user2->id,
@@ -338,7 +338,7 @@ class provider_test extends provider_testcase
         $user2 = $this->getDataGenerator()->create_user();
 
         $DB->insert_record(
-            'nolej_module',
+            'local_nolej_module',
             (object) [
                 'document_id' => '00000000-abcd-1234-5678-000000000000',
                 'user_id' => $user1->id,
@@ -353,7 +353,7 @@ class provider_test extends provider_testcase
             ]
         );
         $DB->insert_record(
-            'nolej_module',
+            'local_nolej_module',
             (object) [
                 'document_id' => '00000000-abcd-1234-5678-111111111111',
                 'user_id' => $user2->id,
@@ -368,7 +368,7 @@ class provider_test extends provider_testcase
             ]
         );
         $DB->insert_record(
-            'nolej_activity',
+            'local_nolej_activity',
             (object) [
                 'document_id' => '00000000-abcd-1234-5678-111111111111',
                 'user_id' => $user2->id,
@@ -385,7 +385,7 @@ class provider_test extends provider_testcase
         $userlist = new approved_userlist($context, 'local_nolej', [$user1->id, $user2->id]);
         provider::delete_data_for_users($userlist);
 
-        $this->assertEmpty($DB->get_records('nolej_module', ['user_id' => $user1->id]));
-        $this->assertEmpty($DB->get_records('nolej_activity', ['user_id' => $user2->id]));
+        $this->assertEmpty($DB->get_records('local_nolej_module', ['user_id' => $user1->id]));
+        $this->assertEmpty($DB->get_records('local_nolej_activity', ['user_id' => $user2->id]));
     }
 }

@@ -270,7 +270,7 @@ class module
                     }
                 } else {
                     $DB->insert_record(
-                        'nolej_module',
+                        'local_nolej_module',
                         (object) [
                             'document_id' => $result->id,
                             'user_id' => $USER->id,
@@ -287,7 +287,7 @@ class module
                     );
 
                     $DB->insert_record(
-                        'nolej_activity',
+                        'local_nolej_activity',
                         (object) [
                             'document_id' => $result->id,
                             'user_id' => $USER->id,
@@ -400,7 +400,7 @@ class module
                 }
 
                 $DB->update_record(
-                    'nolej_module',
+                    'local_nolej_module',
                     (object) [
                         'id' => $this->document->id,
                         'document_id' => $this->documentid,
@@ -410,7 +410,7 @@ class module
                 );
 
                 $DB->insert_record(
-                    'nolej_activity',
+                    'local_nolej_activity',
                     (object) [
                         'document_id' => $this->documentid,
                         'user_id' => $USER->id,
@@ -969,7 +969,7 @@ class module
             $success = api::putcontent($this->documentid, 'settings', 'settings.json');
             if ($success) {
                 $DB->update_record(
-                    'nolej_module',
+                    'local_nolej_module',
                     (object) [
                         'id' => $this->document->id,
                         'document_id' => $this->documentid,
@@ -978,7 +978,7 @@ class module
                 );
 
                 $DB->insert_record(
-                    'nolej_activity',
+                    'local_nolej_activity',
                     (object) [
                         'document_id' => $this->documentid,
                         'user_id' => $USER->id,

@@ -53,7 +53,7 @@ class provider implements
 
         // Nolej module table.
         $collection->add_database_table(
-            'nolej_module',
+            'local_nolej_module',
             [
                 'user_id' => 'privacy:metadata:nolej_module:user_id',
                 'tstamp' => 'privacy:metadata:nolej_module:tstamp',
@@ -63,7 +63,7 @@ class provider implements
 
         // Nolej activity table.
         $collection->add_database_table(
-            'nolej_activity',
+            'local_nolej_activity',
             [
                 'user_id' => 'privacy:metadata:nolej_activity:user_id',
                 'tstamp' => 'privacy:metadata:nolej_activity:tstamp',
@@ -104,11 +104,11 @@ class provider implements
         $contextlist = new contextlist();
 
         $modules = $DB->get_records(
-            'nolej_module',
+            'local_nolej_module',
             ['user_id' => $userid],
         );
         $activities = $DB->get_records(
-            'nolej_activity',
+            'local_nolej_activity',
             ['user_id' => $userid],
         );
 
@@ -138,7 +138,7 @@ class provider implements
             }
 
             $modules = $DB->get_records(
-                'nolej_module',
+                'local_nolej_module',
                 ['user_id' => $userid],
                 'tstamp DESC',
                 'user_id, tstamp',
@@ -153,7 +153,7 @@ class provider implements
             }
 
             $activities = $DB->get_records(
-                'nolej_activity',
+                'local_nolej_activity',
                 ['user_id' => $userid],
                 'tstamp DESC',
                 'user_id, tstamp, action',
@@ -184,8 +184,8 @@ class provider implements
         }
 
         // Delete all data from the nolej_module and nolej_activity tables.
-        $DB->delete_records('nolej_module');
-        $DB->delete_records('nolej_activity');
+        $DB->delete_records('local_nolej_module');
+        $DB->delete_records('local_nolej_activity');
     }
 
     /**
@@ -206,11 +206,11 @@ class provider implements
             // Delete all data from the nolej_module and nolej_activity tables.
             if ($context->contextlevel == CONTEXT_SYSTEM) {
                 $DB->delete_records(
-                    'nolej_module',
+                    'local_nolej_module',
                     ['user_id' => $userid]
                 );
                 $DB->delete_records(
-                    'nolej_activity',
+                    'local_nolej_activity',
                     ['user_id' => $userid]
                 );
             }
@@ -234,7 +234,7 @@ class provider implements
 
         // Fetch all users who have data in the nolej_module table.
         $modules = $DB->get_records(
-            'nolej_module',
+            'local_nolej_module',
             null,
             'user_id',
             'DISTINCT user_id',
@@ -242,7 +242,7 @@ class provider implements
         $userlist->add_users(array_keys($modules));
 
         $activities = $DB->get_records(
-            'nolej_activity',
+            'local_nolej_activity',
             null,
             'user_id',
             'DISTINCT user_id',
@@ -266,7 +266,7 @@ class provider implements
         }
 
         $userids = $userlist->get_userids();
-        $DB->delete_records_list('nolej_module', 'user_id', $userids);
-        $DB->delete_records_list('nolej_activity', 'user_id', $userids);
+        $DB->delete_records_list('local_nolej_module', 'user_id', $userids);
+        $DB->delete_records_list('local_nolej_activity', 'user_id', $userids);
     }
 }

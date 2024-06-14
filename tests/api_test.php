@@ -136,12 +136,12 @@ class api_test extends \advanced_testcase
         ];
 
         $DB->insert_record(
-            'nolej_module',
+            'local_nolej_module',
             $exampledocument,
             false
         );
 
-        $exampledocument = $DB->get_record('nolej_module', ['document_id' => $documentid]);
+        $exampledocument = $DB->get_record('local_nolej_module', ['document_id' => $documentid]);
 
         // Test with no user.
         $documentstatus = api::lookupdocumentstatus($documentid);
