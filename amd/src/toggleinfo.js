@@ -21,8 +21,8 @@
  * @copyright   2024 OC Open Consulting SB Srl
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-define(['jquery'], function ($) {
-    $('#toggleinfo').click(function () {
+define(['jquery'], function($) {
+    $('#toggleinfo').click(function() {
         $('#chevronIcon').toggleClass('fa-chevron-down');
         $('#chevronIcon').toggleClass('fa-chevron-right');
     });

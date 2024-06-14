@@ -21,11 +21,11 @@
  * @copyright   2024 OC Open Consulting SB Srl
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-define(['jquery'], function ($) {
+define(['jquery'], function($) {
     // Editor initially hidden
     $('#fitem_id_sourcetext').css('display', 'none');
 
-    $('input[name="sourcetype"]').on('change', function () {
+    $('input[name="sourcetype"]').on('change', function() {
         var istext = $(this).is(':checked') && $(this).val() == 'text';
         $('#fitem_id_sourcetext').css('display', istext ? '' : 'none');
     });

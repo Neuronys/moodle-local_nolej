@@ -21,13 +21,13 @@
  * @copyright   2024 OC Open Consulting SB Srl
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-define(['jquery', 'core/modal_factory', 'core/str', 'core/modal_events'], function ($, ModalFactory, String, ModalEvents) {
+define(['jquery', 'core/modal_factory', 'core/str', 'core/modal_events'], function($, ModalFactory, String, ModalEvents) {
     var trigger = $('.local_nolej_delete');
     ModalFactory.create({
         type: ModalFactory.types.SAVE_CANCEL,
         title: String.get_string('deletemodule', 'local_nolej'),
         body: String.get_string('deletemoduledescription', 'local_nolej'),
-        preShowCallback: function (triggerElement, modal) {
+        preShowCallback: function(triggerElement, modal) {
             triggerElement = $(triggerElement);
             modal.params = {
                 'documentid': triggerElement[0].getAttribute('data-documentid')
@@ -35,8 +35,8 @@ define(['jquery', 'core/modal_factory', 'core/str', 'core/modal_events'], functi
             modal.setSaveButtonText(String.get_string('deletemodule', 'local_nolej'));
         }
     }, trigger)
-        .done(function (modal) {
-            modal.getRoot().on(ModalEvents.save, function (e) {
+        .done(function(modal) {
+            modal.getRoot().on(ModalEvents.save, function(e) {
                 e.preventDefault();
                 var documentid = modal.params.documentid;
                 window.location.href = M.cfg.wwwroot + '/local/nolej/delete.php?documentid=' + documentid;
