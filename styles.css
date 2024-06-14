@@ -81,6 +81,6 @@
 
 /* Range form element */
 
-div.form-group.row.fitem {
+.range-form-element {
     margin-top: -1.5rem;
 }
