@@ -18,7 +18,7 @@ namespace local_nolej;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once (__DIR__ . '/../classes/api.php');
+require_once(__DIR__ . '/../classes/api.php');
 
 /**
  * Test script for classes/api.php.
@@ -30,8 +30,7 @@ require_once (__DIR__ . '/../classes/api.php');
  * @category    test
  * @coversDefaultClass \local_nolej\api
  */
-class api_test extends \advanced_testcase
-{
+class api_test extends \advanced_testcase {
 
     /**
      * Testing key.

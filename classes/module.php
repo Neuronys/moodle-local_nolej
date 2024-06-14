@@ -31,13 +31,13 @@ use moodle_url;
 use core\output\notification;
 
 global $CFG;
-require_once ($CFG->dirroot . '/local/nolej/classes/api.php');
+require_once($CFG->dirroot . '/local/nolej/classes/api.php');
 
 /**
  * Nolej module class
  */
-class module
-{
+class module {
+
     /** @var int */
     const STATUS_CREATION = 0;
 

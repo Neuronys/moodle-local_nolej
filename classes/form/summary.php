@@ -32,14 +32,13 @@ use core\output\notification;
 use local_nolej\api;
 
 global $CFG;
-require_once ($CFG->libdir . '/formslib.php');
-require_once ($CFG->dirroot . '/local/nolej/classes/api.php');
+require_once($CFG->libdir . '/formslib.php');
+require_once($CFG->dirroot . '/local/nolej/classes/api.php');
 
 /**
  * Summary edit form
  */
-class summary extends \moodleform
-{
+class summary extends \moodleform {
 
     /**
      * Form definition

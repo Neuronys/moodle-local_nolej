@@ -18,7 +18,7 @@ namespace local_nolej;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once (__DIR__ . '/../classes/form/element/range_form_element.php');
+require_once(__DIR__ . '/../classes/form/element/range_form_element.php');
 
 /**
  * Test script for classes/form/element/range_form_element.php.
@@ -30,8 +30,7 @@ require_once (__DIR__ . '/../classes/form/element/range_form_element.php');
  * @category    test
  * @coversDefaultClass \range_form_element
  */
-class range_form_element_test extends \advanced_testcase
-{
+class range_form_element_test extends \advanced_testcase {
 
     /**
      * Testing input value.

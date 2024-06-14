@@ -32,8 +32,8 @@ use moodle_url;
 /**
  * The webhook_called event class.
  */
-class webhook_called extends \core\event\base
-{
+class webhook_called extends \core\event\base {
+
     /**
      * Init the event
      */

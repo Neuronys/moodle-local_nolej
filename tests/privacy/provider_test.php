@@ -35,8 +35,7 @@ use local_nolej\module;
  * @category    test
  * @coversDefaultClass \local_nolej\privacy\provider
  */
-class provider_test extends provider_testcase
-{
+class provider_test extends provider_testcase {
 
     /**
      * PHPUnit test setup: reset after every test.

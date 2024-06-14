@@ -47,8 +47,7 @@ require_once($CFG->dirroot . '/local/nolej/classes/module.php');
 /**
  * Nolej API class
  */
-class api
-{
+class api {
 
     /** @var string Nolej API endpoint */
     const ENDPOINT = 'https://api-live.nolej.io';
