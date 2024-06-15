@@ -25,6 +25,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+// phpcs:disable moodle.NamingConventions.ValidFunctionName.LowercaseMethod
+
 global $CFG;
 
 require_once($CFG->libdir . '/formslib.php');

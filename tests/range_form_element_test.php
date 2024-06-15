@@ -18,6 +18,8 @@ namespace local_nolej;
 
 defined('MOODLE_INTERNAL') || die();
 
+// phpcs:disable moodle.NamingConventions.ValidFunctionName.LowercaseMethod
+
 require_once(__DIR__ . '/../classes/form/element/range_form_element.php');
 
 /**

@@ -25,6 +25,7 @@
 
 namespace local_nolej\event;
 
+// phpcs:ignore
 defined('MOODLE_INTERNAL') || die();
 
 use moodle_url;
