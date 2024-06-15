@@ -18,6 +18,8 @@ namespace local_nolej;
 
 defined('MOODLE_INTERNAL') || die();
 
+// phpcs:disable moodle.NamingConventions.ValidFunctionName.LowercaseMethod
+
 require_once(__DIR__ . '/../classes/form/element/range_form_element.php');
 
 /**
@@ -48,42 +50,42 @@ class range_form_element_test extends \advanced_testcase {
 
         // Normal value.
         $value = ['testel' => 3];
-        $this->assertEquals(3, $element->exportValue($value));
+        $this->assertEquals(['testel' => 3], $element->exportValue($value));
 
         // Over the maximum.
         $value = ['testel' => $max + 1];
-        $this->assertEquals($max, $element->exportValue($value));
+        $this->assertEquals(['testel' => $max], $element->exportValue($value));
 
         // Below the minimum.
         $value = ['testel' => $min - 1];
-        $this->assertEquals($min, $element->exportValue($value));
+        $this->assertEquals(['testel' => $min], $element->exportValue($value));
 
         // Floating point value.
         $value = ['testel' => 3.14];
-        $this->assertEquals(3, $element->exportValue($value));
+        $this->assertEquals(['testel' => 3], $element->exportValue($value));
 
         // String value.
         $value = ['testel' => '3.14'];
-        $this->assertEquals(3, $element->exportValue($value));
+        $this->assertEquals(['testel' => 3], $element->exportValue($value));
 
         // String value below minimum.
         $value = ['testel' => '-3.14'];
-        $this->assertEquals($min, $element->exportValue($value));
+        $this->assertEquals(['testel' => $min], $element->exportValue($value));
 
         // String value with alphanumeric chars.
         $value = ['testel' => '3.14blah'];
-        $this->assertEquals(3, $element->exportValue($value));
+        $this->assertEquals(['testel' => 3], $element->exportValue($value));
 
         // String value with alphanumeric chars.
         $value = ['testel' => 'blah'];
-        $this->assertEquals($min, $element->exportValue($value));
+        $this->assertEquals(['testel' => $min], $element->exportValue($value));
 
         // Correct offset value.
         $value = ['testel' => 5];
-        $this->assertEquals(5, $element->exportValue($value));
+        $this->assertEquals(['testel' => 5], $element->exportValue($value));
 
         // Wrong offset value.
         $value = ['testel' => 6];
-        $this->assertEquals(false, $element->exportValue($value));
+        $this->assertEquals(['testel' => false], $element->exportValue($value));
     }
 }

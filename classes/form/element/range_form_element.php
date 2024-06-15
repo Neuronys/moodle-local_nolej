@@ -25,6 +25,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+// phpcs:disable moodle.NamingConventions.ValidFunctionName.LowercaseMethod
+
 global $CFG;
 
 require_once($CFG->libdir . '/formslib.php');
@@ -88,18 +90,18 @@ class range_form_element extends HTML_QuickForm_text {
 
         // Make sure value is within the range.
         if ($value <= $this->_options['min']) {
-            return $this->_options['min'];
+            $value = $this->_options['min'];
         } else if ($value >= $this->_options['max']) {
-            return $this->_options['max'];
+            $value = $this->_options['max'];
+        } else {
+            // Make sure value is a multiple of the step.
+            $normalizedvalue = $value - $this->_options['min'];
+            if ($normalizedvalue % $this->_options['step'] != 0) {
+                $value = false;
+            }
         }
 
-        // Make sure value is a multiple of the step.
-        $normalizedvalue = $value - $this->_options['min'];
-        if ($normalizedvalue % $this->_options['step'] == 0) {
-            return $value;
-        }
-
-        return false;
+        return [$this->getName() => $value];
     }
 
     /**

@@ -25,6 +25,7 @@
 
 namespace local_nolej\privacy;
 
+// phpcs:ignore
 defined('MOODLE_INTERNAL') || die();
 
 use core_privacy\local\metadata\collection;
