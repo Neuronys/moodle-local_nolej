@@ -103,5 +103,26 @@ function xmldb_local_nolej_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2024061302, 'local', 'nolej');
     }
 
+    // Edit local_nolej_module table's document_id index to be not unique.
+    if ($oldversion < 2024062801) {
+
+        // Edit document_id index to be not unique.
+        $table = new xmldb_table('local_nolej_module');
+
+        // Check that index exists.
+        $index = new xmldb_index('document_id_idx', XMLDB_INDEX_UNIQUE, array('document_id'));
+        if ($dbman->index_exists($table, $index)) {
+            // Remove index.
+            $dbman->drop_index($table, $index);
+        }
+
+        // Create new index without 'UNIQUE'.
+        $index = new xmldb_index('document_id_idx', XMLDB_INDEX_NOTUNIQUE, array('document_id'));
+        $dbman->add_index($table, $index);
+
+        // Update the version number to the current version.
+        upgrade_plugin_savepoint(true, 2024062801, 'local', 'nolej');
+    }
+
     return true;
 }

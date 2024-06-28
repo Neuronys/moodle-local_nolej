@@ -230,7 +230,24 @@ class module {
                 // Call Nolej creation API.
                 $now = time();
                 $shorturl = shorten_text($url, 200);
-                $webhookurl = api::webhookurl($shorturl, $now);
+
+                $moduleid = $DB->insert_record(
+                    'local_nolej_module',
+                    (object) [
+                        'document_id' => '',
+                        'user_id' => $USER->id,
+                        'tstamp' => $now,
+                        'status' => self::STATUS_CREATION_PENDING,
+                        'title' => $title,
+                        'consumed_credit' => $consumedcredit,
+                        'doc_url' => $shorturl,
+                        'media_type' => $format,
+                        'automatic_mode' => $automaticmode,
+                        'language' => $language,
+                    ]
+                );
+
+                $webhookurl = api::webhookurl($moduleid, $USER->id);
 
                 $result = api::post(
                     '/documents',
@@ -266,21 +283,12 @@ class module {
                         unlink($dest);
                     }
                 } else {
-                    $DB->insert_record(
+                    $DB->update_record(
                         'local_nolej_module',
                         (object) [
+                            'id' => $moduleid,
                             'document_id' => $result->id,
-                            'user_id' => $USER->id,
-                            'tstamp' => $now,
-                            'status' => self::STATUS_CREATION_PENDING,
-                            'title' => $title,
-                            'consumed_credit' => $consumedcredit,
-                            'doc_url' => $shorturl,
-                            'media_type' => $format,
-                            'automatic_mode' => $automaticmode,
-                            'language' => $language,
-                        ],
-                        false
+                        ]
                     );
 
                     $DB->insert_record(

@@ -33,7 +33,7 @@ use local_nolej\api;
 $nolej = new api();
 $data = $nolej->decodetoken();
 
-// Looking for a file
+// Looking for a file.
 if (property_exists($data, 'fileid')) {
     $filename = $data->fileid;
     $dir = property_exists($data, 'documentid') ? api::datadir($data->documentid) : api::uploaddir();
@@ -42,21 +42,23 @@ if (property_exists($data, 'fileid')) {
     if (file_exists($filepath) && is_file($filepath)) {
         // Delivering file.
         api::deliverfile($filepath);
+    } else {
+        // File not found.
+        $nolej->respondwithmessage(400, 'Request not valid.');
     }
 
-    // File not found.
-    $nolej->respondwithmessage(400, 'Request not valid.');
     exit;
 }
 
 // Parse POST data.
-if (property_exists($data, 'url') && property_exists($data, 'time')) {
+if (property_exists($data, 'moduleid') && property_exists($data, 'userid')) {
+
     // Check module existence.
     $module = $DB->get_record(
         'local_nolej_module',
         [
-            'doc_url' => $data->url,
-            'tstamp' => $data->time,
+            'id' => $data->moduleid,
+            'userid' => $data->userid,
         ]
     );
 

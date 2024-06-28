@@ -1191,16 +1191,16 @@ class api {
     }
 
     /**
-     * Generate a webhook url with token, given the url and timestamp of the request.
-     * @param string $shorturl
-     * @param int $time
+     * Generate a webhook url with token, given module id.
+     * @param string $moduleid
+     * @param int $userid
      * @return string
      */
-    public static function webhookurl($shorturl, $time) {
+    public static function webhookurl($moduleid, $userid) {
         $url = new \moodle_url(
             '/local/nolej/webhook.php',
             self::generatetoken(
-                ['url' => $shorturl, 'time' => $time],
+                ['moduleid' => $moduleid, 'userid' => $userid],
                 false,
                 false
             )
