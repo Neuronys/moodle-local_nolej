@@ -30,31 +30,44 @@ require_once($CFG->dirroot . '/local/nolej/classes/api.php');
 
 use local_nolej\api;
 
-// Deliver file if exists (public for 2 hours, after that the user need to be logged in).
-$timelimit = 2 * 3600;
-$filename = optional_param('fileid', null, PARAM_FILE);
-$documentid = optional_param('documentid', null, PARAM_ALPHANUMEXT);
+$nolej = new api();
+$data = $nolej->decodetoken();
 
-if ($filename != null) {
-    $filename = api::sanitizefilename($filename);
-    $dir = $documentid == null ? api::uploaddir() : api::datadir($documentid);
-    $dest = $dir . '/' . $filename;
+// Looking for a file
+if (property_exists($data, 'fileid')) {
+    $filename = $data->fileid;
+    $dir = property_exists($data, 'documentid') ? api::datadir($data->documentid) : api::uploaddir();
+    $filepath = $dir . '/' . $filename;
 
-    if (file_exists($dest) && is_file($dest)) {
-        $owner = strstr(basename($dest), '.', true);
-        $timepassed = time() - filemtime($dest);
-        if (
-            $timepassed < $timelimit ||
-            (isloggedin() && $owner == $USER->id)
-        ) {
-            api::deliverfile($dest);
-        }
+    if (file_exists($filepath) && is_file($filepath)) {
+        // Delivering file.
+        api::deliverfile($filepath);
     }
 
-    exit('Forbidden ' . $dest);
+    // File not found.
+    $nolej->respondwithmessage(400, 'Request not valid.');
+    exit;
 }
 
 // Parse POST data.
-$nolej = new api();
-$nolej->parse();
-exit();
+if (property_exists($data, 'url') && property_exists($data, 'time')) {
+    // Check module existence.
+    $module = $DB->get_record(
+        'local_nolej_module',
+        [
+            'doc_url' => $data->url,
+            'tstamp' => $data->time,
+        ]
+    );
+
+    if ($module == null) {
+        // Module not found.
+        $nolej->respondwithmessage(400, 'Request not valid.');
+        exit;
+    }
+
+    $nolej->parse();
+}
+
+// Request not valid.
+$nolej->respondwithmessage(400, 'Request not valid.');

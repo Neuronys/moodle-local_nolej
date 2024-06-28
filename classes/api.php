@@ -39,6 +39,9 @@ use core_h5p\factory;
 use core_h5p\file_storage;
 use contenttype_h5p\contenttype;
 use local_nolej\event\webhook_called;
+use Firebase\JWT\JWT;
+use Firebase\JWT\JWK;
+use mod_lti\local\ltiopenid\jwks_helper;
 
 global $CFG;
 require_once($CFG->dirroot . '/local/nolej/classes/event/webhook_called.php');
@@ -64,11 +67,14 @@ class api {
     /** @var string[] Allowed text file formats */
     const TYPE_TEXT = ['txt', 'htm', 'html'];
 
+    /** @var int Max bytes for uploaded files (1 GB) */
+    const MAX_SIZE = 1073741824;
+
     /** @var array */
     protected $data;
 
     /** @var bool */
-    protected $shouldexit = false;
+    public $shouldexit = true;
 
     /**
      * Check that the API key has been set
@@ -444,17 +450,17 @@ class api {
     }
 
     /**
-     * Parse the request from POST content if
-     * @param mixed $data is not null
+     * Parse the request.
+     * @param mixed $data if null parse POST data.
      */
     public function parse($data = null) {
         if ($data == null) {
             header('Content-type: application/json; charset=UTF-8');
-            $this->shouldexit = true;
             try {
                 $data = json_decode(file_get_contents('php://input'), true);
             } catch (Exception $e) {
                 $this->respondwithmessage(400, 'Request not valid.');
+                return;
             }
         }
 
@@ -465,6 +471,7 @@ class api {
         ) {
             $this->log('Received invalid request: ' . var_export($data, true));
             $this->respondwithmessage(400, 'Request not valid.');
+            return;
         }
 
         $this->data = $data;
@@ -504,6 +511,7 @@ class api {
      * Die with status code and a message
      * @param int $code
      * @param string $message
+     * @return void
      */
     public function respondwithmessage(
         $code = 400,
@@ -517,7 +525,7 @@ class api {
         }
 
         if (!$this->shouldexit) {
-            return false;
+            return;
         }
 
         http_response_code($code);
@@ -601,6 +609,7 @@ class api {
             );
             if (!$success) {
                 $this->respondwithmessage(404, 'Document not found.');
+                return;
             }
 
             $this->sendnotification(
@@ -632,6 +641,7 @@ class api {
         );
         if (!$success) {
             $this->respondwithmessage(404, 'Document not found.');
+            return;
         }
 
         $this->sendnotification(
@@ -711,6 +721,7 @@ class api {
             );
             if (!$success) {
                 $this->respondwithmessage(404, 'Document not found.');
+                return;
             }
 
             $this->sendnotification(
@@ -742,6 +753,7 @@ class api {
         );
         if (!$success) {
             $this->respondwithmessage(404, 'Document not found.');
+            return;
         }
 
         $this->sendnotification(
@@ -821,6 +833,7 @@ class api {
             );
             if (!$success) {
                 $this->respondwithmessage(404, 'Document not found.');
+                return;
             }
 
             $this->sendnotification(
@@ -852,6 +865,7 @@ class api {
         );
         if (!$success) {
             $this->respondwithmessage(404, 'Document not found.');
+            return;
         }
 
         $errors = $this->downloadactivities($document);
@@ -1139,5 +1153,85 @@ class api {
         flush();
         readfile($filepath);
         exit;
+    }
+
+    /**
+     * Generate a JWT token with the given content.
+     * @param array $content
+     * @param bool $raw token string or array for moodle url
+     * @param bool $expiration iff true, set the token expiration
+     * @return array|string string if $raw is set, array otherwise
+     */
+    public static function generatetoken(
+        array $content = [],
+        bool $raw = false,
+        bool $expiration = true
+    ) {
+        $privatekey = jwks_helper::get_private_key();
+
+        $data = [
+            'sub' => $content,
+            'scope' => 'local_nolej',
+        ];
+
+        if ($expiration) {
+            $now = time();
+            $data['iat'] = $now;
+            $data['exp'] = $now + HOURSECS;
+        }
+
+        $token = JWT::encode(
+            $data,
+            $privatekey['key'],
+            'RS256',
+            $privatekey['kid'],
+        );
+
+        return $raw ? $token : ['token' => $token];
+    }
+
+    /**
+     * Generate a webhook url with token, given the url and timestamp of the request.
+     * @param string $shorturl
+     * @param int $time
+     * @return string
+     */
+    public static function webhookurl($shorturl, $time) {
+        $url = new \moodle_url(
+            '/local/nolej/webhook.php',
+            self::generatetoken(
+                ['url' => $shorturl, 'time' => $time],
+                false,
+                false
+            )
+        );
+        return $url->out(false);
+    }
+
+    /**
+     * Decode JWT token and return the data or exit with failure.
+     * @return object data
+     */
+    public function decodetoken() {
+        try {
+
+            $token = required_param('token', PARAM_NOTAGS);
+            $keys = JWK::parseKeySet(jwks_helper::get_jwks());
+            $data = JWT::decode($token, $keys);
+
+            if (!property_exists($data, 'sub')) {
+                $this->respondwithmessage(400, 'Request not valid.');
+                return (object) [];
+            }
+
+            return $data->sub;
+
+        } catch (Exception $e) {
+
+            // Token not valid; exit.
+            $this->respondwithmessage(400, 'Request not valid.');
+        }
+
+        return (object) [];
     }
 }

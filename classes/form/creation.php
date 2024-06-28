@@ -86,7 +86,7 @@ class creation extends \moodleform {
             get_string('sourcefile', 'local_nolej'),
             null,
             [
-                'maxbytes' => 500000,
+                'maxbytes' => min($CFG->maxbytes, api::MAX_SIZE),
                 'accepted_types' => join(',', api::allowedtypes()),
             ]
         );

@@ -199,7 +199,7 @@ class module {
                     $url = (
                         new moodle_url(
                             '/local/nolej/webhook.php',
-                            ['fileid' => $filename],
+                            api::generatetoken(['fileid' => $filename])
                         )
                     )->out(false);
                     break;
@@ -219,7 +219,7 @@ class module {
                     $url = (
                         new moodle_url(
                             '/local/nolej/webhook.php',
-                            ['fileid' => $filename],
+                            api::generatetoken(['fileid' => $filename])
                         )
                     )->out(false);
                     $format = 'freetext';
@@ -230,6 +230,7 @@ class module {
                 // Call Nolej creation API.
                 $now = time();
                 $shorturl = shorten_text($url, 200);
+                $webhookurl = api::webhookurl($shorturl, $now);
 
                 $result = api::post(
                     '/documents',
@@ -239,7 +240,7 @@ class module {
                         'title' => $title,
                         'decrementedCredit' => $consumedcredit,
                         'docURL' => $url,
-                        'webhookURL' => (new moodle_url('/local/nolej/webhook.php'))->out(false),
+                        'webhookURL' => $webhookurl,
                         'mediaType' => $format,
                         'automaticMode' => $automaticmode,
                         'language' => $language,
@@ -360,10 +361,10 @@ class module {
                 $webhook = (
                     new moodle_url(
                         '/local/nolej/webhook.php',
-                        [
-                            'documentid' => $this->documentid,
-                            'fileid' => 'transcription.htm',
-                        ]
+                        api::generatetoken([
+                                'documentid' => $this->documentid,
+                                'fileid' => 'transcription.htm',
+                        ])
                     )
                 )->out(false);
 
