@@ -110,14 +110,14 @@ function xmldb_local_nolej_upgrade($oldversion) {
         $table = new xmldb_table('local_nolej_module');
 
         // Check that index exists.
-        $index = new xmldb_index('document_id_idx', XMLDB_INDEX_UNIQUE, array('document_id'));
+        $index = new xmldb_index('document_id_idx', XMLDB_INDEX_UNIQUE, ['document_id']);
         if ($dbman->index_exists($table, $index)) {
             // Remove index.
             $dbman->drop_index($table, $index);
         }
 
         // Create new index without 'UNIQUE'.
-        $index = new xmldb_index('document_id_idx', XMLDB_INDEX_NOTUNIQUE, array('document_id'));
+        $index = new xmldb_index('document_id_idx', XMLDB_INDEX_NOTUNIQUE, ['document_id']);
         $dbman->add_index($table, $index);
 
         // Update the version number to the current version.
