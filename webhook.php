@@ -44,13 +44,13 @@ if (property_exists($data, 'fileid')) {
         api::deliverfile($filepath);
     } else {
         // File not found.
-        $nolej->respondwithmessage(400, 'Request not valid.');
+        $nolej->respondwithmessage(404, 'File not available.');
     }
 
     exit;
 }
 
-// Parse POST data.
+// Activity result for a module.
 if (property_exists($data, 'moduleid') && property_exists($data, 'userid')) {
 
     // Check module existence.
@@ -58,16 +58,17 @@ if (property_exists($data, 'moduleid') && property_exists($data, 'userid')) {
         'local_nolej_module',
         [
             'id' => $data->moduleid,
-            'userid' => $data->userid,
+            'user_id' => $data->userid,
         ]
     );
 
     if ($module == null) {
         // Module not found.
-        $nolej->respondwithmessage(400, 'Request not valid.');
+        $nolej->respondwithmessage(404, 'Module not found.');
         exit;
     }
 
+    // Parse POST data.
     $nolej->parse();
 }
 
