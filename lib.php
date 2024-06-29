@@ -45,3 +45,45 @@ function local_nolej_extend_navigation(global_navigation $navigation) {
         new pix_icon('nolej', '', 'local_nolej')
     );
 }
+
+/**
+ * Add a link to the library in the course navigation.
+ * @param navigation_node $navigation The navigation node to extend
+ * @param stdClass $course The course to object for the tool
+ * @param context $context The context of the course
+ */
+function local_nolej_extend_navigation_course($navigation, $course, $context) {
+    if (!has_capability('local/nolej:usenolej', context_system::instance())) {
+        return;
+    }
+
+    $node = $navigation->add(
+        get_string('library', 'local_nolej'),
+        new moodle_url('/local/nolej/manage.php'),
+        global_navigation::TYPE_SETTING,
+        null,
+        'nolej_library',
+        new pix_icon('nolej', '', 'local_nolej')
+    );
+}
+
+/**
+ * Add a link to the library in the frontpage navigation.
+ * @param navigation_node $navigation The navigation node to extend
+ * @param stdClass $course The course to object for the tool
+ * @param context $context The context of the course
+ */
+function local_nolej_extend_navigation_frontpage($navigation, $course, $context) {
+    if (!has_capability('local/nolej:usenolej', context_system::instance())) {
+        return;
+    }
+
+    $node = $navigation->add(
+        get_string('library', 'local_nolej'),
+        new moodle_url('/local/nolej/manage.php'),
+        global_navigation::TYPE_SETTING,
+        null,
+        'nolej_library',
+        new pix_icon('nolej', '', 'local_nolej')
+    );
+}
