@@ -30,31 +30,53 @@ require_once($CFG->dirroot . '/local/nolej/classes/api.php');
 
 use local_nolej\api;
 
-// Deliver file if exists (public for 2 hours, after that the user need to be logged in).
-$timelimit = 2 * 3600;
-$filename = optional_param('fileid', null, PARAM_FILE);
-$documentid = optional_param('documentid', null, PARAM_ALPHANUMEXT);
+$nolej = new api();
+$token = required_param('token', PARAM_NOTAGS);
+$data = $nolej->decodetoken($token);
 
-if ($filename != null) {
-    $filename = api::sanitizefilename($filename);
-    $dir = $documentid == null ? api::uploaddir() : api::datadir($documentid);
-    $dest = $dir . '/' . $filename;
-
-    if (file_exists($dest) && is_file($dest)) {
-        $owner = strstr(basename($dest), '.', true);
-        $timepassed = time() - filemtime($dest);
-        if (
-            $timepassed < $timelimit ||
-            (isloggedin() && $owner == $USER->id)
-        ) {
-            api::deliverfile($dest);
-        }
-    }
-
-    exit('Forbidden ' . $dest);
+if ($data == null) {
+    $this->respondwithmessage(400, 'Request not valid.');
+    exit;
 }
 
-// Parse POST data.
-$nolej = new api();
-$nolej->parse();
-exit();
+// Looking for a file.
+if (property_exists($data, 'fileid')) {
+    $filename = $data->fileid;
+    $dir = property_exists($data, 'documentid') ? api::datadir($data->documentid) : api::uploaddir();
+    $filepath = $dir . '/' . $filename;
+
+    if (file_exists($filepath) && is_file($filepath)) {
+        // Delivering file.
+        api::deliverfile($filepath);
+    } else {
+        // File not found.
+        $nolej->respondwithmessage(404, 'File not available.');
+    }
+
+    exit;
+}
+
+// Activity result for a module.
+if (property_exists($data, 'moduleid') && property_exists($data, 'userid')) {
+
+    // Check module existence.
+    $module = $DB->get_record(
+        'local_nolej_module',
+        [
+            'id' => $data->moduleid,
+            'user_id' => $data->userid,
+        ]
+    );
+
+    if ($module == null) {
+        // Module not found.
+        $nolej->respondwithmessage(404, 'Module not found.');
+        exit;
+    }
+
+    // Parse POST data.
+    $nolej->parse();
+}
+
+// Request not valid.
+$nolej->respondwithmessage(400, 'Request not valid.');

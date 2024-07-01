@@ -39,6 +39,9 @@ use core_h5p\factory;
 use core_h5p\file_storage;
 use contenttype_h5p\contenttype;
 use local_nolej\event\webhook_called;
+use Firebase\JWT\JWT;
+use Firebase\JWT\JWK;
+use mod_lti\local\ltiopenid\jwks_helper;
 
 global $CFG;
 require_once($CFG->dirroot . '/local/nolej/classes/event/webhook_called.php');
@@ -53,10 +56,10 @@ class api {
     const ENDPOINT = 'https://api-live.nolej.io';
 
     /** @var string[] Allowed audio formats */
-    const TYPE_AUDIO = ['mp3', 'wav', 'opus', 'ogg', 'oga', 'm4a'];
+    const TYPE_AUDIO = ['mp3', 'wav', 'opus', 'ogg', 'oga', 'm4a', 'aiff'];
 
     /** @var string[] Allowed video formats */
-    const TYPE_VIDEO = ['m4v', 'mp4', 'ogv', 'avi', 'webm'];
+    const TYPE_VIDEO = ['m4v', 'mp4', 'webm', 'mpeg'];
 
     /** @var string[] Allowed document formats */
     const TYPE_DOC = ['pdf', 'doc', 'docx', 'odt'];
@@ -64,11 +67,14 @@ class api {
     /** @var string[] Allowed text file formats */
     const TYPE_TEXT = ['txt', 'htm', 'html'];
 
+    /** @var int Max bytes for uploaded files (1 GB) */
+    const MAX_SIZE = 1073741824;
+
     /** @var array */
     protected $data;
 
     /** @var bool */
-    protected $shouldexit = false;
+    public $shouldexit = true;
 
     /**
      * Check that the API key has been set
@@ -444,17 +450,17 @@ class api {
     }
 
     /**
-     * Parse the request from POST content if
-     * @param mixed $data is not null
+     * Parse the request.
+     * @param mixed $data if null parse POST data.
      */
     public function parse($data = null) {
         if ($data == null) {
             header('Content-type: application/json; charset=UTF-8');
-            $this->shouldexit = true;
             try {
                 $data = json_decode(file_get_contents('php://input'), true);
             } catch (Exception $e) {
                 $this->respondwithmessage(400, 'Request not valid.');
+                return;
             }
         }
 
@@ -465,6 +471,7 @@ class api {
         ) {
             $this->log('Received invalid request: ' . var_export($data, true));
             $this->respondwithmessage(400, 'Request not valid.');
+            return;
         }
 
         $this->data = $data;
@@ -504,6 +511,7 @@ class api {
      * Die with status code and a message
      * @param int $code
      * @param string $message
+     * @return void
      */
     public function respondwithmessage(
         $code = 400,
@@ -517,7 +525,7 @@ class api {
         }
 
         if (!$this->shouldexit) {
-            return false;
+            return;
         }
 
         http_response_code($code);
@@ -601,6 +609,7 @@ class api {
             );
             if (!$success) {
                 $this->respondwithmessage(404, 'Document not found.');
+                return;
             }
 
             $this->sendnotification(
@@ -632,6 +641,7 @@ class api {
         );
         if (!$success) {
             $this->respondwithmessage(404, 'Document not found.');
+            return;
         }
 
         $this->sendnotification(
@@ -711,6 +721,7 @@ class api {
             );
             if (!$success) {
                 $this->respondwithmessage(404, 'Document not found.');
+                return;
             }
 
             $this->sendnotification(
@@ -742,6 +753,7 @@ class api {
         );
         if (!$success) {
             $this->respondwithmessage(404, 'Document not found.');
+            return;
         }
 
         $this->sendnotification(
@@ -821,6 +833,7 @@ class api {
             );
             if (!$success) {
                 $this->respondwithmessage(404, 'Document not found.');
+                return;
             }
 
             $this->sendnotification(
@@ -852,6 +865,7 @@ class api {
         );
         if (!$success) {
             $this->respondwithmessage(404, 'Document not found.');
+            return;
         }
 
         $errors = $this->downloadactivities($document);
@@ -1121,23 +1135,91 @@ class api {
     }
 
     /**
-     * Download the file
-     * @see https://stackoverflow.com/a/2882523
-     *
+     * Download the file.
      * @param string $filepath
      */
     public static function deliverfile(string $filepath) {
-        header('Content-Description: File Transfer');
-        header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename=' . basename($filepath));
-        header('Content-Transfer-Encoding: binary');
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-        header('Pragma: public');
-        header('Content-Length: ' . filesize($filepath));
-        ob_clean();
-        flush();
-        readfile($filepath);
-        exit;
+        global $CFG;
+        require_once($CFG->libdir .'/filelib.php');
+
+        send_file($filepath, basename($filepath));
+    }
+
+    /**
+     * Generate a JWT token with the given content.
+     * @param array $content
+     * @param bool $raw token string or array for moodle url
+     * @param bool $expiration iff true, set the token expiration
+     * @return array|string string if $raw is set, array otherwise
+     */
+    public static function generatetoken(
+        array $content = [],
+        bool $raw = false,
+        bool $expiration = true
+    ) {
+        $privatekey = jwks_helper::get_private_key();
+
+        $data = [
+            'sub' => $content,
+            'scope' => 'local_nolej',
+        ];
+
+        if ($expiration) {
+            $now = time();
+            $data['iat'] = $now;
+            $data['exp'] = $now + HOURSECS;
+        }
+
+        $token = JWT::encode(
+            $data,
+            $privatekey['key'],
+            'RS256',
+            $privatekey['kid'],
+        );
+
+        return $raw ? $token : ['token' => $token];
+    }
+
+    /**
+     * Generate a webhook url with token, given module id.
+     * @param string $moduleid
+     * @param int $userid
+     * @return string
+     */
+    public static function webhookurl($moduleid, $userid) {
+        $url = new \moodle_url(
+            '/local/nolej/webhook.php',
+            self::generatetoken(
+                ['moduleid' => $moduleid, 'userid' => $userid],
+                false,
+                false
+            )
+        );
+        return $url->out(false);
+    }
+
+    /**
+     * Decode JWT token and return the data.
+     * @param string $token to be decoded.
+     * @return ?object data
+     */
+    public function decodetoken($token) {
+        try {
+            $keys = JWK::parseKeySet(jwks_helper::get_jwks());
+            $data = JWT::decode($token, $keys);
+
+            if (!property_exists($data, 'sub')) {
+                return null;
+            }
+
+            return $data->sub;
+
+        } catch (Exception $e) {
+
+            // Token not valid.
+            return null;
+        }
+
+        return null;
     }
 }

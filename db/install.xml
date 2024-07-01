@@ -22,7 +22,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
       <INDEXES>
-        <INDEX NAME="document_id_idx" UNIQUE="true" FIELDS="document_id" COMMENT="Index to find the module."/>
+        <INDEX NAME="document_id_idx" UNIQUE="false" FIELDS="document_id" COMMENT="Index to find the module."/>
       </INDEXES>
     </TABLE>
     <TABLE NAME="local_nolej_activity" COMMENT="each record is a step of a Nolej module">
