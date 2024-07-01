@@ -1135,24 +1135,14 @@ class api {
     }
 
     /**
-     * Download the file
-     * @see https://stackoverflow.com/a/2882523
-     *
+     * Download the file.
      * @param string $filepath
      */
     public static function deliverfile(string $filepath) {
-        header('Content-Description: File Transfer');
-        header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename=' . basename($filepath));
-        header('Content-Transfer-Encoding: binary');
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-        header('Pragma: public');
-        header('Content-Length: ' . filesize($filepath));
-        ob_clean();
-        flush();
-        readfile($filepath);
-        exit;
+        global $CFG;
+        require_once($CFG->libdir .'/filelib.php');
+
+        send_file($filepath, basename($filepath));
     }
 
     /**
@@ -1214,7 +1204,6 @@ class api {
      */
     public function decodetoken() {
         try {
-
             $token = required_param('token', PARAM_NOTAGS);
             $keys = JWK::parseKeySet(jwks_helper::get_jwks());
             $data = JWT::decode($token, $keys);
