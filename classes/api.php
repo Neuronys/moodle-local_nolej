@@ -56,10 +56,10 @@ class api {
     const ENDPOINT = 'https://api-live.nolej.io';
 
     /** @var string[] Allowed audio formats */
-    const TYPE_AUDIO = ['mp3', 'wav', 'opus', 'ogg', 'oga', 'm4a'];
+    const TYPE_AUDIO = ['mp3', 'wav', 'opus', 'ogg', 'oga', 'm4a', 'aiff'];
 
     /** @var string[] Allowed video formats */
-    const TYPE_VIDEO = ['m4v', 'mp4', 'ogv', 'avi', 'webm'];
+    const TYPE_VIDEO = ['m4v', 'mp4', 'webm', 'mpeg'];
 
     /** @var string[] Allowed document formats */
     const TYPE_DOC = ['pdf', 'doc', 'docx', 'odt'];

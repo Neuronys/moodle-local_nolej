@@ -26,5 +26,5 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_nolej';
-$plugin->version = 2024062801;
+$plugin->version = 2024070101;
 $plugin->requires = 2022112800;
