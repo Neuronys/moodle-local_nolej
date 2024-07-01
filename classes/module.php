@@ -273,6 +273,14 @@ class module {
                         notification::NOTIFY_ERROR
                     );
 
+                    $DB->update_record(
+                        'local_nolej_module',
+                        (object) [
+                            'id' => $moduleid,
+                            'status' => self::STATUS_FAILED,
+                        ]
+                    );
+
                     if (
                         ($sourcetype == 'file' || $sourcetype == 'text') &&
                         isset($dest) &&
