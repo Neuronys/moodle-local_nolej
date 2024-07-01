@@ -314,6 +314,7 @@ class module {
                         notification::NOTIFY_SUCCESS
                     );
                 }
+
             } else {
                 \core\notification::add(
                     get_string('errdatamissing', 'local_nolej'),

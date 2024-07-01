@@ -109,6 +109,7 @@ class creation extends \moodleform {
         );
 
         $mform->hideIf('sourceurl', 'sourcetype', 'neq', 'web');
+        $mform->hideIf('sourceurldesc', 'sourcetype', 'neq', 'web');
         $mform->hideIf('sourceurltype', 'sourcetype', 'neq', 'web');
 
         // Source: text.
