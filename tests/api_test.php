@@ -170,4 +170,58 @@ class api_test extends \advanced_testcase {
         $filename = 'file$0/\\123.(..[[=,<>.abc';
         $this->assertEquals('file0123.(.abc', api::sanitizefilename($filename));
     }
+
+    /**
+     * Testing token generation.
+     *
+     * @covers ::generatetoken
+     * @covers ::webhookurl
+     * @covers ::decodetoken
+     */
+    public function test_tokens() {
+        $nolej = new api();
+
+        $data = ['fileid' => 'examplefile'];
+
+        // Test token as a string.
+        $token = api::generatetoken($data, true);
+        $this->assertIsString($token);
+        $this->assertNotEmpty($token);
+
+        // Test token as an array.
+        $token = api::generatetoken($data);
+        $this->assertIsArray($token);
+        $this->assertArrayHasKey('token', $token);
+        $this->assertIsString($token['token']);
+        $this->assertNotEmpty($token['token']);
+
+        // Test decode token.
+        $decodeddata = $nolej->decodetoken($token['token']);
+        $this->assertNotNull($decodeddata);
+        $this->assertIsObject($decodeddata);
+        $this->assertEquals((object) $data, $decodeddata);
+
+        // Test webhook token.
+        $moduleid = 1;
+        $userid = 2;
+        $url = api::webhookurl($moduleid, $userid);
+        $this->assertIsString($url);
+
+        $parts = parse_url($url);
+        $this->assertIsArray($parts);
+        $this->assertArrayHasKey('query', $parts);
+
+        $query = $parts['query'];
+        $this->assertIsString($query);
+        $this->assertStringStartsWith('token=', $query);
+
+        $token = substr($query, strlen('token='));
+        $this->assertNotEmpty($token);
+
+        // Test decode webhook token.
+        $decodeddata = $nolej->decodetoken($token);
+        $this->assertNotNull($decodeddata);
+        $this->assertIsObject($decodeddata);
+        $this->assertEquals((object) ['moduleid' => $moduleid, 'userid' => $userid], $decodeddata);
+    }
 }

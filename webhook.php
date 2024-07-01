@@ -31,7 +31,13 @@ require_once($CFG->dirroot . '/local/nolej/classes/api.php');
 use local_nolej\api;
 
 $nolej = new api();
-$data = $nolej->decodetoken();
+$token = required_param('token', PARAM_NOTAGS);
+$data = $nolej->decodetoken($token);
+
+if ($data == null) {
+    $this->respondwithmessage(400, 'Request not valid.');
+    exit;
+}
 
 // Looking for a file.
 if (property_exists($data, 'fileid')) {

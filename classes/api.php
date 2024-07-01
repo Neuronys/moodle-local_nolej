@@ -1199,28 +1199,27 @@ class api {
     }
 
     /**
-     * Decode JWT token and return the data or exit with failure.
-     * @return object data
+     * Decode JWT token and return the data.
+     * @param string $token to be decoded.
+     * @return ?object data
      */
-    public function decodetoken() {
+    public function decodetoken($token) {
         try {
-            $token = required_param('token', PARAM_NOTAGS);
             $keys = JWK::parseKeySet(jwks_helper::get_jwks());
             $data = JWT::decode($token, $keys);
 
             if (!property_exists($data, 'sub')) {
-                $this->respondwithmessage(400, 'Request not valid.');
-                return (object) [];
+                return null;
             }
 
             return $data->sub;
 
         } catch (Exception $e) {
 
-            // Token not valid; exit.
-            $this->respondwithmessage(400, 'Request not valid.');
+            // Token not valid.
+            return null;
         }
 
-        return (object) [];
+        return null;
     }
 }
