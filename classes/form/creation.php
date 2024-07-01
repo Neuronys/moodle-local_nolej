@@ -88,6 +88,7 @@ class creation extends \moodleform {
             [
                 'maxbytes' => min($CFG->maxbytes, api::MAX_SIZE),
                 'accepted_types' => join(',', api::allowedtypes()),
+                'maxfiles' => 1,
             ]
         );
         $mform->hideIf('sourcefile', 'sourcetype', 'neq', 'file');
