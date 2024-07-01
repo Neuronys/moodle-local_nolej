@@ -67,6 +67,9 @@ where you have to put the API Key.
 
 ## After installation
 
+### How to use the plugin?
+You can read [here the documentation on how to use the plugin](docs/how-to.md).
+
 ### Where is the library page?
 Depending on the theme installed on your platform, the navigation menu to the libray of Nolej may not appear.
 
