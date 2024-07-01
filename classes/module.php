@@ -151,13 +151,15 @@ class module {
         $mform = new \local_nolej\form\creation();
 
         if ($mform->is_cancelled()) {
-            // Cancelled.
+
+            // Cancelled. Return to library.
             redirect(
                 new moodle_url('/local/nolej/manage.php'),
                 get_string('modulenotcreated', 'local_nolej'),
                 null,
                 notification::NOTIFY_INFO
             );
+
         } else if ($fromform = $mform->get_data()) {
             // Submitted and validated.
             $success = true;
@@ -170,13 +172,16 @@ class module {
             $consumedcredit = 1;
             $automaticmode = false;
 
+            // Build URL and format for the selected source type.
             switch ($sourcetype) {
                 case 'web':
+                    // Just use provided URL and web format.
                     $url = $fromform->sourceurl;
                     $format = $fromform->sourceurltype;
                     break;
 
                 case 'file':
+                    // Upload the file with a random name and detect format.
                     $uploaddir = api::uploaddir();
 
                     $filename = $mform->get_new_filename('sourcefile');
@@ -205,9 +210,10 @@ class module {
                     break;
 
                 case 'text':
+                    // Save the text as an HTML file.
                     $uploaddir = api::uploaddir();
 
-                    $filename = $USER->id . '.' . random_string(10) . '.htm';
+                    $filename = $USER->id . '.' . random_string(10) . '.html';
                     $filename = $this->uniquefilename($filename, $uploaddir . '/');
                     $dest = $uploaddir . '/' . $filename;
                     $success = file_put_contents($dest, $fromform->sourcetext);
@@ -226,18 +232,21 @@ class module {
                     break;
             }
 
+            // Check that variables are set.
             if (!empty($url) && !empty($format)) {
+
                 // Call Nolej creation API.
                 $now = time();
                 $shorturl = shorten_text($url, 200);
 
+                // Save module in the database, with no document_id.
                 $moduleid = $DB->insert_record(
                     'local_nolej_module',
                     (object) [
                         'document_id' => '',
                         'user_id' => $USER->id,
                         'tstamp' => $now,
-                        'status' => self::STATUS_CREATION_PENDING,
+                        'status' => self::STATUS_CREATION,
                         'title' => $title,
                         'consumed_credit' => $consumedcredit,
                         'doc_url' => $shorturl,
@@ -247,6 +256,7 @@ class module {
                     ]
                 );
 
+                // Get the webhook url for this module.
                 $webhookurl = api::webhookurl($moduleid, $USER->id);
 
                 $result = api::post(
@@ -265,6 +275,7 @@ class module {
                     true
                 );
 
+                // Check for creation errors.
                 if (!is_object($result) || !property_exists($result, 'id') || !is_string($result->id)) {
 
                     // An error occurred.
@@ -273,6 +284,7 @@ class module {
                         notification::NOTIFY_ERROR
                     );
 
+                    // Set module as failed.
                     $DB->update_record(
                         'local_nolej_module',
                         (object) [
@@ -281,24 +293,28 @@ class module {
                         ]
                     );
 
+                    // Remove the uploaded file.
                     if (
                         ($sourcetype == 'file' || $sourcetype == 'text') &&
                         isset($dest) &&
                         !empty($dest) &&
                         is_file($dest)
                     ) {
-                        // Remove the uploaded file.
                         unlink($dest);
                     }
+
                 } else {
+                    // Creation succeded, update module.
                     $DB->update_record(
                         'local_nolej_module',
                         (object) [
                             'id' => $moduleid,
                             'document_id' => $result->id,
+                            'status' => self::STATUS_CREATION_PENDING,
                         ]
                     );
 
+                    // Save first activity in the database.
                     $DB->insert_record(
                         'local_nolej_activity',
                         (object) [
@@ -315,6 +331,7 @@ class module {
                         false
                     );
 
+                    // Go back to library.
                     redirect(
                         new moodle_url('/local/nolej/manage.php'),
                         get_string('modulecreated', 'local_nolej'),
@@ -324,6 +341,7 @@ class module {
                 }
 
             } else {
+                // Some data is missing in the form.
                 \core\notification::add(
                     get_string('errdatamissing', 'local_nolej'),
                     notification::NOTIFY_ERROR
