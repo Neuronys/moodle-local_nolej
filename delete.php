@@ -24,8 +24,9 @@
  */
 
 require_once(__DIR__ . '/../../config.php');
-require_once($CFG->dirroot . '/local/nolej/classes/api.php');
+require_once($CFG->dirroot . '/local/nolej/classes/module.php');
 
+use local_nolej\module;
 use moodle_url;
 use core\output\notification;
 
@@ -33,23 +34,20 @@ require_login();
 $context = context_system::instance();
 require_capability('local/nolej:usenolej', $context);
 
-$documentid = optional_param('documentid', null, PARAM_ALPHANUMEXT);
+$moduleid = required_param('moduleid', PARAM_INT);
 
-if ($documentid == null) {
-    // Document not set.
-    redirect(new moodle_url('/local/nolej/edit.php'));
-}
+$success = module::delete($moduleid);
 
-$document = $DB->get_record(
-    'local_nolej_module',
-    [
-        'document_id' => $documentid,
-        'user_id' => $USER->id,
-    ]
-);
-
-if (!$document) {
-    // Document does not exist.
+if ($success) {
+    // Module deleted.
+    redirect(
+        new moodle_url('/local/nolej/manage.php'),
+        get_string('moduledeleted', 'local_nolej'),
+        null,
+        notification::NOTIFY_SUCCESS
+    );
+} else {
+    // Module not found.
     redirect(
         new moodle_url('/local/nolej/manage.php'),
         get_string('modulenotfound', 'local_nolej'),
@@ -57,20 +55,3 @@ if (!$document) {
         notification::NOTIFY_ERROR
     );
 }
-
-$DB->delete_records(
-    'local_nolej_module',
-    ['document_id' => $documentid]
-);
-
-$DB->delete_records(
-    'local_nolej_activity',
-    ['document_id' => $documentid]
-);
-
-redirect(
-    new moodle_url('/local/nolej/manage.php'),
-    get_string('moduledeleted', 'local_nolej'),
-    null,
-    notification::NOTIFY_SUCCESS
-);
