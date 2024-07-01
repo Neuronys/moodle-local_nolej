@@ -66,12 +66,13 @@ $modulearray = [];
 foreach ($modules as $module) {
 
     $moduledata = [
+        'moduleid' => $module->id,
         'title' => $module->title,
         'status' => module::getstatusname((int) $module->status),
         'documentid' => $module->document_id,
         'created' => userdate($module->tstamp),
         'lastupdate' => '-',
-        'editurl' => $module->status != module::STATUS_FAILED
+        'editurl' => $module->status != module::STATUS_FAILED && $module->status != module::STATUS_CREATION
             ? (
                 new moodle_url(
                     '/local/nolej/edit.php',
@@ -82,13 +83,6 @@ foreach ($modules as $module) {
                 )
             )->out(false)
             : false,
-        'deleteurl' => (
-            new moodle_url(
-                '/local/nolej/delete.php',
-                ['documentid' => $module->document_id]
-            )
-        )->out(false),
-        'contextid' => null,
     ];
 
     // Check last update.

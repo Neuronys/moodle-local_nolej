@@ -20,6 +20,7 @@
     Context variables required for this template:
     * modules
         * (array)
+            * moduleid
             * documentid
             * title
             * created
@@ -32,6 +33,7 @@
     {
         "modules": [
             {
+                "moduleid": 1,
                 "documentid": "abcd-efgh",
                 "title": "My Nolej Module",
                 "created": "2024-01-01 10:00",
@@ -75,7 +77,7 @@
                     <input type="button" class="btn btn-secondary mr-2 mb-2 local_nolej_edit" value="{{#str}} editmodule, local_nolej {{/str}}"
                         onclick="location.href='{{{editurl}}}'">
                     {{/editurl}}
-                    <input type="button" class="btn btn-danger mr-2 mb-2 local_nolej_delete" data-documentid="{{documentid}}" value="{{#str}} deletemodule, local_nolej {{/str}}">
+                    <input type="button" class="btn btn-danger mr-2 mb-2 local_nolej_delete" data-moduleid="{{moduleid}}" value="{{#str}} deletemodule, local_nolej {{/str}}">
                 </td>
             </tr>
         {{/modules}}

@@ -33,17 +33,17 @@ require_login();
 $context = context_system::instance();
 require_capability('local/nolej:usenolej', $context);
 
-$documentid = optional_param('documentid', null, PARAM_ALPHANUMEXT);
+$moduleid = optional_param('moduleid', null, PARAM_ALPHANUMEXT);
 
-if ($documentid == null) {
-    // Document not set.
-    redirect(new moodle_url('/local/nolej/edit.php'));
+if ($moduleid == null) {
+    // Document not set. Go to library.
+    redirect(new moodle_url('/local/nolej/manage.php'));
 }
 
 $document = $DB->get_record(
     'local_nolej_module',
     [
-        'document_id' => $documentid,
+        'id' => $moduleid,
         'user_id' => $USER->id,
     ]
 );
@@ -60,13 +60,15 @@ if (!$document) {
 
 $DB->delete_records(
     'local_nolej_module',
-    ['document_id' => $documentid]
+    ['id' => $moduleid]
 );
 
-$DB->delete_records(
-    'local_nolej_activity',
-    ['document_id' => $documentid]
-);
+if (!empty($document->document_id)) {
+    $DB->delete_records(
+        'local_nolej_activity',
+        ['document_id' => $document->document_id]
+    );
+}
 
 redirect(
     new moodle_url('/local/nolej/manage.php'),
