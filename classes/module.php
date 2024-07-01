@@ -1101,4 +1101,48 @@ class module {
 
         return $filename;
     }
+
+    /**
+     * Delete a Nolej module.
+     * @param int $moduleid
+     * @param ?int $userid (optional, defaults to logged in user id)
+     * @return bool success
+     */
+    public static function delete($moduleid, $userid = null) {
+        global $DB, $USER;
+
+        if ($userid == null) {
+            $userid = $USER->id;
+        }
+
+        $module = $DB->get_record(
+            'local_nolej_module',
+            [
+                'id' => $moduleid,
+                'user_id' => $userid,
+            ]
+        );
+
+        if (!$module) {
+            // Document does not exist.
+            return false;
+        }
+
+        $DB->delete_records(
+            'local_nolej_module',
+            ['id' => $moduleid]
+        );
+
+        if (!empty($module->document_id)) {
+            $DB->delete_records(
+                'local_nolej_activity',
+                [
+                    'document_id' => $module->document_id,
+                    'user_id' => $userid,
+                ]
+            );
+        }
+
+        return true;
+    }
 }
