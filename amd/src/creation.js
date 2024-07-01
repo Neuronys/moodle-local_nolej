@@ -14,7 +14,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Show editor iff selected type is text
+ * Show/hide elements depending on selected type.
  *
  * @module      local_nolej
  * @author      Vincenzo Padula <vincenzo@oc-group.eu>
@@ -25,8 +25,17 @@ define(['jquery'], function($) {
     // Editor initially hidden
     $('#fitem_id_sourcetext').css('display', 'none');
 
+    // URL help message initially hidden.
+    $('#fitem_id_sourceurldesc').css('display', 'none');
+
+    // Source type changed.
     $('input[name="sourcetype"]').on('change', function() {
+        // Display editor iff text type is selected.
         var istext = $(this).is(':checked') && $(this).val() == 'text';
         $('#fitem_id_sourcetext').css('display', istext ? '' : 'none');
+
+        // Display URL help message iff web type is selected.
+        var isweb = $(this).is(':checked') && $(this).val() == 'web';
+        $('#fitem_id_sourceurldesc').css('display', isweb ? '' : 'none');
     });
 });
