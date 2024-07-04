@@ -74,6 +74,7 @@ foreach ($modules as $module) {
         'lastupdate' => module::lastupdateof($module->document_id),
         'ispending' => module::isstatuspending($module->status),
         'iscompleted' => $module->status == module::STATUS_COMPLETED,
+        'isfailed' => $module->status == module::STATUS_FAILED,
         'editurl' => $module->status != module::STATUS_FAILED && $module->status != module::STATUS_CREATION
             ? (
                 new moodle_url(

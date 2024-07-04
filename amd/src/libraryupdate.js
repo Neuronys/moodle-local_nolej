@@ -40,8 +40,8 @@ define(['jquery', 'core/ajax', 'core/notification'], function($, Ajax, Notificat
                 // Update table row.
                 let rowid = '#local_nolej_module_' + data.updates[i].id;
                 $(rowid + ' .local_nolej_title').text(data.updates[i].title);
-                $(rowid + ' .local_nolej_status span').text(data.updates[i].status);
-                $(rowid + ' .local_nolej_status i').attr(
+                $(rowid + ' .local_nolej_status').text(data.updates[i].status);
+                $(rowid + ' .local_nolej_status_icon i').attr(
                     'class',
                     'fa fa-exclamation ' + (data.updates[i].success ? 'text-success' : 'text-danger')
                 );

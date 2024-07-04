@@ -28,6 +28,7 @@
             * lastupdate
             * ispending
             * iscompleted
+            * isfailed
             * editurl
             * activitiesurl
 
@@ -43,6 +44,7 @@
                 "lastupdate": "2024-01-01 12:00",
                 "ispending": false,
                 "iscompleted": false,
+                "isfailed": false,
                 "editurl": "https://mymoodlesite.com/local/nolej/edit.php?documentid=abcd-efgh",
                 "activitiesurl": null
             }
@@ -60,7 +62,7 @@
         <tr>
             <th scope="col">{{#str}} title, local_nolej {{/str}}</th>
             <th scope="col">{{#str}} created, local_nolej {{/str}}</th>
-            <th scope="col">{{#str}} status, local_nolej {{/str}}</th>
+            <th scope="col" colspan="2">{{#str}} status, local_nolej {{/str}}</th>
             <th scope="col">{{#str}} lastupdate, local_nolej {{/str}}</th>
             <th scope="col">{{#str}} action, local_nolej {{/str}}</th>
         </tr>
@@ -70,10 +72,12 @@
             <tr id="local_nolej_module_{{moduleid}}">
                 <td class="local_nolej_title">{{title}}</td>
                 <td class="local_nolej_created">{{created}}</td>
-                <td class="local_nolej_status d-flex align-items-center">
-                    <span class="w-100">{{status}}</span>
-                    <i class="{{#ispending}}spinner-border spinner-border-sm float-right text-secondary{{/ispending}}{{#iscompleted}}fa fa-check text-primary{{/iscompleted}}" aria-hidden="true"></i>
+                <td class="local_nolej_status_icon pr-1">
+                    {{#ispending}}<i class="spinner-border spinner-border-sm float-right text-secondary" aria-hidden="true"></i>{{/ispending}}
+                    {{#iscompleted}}<i class="fa fa-check text-primary" aria-hidden="true"></i>{{/iscompleted}}
+                    {{#isfailed}}<i class="fa fa-times text-danger" aria-hidden="true"></i>{{/isfailed}}
                 </td>
+                <td class="local_nolej_status pl-1">{{status}}</td>
                 <td class="local_nolej_lastupdate">{{lastupdate}}</td>
                 <td>
                     {{#activitiesurl}}
