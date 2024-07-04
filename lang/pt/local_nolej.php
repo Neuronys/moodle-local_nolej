@@ -62,6 +62,8 @@ $string['action'] = 'Ação';
 $string['documentinfo'] = 'Informações do módulo';
 $string['genericerror'] = 'Ocorreu um erro: <pre>{$a->error}</pre>';
 $string['moduleview'] = 'Visualizar módulo';
+$string['pollinginterval'] = 'Intervalo de sondagem';
+$string['pollingintervalinfo'] = 'Duração do intervalo em segundos, após o qual é verificado se há atualizações nos módulos. Mínimo de 1 segundo.';
 
 // Status.
 $string['statuscreation'] = 'Novo módulo';

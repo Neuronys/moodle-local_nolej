@@ -97,7 +97,10 @@ $templatecontext = (object) [
     'createurl' => (new moodle_url('/local/nolej/edit.php'))->out(false),
 ];
 
-$PAGE->requires->js_call_amd('local_nolej/libraryupdate');
+// Initialize polling.
+$interval = max(1, (int) get_config('local_nolej', 'pollinginterval')) * 1000;
+$PAGE->requires->js_call_amd('local_nolej/libraryupdate', 'init', [$interval]);
+
 echo $OUTPUT->header();
 echo $OUTPUT->render_from_template('local_nolej/manage', $templatecontext);
 echo $OUTPUT->footer();
