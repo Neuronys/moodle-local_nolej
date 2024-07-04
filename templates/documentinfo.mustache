@@ -54,7 +54,7 @@
                     <ul class='nav navbar-nav w-100'>
                         <li class='mr-2 mb-2'>
                             <a class='nav-link btn btn-default rounded px-2' role="button" href='{{manageurl}}'>
-                                <i class='fa fa-chevron-left mr-2'></i>
+                                <i class='fa fa-chevron-left mr-2' aria-hidden='true'></i>
                                 {{#str}} back, moodle {{/str}}
                             </a>
                         </li>
@@ -63,7 +63,7 @@
                             <a class='nav-link btn btn-default rounded btn-outline-secondary px-2 {{#concepts}}active{{/concepts}}'
                                 aria-pressed="{{#concepts}}true{{/concepts}}{{^concepts}}false{{/concepts}}"
                                 role="button" href='{{editurl}}&step=concepts'>
-                                <i class='fa fa-lightbulb-o mr-2'></i>
+                                <i class='fa fa-lightbulb-o mr-2' aria-hidden='true'></i>
                                 {{#str}} concepts, local_nolej {{/str}}
                             </a>
                         </li>
@@ -71,7 +71,7 @@
                             <a class='nav-link btn btn-default rounded btn-outline-secondary px-2 {{#questions}}active{{/questions}}'
                                 aria-pressed="{{#questions}}true{{/questions}}{{^questions}}false{{/questions}}"
                                 role="button" href='{{editurl}}&step=questions'>
-                                <i class='fa fa-question mr-2'></i>
+                                <i class='fa fa-question mr-2' aria-hidden='true'></i>
                                 {{#str}} questions, local_nolej {{/str}}
                             </a>
                         </li>
@@ -79,7 +79,7 @@
                             <a class='nav-link btn btn-default rounded btn-outline-secondary px-2 {{#summary}}active{{/summary}}'
                                 aria-pressed="{{#summary}}true{{/summary}}{{^summary}}false{{/summary}}"
                                 role="button" href='{{editurl}}&step=summary'>
-                                <i class='fa fa-list mr-2'></i>
+                                <i class='fa fa-list mr-2' aria-hidden='true'></i>
                                 {{#str}} summary, local_nolej {{/str}}
                             </a>
                         </li>
@@ -87,16 +87,16 @@
                             <a class='nav-link btn btn-default rounded btn-outline-secondary px-2 {{#settings}}active{{/settings}}'
                                 aria-pressed="{{#settings}}true{{/settings}}{{^settings}}false{{/settings}}"
                                 role="button" href='{{editurl}}&step=activities'>
-                                <i class='fa fa-cog mr-2'></i>
+                                <i class='fa fa-cog mr-2' aria-hidden='true'></i>
                                 {{#str}} settings, local_nolej {{/str}}
                             </a>
                         </li>
                         {{/review}}
                         <li class='mr-2 mb-2'>
                             <a class='nav-link btn btn-default' id='toggleinfo' href='#' data-toggle='collapse' data-target='#collapseOne' aria-expanded='true' aria-controls='collapseOne'>
-                                <i class='fa fa-info mr-2'></i>
+                                <i class='fa fa-info mr-2' aria-hidden='true'></i>
                                 {{#str}} documentinfo, local_nolej {{/str}}
-                                <i id='chevronIcon' class='fa fa-chevron-right ml-2'></i>
+                                <i id='chevronIcon' class='fa fa-chevron-right ml-2' aria-hidden='true'></i>
                             </a>
                         </li>
                     </ul>

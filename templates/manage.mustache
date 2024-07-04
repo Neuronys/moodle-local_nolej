@@ -26,6 +26,8 @@
             * created
             * status
             * lastupdate
+            * ispending
+            * iscompleted
             * editurl
             * activitiesurl
 
@@ -39,6 +41,8 @@
                 "created": "2024-01-01 10:00",
                 "status": "Analysis ready",
                 "lastupdate": "2024-01-01 12:00",
+                "ispending": false,
+                "iscompleted": false,
                 "editurl": "https://mymoodlesite.com/local/nolej/edit.php?documentid=abcd-efgh",
                 "activitiesurl": null
             }
@@ -63,11 +67,14 @@
     </thead>
     <tbody>
         {{#modules}}
-            <tr>
-                <td>{{title}}</td>
-                <td>{{created}}</td>
-                <td>{{status}}</td>
-                <td>{{lastupdate}}</td>
+            <tr id="local_nolej_module_{{moduleid}}">
+                <td class="local_nolej_title">{{title}}</td>
+                <td class="local_nolej_created">{{created}}</td>
+                <td class="local_nolej_status d-flex align-items-center">
+                    <span class="w-100">{{status}}</span>
+                    <i class="{{#ispending}}spinner-border spinner-border-sm float-right text-secondary{{/ispending}}{{#iscompleted}}fa fa-check text-primary{{/iscompleted}}" aria-hidden="true"></i>
+                </td>
+                <td class="local_nolej_lastupdate">{{lastupdate}}</td>
                 <td>
                     {{#activitiesurl}}
                     <input type="button" class="btn btn-primary mr-2 mb-2 local_nolej_activities" value="{{#str}} activities, local_nolej {{/str}}"

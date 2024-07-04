@@ -25,4 +25,14 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$functions = [];
+$functions = [
+    'local_nolej_get_library_updates' => [
+        'classname' => 'local_nolej\external\get_library_updates',
+        'description' => 'Get updates for modules',
+        'capabilities' => 'local/nolej:usenolej',
+        'type' => 'read',
+        'capabilities' => '',
+        'ajax' => true,
+        'loginrequired' => true,
+    ],
+];

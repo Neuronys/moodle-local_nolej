@@ -326,7 +326,7 @@ class module {
                             'code' => 200,
                             'error_message' => '',
                             'consumed_credit' => $consumedcredit,
-                            'notified' => false,
+                            'notified' => true,
                         ],
                         false
                     );
@@ -1100,6 +1100,91 @@ class module {
         }
 
         return $filename;
+    }
+
+    /**
+     * Return true if the given status is considered pending (i.e. the user is waiting for a response).
+     * @param int $status
+     * @return bool
+     */
+    public static function isstatuspending($status) {
+        return in_array(
+            $status,
+            [
+                self::STATUS_CREATION_PENDING,
+                self::STATUS_ANALYSIS_PENDING,
+                self::STATUS_REVISION_PENDING,
+                self::STATUS_ACTIVITIES_PENDING,
+            ]
+        );
+    }
+
+    /**
+     * Get the last activity date of the given module.
+     * @param int $documentid
+     * @return string
+     */
+    public static function lastupdateof($documentid) {
+        global $DB, $USER;
+
+        // Check last update.
+        $activities = $DB->get_records(
+            'local_nolej_activity',
+            [
+                'user_id' => $USER->id,
+                'document_id' => $documentid,
+            ],
+            'tstamp DESC',
+            '*',
+            0,
+            1
+        );
+
+        $lastactivity = $activities ? reset($activities) : false;
+        return $lastactivity ? userdate($lastactivity->tstamp) : '-';
+    }
+
+    /**
+     * Get the content bank url for the given module.
+     * @param int $documentid
+     * @return string|false
+     */
+    public static function getcontentbankurl($documentid) {
+        global $DB;
+
+        // Check last generated activity content bank folder.
+        $h5pcontents = $DB->get_records(
+            'local_nolej_h5p',
+            ['document_id' => $documentid],
+            'tstamp DESC',
+            'content_id',
+            0,
+            1
+        );
+
+        $h5pcontent = $h5pcontents ? reset($h5pcontents) : false;
+        if (!$h5pcontent) {
+            return false;
+        }
+
+        $context = $DB->get_records(
+            'contentbank_content',
+            ['id' => $h5pcontent->content_id],
+            '',
+            'contextid',
+            0,
+            1
+        );
+
+        $context = $context ? reset($context) : false;
+        if ($context && !empty($context->contextid)) {
+            return (new moodle_url(
+                '/contentbank/index.php',
+                ['contextid' => $context->contextid]
+            ))->out(false);
+        }
+
+        return false;
     }
 
     /**
