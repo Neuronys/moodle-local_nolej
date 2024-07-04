@@ -45,7 +45,7 @@ class get_library_updates_test extends \externallib_advanced_testcase {
         $this->resetAfterTest(true);
 
         $user = $this->getDataGenerator()->create_user();
-        $this::setUser($user);
+        $this->setUser($user);
 
         // Set the required capabilities by the external function.
         $context = \context_system::instance();
@@ -134,8 +134,10 @@ class get_library_updates_test extends \externallib_advanced_testcase {
      * @covers ::execute
      */
     public function test_capabilities_missing(): void {
+        $this->resetAfterTest(true);
+
         $user = $this->getDataGenerator()->create_user();
-        $this::setUser($user);
+        $this->setUser($user);
 
         // Call without required capability.
         $this->expectException(\required_capability_exception::class);
