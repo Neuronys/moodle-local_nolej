@@ -40,26 +40,93 @@ class get_library_updates_test extends \externallib_advanced_testcase {
      * @covers ::execute
      */
     public function test_execute(): void {
-        global $USER;
+        global $DB;
 
         $this->resetAfterTest(true);
+
+        $user = $this->getDataGenerator()->create_user();
+        $this::setUser($user);
 
         // Set the required capabilities by the external function.
         $context = \context_system::instance();
         $roleid = $this->assignUserCapability('local/nolej:usenolej', $context->id);
 
+        // Example document ID.
+        $documentid = '00000000-abcd-1234-5678-000000000000';
+
+        $DB->insert_record(
+            'local_nolej_module',
+            (object) [
+                'document_id' => $documentid,
+                'user_id' => $user->id,
+                'tstamp' => time(),
+                'status' => module::STATUS_ANALYSIS_PENDING,
+                'title' => 'Example module',
+                'consumed_credit' => 0,
+                'doc_url' => 'http://example.com',
+                'media_type' => 'web',
+                'automatic_mode' => false,
+                'language' => 'en',
+            ]
+        );
+        $DB->insert_record(
+            'local_nolej_activity',
+            (object) [
+                'document_id' => $documentid,
+                'user_id' => $user->id,
+                'action' => 'transcription',
+                'tstamp' => time(),
+                'status' => 'ok',
+                'code' => 200,
+                'error_message' => '',
+                'consumed_credit' => 0,
+                'notified' => true,
+            ]
+        );
+        $DB->insert_record(
+            'local_nolej_activity',
+            (object) [
+                'document_id' => $documentid,
+                'user_id' => $user->id,
+                'action' => 'transcription_ok',
+                'tstamp' => time(),
+                'status' => 'ok',
+                'code' => 200,
+                'error_message' => '',
+                'consumed_credit' => 0,
+                'notified' => false,
+            ]
+        );
+
         // Call the external service function.
         $returnvalue = get_library_updates::execute([]);
 
-        // We need to execute the return values cleaning process to simulate
-        // the web service server.
+        // Clean return values to simulate the web service server.
         $returnvalue = \external_api::clean_returnvalue(
             get_library_updates::execute_returns(),
             $returnvalue
         );
 
         // Assert that there was a response.
-        $this->assertNotNull($returnvalue);
+        $this->assertIsArray($returnvalue);
+        $this->assertArrayHasKey('updates', $returnvalue);
+        $this->assertIsArray($returnvalue['updates']);
+        $this->assertCount(1, $returnvalue['updates']);
+        $this->assertEquals($documentid, $returnvalue['updates'][0]['documentid']);
+
+        // Call again the external service function.
+        $returnvalue = get_library_updates::execute([]);
+
+        // Clean return values to simulate the web service server.
+        $returnvalue = \external_api::clean_returnvalue(
+            get_library_updates::execute_returns(),
+            $returnvalue
+        );
+
+        $this->assertIsArray($returnvalue);
+        $this->assertArrayHasKey('updates', $returnvalue);
+        $this->assertIsArray($returnvalue['updates']);
+        $this->assertEmpty($returnvalue['updates']);
     }
 
     /**
@@ -67,6 +134,9 @@ class get_library_updates_test extends \externallib_advanced_testcase {
      * @covers ::execute
      */
     public function test_capabilities_missing(): void {
+        $user = $this->getDataGenerator()->create_user();
+        $this::setUser($user);
+
         // Call without required capability.
         $this->expectException(\required_capability_exception::class);
         get_library_updates::execute([]);
