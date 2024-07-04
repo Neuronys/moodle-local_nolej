@@ -14,15 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * Get library updates service.
- *
- * @package     local_nolej
- * @author      Vincenzo Padula <vincenzo@oc-group.eu>
- * @copyright   2024 OC Open Consulting SB Srl
- * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
 namespace local_nolej\external;
 
 defined('MOODLE_INTERNAL') || die();
@@ -36,6 +27,14 @@ use local_nolej\module;
 
 require_once("$CFG->libdir/externallib.php"); // Required for Moodle 4.1.
 
+/**
+ * Get library updates service.
+ *
+ * @package     local_nolej
+ * @author      Vincenzo Padula <vincenzo@oc-group.eu>
+ * @copyright   2024 OC Open Consulting SB Srl
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class get_library_updates extends external_api {
 
     /**
@@ -127,7 +126,7 @@ class get_library_updates extends external_api {
                     'message' => new external_value(PARAM_TEXT, 'Message to be notified to the user'),
                     'success' => new external_value(PARAM_BOOL, 'The notification is of type success or a failure'),
                 ])
-            )
+            ),
         ]);
     }
 }

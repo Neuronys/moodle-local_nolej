@@ -44,7 +44,7 @@ class get_library_updates_test extends \externallib_advanced_testcase {
 
         $this->resetAfterTest(true);
 
-        // Set the required capabilities by the external function
+        // Set the required capabilities by the external function.
         $context = \context_system::instance();
         $roleid = $this->assignUserCapability('local/nolej:usenolej', $context->id);
 
@@ -67,7 +67,7 @@ class get_library_updates_test extends \externallib_advanced_testcase {
      * @covers ::execute
      */
     public function test_capabilities_missing(): void {
-        // Call without required capability
+        // Call without required capability.
         $this->expectException(\required_capability_exception::class);
         get_library_updates::execute([]);
     }

@@ -31,7 +31,6 @@ $functions = [
         'description' => 'Get updates for modules',
         'capabilities' => 'local/nolej:usenolej',
         'type' => 'read',
-        'capabilities' => '',
         'ajax' => true,
         'loginrequired' => true,
     ],
