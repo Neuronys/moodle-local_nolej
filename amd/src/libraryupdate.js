@@ -52,5 +52,5 @@ define(['jquery', 'core/ajax', 'core/notification'], function($, Ajax, Notificat
                 }).fail(Notification.exception);
             }, interval);
         }
-    }
+    };
 });
