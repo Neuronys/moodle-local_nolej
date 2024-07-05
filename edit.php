@@ -99,19 +99,16 @@ if (
     $PAGE->set_heading(module::getstatusname((int) $document->status));
     $PAGE->set_title(empty($document->title) ? module::getstatusname(0) : $document->title);
 
-    switch ($document->status) {
-        case module::STATUS_CREATION_PENDING:
-        case module::STATUS_ANALYSIS_PENDING:
-        case module::STATUS_ACTIVITIES_PENDING:
-            // Document is in pending state; print info and exit.
-            \core\notification::add(
-                module::getstatusname((int) $document->status),
-                notification::NOTIFY_INFO
-            );
-            echo $OUTPUT->header();
-            $module->printinfo();
-            echo $OUTPUT->footer();
-            return;
+    if (module::isstatuspending($document->status)) {
+        // Document is in pending state; print info and exit.
+        \core\notification::add(
+            module::getstatusname((int) $document->status),
+            notification::NOTIFY_INFO
+        );
+        echo $OUTPUT->header();
+        $module->printinfo();
+        echo $OUTPUT->footer();
+        return;
     }
 
     switch ($step) {

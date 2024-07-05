@@ -26,6 +26,9 @@
             * created
             * status
             * lastupdate
+            * ispending
+            * iscompleted
+            * isfailed
             * editurl
             * activitiesurl
 
@@ -39,6 +42,9 @@
                 "created": "2024-01-01 10:00",
                 "status": "Analysis ready",
                 "lastupdate": "2024-01-01 12:00",
+                "ispending": false,
+                "iscompleted": false,
+                "isfailed": false,
                 "editurl": "https://mymoodlesite.com/local/nolej/edit.php?documentid=abcd-efgh",
                 "activitiesurl": null
             }
@@ -56,18 +62,23 @@
         <tr>
             <th scope="col">{{#str}} title, local_nolej {{/str}}</th>
             <th scope="col">{{#str}} created, local_nolej {{/str}}</th>
-            <th scope="col">{{#str}} status, local_nolej {{/str}}</th>
+            <th scope="col" colspan="2">{{#str}} status, local_nolej {{/str}}</th>
             <th scope="col">{{#str}} lastupdate, local_nolej {{/str}}</th>
             <th scope="col">{{#str}} action, local_nolej {{/str}}</th>
         </tr>
     </thead>
     <tbody>
         {{#modules}}
-            <tr>
-                <td>{{title}}</td>
-                <td>{{created}}</td>
-                <td>{{status}}</td>
-                <td>{{lastupdate}}</td>
+            <tr id="local_nolej_module_{{moduleid}}">
+                <td class="local_nolej_title">{{title}}</td>
+                <td class="local_nolej_created">{{created}}</td>
+                <td class="local_nolej_status_icon pr-1">
+                    {{#ispending}}<i class="spinner-border spinner-border-sm float-right text-secondary" aria-hidden="true"></i>{{/ispending}}
+                    {{#iscompleted}}<i class="fa fa-check text-primary" aria-hidden="true"></i>{{/iscompleted}}
+                    {{#isfailed}}<i class="fa fa-times text-danger" aria-hidden="true"></i>{{/isfailed}}
+                </td>
+                <td class="local_nolej_status pl-1">{{status}}</td>
+                <td class="local_nolej_lastupdate">{{lastupdate}}</td>
                 <td>
                     {{#activitiesurl}}
                     <input type="button" class="btn btn-primary mr-2 mb-2 local_nolej_activities" value="{{#str}} activities, local_nolej {{/str}}"

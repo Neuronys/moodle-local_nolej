@@ -71,7 +71,10 @@ foreach ($modules as $module) {
         'status' => module::getstatusname((int) $module->status),
         'documentid' => $module->document_id,
         'created' => userdate($module->tstamp),
-        'lastupdate' => '-',
+        'lastupdate' => module::lastupdateof($module->document_id),
+        'ispending' => module::isstatuspending($module->status),
+        'iscompleted' => $module->status == module::STATUS_COMPLETED,
+        'isfailed' => $module->status == module::STATUS_FAILED,
         'editurl' => $module->status != module::STATUS_FAILED && $module->status != module::STATUS_CREATION
             ? (
                 new moodle_url(
@@ -83,56 +86,9 @@ foreach ($modules as $module) {
                 )
             )->out(false)
             : false,
+        'activitiesurl' => $module->status == module::STATUS_COMPLETED ? module::getcontentbankurl($module->document_id) : false,
     ];
 
-    // Check last update.
-    $activities = $DB->get_records(
-        'local_nolej_activity',
-        [
-            'user_id' => $USER->id,
-            'document_id' => $module->document_id,
-        ],
-        'tstamp DESC',
-        '*',
-        0,
-        1
-    );
-    $lastactivity = $activities ? reset($activities) : false;
-    if ($lastactivity) {
-        $moduledata['lastupdate'] = userdate($lastactivity->tstamp);
-    }
-
-    // Check last generated activity content bank folder.
-    if ($module->status == module::STATUS_COMPLETED) {
-        $h5pcontents = $DB->get_records(
-            'local_nolej_h5p',
-            ['document_id' => $module->document_id],
-            'tstamp DESC',
-            'content_id',
-            0,
-            1
-        );
-        $h5pcontent = $h5pcontents ? reset($h5pcontents) : false;
-        if ($h5pcontent) {
-            $context = $DB->get_records(
-                'contentbank_content',
-                ['id' => $h5pcontent->content_id],
-                '',
-                'contextid',
-                0,
-                1
-            );
-            $context = $context ? reset($context) : false;
-            if ($context && !empty($context->contextid)) {
-                $moduledata['activitiesurl'] = (
-                    new moodle_url(
-                        '/contentbank/index.php',
-                        ['contextid' => $context->contextid]
-                    )
-                )->out(false);
-            }
-        }
-    }
     $modulearray[] = $moduledata;
 }
 
@@ -140,6 +96,10 @@ $templatecontext = (object) [
     'modules' => $modulearray,
     'createurl' => (new moodle_url('/local/nolej/edit.php'))->out(false),
 ];
+
+// Initialize polling.
+$interval = max(1, (int) get_config('local_nolej', 'pollinginterval')) * 1000;
+$PAGE->requires->js_call_amd('local_nolej/libraryupdate', 'init', [$interval]);
 
 echo $OUTPUT->header();
 echo $OUTPUT->render_from_template('local_nolej/manage', $templatecontext);

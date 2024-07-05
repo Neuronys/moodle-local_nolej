@@ -29,6 +29,7 @@ if ($hassiteconfig) { // Needs this condition or there is error on login page.
     $settings = new admin_settingpage('local_nolej', get_string('pluginname', 'local_nolej'));
     $ADMIN->add('localplugins', $settings);
 
+    // API Key info.
     $settings->add(
         new admin_setting_heading(
             'local_nolej_api_key_info',
@@ -37,12 +38,24 @@ if ($hassiteconfig) { // Needs this condition or there is error on login page.
         )
     );
 
+    // API Key.
     $settings->add(
         new admin_setting_configpasswordunmask(
             'local_nolej/api_key',
             get_string('apikey', 'local_nolej'),
             get_string('apikeyinfo', 'local_nolej'),
             ''
+        )
+    );
+
+    // Library polling interval.
+    $settings->add(
+        new admin_setting_configtext(
+            'local_nolej/pollinginterval',
+            get_string('pollinginterval', 'local_nolej'),
+            get_string('pollingintervalinfo', 'local_nolej'),
+            '30',
+            '/^[1-9][0-9]*$/' // Positive integer, 1 minimum (i.e. 1 second).
         )
     );
 }

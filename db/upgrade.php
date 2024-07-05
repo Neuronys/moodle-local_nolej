@@ -124,5 +124,14 @@ function xmldb_local_nolej_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2024062801, 'local', 'nolej');
     }
 
+    // Set all activities as read to avoid spam on first access.
+    if ($oldversion < 2024070401) {
+
+        $DB->set_field('local_nolej_activity', 'notified', 1);
+
+        // Update the version number to the current version.
+        upgrade_plugin_savepoint(true, 2024070401, 'local', 'nolej');
+    }
+
     return true;
 }

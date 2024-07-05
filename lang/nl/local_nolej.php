@@ -62,6 +62,8 @@ $string['action'] = 'Actie';
 $string['documentinfo'] = 'Module-informatie';
 $string['genericerror'] = 'Er is een fout opgetreden: <pre>{$a->error}</pre>';
 $string['moduleview'] = 'Bekijk module';
+$string['pollinginterval'] = 'Polling-interval';
+$string['pollingintervalinfo'] = 'Duur van het interval in seconden, waarna wordt gecontroleerd of er updates zijn op de modules. Minimaal 1 seconde.';
 
 // Status.
 $string['statuscreation'] = 'Nieuwe module';
