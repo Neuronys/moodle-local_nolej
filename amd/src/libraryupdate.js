@@ -48,7 +48,7 @@ define(['jquery', 'core/ajax', 'core/notification'], function($, Ajax, Notificat
                 $(rowid + ' .local_nolej_lastupdate').text(data.updates[i].lastupdate);
             }
         }).fail(Notification.exception);
-    }
+    };
 
     return {
         init: function(interval) {
