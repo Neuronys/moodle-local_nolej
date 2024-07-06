@@ -22,35 +22,38 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 define(['jquery', 'core/ajax', 'core/notification'], function($, Ajax, Notification) {
+    var request = {
+        methodname: 'local_nolej_get_library_updates',
+        args: {}
+    };
+
+    var requestupdates = function() {
+        Ajax.call([request])[0].done(function(data) {
+            for (let i = 0, len = data.updates.length; i < len; i++) {
+
+                // Show notification.
+                Notification.addNotification({
+                    message: data.updates[i].message,
+                    type: data.updates[i].success ? 'success' : 'error'
+                });
+
+                // Update table row.
+                let rowid = '#local_nolej_module_' + data.updates[i].id;
+                $(rowid + ' .local_nolej_title').text(data.updates[i].title);
+                $(rowid + ' .local_nolej_status').text(data.updates[i].status);
+                $(rowid + ' .local_nolej_status_icon i').attr(
+                    'class',
+                    'fa fa-exclamation ' + (data.updates[i].success ? 'text-success' : 'text-danger')
+                );
+                $(rowid + ' .local_nolej_lastupdate').text(data.updates[i].lastupdate);
+            }
+        }).fail(Notification.exception);
+    };
+
     return {
         init: function(interval) {
-            var request = {
-                methodname: 'local_nolej_get_library_updates',
-                args: {}
-            };
-
-            setInterval(function() {
-                Ajax.call([request])[0].done(function(data) {
-                    for (let i = 0, len = data.updates.length; i < len; i++) {
-
-                        // Show notification.
-                        Notification.addNotification({
-                            message: data.updates[i].message,
-                            type: data.updates[i].success ? 'success' : 'error'
-                        });
-
-                        // Update table row.
-                        let rowid = '#local_nolej_module_' + data.updates[i].id;
-                        $(rowid + ' .local_nolej_title').text(data.updates[i].title);
-                        $(rowid + ' .local_nolej_status').text(data.updates[i].status);
-                        $(rowid + ' .local_nolej_status_icon i').attr(
-                            'class',
-                            'fa fa-exclamation ' + (data.updates[i].success ? 'text-success' : 'text-danger')
-                        );
-                        $(rowid + ' .local_nolej_lastupdate').text(data.updates[i].lastupdate);
-                    }
-                }).fail(Notification.exception);
-            }, interval);
+            requestupdates();
+            setInterval(requestupdates, interval);
         }
     };
 });
