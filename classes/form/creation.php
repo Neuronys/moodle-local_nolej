@@ -46,6 +46,11 @@ class creation extends \moodleform {
 
         $mform = $this->_form;
 
+        // Context ID.
+        $contextid = $this->_customdata['contextid'];
+        $mform->addElement('hidden', 'contextid')->setValue($contextid);
+        $mform->setType('contextid', PARAM_INT);
+
         // Document title.
         $mform->addElement('text', 'title', get_string('title', 'local_nolej'), 'style="width:100%;"');
         $mform->setType('title', PARAM_NOTAGS);

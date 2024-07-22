@@ -27,76 +27,71 @@ require_once(__DIR__ . '/../../config.php');
 require_once($CFG->dirroot . '/local/nolej/classes/api.php');
 require_once($CFG->dirroot . '/local/nolej/classes/module.php');
 
-use moodle_url;
 use core\output\notification;
 use local_nolej\api;
 use local_nolej\module;
 
-require_login();
-$context = context_system::instance();
+$contextid = optional_param('contextid', SYSCONTEXTID /* Fallback to context system. */, PARAM_INT);
+
+// Get the context instance and course data from the context ID.
+[ $context, $course ] = \local_nolej\utils::get_info_from_context($contextid);
+
+// Perform security checks.
+require_login($course);
 require_capability('local/nolej:usenolej', $context);
 
+// Is the API key missing?
 if (!api::haskey()) {
     // API key missing. Redirect to the manage page.
     redirect(
-        new moodle_url('/local/nolej/manage.php'),
+        new moodle_url('/local/nolej/manage.php', [ 'contextid' => $context->id ]),
         get_string('apikeymissing', 'local_nolej'),
         null,
         notification::NOTIFY_ERROR
     );
 }
 
+// Params.
 $documentid = optional_param('documentid', null, PARAM_ALPHANUMEXT);
 $step = empty($documentid) ? '' : optional_param('step', '', PARAM_ALPHA);
 
+// Page configuration.
 $PAGE->set_url(
     new moodle_url(
         '/local/nolej/edit.php',
         [
+            'contextid' => $context->id,
             'documentid' => $documentid,
             'step' => $step,
         ]
     )
 );
-$PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
+\local_nolej\utils::page_setup($context, $course);
+
+// CSS dependency.
 $PAGE->requires->css('/local/nolej/styles.css');
 
-
-if (
-    empty($documentid) ||
-    api::lookupdocumentstatus($documentid, $USER->id) <= module::STATUS_CREATION
-) {
+// Code itself.
+if (empty($documentid) || api::lookupdocumentstatus($documentid, $USER->id) <= module::STATUS_CREATION) {
     // Create a new document.
-    $PAGE->set_heading(module::getstatusname(0));
-    $PAGE->set_title(module::getstatusname(0));
-    $module = new module();
+    $title = module::getstatusname(0);
+    $PAGE->set_title($title);
+
+    $module = new module($context->id);
     $module->creation();
 
 } else {
 
     // Retrieve document data.
-    $document = $DB->get_record(
-        'local_nolej_module',
-        [
-            'document_id' => $documentid,
-            'user_id' => $USER->id,
-        ]
-    );
-
+    $document = $DB->get_record('local_nolej_module', [ 'document_id' => $documentid, 'user_id' => $USER->id ]);
     if (!$document) {
         // Document does not exist. Redirect to creation form.
-        redirect(
-            new moodle_url('/local/nolej/edit.php'),
-            get_string('modulenotfound', 'local_nolej'),
-            null,
-            notification::NOTIFY_ERROR
-        );
+        redirect($PAGE->url, get_string('modulenotfound', 'local_nolej'), null, notification::NOTIFY_ERROR);
     }
 
-    $module = new module($document, $step);
+    $module = new module($context->id, $document, $step);
 
-    $PAGE->set_heading(module::getstatusname((int) $document->status));
     $PAGE->set_title(empty($document->title) ? module::getstatusname(0) : $document->title);
 
     if (module::isstatuspending($document->status)) {

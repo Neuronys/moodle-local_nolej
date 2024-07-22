@@ -45,15 +45,18 @@
                 "ispending": false,
                 "iscompleted": false,
                 "isfailed": false,
-                "editurl": "https://mymoodlesite.com/local/nolej/edit.php?documentid=abcd-efgh",
+                "editurl": "https://mymoodlesite.com/local/nolej/edit.php?contextid=1&documentid=abcd-efgh",
                 "activitiesurl": null
             }
         ]
     }
 }}
 
-<div class="text-right mb-3 mt-2">
-    <input type="button" class="btn btn-primary" value="{{#str}} createmodule, local_nolej {{/str}}" onclick="location.href='{{{createurl}}}'">
+<div class="d-flex justify-content-between align-items-center">
+    <h2>{{#str}} modules, local_nolej {{/str}}</h2>
+    <div class="text-right mb-3 mt-2">
+        <input type="button" class="btn btn-primary" value="{{#str}} createmodule, local_nolej {{/str}}" onclick="location.href='{{{createurl}}}'">
+    </div>
 </div>
 
 <div class="table-responsive-xl">

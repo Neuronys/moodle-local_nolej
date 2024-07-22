@@ -27,63 +27,71 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Add a link to the library in the global navigation.
- * @param global_navigation $navigation
- * @return void
+ * Add a link to the library in the navigation.
+ *
+ * @param navigation_node $navigation The navigation node to extend
+ * @param ?context $context The context instance
  */
-function local_nolej_extend_navigation(global_navigation $navigation) {
-    if (!has_capability('local/nolej:usenolej', context_system::instance())) {
+function local_nolej_add_to_navigation($navigation, $context = null) {
+    global $PAGE;
+
+    if ($context === null) {
+        $context = $PAGE->context;
+    }
+
+    // The context must exist at this point, otherwise it's weird.
+    if (!has_capability('local/nolej:usenolej', $context)) {
         return;
     }
 
-    $node = $navigation->add(
+    // Adds an entry to the navigation.
+    $navigation->add(
         get_string('library', 'local_nolej'),
-        new moodle_url('/local/nolej/manage.php'),
+        new moodle_url('/local/nolej/manage.php', [ 'contextid' => $context->id ]),
         global_navigation::TYPE_SETTING,
         null,
-        'nolej_library',
+        'nolejlibrary',
         new pix_icon('nolej', '', 'local_nolej')
     );
 }
 
 /**
+ * Add a link to the library in the global navigation.
+ *
+ * @param global_navigation $navigation
+ */
+function local_nolej_extend_navigation(global_navigation $navigation) {
+    local_nolej_add_to_navigation($navigation);
+}
+
+/**
+ * Add a link to the library in the course category navigation.
+ *
+ * @param navigation_node $navigation The navigation node to extend
+ * @param context $context The context of the course category
+ */
+function local_nolej_extend_navigation_category_settings($navigation, $context) {
+    local_nolej_add_to_navigation($navigation, $context);
+}
+
+/**
  * Add a link to the library in the course navigation.
+ *
  * @param navigation_node $navigation The navigation node to extend
  * @param stdClass $course The course to object for the tool
  * @param context $context The context of the course
  */
 function local_nolej_extend_navigation_course($navigation, $course, $context) {
-    if (!has_capability('local/nolej:usenolej', context_system::instance())) {
-        return;
-    }
-
-    $node = $navigation->add(
-        get_string('library', 'local_nolej'),
-        new moodle_url('/local/nolej/manage.php'),
-        global_navigation::TYPE_SETTING,
-        null,
-        'nolej_library',
-        new pix_icon('nolej', '', 'local_nolej')
-    );
+    local_nolej_add_to_navigation($navigation, $context);
 }
 
 /**
  * Add a link to the library in the frontpage navigation.
+ *
  * @param navigation_node $navigation The navigation node to extend
  * @param stdClass $course The course to object for the tool
  * @param context $context The context of the course
  */
 function local_nolej_extend_navigation_frontpage($navigation, $course, $context) {
-    if (!has_capability('local/nolej:usenolej', context_system::instance())) {
-        return;
-    }
-
-    $node = $navigation->add(
-        get_string('library', 'local_nolej'),
-        new moodle_url('/local/nolej/manage.php'),
-        global_navigation::TYPE_SETTING,
-        null,
-        'nolej_library',
-        new pix_icon('nolej', '', 'local_nolej')
-    );
+    local_nolej_add_to_navigation($navigation, $context);
 }

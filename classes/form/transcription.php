@@ -48,6 +48,11 @@ class transcription extends \moodleform {
 
         $mform = $this->_form;
 
+        // Context ID.
+        $contextid = $this->_customdata['contextid'];
+        $mform->addElement('hidden', 'contextid')->setValue($contextid);
+        $mform->setType('contextid', PARAM_INT);
+
         // Document ID.
         $documentid = $this->_customdata['documentid'];
         $mform->addElement('hidden', 'documentid')->setValue($documentid);
@@ -70,7 +75,7 @@ class transcription extends \moodleform {
             !is_string($result->result)
         ) {
             redirect(
-                new moodle_url('/local/nolej/manage.php'),
+                new moodle_url('/local/nolej/manage.php', [ 'contextid' => $contextid ]),
                 get_string('genericerror', 'local_nolej', ['error' => var_export($result, true)]),
                 null,
                 notification::NOTIFY_ERROR
@@ -92,7 +97,7 @@ class transcription extends \moodleform {
 
         if (!$success) {
             redirect(
-                new moodle_url('/local/nolej/manage.php'),
+                new moodle_url('/local/nolej/manage.php', [ 'contextid' => $contextid ]),
                 get_string('cannotwritetranscription', 'local_nolej'),
                 null,
                 notification::NOTIFY_ERROR

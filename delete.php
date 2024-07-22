@@ -27,21 +27,35 @@ require_once(__DIR__ . '/../../config.php');
 require_once($CFG->dirroot . '/local/nolej/classes/module.php');
 
 use local_nolej\module;
-use moodle_url;
 use core\output\notification;
 
-require_login();
-$context = context_system::instance();
-require_capability('local/nolej:usenolej', $context);
-
 $moduleid = required_param('moduleid', PARAM_INT);
+$contextid = optional_param('contextid', SYSCONTEXTID /* Fallback to context system. */, PARAM_INT);
+
+// Get the context instance from its id.
+$context = context::instance_by_id($contextid);
+$courseid = null;
+
+// If the context is a course context or a sub-context of a course.
+if (($coursecontext = $context->get_course_context(false)) !== false) {
+    // We define the current context as being the course context.
+    // We don't want to use sub-contexts here.
+    $context = $coursecontext;
+
+    // Retrieve the course ID to check if the user is logged in.
+    $courseid = $coursecontext->instanceid;
+}
+
+// Perform security checks.
+require_login($courseid);
+require_capability('local/nolej:usenolej', $context);
 
 $success = module::delete($moduleid);
 
 if ($success) {
     // Module deleted.
     redirect(
-        new moodle_url('/local/nolej/manage.php'),
+        new moodle_url('/local/nolej/manage.php', [ 'contextid' => $context->id ]),
         get_string('moduledeleted', 'local_nolej'),
         null,
         notification::NOTIFY_SUCCESS
@@ -49,7 +63,7 @@ if ($success) {
 } else {
     // Module not found.
     redirect(
-        new moodle_url('/local/nolej/manage.php'),
+        new moodle_url('/local/nolej/manage.php', [ 'contextid' => $context->id ]),
         get_string('modulenotfound', 'local_nolej'),
         null,
         notification::NOTIFY_ERROR
