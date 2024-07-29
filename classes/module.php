@@ -1034,7 +1034,8 @@ class module {
      * @return bool
      */
     protected function inreview() {
-        return in_array($this->step, [self::STEP_CONCEPTS, self::STEP_QUESTIONS, self::STEP_SUMMARY, self::STATUS_ACTIVITIES]);
+        $reviewsteps = [self::STEP_CONCEPTS, self::STEP_QUESTIONS, self::STEP_SUMMARY, self::STATUS_ACTIVITIES];
+        return in_array($this->step, $reviewsteps);
     }
 
     /**
