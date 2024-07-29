@@ -28,6 +28,7 @@ namespace local_nolej\event;
 // phpcs:ignore
 defined('MOODLE_INTERNAL') || die();
 
+use context;
 use moodle_url;
 
 /**
@@ -39,7 +40,7 @@ class webhook_called extends \core\event\base {
      * Init the event
      */
     protected function init() {
-        $this->context = \context_system::instance();
+        $this->context = context::instance_by_id($this->other['contextid']);
         $this->data['crud'] = 'c'; // Create, Read, Update, Delete.
         $this->data['edulevel'] = \core\event\base::LEVEL_OTHER;
     }
@@ -68,9 +69,9 @@ class webhook_called extends \core\event\base {
         if ($this->other['documentid'] == null) {
             return null;
         }
-        return new moodle_url(
-            '/local/nolej/edit.php',
-            ['documentid' => $this->other['documentid']]
-        );
+        return new moodle_url('/local/nolej/edit.php', [
+            'contextid' => $this->other['contextid'],
+            'documentid' => $this->other['documentid'],
+        ]);
     }
 }

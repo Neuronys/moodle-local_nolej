@@ -86,6 +86,9 @@ class module {
     /** @var string */
     const STEP_ACTIVITIES = 'activities';
 
+    /** @var int */
+    protected int $contextid;
+
     /** @var ?object */
     protected ?object $document;
 
@@ -98,10 +101,12 @@ class module {
     /**
      * Constructor
      *
+     * @param int $contextid
      * @param object|null $document default null
      * @param string $step default ''
      */
-    public function __construct(?object $document = null, string $step = '') {
+    public function __construct(int $contextid = SYSCONTEXTID, ?object $document = null, string $step = '') {
+        $this->contextid = $contextid;
         $this->document = $document;
         $this->documentid = $document != null ? $document->document_id : null;
         $this->step = $step;
@@ -148,13 +153,16 @@ class module {
         global $OUTPUT, $PAGE, $DB, $USER, $SITE, $context;
 
         // Display and handle creation form.
-        $mform = new \local_nolej\form\creation();
+        $mform = new \local_nolej\form\creation(
+            new moodle_url('/local/nolej/edit.php', [ 'contextid' => $this->contextid ]),
+            [ 'contextid' => $this->contextid ]
+        );
 
         if ($mform->is_cancelled()) {
 
             // Cancelled. Return to library.
             redirect(
-                new moodle_url('/local/nolej/manage.php'),
+                new moodle_url('/local/nolej/manage.php', [ 'contextid' => $this->contextid ]),
                 get_string('modulenotcreated', 'local_nolej'),
                 null,
                 notification::NOTIFY_INFO
@@ -204,7 +212,10 @@ class module {
                     $url = (
                         new moodle_url(
                             '/local/nolej/webhook.php',
-                            api::generatetoken(['fileid' => $filename])
+                            api::generatetoken([
+                                'contextid' => $this->contextid,
+                                'fileid' => $filename,
+                            ])
                         )
                     )->out(false);
                     break;
@@ -225,7 +236,10 @@ class module {
                     $url = (
                         new moodle_url(
                             '/local/nolej/webhook.php',
-                            api::generatetoken(['fileid' => $filename])
+                            api::generatetoken([
+                                'contextid' => $this->contextid,
+                                'fileid' => $filename,
+                            ])
                         )
                     )->out(false);
                     $format = 'freetext';
@@ -333,7 +347,7 @@ class module {
 
                     // Go back to library.
                     redirect(
-                        new moodle_url('/local/nolej/manage.php'),
+                        new moodle_url('/local/nolej/manage.php', [ 'contextid' => $this->contextid ]),
                         get_string('modulecreated', 'local_nolej'),
                         null,
                         notification::NOTIFY_SUCCESS
@@ -352,6 +366,7 @@ class module {
         $PAGE->requires->js_call_amd('local_nolej/creation');
 
         echo $OUTPUT->header();
+        echo $OUTPUT->heading(self::getstatusname(self::STATUS_CREATION));
         $mform->display();
         echo $OUTPUT->footer();
     }
@@ -368,17 +383,21 @@ class module {
                 new moodle_url(
                     '/local/nolej/edit.php',
                     [
+                        'contextid' => $this->contextid,
                         'documentid' => $this->documentid,
                         'step' => 'analysis',
                     ]
                 )
             )->out(false),
-            ['documentid' => $this->documentid]
+            [
+                'contextid' => $this->contextid,
+                'documentid' => $this->documentid,
+            ]
         );
 
         if ($mform->is_cancelled()) {
             // Cancelled.
-            redirect(new moodle_url('/local/nolej/manage.php'));
+            redirect(new moodle_url('/local/nolej/manage.php', [ 'contextid' => $this->contextid ]));
         } else if ($fromform = $mform->get_data()) {
             // Submitted and validated.
 
@@ -397,6 +416,7 @@ class module {
                     new moodle_url(
                         '/local/nolej/webhook.php',
                         api::generatetoken([
+                                'contextid' => $this->contextid,
                                 'documentid' => $this->documentid,
                                 'fileid' => 'transcription.htm',
                         ])
@@ -423,7 +443,7 @@ class module {
                     )
                 ) {
                     redirect(
-                        new moodle_url('/local/nolej/manage.php'),
+                        new moodle_url('/local/nolej/manage.php', [ 'contextid' => $this->contextid ]),
                         get_string('genericerror', 'local_nolej', (object) ['error' => var_export($result, true)]),
                         null,
                         notification::NOTIFY_ERROR
@@ -457,7 +477,7 @@ class module {
                 );
 
                 redirect(
-                    new moodle_url('/local/nolej/manage.php'),
+                    new moodle_url('/local/nolej/manage.php', [ 'contextid' => $this->contextid ]),
                     get_string('analysisstart', 'local_nolej'),
                     null,
                     notification::NOTIFY_SUCCESS
@@ -468,6 +488,7 @@ class module {
                         new moodle_url(
                             '/local/nolej/edit.php',
                             [
+                                'contextid' => $this->contextid,
                                 'documentid' => $this->documentid,
                                 'step' => 'analysis',
                             ]
@@ -500,18 +521,22 @@ class module {
                 new moodle_url(
                     '/local/nolej/edit.php',
                     [
+                        'contextid' => $this->contextid,
                         'documentid' => $this->documentid,
                         'step' => 'concepts',
                     ]
                 )
             )->out(false),
-            ['documentid' => $this->documentid]
+            [
+                'contextid' => $this->contextid,
+                'documentid' => $this->documentid,
+            ]
         );
 
         if ($mform->is_cancelled()) {
 
             // Cancelled.
-            redirect(new moodle_url('/local/nolej/manage.php'));
+            redirect(new moodle_url('/local/nolej/manage.php', [ 'contextid' => $this->contextid ]));
 
         } else if ($fromform = $mform->get_data()) {
             // Submitted and validated.
@@ -526,7 +551,7 @@ class module {
             $json = api::readcontent($this->documentid, 'concepts.json');
             if (!$json) {
                 redirect(
-                    new moodle_url('/local/nolej/manage.php'),
+                    new moodle_url('/local/nolej/manage.php', [ 'contextid' => $this->contextid ]),
                     get_string('genericerror', 'local_nolej', ['error' => var_export($result, true)]),
                     null,
                     notification::NOTIFY_ERROR
@@ -576,6 +601,7 @@ class module {
                         new moodle_url(
                             '/local/nolej/edit.php',
                             [
+                                'contextid' => $this->contextid,
                                 'documentid' => $this->documentid,
                                 'step' => 'concepts',
                             ]
@@ -594,6 +620,7 @@ class module {
                     new moodle_url(
                         '/local/nolej/edit.php',
                         [
+                            'contextid' => $this->contextid,
                             'documentid' => $this->documentid,
                             'step' => 'concepts',
                         ]
@@ -623,18 +650,22 @@ class module {
                 new moodle_url(
                     '/local/nolej/edit.php',
                     [
+                        'contextid' => $this->contextid,
                         'documentid' => $this->documentid,
                         'step' => 'questions',
                     ]
                 )
             )->out(false),
-            ['documentid' => $this->documentid]
+            [
+                'contextid' => $this->contextid,
+                'documentid' => $this->documentid,
+            ]
         );
 
         if ($mform->is_cancelled()) {
 
             // Cancelled.
-            redirect(new moodle_url('/local/nolej/manage.php'));
+            redirect(new moodle_url('/local/nolej/manage.php', [ 'contextid' => $this->contextid ]));
 
         } else if ($fromform = $mform->get_data()) {
             // Submitted and validated.
@@ -649,7 +680,7 @@ class module {
             $json = api::readcontent($this->documentid, 'questions.json');
             if (!$json) {
                 redirect(
-                    new moodle_url('/local/nolej/manage.php'),
+                    new moodle_url('/local/nolej/manage.php', [ 'contextid' => $this->contextid ]),
                     get_string('genericerror', 'local_nolej', ['error' => var_export($result, true)]),
                     null,
                     notification::NOTIFY_ERROR
@@ -700,6 +731,7 @@ class module {
                         new moodle_url(
                             '/local/nolej/edit.php',
                             [
+                                'contextid' => $this->contextid,
                                 'documentid' => $this->documentid,
                                 'step' => 'questions',
                             ]
@@ -718,6 +750,7 @@ class module {
                     new moodle_url(
                         '/local/nolej/edit.php',
                         [
+                            'contextid' => $this->contextid,
                             'documentid' => $this->documentid,
                             'step' => 'questions',
                         ]
@@ -747,18 +780,22 @@ class module {
                 new moodle_url(
                     '/local/nolej/edit.php',
                     [
+                        'contextid' => $this->contextid,
                         'documentid' => $this->documentid,
                         'step' => 'summary',
                     ]
                 )
             )->out(false),
-            ['documentid' => $this->documentid]
+            [
+                'contextid' => $this->contextid,
+                'documentid' => $this->documentid,
+            ]
         );
 
         if ($mform->is_cancelled()) {
 
             // Cancelled.
-            redirect(new moodle_url('/local/nolej/manage.php'));
+            redirect(new moodle_url('/local/nolej/manage.php', [ 'contextid' => $this->contextid ]));
 
         } else if ($fromform = $mform->get_data()) {
             // Submitted and validated.
@@ -804,6 +841,7 @@ class module {
                         new moodle_url(
                             '/local/nolej/edit.php',
                             [
+                                'contextid' => $this->contextid,
                                 'documentid' => $this->documentid,
                                 'step' => 'summary',
                             ]
@@ -822,6 +860,7 @@ class module {
                     new moodle_url(
                         '/local/nolej/edit.php',
                         [
+                            'contextid' => $this->contextid,
                             'documentid' => $this->documentid,
                             'step' => 'summary',
                         ]
@@ -851,18 +890,22 @@ class module {
                 new moodle_url(
                     '/local/nolej/edit.php',
                     [
+                        'contextid' => $this->contextid,
                         'documentid' => $this->documentid,
                         'step' => 'activities',
                     ]
                 )
             )->out(false),
-            ['documentid' => $this->documentid]
+            [
+                'contextid' => $this->contextid,
+                'documentid' => $this->documentid,
+            ]
         );
 
         if ($mform->is_cancelled()) {
 
             // Cancelled.
-            redirect(new moodle_url('/local/nolej/manage.php'));
+            redirect(new moodle_url('/local/nolej/manage.php', [ 'contextid' => $this->contextid ]));
 
         } else if ($fromform = $mform->get_data()) {
             // Submitted and validated.
@@ -877,7 +920,7 @@ class module {
             $json = api::readcontent($this->documentid, 'settings.json');
             if (!$json) {
                 redirect(
-                    new moodle_url('/local/nolej/manage.php'),
+                    new moodle_url('/local/nolej/manage.php', [ 'contextid' => $this->contextid ]),
                     get_string('genericerror', 'local_nolej', ['error' => var_export($result, true)]),
                     null,
                     notification::NOTIFY_ERROR
@@ -981,6 +1024,7 @@ class module {
                         new moodle_url(
                             '/local/nolej/edit.php',
                             [
+                                'contextid' => $this->contextid,
                                 'documentid' => $this->documentid,
                                 'step' => 'settings',
                             ]
@@ -1021,7 +1065,7 @@ class module {
                 );
 
                 redirect(
-                    (new moodle_url('/local/nolej/manage.php'))->out(false),
+                    (new moodle_url('/local/nolej/manage.php', [ 'contextid' => $this->contextid ]))->out(false),
                     get_string('generationstarted', 'local_nolej'),
                     null,
                     notification::NOTIFY_SUCCESS
@@ -1032,6 +1076,7 @@ class module {
                         new moodle_url(
                             '/local/nolej/edit.php',
                             [
+                                'contextid' => $this->contextid,
                                 'documentid' => $this->documentid,
                                 'step' => 'settings',
                             ]
@@ -1059,6 +1104,7 @@ class module {
         $PAGE->requires->js_call_amd('local_nolej/toggleinfo');
         $reviewavailable = $this->document->status >= self::STATUS_REVISION;
 
+        echo $OUTPUT->heading(self::getstatusname($this->document->status));
         echo $OUTPUT->render_from_template(
             'local_nolej/documentinfo',
             (object) [
@@ -1071,8 +1117,13 @@ class module {
                 'questions' => $this->step == 'questions',
                 'summary' => $this->step == 'summary',
                 'settings' => $this->step == 'activities',
-                'editurl' => (new moodle_url('/local/nolej/edit.php', ['documentid' => $this->document->document_id]))->out(false),
-                'manageurl' => (new moodle_url('/local/nolej/manage.php'))->out(false),
+                'editurl' => (new moodle_url('/local/nolej/edit.php', [
+                    'contextid' => $this->contextid,
+                    'documentid' => $this->document->document_id,
+                ]))->out(false),
+                'manageurl' => (new moodle_url('/local/nolej/manage.php', [
+                    'contextid' => $this->contextid,
+                ]))->out(false),
             ]
         );
     }
@@ -1178,10 +1229,9 @@ class module {
 
         $context = $context ? reset($context) : false;
         if ($context && !empty($context->contextid)) {
-            return (new moodle_url(
-                '/contentbank/index.php',
-                ['contextid' => $context->contextid]
-            ))->out(false);
+            return (new moodle_url('/contentbank/index.php', [
+                'contextid' => $context->contextid,
+            ]))->out(false);
         }
 
         return false;

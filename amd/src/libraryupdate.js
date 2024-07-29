@@ -24,7 +24,9 @@
 define(['jquery', 'core/ajax', 'core/notification'], function($, Ajax, Notification) {
     var request = {
         methodname: 'local_nolej_get_library_updates',
-        args: {}
+        args: {
+            contextid: M.cfg.contextid
+        }
     };
 
     var requestupdates = function() {

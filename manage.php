@@ -29,17 +29,23 @@ require_once($CFG->dirroot . '/local/nolej/classes/module.php');
 
 use local_nolej\module;
 
-require_login();
-$context = context_system::instance();
+$contextid = optional_param('contextid', SYSCONTEXTID /* Fallback to context system. */, PARAM_INT);
+
+// Get the context instance and course data from the context ID.
+[ $context, $course ] = \local_nolej\utils::get_info_from_context($contextid);
+
+// Perform security checks.
+require_login($course);
 require_capability('local/nolej:usenolej', $context);
 
-$PAGE->set_url(new moodle_url('/local/nolej/manage.php'));
-$PAGE->set_context($context);
+// Page configuration.
+$PAGE->set_url('/local/nolej/manage.php', [ 'contextid' => $context->id ]);
 $PAGE->set_pagelayout('standard');
 
-$PAGE->set_heading(get_string('modules', 'local_nolej'));
+\local_nolej\utils::page_setup($context, $course);
 $PAGE->set_title(get_string('library', 'local_nolej'));
 
+// JS and CSS dependencies.
 $PAGE->requires->js_call_amd('local_nolej/delete');
 $PAGE->requires->css('/local/nolej/styles.css');
 
@@ -80,6 +86,7 @@ foreach ($modules as $module) {
                 new moodle_url(
                     '/local/nolej/edit.php',
                     [
+                        'contextid' => $context->id,
                         'documentid' => $module->document_id,
                         'step' => $status2form[$module->status],
                     ]
@@ -94,7 +101,7 @@ foreach ($modules as $module) {
 
 $templatecontext = (object) [
     'modules' => $modulearray,
-    'createurl' => (new moodle_url('/local/nolej/edit.php'))->out(false),
+    'createurl' => (new moodle_url('/local/nolej/edit.php', [ 'contextid' => $context->id ]))->out(false),
 ];
 
 // Initialize polling.

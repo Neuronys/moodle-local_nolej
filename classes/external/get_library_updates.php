@@ -18,6 +18,7 @@ namespace local_nolej\external;
 
 defined('MOODLE_INTERNAL') || die();
 
+use context;
 use external_api;
 use external_function_parameters;
 use external_multiple_structure;
@@ -43,18 +44,23 @@ class get_library_updates extends external_api {
      */
     public static function execute_parameters(): external_function_parameters {
         // No parameters needed.
-        return new external_function_parameters([]);
+        return new external_function_parameters([
+            'contextid' => new external_value(PARAM_INT, 'Current context ID', VALUE_DEFAULT, SYSCONTEXTID),
+        ]);
     }
 
     /**
      * Fetch and returns updates regarding the Nolej modules.
+     * @param int $contextid The current context ID.
      * @return array of updated modules
      */
-    public static function execute(): array {
+    public static function execute(int $contextid): array {
         global $DB, $USER;
 
         // Perform security checks.
-        $context = \context_system::instance();
+        $params = self::validate_parameters(self::execute_parameters(), [ 'contextid' => $contextid ]);
+
+        $context = context::instance_by_id($params['contextid']);
         self::validate_context($context);
         require_capability('local/nolej:usenolej', $context);
 
