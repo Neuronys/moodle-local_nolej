@@ -988,13 +988,6 @@ class module {
                 'source' => $this->document->doc_url,
                 'sourcetype' => get_string('source' . $this->document->media_type, 'local_nolej'),
                 'transcription' => $reviewavailable ? api::readcontent($this->document->document_id, 'transcription.htm') : null,
-                'review' => $reviewavailable,
-                'concepts' => $this->step == 'concepts',
-                'questions' => $this->step == 'questions',
-                'summary' => $this->step == 'summary',
-                'settings' => $this->step == 'activities',
-                'editurl' => $this->editurl(),
-                'manageurl' => $this->libraryurl(),
             ]
         );
 
