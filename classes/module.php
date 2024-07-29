@@ -978,30 +978,8 @@ class module {
         $PAGE->requires->js_call_amd('local_nolej/toggleinfo');
         $reviewavailable = $this->document->status >= self::STATUS_REVISION;
 
-        $tabs = [
-            new \tabobject(
-                'concepts',
-                $this->editurl('concepts'),
-                "<i class='fa fa-lightbulb-o mr-2' aria-hidden='true'></i> " . get_string('concepts', 'local_nolej'),
-            ),
-            new \tabobject(
-                'questions',
-                $this->editurl('questions'),
-                "<i class='fa fa-question mr-2' aria-hidden='true'></i> " . get_string('questions', 'local_nolej'),
-            ),
-            new \tabobject(
-                'summary',
-                $this->editurl('summary'),
-                "<i class='fa fa-list mr-2' aria-hidden='true'></i> " . get_string('summary', 'local_nolej'),
-            ),
-            new \tabobject(
-                'activities',
-                $this->editurl('activities'),
-                "<i class='fa fa-cog mr-2' aria-hidden='true'></i> " . get_string('settings', 'local_nolej'),
-            ),
-        ];
-
-        echo $OUTPUT->heading(self::getstatusname($this->document->status));
+        echo $OUTPUT->heading($this->document->title);
+        //self::getstatusname($this->document->status);
 
         echo $OUTPUT->render_from_template(
             'local_nolej/documentinfo',
@@ -1020,7 +998,43 @@ class module {
             ]
         );
 
+        if (!$this->inreview()) {
+            return;
+        }
+
+        // Show review tabs.
+        $tabs = [
+            new \tabobject(
+                self::STEP_CONCEPTS,
+                $this->editurl('concepts'),
+                "<i class='fa fa-lightbulb-o mr-2' aria-hidden='true'></i> " . get_string('concepts', 'local_nolej'),
+            ),
+            new \tabobject(
+                self::STEP_QUESTIONS,
+                $this->editurl('questions'),
+                "<i class='fa fa-question mr-2' aria-hidden='true'></i> " . get_string('questions', 'local_nolej'),
+            ),
+            new \tabobject(
+                self::STEP_SUMMARY,
+                $this->editurl('summary'),
+                "<i class='fa fa-list mr-2' aria-hidden='true'></i> " . get_string('summary', 'local_nolej'),
+            ),
+            new \tabobject(
+                self::STEP_ACTIVITIES,
+                $this->editurl('activities'),
+                "<i class='fa fa-cog mr-2' aria-hidden='true'></i> " . get_string('settings', 'local_nolej'),
+            ),
+        ];
+
         echo $OUTPUT->tabtree($tabs, $this->step);
+    }
+
+    /**
+     * Return true iff the current module is in review.
+     * @return bool
+     */
+    protected function inreview() {
+        return in_array($this->step, [self::STEP_CONCEPTS, self::STEP_QUESTIONS, self::STEP_SUMMARY, self::STATUS_ACTIVITIES]);
     }
 
     /**
