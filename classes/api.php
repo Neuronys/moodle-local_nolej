@@ -1154,7 +1154,6 @@ class api {
 
     /**
      * Download the file. Security checks are performed earlier by JWT checks.
-     * @param int $contextid The current context ID.
      * @param string $filepath
      */
     public static function deliverfile(string $filepath) {
