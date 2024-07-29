@@ -52,7 +52,7 @@ if (property_exists($data, 'fileid')) {
 
     if (file_exists($filepath) && is_file($filepath)) {
         // Delivering file.
-        api::deliverfile($contextid, $filepath);
+        api::deliverfile($filepath);
     } else {
         // File not found.
         $nolej->respondwithmessage(404, 'File not available.');
