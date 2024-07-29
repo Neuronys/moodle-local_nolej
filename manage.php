@@ -71,6 +71,16 @@ $modules = $DB->get_records(
 $modulearray = [];
 foreach ($modules as $module) {
 
+    // Edit module URL, visible iff module is not failed.
+    $editurl = new moodle_url(
+        '/local/nolej/edit.php',
+        [
+            'contextid' => $context->id,
+            'documentid' => $module->document_id,
+            'step' => $status2form[$module->status],
+        ]
+    );
+
     $moduledata = [
         'moduleid' => $module->id,
         'title' => $module->title,
@@ -82,16 +92,7 @@ foreach ($modules as $module) {
         'iscompleted' => $module->status == module::STATUS_COMPLETED,
         'isfailed' => $module->status == module::STATUS_FAILED,
         'editurl' => $module->status != module::STATUS_FAILED && $module->status != module::STATUS_CREATION
-            ? (
-                new moodle_url(
-                    '/local/nolej/edit.php',
-                    [
-                        'contextid' => $context->id,
-                        'documentid' => $module->document_id,
-                        'step' => $status2form[$module->status],
-                    ]
-                )
-            )->out(false)
+            ? $editurl->out(false)
             : false,
         'activitiesurl' => $module->status == module::STATUS_COMPLETED ? module::getcontentbankurl($module->document_id) : false,
     ];
@@ -99,9 +100,10 @@ foreach ($modules as $module) {
     $modulearray[] = $moduledata;
 }
 
+$createurl = new moodle_url('/local/nolej/edit.php', ['contextid' => $context->id]);
 $templatecontext = (object) [
     'modules' => $modulearray,
-    'createurl' => (new moodle_url('/local/nolej/edit.php', ['contextid' => $context->id]))->out(false),
+    'createurl' => $createurl->out(false),
 ];
 
 // Initialize polling.

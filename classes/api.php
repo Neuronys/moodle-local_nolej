@@ -74,10 +74,10 @@ class api {
     protected $data;
 
     /** @var int */
-    protected $contextid = SYSCONTEXTID;
+    protected int $contextid = SYSCONTEXTID;
 
     /** @var bool */
-    public $shouldexit = true;
+    public bool $shouldexit = true;
 
     /**
      * Check that the API key has been set
