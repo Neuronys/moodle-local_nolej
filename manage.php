@@ -43,6 +43,10 @@ $PAGE->set_url('/local/nolej/manage.php', ['contextid' => $context->id]);
 $PAGE->set_pagelayout('standard');
 
 \local_nolej\utils::page_setup($context, $course);
+$PAGE->navbar->add(
+    get_string('library', 'local_nolej'),
+    $PAGE->url
+);
 $PAGE->set_title(get_string('library', 'local_nolej'));
 
 // JS and CSS dependencies.

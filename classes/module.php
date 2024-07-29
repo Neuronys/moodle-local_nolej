@@ -364,7 +364,7 @@ class module {
         $PAGE->requires->js_call_amd('local_nolej/creation');
 
         echo $OUTPUT->header();
-        echo $OUTPUT->heading(self::getstatusname(self::STATUS_CREATION));
+        echo $OUTPUT->heading(get_string('statuscreation', 'local_nolej'));
         $mform->display();
         echo $OUTPUT->footer();
     }
@@ -979,7 +979,6 @@ class module {
         $reviewavailable = $this->document->status >= self::STATUS_REVISION;
 
         echo $OUTPUT->heading($this->document->title);
-        //self::getstatusname($this->document->status);
 
         echo $OUTPUT->render_from_template(
             'local_nolej/documentinfo',

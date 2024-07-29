@@ -75,7 +75,14 @@ $PAGE->requires->css('/local/nolej/styles.css');
 
 // Code itself.
 if (empty($documentid) || api::lookupdocumentstatus($documentid, $USER->id) <= module::STATUS_CREATION) {
-    // Create a new document.
+    // Init breadcrumbs.
+    $PAGE->navbar->add(
+        get_string('library', 'local_nolej'),
+        new moodle_url('/local/nolej/manage.php', ['contextid' => $contextid])
+    );
+    $PAGE->navbar->add(get_string('statuscreation', 'local_nolej'));
+
+    // Creation page title.
     $title = module::getstatusname(0);
     $PAGE->set_title($title);
 
@@ -93,6 +100,14 @@ if (empty($documentid) || api::lookupdocumentstatus($documentid, $USER->id) <= m
 
     $module = new module($context->id, $document, $step);
 
+    // Init breadcrumbs.
+    $PAGE->navbar->add(
+        get_string('library', 'local_nolej'),
+        new moodle_url('/local/nolej/manage.php', ['contextid' => $contextid])
+    );
+    $PAGE->navbar->add($PAGE->title);
+
+    // Module title.
     $PAGE->set_title(empty($document->title) ? module::getstatusname(0) : $document->title);
 
     if (module::isstatuspending($document->status)) {
