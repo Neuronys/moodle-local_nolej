@@ -71,14 +71,57 @@ $modules = $DB->get_records(
 $modulearray = [];
 foreach ($modules as $module) {
 
-    // Edit module URL, visible iff module is not failed.
-    $editurl = new moodle_url(
-        '/local/nolej/edit.php',
-        [
-            'contextid' => $context->id,
-            'documentid' => $module->document_id,
-            'step' => $status2form[$module->status],
-        ]
+    // Actions menu.
+    $menu = new action_menu();
+    $menu->set_menu_trigger(get_string('actions'));
+
+    // Activities preview link.
+    if ($module->status == module::STATUS_COMPLETED) {
+        $contentbankurl = module::getcontentbankurl($module->document_id);
+        if ($contentbankurl) {
+            $menu->add(
+                new action_menu_link(
+                    $contentbankurl,
+                    new pix_icon('i/preview', 'core'),
+                    get_string('activities', 'local_nolej'),
+                    false
+                )
+            );
+        }
+    }
+
+    // Edit link, visible iff module is not failed.
+    if ($module->status != module::STATUS_FAILED && $module->status != module::STATUS_CREATION) {
+        $editurl = new moodle_url(
+            '/local/nolej/edit.php',
+            [
+                'contextid' => $context->id,
+                'documentid' => $module->document_id,
+                'step' => $status2form[$module->status],
+            ]
+        );
+        $menu->add(
+            new action_menu_link(
+                $editurl,
+                new pix_icon('i/edit', 'core'),
+                get_string('editmodule', 'local_nolej'),
+                false
+            )
+        );
+    }
+
+    // Delete module link.
+    $menu->add(
+        new action_menu_link(
+            new moodle_url('#'),
+            new pix_icon('i/delete', 'core'),
+            get_string('deletemodule', 'local_nolej'),
+            false,
+            [
+                'data-action' => 'delete',
+                'data-moduleid' => $module->document_id,
+            ]
+        )
     );
 
     $moduledata = [
@@ -91,10 +134,7 @@ foreach ($modules as $module) {
         'ispending' => module::isstatuspending($module->status),
         'iscompleted' => $module->status == module::STATUS_COMPLETED,
         'isfailed' => $module->status == module::STATUS_FAILED,
-        'editurl' => $module->status != module::STATUS_FAILED && $module->status != module::STATUS_CREATION
-            ? $editurl->out(false)
-            : false,
-        'activitiesurl' => $module->status == module::STATUS_COMPLETED ? module::getcontentbankurl($module->document_id) : false,
+        'actions' => $OUTPUT->render($menu),
     ];
 
     $modulearray[] = $moduledata;

@@ -58,7 +58,6 @@ $string['createmodule'] = 'Crea modulo';
 $string['deletemodule'] = 'Elimina';
 $string['deletemoduledescription'] = 'Sei sicuro di voler eliminare questo modulo Nolej?';
 $string['moduledeleted'] = 'Il modulo Nolej è stato eliminato.';
-$string['action'] = 'Azione';
 $string['documentinfo'] = 'Informazioni sul modulo';
 $string['genericerror'] = 'Si è verificato un errore: <pre>{$a->error}</pre>';
 $string['moduleview'] = 'Visualizza modulo';

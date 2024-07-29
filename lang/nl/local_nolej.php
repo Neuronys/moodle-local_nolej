@@ -58,7 +58,6 @@ $string['createmodule'] = 'Module maken';
 $string['deletemodule'] = 'Verwijderen';
 $string['deletemoduledescription'] = 'Weet u zeker dat u deze Nolej-module wilt verwijderen?';
 $string['moduledeleted'] = 'De Nolej-module is verwijderd.';
-$string['action'] = 'Actie';
 $string['documentinfo'] = 'Module-informatie';
 $string['genericerror'] = 'Er is een fout opgetreden: <pre>{$a->error}</pre>';
 $string['moduleview'] = 'Bekijk module';

@@ -1127,7 +1127,7 @@ class module {
     /**
      * Get the content bank url for the given module.
      * @param int $documentid
-     * @return string|false
+     * @return moodle_url|false
      */
     public static function getcontentbankurl($documentid) {
         global $DB;
@@ -1158,9 +1158,7 @@ class module {
 
         $context = $context ? reset($context) : false;
         if ($context && !empty($context->contextid)) {
-            return (new moodle_url('/contentbank/index.php', [
-                'contextid' => $context->contextid,
-            ]))->out(false);
+            return new moodle_url('/contentbank/index.php', ['contextid' => $context->contextid]);
         }
 
         return false;

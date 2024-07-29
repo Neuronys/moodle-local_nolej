@@ -58,7 +58,6 @@ $string['createmodule'] = 'Create module';
 $string['deletemodule'] = 'Delete';
 $string['deletemoduledescription'] = 'Are you sure you want to delete this Nolej module?';
 $string['moduledeleted'] = 'The Nolej module has been deleted.';
-$string['action'] = 'Action';
 $string['documentinfo'] = 'Module info';
 $string['genericerror'] = 'An error occurred: <pre>{$a->error}</pre>';
 $string['moduleview'] = 'View module';

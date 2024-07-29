@@ -29,8 +29,6 @@
             * ispending
             * iscompleted
             * isfailed
-            * editurl
-            * activitiesurl
 
     Example context (json):
     {
@@ -44,9 +42,7 @@
                 "lastupdate": "2024-01-01 12:00",
                 "ispending": false,
                 "iscompleted": false,
-                "isfailed": false,
-                "editurl": "https://mymoodlesite.com/local/nolej/edit.php?contextid=1&documentid=abcd-efgh",
-                "activitiesurl": null
+                "isfailed": false
             }
         ]
     }
@@ -70,7 +66,7 @@
             <th scope="col">{{#str}} created, local_nolej {{/str}}</th>
             <th scope="col" colspan="2">{{#str}} status, local_nolej {{/str}}</th>
             <th scope="col">{{#str}} lastupdate, local_nolej {{/str}}</th>
-            <th scope="col">{{#str}} action, local_nolej {{/str}}</th>
+            <th scope="col">{{#str}} actions {{/str}}</th>
         </tr>
     </thead>
     <tbody>
@@ -85,17 +81,7 @@
                 </td>
                 <td class="local_nolej_status pl-1">{{status}}</td>
                 <td class="local_nolej_lastupdate">{{lastupdate}}</td>
-                <td>
-                    {{#activitiesurl}}
-                    <input type="button" class="btn btn-primary mr-2 mb-2 local_nolej_activities" value="{{#str}} activities, local_nolej {{/str}}"
-                        onclick="location.href='{{{activitiesurl}}}'">
-                    {{/activitiesurl}}
-                    {{#editurl}}
-                    <input type="button" class="btn btn-secondary mr-2 mb-2 local_nolej_edit" value="{{#str}} editmodule, local_nolej {{/str}}"
-                        onclick="location.href='{{{editurl}}}'">
-                    {{/editurl}}
-                    <input type="button" class="btn btn-danger mr-2 mb-2 local_nolej_delete" data-moduleid="{{moduleid}}" value="{{#str}} deletemodule, local_nolej {{/str}}">
-                </td>
+                <td>{{{actions}}}</td>
             </tr>
         {{/modules}}
     </tbody>
