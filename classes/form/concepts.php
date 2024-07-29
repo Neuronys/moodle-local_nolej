@@ -202,7 +202,7 @@ class concepts extends \moodleform {
             )->setValue($concepts[$i]->use_for_practice);
         }
 
-        $this->add_action_buttons(true, get_string('saveconcepts', 'local_nolej'));
+        $this->add_action_buttons(true, get_string('save'));
     }
 
     /**

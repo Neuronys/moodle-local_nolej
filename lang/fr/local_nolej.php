@@ -145,7 +145,6 @@ $string['analysisstart'] = 'Analyse commencée. Vous recevrez une notification l
 $string['cannotwritetranscription'] = 'Impossible de sauvegarder la transcription sur le disque, veuillez contacter un Administrateur si l\'erreur persiste.';
 
 // Summary.
-$string['savesummary'] = 'Enregistrer le résumé';
 $string['summary'] = 'Résumé';
 $string['abstract'] = 'Abstrait';
 $string['keypoints'] = 'Points clé';
@@ -155,7 +154,6 @@ $string['summarysaved'] = 'Résumé enregistré.';
 
 // Questions.
 $string['questions'] = 'Questions';
-$string['savequestions'] = 'Enregistrer les questions';
 $string['questionssaved'] = 'Questions enregistrées.';
 $string['questionsnotsaved'] = 'Échec de la mise à jour des questions, veuillez contacter un Administrateur si l\'erreur persiste.';
 $string['cannotwritequestions'] = 'Impossible de sauvegarder les questions sur le disque, veuillez contacter un Administrateur si l\'erreur persiste.';
@@ -178,7 +176,6 @@ $string['questionusedistractor'] = 'Affirmation à afficher';
 
 // Concepts.
 $string['concepts'] = 'Concepts';
-$string['saveconcepts'] = 'Enregistrer les concepts';
 $string['cannotwriteconcepts'] = 'Impossible de sauvegarder les concepts sur le disque, veuillez contacter un Administrateur si l\'erreur persiste.';
 $string['conceptssaved'] = 'Concepts enregistrés.';
 $string['conceptsnotsaved'] = 'Échec de la mise à jour des concepts, veuillez contacter un Administrateur si l\'erreur persiste.';

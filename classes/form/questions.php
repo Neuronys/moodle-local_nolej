@@ -217,7 +217,7 @@ class questions extends \moodleform {
             }
         }
 
-        $this->add_action_buttons(true, get_string('savequestions', 'local_nolej'));
+        $this->add_action_buttons(true, get_string('save'));
     }
 
     /**

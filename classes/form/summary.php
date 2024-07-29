@@ -130,7 +130,7 @@ class summary extends \moodleform {
             $mform->addRule($keypointid, get_string('required'), 'required', null, 'server', false, false);
         }
 
-        $this->add_action_buttons(true, get_string('savesummary', 'local_nolej'));
+        $this->add_action_buttons(true, get_string('save'));
     }
 
     /**

@@ -145,7 +145,6 @@ $string['analysisstart'] = 'Analyse gestartet. Sie erhalten eine Benachrichtigun
 $string['cannotwritetranscription'] = 'Die Transkription kann nicht auf der Festplatte gespeichert werden. Bitte wenden Sie sich an einen Administrator, wenn dieser Fehler weiterhin besteht.';
 
 // Summary.
-$string['savesummary'] = 'Zusammenfassung speichern';
 $string['summary'] = 'Zusammenfassung';
 $string['abstract'] = 'Abstract';
 $string['keypoints'] = 'Schlüsselpunkte';
@@ -155,7 +154,6 @@ $string['summarysaved'] = 'Die Zusammenfassung wurde gespeichert.';
 
 // Questions.
 $string['questions'] = 'Fragen';
-$string['savequestions'] = 'Fragen speichern';
 $string['questionssaved'] = 'Fragen gespeichert.';
 $string['questionsnotsaved'] = 'Die Fragen konnten nicht aktualisiert werden. Bitte wenden Sie sich an einen Administrator, wenn dieser Fehler weiterhin besteht.';
 $string['cannotwritequestions'] = 'Die Fragen können nicht auf der Festplatte gespeichert werden. Bitte wenden Sie sich an einen Administrator, wenn dieser Fehler weiterhin besteht.';
@@ -178,7 +176,6 @@ $string['questionusedistractor'] = 'Angezeigte Aussage';
 
 // Concepts.
 $string['concepts'] = 'Konzepte';
-$string['saveconcepts'] = 'Konzepte speichern';
 $string['cannotwriteconcepts'] = 'Die Konzepte können nicht auf der Festplatte gespeichert werden. Bitte wenden Sie sich an einen Administrator, wenn dieser Fehler weiterhin besteht.';
 $string['conceptssaved'] = 'Konzepte gespeichert.';
 $string['conceptsnotsaved'] = 'Die Konzepte konnten nicht aktualisiert werden. Bitte wenden Sie sich an einen Administrator, wenn dieser Fehler weiterhin besteht.';

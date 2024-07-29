@@ -145,7 +145,6 @@ $string['analysisstart'] = 'Analyse gestart. U ontvangt een melding wanneer de a
 $string['cannotwritetranscription'] = 'Kan transcriptie niet op schijf opslaan, neem contact op met een beheerder als deze fout aanhoudt.';
 
 // Summary.
-$string['savesummary'] = 'Samenvatting opslaan';
 $string['summary'] = 'Samenvatting';
 $string['abstract'] = 'Abstract';
 $string['keypoints'] = 'Belangrijke punten';
@@ -155,7 +154,6 @@ $string['summarysaved'] = 'Samenvatting is opgeslagen.';
 
 // Questions.
 $string['questions'] = 'Vragen';
-$string['savequestions'] = 'Vragen opslaan';
 $string['questionssaved'] = 'Vragen opgeslagen.';
 $string['questionsnotsaved'] = 'Kon de vragen niet bijwerken. Neem contact op met een beheerder als deze fout aanhoudt.';
 $string['cannotwritequestions'] = 'Kan vragen niet op schijf opslaan, neem contact op met een beheerder als deze fout aanhoudt.';
@@ -178,7 +176,6 @@ $string['questionusedistractor'] = 'Bewering om weer te geven';
 
 // Concepts.
 $string['concepts'] = 'Concepten';
-$string['saveconcepts'] = 'Concepten opslaan';
 $string['cannotwriteconcepts'] = 'Kan concepten niet op schijf opslaan, neem contact op met een beheerder als deze fout aanhoudt.';
 $string['conceptssaved'] = 'Concepten opgeslagen.';
 $string['conceptsnotsaved'] = 'Kon de concepten niet bijwerken. Neem contact op met een beheerder als deze fout aanhoudt.';

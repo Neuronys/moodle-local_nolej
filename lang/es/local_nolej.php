@@ -145,7 +145,6 @@ $string['analysisstart'] = 'Análisis iniciado. Recibirás una notificación cua
 $string['cannotwritetranscription'] = 'No se puede guardar la transcripción en el disco, por favor, ponte en contacto con un administrador si este error persiste.';
 
 // Summary.
-$string['savesummary'] = 'Guardar resumen';
 $string['summary'] = 'Resumen';
 $string['abstract'] = 'Resumen';
 $string['keypoints'] = 'Puntos clave';
@@ -155,7 +154,6 @@ $string['summarysaved'] = 'El resumen se ha guardado.';
 
 // Questions.
 $string['questions'] = 'Preguntas';
-$string['savequestions'] = 'Guardar preguntas';
 $string['questionssaved'] = 'Preguntas guardadas.';
 $string['questionsnotsaved'] = 'No se pudo actualizar las preguntas. Por favor, ponte en contacto con un administrador si este error persiste.';
 $string['cannotwritequestions'] = 'No se pueden guardar las preguntas en el disco, por favor, ponte en contacto con un administrador si este error persiste.';
@@ -178,7 +176,6 @@ $string['questionusedistractor'] = 'Declaración a mostrar';
 
 // Concepts.
 $string['concepts'] = 'Conceptos';
-$string['saveconcepts'] = 'Guardar conceptos';
 $string['cannotwriteconcepts'] = 'No se pueden guardar los conceptos en el disco, por favor, ponte en contacto con un administrador si este error persiste.';
 $string['conceptssaved'] = 'Conceptos guardados.';
 $string['conceptsnotsaved'] = 'No se pudo actualizar los conceptos. Por favor, ponte en contacto con un administrador si este error persiste.';

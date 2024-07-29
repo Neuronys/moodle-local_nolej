@@ -145,7 +145,6 @@ $string['analysisstart'] = 'Analysis started. You will receive a notification wh
 $string['cannotwritetranscription'] = 'Cannot save transcription on disk, please contact an Administrator if this error persists.';
 
 // Summary.
-$string['savesummary'] = 'Save summary';
 $string['summary'] = 'Summary';
 $string['abstract'] = 'Abstract';
 $string['keypoints'] = 'Keypoints';
@@ -155,7 +154,6 @@ $string['summarysaved'] = 'Summary has been saved.';
 
 // Questions.
 $string['questions'] = 'Questions';
-$string['savequestions'] = 'Save questions';
 $string['questionssaved'] = 'Questions saved.';
 $string['questionsnotsaved'] = 'Could not update the questions. Please contact an Administrator if this error persists.';
 $string['cannotwritequestions'] = 'Cannot save questions on disk, please contact an Administrator if this error persists.';
@@ -178,7 +176,6 @@ $string['questionusedistractor'] = 'Statement to display';
 
 // Concepts.
 $string['concepts'] = 'Concepts';
-$string['saveconcepts'] = 'Save concepts';
 $string['cannotwriteconcepts'] = 'Cannot save concepts on disk, please contact an Administrator if this error persists.';
 $string['conceptssaved'] = 'Concepts saved.';
 $string['conceptsnotsaved'] = 'Could not update the concepts. Please contact an Administrator if this error persists.';
