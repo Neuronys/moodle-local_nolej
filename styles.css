@@ -4,10 +4,6 @@
     border-bottom: none;
 }
 
-.card-header nav {
-    box-shadow: none;
-}
-
 .table-accordion tr:first-child td {
     border-top: none;
 }
