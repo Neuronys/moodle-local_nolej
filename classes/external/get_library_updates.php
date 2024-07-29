@@ -58,7 +58,7 @@ class get_library_updates extends external_api {
         global $DB, $USER;
 
         // Perform security checks.
-        $params = self::validate_parameters(self::execute_parameters(), [ 'contextid' => $contextid ]);
+        $params = self::validate_parameters(self::execute_parameters(), ['contextid' => $contextid]);
 
         $context = context::instance_by_id($params['contextid']);
         self::validate_context($context);

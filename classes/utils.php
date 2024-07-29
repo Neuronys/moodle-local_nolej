@@ -54,11 +54,11 @@ class utils {
             // Retrieve the course data.
             $course = $courseidonly
                 ? $context->instanceid
-                : $DB->get_record('course', [ 'id' => $coursecontext->instanceid ], '*', MUST_EXIST);
+                : $DB->get_record('course', ['id' => $coursecontext->instanceid], '*', MUST_EXIST);
         }
 
         // Return info.
-        return [ $context, $course ];
+        return [$context, $course];
     }
 
     /**

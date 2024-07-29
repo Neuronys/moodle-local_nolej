@@ -32,14 +32,14 @@ use local_nolej\module;
 $contextid = optional_param('contextid', SYSCONTEXTID /* Fallback to context system. */, PARAM_INT);
 
 // Get the context instance and course data from the context ID.
-[ $context, $course ] = \local_nolej\utils::get_info_from_context($contextid);
+[$context, $course] = \local_nolej\utils::get_info_from_context($contextid);
 
 // Perform security checks.
 require_login($course);
 require_capability('local/nolej:usenolej', $context);
 
 // Page configuration.
-$PAGE->set_url('/local/nolej/manage.php', [ 'contextid' => $context->id ]);
+$PAGE->set_url('/local/nolej/manage.php', ['contextid' => $context->id]);
 $PAGE->set_pagelayout('standard');
 
 \local_nolej\utils::page_setup($context, $course);
@@ -101,7 +101,7 @@ foreach ($modules as $module) {
 
 $templatecontext = (object) [
     'modules' => $modulearray,
-    'createurl' => (new moodle_url('/local/nolej/edit.php', [ 'contextid' => $context->id ]))->out(false),
+    'createurl' => (new moodle_url('/local/nolej/edit.php', ['contextid' => $context->id]))->out(false),
 ];
 
 // Initialize polling.

@@ -30,11 +30,12 @@ require_once($CFG->dirroot . '/local/nolej/classes/module.php');
 use core\output\notification;
 use local_nolej\api;
 use local_nolej\module;
+use local_nolej\utils;
 
 $contextid = optional_param('contextid', SYSCONTEXTID /* Fallback to context system. */, PARAM_INT);
 
 // Get the context instance and course data from the context ID.
-[ $context, $course ] = \local_nolej\utils::get_info_from_context($contextid);
+[$context, $course] = utils::get_info_from_context($contextid);
 
 // Perform security checks.
 require_login($course);
@@ -44,7 +45,7 @@ require_capability('local/nolej:usenolej', $context);
 if (!api::haskey()) {
     // API key missing. Redirect to the manage page.
     redirect(
-        new moodle_url('/local/nolej/manage.php', [ 'contextid' => $context->id ]),
+        new moodle_url('/local/nolej/manage.php', ['contextid' => $context->id]),
         get_string('apikeymissing', 'local_nolej'),
         null,
         notification::NOTIFY_ERROR
@@ -67,7 +68,7 @@ $PAGE->set_url(
     )
 );
 $PAGE->set_pagelayout('standard');
-\local_nolej\utils::page_setup($context, $course);
+utils::page_setup($context, $course);
 
 // CSS dependency.
 $PAGE->requires->css('/local/nolej/styles.css');
@@ -84,7 +85,7 @@ if (empty($documentid) || api::lookupdocumentstatus($documentid, $USER->id) <= m
 } else {
 
     // Retrieve document data.
-    $document = $DB->get_record('local_nolej_module', [ 'document_id' => $documentid, 'user_id' => $USER->id ]);
+    $document = $DB->get_record('local_nolej_module', ['document_id' => $documentid, 'user_id' => $USER->id]);
     if (!$document) {
         // Document does not exist. Redirect to creation form.
         redirect($PAGE->url, get_string('modulenotfound', 'local_nolej'), null, notification::NOTIFY_ERROR);

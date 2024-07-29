@@ -55,7 +55,7 @@ $success = module::delete($moduleid);
 if ($success) {
     // Module deleted.
     redirect(
-        new moodle_url('/local/nolej/manage.php', [ 'contextid' => $context->id ]),
+        new moodle_url('/local/nolej/manage.php', ['contextid' => $context->id]),
         get_string('moduledeleted', 'local_nolej'),
         null,
         notification::NOTIFY_SUCCESS
@@ -63,7 +63,7 @@ if ($success) {
 } else {
     // Module not found.
     redirect(
-        new moodle_url('/local/nolej/manage.php', [ 'contextid' => $context->id ]),
+        new moodle_url('/local/nolej/manage.php', ['contextid' => $context->id]),
         get_string('modulenotfound', 'local_nolej'),
         null,
         notification::NOTIFY_ERROR
