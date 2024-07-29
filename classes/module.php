@@ -978,7 +978,31 @@ class module {
         $PAGE->requires->js_call_amd('local_nolej/toggleinfo');
         $reviewavailable = $this->document->status >= self::STATUS_REVISION;
 
+        $tabs = [
+            new \tabobject(
+                'concepts',
+                $this->editurl('concepts'),
+                "<i class='fa fa-lightbulb-o mr-2' aria-hidden='true'></i> " . get_string('concepts', 'local_nolej'),
+            ),
+            new \tabobject(
+                'questions',
+                $this->editurl('questions'),
+                "<i class='fa fa-question mr-2' aria-hidden='true'></i> " . get_string('questions', 'local_nolej'),
+            ),
+            new \tabobject(
+                'summary',
+                $this->editurl('summary'),
+                "<i class='fa fa-list mr-2' aria-hidden='true'></i> " . get_string('summary', 'local_nolej'),
+            ),
+            new \tabobject(
+                'activities',
+                $this->editurl('activities'),
+                "<i class='fa fa-cog mr-2' aria-hidden='true'></i> " . get_string('settings', 'local_nolej'),
+            ),
+        ];
+
         echo $OUTPUT->heading(self::getstatusname($this->document->status));
+
         echo $OUTPUT->render_from_template(
             'local_nolej/documentinfo',
             (object) [
@@ -995,6 +1019,8 @@ class module {
                 'manageurl' => $this->libraryurl(),
             ]
         );
+
+        echo $OUTPUT->tabtree($tabs, $this->step);
     }
 
     /**
