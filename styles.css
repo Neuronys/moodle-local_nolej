@@ -1,13 +1,13 @@
 /* Hide Atto editor extra buttons */
 
-.hide-atto-buttons .atto_group.files_group,
-.hide-atto-buttons .atto_group.collapse_group {
+.local_nolej-hide_special_buttons .atto_group.files_group,
+.local_nolej-hide_special_buttons .atto_group.collapse_group {
     display: none;
 }
 
 /* Questions form */
 
-.local_nolej_question {
+.local_nolej-question {
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 6px 24px 0 #0000000d, 0 0 0 1px #00000014;
@@ -16,7 +16,7 @@
     width: 100%;
 }
 
-.local_nolej_question .badge {
+.local_nolej-question .badge {
     color: #545659;
     font-size: 1rem;
     font-weight: 400;
@@ -26,33 +26,27 @@
     width: fit-content;
 }
 
-.local_nolej_question .badge.open {
+.local_nolej-question .badge.open {
     background-color: #9cd6f552;
     border-left: 2px solid #9cd6f5;
 }
 
-.local_nolej_question .badge.ftb {
+.local_nolej-question .badge.ftb {
     background-color: #fff9e7;
     border-left: 2px solid #ffd966;
 }
 
-.local_nolej_question .badge.tf {
+.local_nolej-question .badge.tf {
     background-color: #e6b8e752;
     border-left: 2px solid #e6b8e7;
 }
 
-.local_nolej_question .badge.mcq {
+.local_nolej-question .badge.mcq {
     background-color: #c7d2ff52;
     border-left: 2px solid #c7d2ff;
 }
 
-.local_nolej_question .badge.hoq {
+.local_nolej-question .badge.hoq {
     background-color: #c7f0f3;
     border-left: 2px solid #7db5b9;
-}
-
-/* Range form element */
-
-.range-form-element {
-    margin-top: -1.5rem;
 }

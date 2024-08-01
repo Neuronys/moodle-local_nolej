@@ -117,7 +117,7 @@ class questions extends \moodleform {
                 $mform->addElement(
                     'html',
                     sprintf(
-                        '<div class="local_nolej_question"><div class="badge %s">%s</div>',
+                        '<div class="local_nolej-question"><div class="badge %s">%s</div>',
                         $questiontype,
                         get_string('questiontype' . $questiontype, 'local_nolej')
                     )

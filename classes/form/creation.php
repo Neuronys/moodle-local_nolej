@@ -123,7 +123,7 @@ class creation extends \moodleform {
             'editor',
             'sourcetext',
             get_string('sourcefreetext', 'local_nolej'),
-            ['class' => 'hide-atto-buttons'],
+            ['class' => 'local_nolej-hide_special_buttons'],
             [
                 'maxfiles' => 0,
                 'maxbytes' => 0,
