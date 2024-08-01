@@ -82,7 +82,7 @@ $string['eventwebhookcalled'] = 'Le webhook Nolej a été appelé.';
 $string['messageprovider:transcription_ok'] = 'Transcription terminée';
 $string['messageprovider:transcription_ko'] = 'Transcription échouée';
 $string['messageprovider:analysis_ok'] = 'Analyse complétée';
-$string['messageprovider:analysis_ko'] = 'Analysis échouée';
+$string['messageprovider:analysis_ko'] = 'Analyse échouée';
 $string['messageprovider:activities_ok'] = 'Activités générée';
 $string['messageprovider:activities_ko'] = 'Génération d\'activité échouée';
 $string['action_transcription_ok'] = 'Transcription prête';
@@ -92,7 +92,7 @@ $string['action_transcription_ko_body'] = 'Malheureusement, la transcription du 
 $string['action_analysis_ok'] = 'Analyse prête';
 $string['action_analysis_ok_body'] = 'Analyse du document "{$a->title}" complétée le {$a->tstamp}, vous pouvez désormais y accéder.';
 $string['action_analysis_ko'] = 'Analyse échouée';
-$string['action_analysis_ko_body'] = 'Malheureusement, l\'analysis du document "{$a->title}" a échoué le {$a->tstamp}. Message d\'erreur: {$a->errormessage}';
+$string['action_analysis_ko_body'] = 'Malheureusement, l\'analyse du document "{$a->title}" a échoué le {$a->tstamp}. Message d\'erreur: {$a->errormessage}';
 $string['action_activities_ok'] = 'Activitées générées avec succès';
 $string['action_activities_ok_body'] = 'Les activitées du document "{$a->title}" ont été générées le {$a->tstamp}.';
 $string['action_activities_ko'] = 'La génération d\'activités a échoué';
@@ -138,25 +138,25 @@ $string['limittype'] = 'Types permis: {$a}.';
 
 // Analysis.
 $string['analyze'] = 'Commencer l\'analyse';
-$string['analysisconfirm'] = 'Attention: Avant de continuer, avez-vous bien vérifié la transcription? Once the analysis begins, modifications cannot be made. Please ensure accuracy before continuing.';
+$string['analysisconfirm'] = 'Attention: Avant de continuer, avez-vous bien vérifié la transcription? Une fois l'analyse commencée, il n'est plus possible de la modifier. Veuillez vous assurer de l'exactitude des données avant de poursuivre.';
 $string['transcription'] = 'Transcription';
 $string['missingtranscription'] = 'Transcription manquante';
 $string['analysisstart'] = 'Analyse commencée. Vous recevrez une notification lorsque l\'analyse sera terminée.';
-$string['cannotwritetranscription'] = 'Impossible de sauvegarder la transcription sur le disque, veuillez contacter un Administrateur si l\'erreur persiste.';
+$string['cannotwritetranscription'] = 'Impossible de sauvegarder la transcription, veuillez contacter un administrateur si l\'erreur persiste.';
 
 // Summary.
 $string['summary'] = 'Résumé';
 $string['abstract'] = 'Abstrait';
 $string['keypoints'] = 'Points clé';
-$string['cannotwritesummary'] = 'Impossible de sauvegarder le résumé sur le disque, veuillez contacter un Administrateur si l\'erreur persiste.';
-$string['summarynotsaved'] = 'Échec de la mise à jour du résumé, veuillez contacter un Administrateur si l\'erreur persiste';
+$string['cannotwritesummary'] = 'Impossible de sauvegarder le résumé, veuillez contacter un administrateur si l\'erreur persiste.';
+$string['summarynotsaved'] = 'Échec de la mise à jour du résumé, veuillez contacter un administrateur si l\'erreur persiste';
 $string['summarysaved'] = 'Résumé enregistré.';
 
 // Questions.
 $string['questions'] = 'Questions';
 $string['questionssaved'] = 'Questions enregistrées.';
-$string['questionsnotsaved'] = 'Échec de la mise à jour des questions, veuillez contacter un Administrateur si l\'erreur persiste.';
-$string['cannotwritequestions'] = 'Impossible de sauvegarder les questions sur le disque, veuillez contacter un Administrateur si l\'erreur persiste.';
+$string['questionsnotsaved'] = 'Échec de la mise à jour des questions, veuillez contacter un administrateur si l\'erreur persiste.';
+$string['cannotwritequestions'] = 'Impossible de sauvegarder les questions, veuillez contacter un administrateur si l\'erreur persiste.';
 $string['questionn'] = 'Question #{$a}';
 $string['question'] = 'Question';
 $string['questiontype'] = 'Type de question';
@@ -176,9 +176,9 @@ $string['questionusedistractor'] = 'Affirmation à afficher';
 
 // Concepts.
 $string['concepts'] = 'Concepts';
-$string['cannotwriteconcepts'] = 'Impossible de sauvegarder les concepts sur le disque, veuillez contacter un Administrateur si l\'erreur persiste.';
+$string['cannotwriteconcepts'] = 'Impossible de sauvegarder les concepts, veuillez contacter un administrateur si l\'erreur persiste.';
 $string['conceptssaved'] = 'Concepts enregistrés.';
-$string['conceptsnotsaved'] = 'Échec de la mise à jour des concepts, veuillez contacter un Administrateur si l\'erreur persiste.';
+$string['conceptsnotsaved'] = 'Échec de la mise à jour des concepts, veuillez contacter un administrateur si l\'erreur persiste.';
 $string['conceptenable'] = 'Activé';
 $string['conceptlabel'] = 'Nom';
 $string['conceptdefinition'] = 'Définition';
