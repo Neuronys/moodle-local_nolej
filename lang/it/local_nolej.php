@@ -49,16 +49,16 @@ $string['apikeymissing'] = 'Manca la chiave API di Nolej. È necessario impostar
 
 // Manage.
 $string['library'] = 'Libreria Nolej';
+$string['backtolibrary'] = 'Torna alla libreria Nolej';
 $string['modules'] = 'I tuoi moduli Nolej';
 $string['status'] = 'Stato';
 $string['created'] = 'Creato';
 $string['lastupdate'] = 'Ultimo aggiornamento';
 $string['editmodule'] = 'Modifica';
-$string['createmodule'] = 'Crea un nuovo modulo Nolej';
+$string['createmodule'] = 'Crea modulo';
 $string['deletemodule'] = 'Elimina';
 $string['deletemoduledescription'] = 'Sei sicuro di voler eliminare questo modulo Nolej?';
 $string['moduledeleted'] = 'Il modulo Nolej è stato eliminato.';
-$string['action'] = 'Azione';
 $string['documentinfo'] = 'Informazioni sul modulo';
 $string['genericerror'] = 'Si è verificato un errore: <pre>{$a->error}</pre>';
 $string['moduleview'] = 'Visualizza modulo';
@@ -145,7 +145,6 @@ $string['analysisstart'] = 'Analisi avviata. Riceverai una notifica quando sarà
 $string['cannotwritetranscription'] = 'Impossibile salvare la trascrizione su disco, contatta un amministratore se questo errore persiste.';
 
 // Summary.
-$string['savesummary'] = 'Salva riepilogo';
 $string['summary'] = 'Riepilogo';
 $string['abstract'] = 'Abstract';
 $string['keypoints'] = 'Punti chiave';
@@ -155,7 +154,6 @@ $string['summarysaved'] = 'Il riepilogo è stato salvato.';
 
 // Questions.
 $string['questions'] = 'Domande';
-$string['savequestions'] = 'Salva domande';
 $string['questionssaved'] = 'Domande salvate.';
 $string['questionsnotsaved'] = 'Impossibile aggiornare le domande. Contatta un amministratore se questo errore persiste.';
 $string['cannotwritequestions'] = 'Impossibile salvare le domande su disco, contatta un amministratore se questo errore persiste.';
@@ -178,7 +176,6 @@ $string['questionusedistractor'] = 'Affermazione da visualizzare';
 
 // Concepts.
 $string['concepts'] = 'Concetti';
-$string['saveconcepts'] = 'Salva concetti';
 $string['cannotwriteconcepts'] = 'Impossibile salvare i concetti su disco, contatta un amministratore se questo errore persiste.';
 $string['conceptssaved'] = 'Concetti salvati.';
 $string['conceptsnotsaved'] = 'Impossibile aggiornare i concetti. Contatta un amministratore se questo errore persiste.';

@@ -23,7 +23,7 @@
  */
 define(['jquery'], function($) {
     $('#toggleinfo').click(function() {
-        $('#chevronIcon').toggleClass('fa-chevron-down');
-        $('#chevronIcon').toggleClass('fa-chevron-right');
+        let toggleicon = $(this).find('.fa-caret-right');
+        toggleicon.css('rotate', toggleicon.css('rotate') == '90deg' ? '' : '90deg');
     });
 });

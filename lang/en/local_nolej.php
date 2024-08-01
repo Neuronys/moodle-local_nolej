@@ -49,16 +49,16 @@ $string['apikeymissing'] = 'Nolej API key is missing. You need to set it in the 
 
 // Manage.
 $string['library'] = 'Nolej library';
+$string['backtolibrary'] = 'Back to Nolej library';
 $string['modules'] = 'Your Nolej modules';
 $string['status'] = 'Status';
 $string['created'] = 'Created';
 $string['lastupdate'] = 'Last update';
 $string['editmodule'] = 'Edit';
-$string['createmodule'] = 'Create a new Nolej module';
+$string['createmodule'] = 'Create module';
 $string['deletemodule'] = 'Delete';
 $string['deletemoduledescription'] = 'Are you sure you want to delete this Nolej module?';
 $string['moduledeleted'] = 'The Nolej module has been deleted.';
-$string['action'] = 'Action';
 $string['documentinfo'] = 'Module info';
 $string['genericerror'] = 'An error occurred: <pre>{$a->error}</pre>';
 $string['moduleview'] = 'View module';
@@ -145,7 +145,6 @@ $string['analysisstart'] = 'Analysis started. You will receive a notification wh
 $string['cannotwritetranscription'] = 'Cannot save transcription on disk, please contact an Administrator if this error persists.';
 
 // Summary.
-$string['savesummary'] = 'Save summary';
 $string['summary'] = 'Summary';
 $string['abstract'] = 'Abstract';
 $string['keypoints'] = 'Keypoints';
@@ -155,7 +154,6 @@ $string['summarysaved'] = 'Summary has been saved.';
 
 // Questions.
 $string['questions'] = 'Questions';
-$string['savequestions'] = 'Save questions';
 $string['questionssaved'] = 'Questions saved.';
 $string['questionsnotsaved'] = 'Could not update the questions. Please contact an Administrator if this error persists.';
 $string['cannotwritequestions'] = 'Cannot save questions on disk, please contact an Administrator if this error persists.';
@@ -178,7 +176,6 @@ $string['questionusedistractor'] = 'Statement to display';
 
 // Concepts.
 $string['concepts'] = 'Concepts';
-$string['saveconcepts'] = 'Save concepts';
 $string['cannotwriteconcepts'] = 'Cannot save concepts on disk, please contact an Administrator if this error persists.';
 $string['conceptssaved'] = 'Concepts saved.';
 $string['conceptsnotsaved'] = 'Could not update the concepts. Please contact an Administrator if this error persists.';

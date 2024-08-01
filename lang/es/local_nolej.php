@@ -49,16 +49,16 @@ $string['apikeymissing'] = 'Falta la clave de API de Nolej. Debes configurarla e
 
 // Manage.
 $string['library'] = 'Biblioteca de Nolej';
+$string['backtolibrary'] = 'Volver a la biblioteca de Nolej';
 $string['modules'] = 'Tus módulos de Nolej';
 $string['status'] = 'Estado';
 $string['created'] = 'Creado';
 $string['lastupdate'] = 'Última actualización';
 $string['editmodule'] = 'Editar';
-$string['createmodule'] = 'Crear un nuevo módulo de Nolej';
+$string['createmodule'] = 'Crear módulo';
 $string['deletemodule'] = 'Eliminar';
 $string['deletemoduledescription'] = '¿Estás seguro de que deseas eliminar este módulo de Nolej?';
 $string['moduledeleted'] = 'El módulo de Nolej ha sido eliminado.';
-$string['action'] = 'Acción';
 $string['documentinfo'] = 'Información del módulo';
 $string['genericerror'] = 'Se produjo un error: <pre>{$a->error}</pre>';
 $string['moduleview'] = 'Ver módulo';
@@ -145,7 +145,6 @@ $string['analysisstart'] = 'Análisis iniciado. Recibirás una notificación cua
 $string['cannotwritetranscription'] = 'No se puede guardar la transcripción en el disco, por favor, ponte en contacto con un administrador si este error persiste.';
 
 // Summary.
-$string['savesummary'] = 'Guardar resumen';
 $string['summary'] = 'Resumen';
 $string['abstract'] = 'Resumen';
 $string['keypoints'] = 'Puntos clave';
@@ -155,7 +154,6 @@ $string['summarysaved'] = 'El resumen se ha guardado.';
 
 // Questions.
 $string['questions'] = 'Preguntas';
-$string['savequestions'] = 'Guardar preguntas';
 $string['questionssaved'] = 'Preguntas guardadas.';
 $string['questionsnotsaved'] = 'No se pudo actualizar las preguntas. Por favor, ponte en contacto con un administrador si este error persiste.';
 $string['cannotwritequestions'] = 'No se pueden guardar las preguntas en el disco, por favor, ponte en contacto con un administrador si este error persiste.';
@@ -178,7 +176,6 @@ $string['questionusedistractor'] = 'Declaración a mostrar';
 
 // Concepts.
 $string['concepts'] = 'Conceptos';
-$string['saveconcepts'] = 'Guardar conceptos';
 $string['cannotwriteconcepts'] = 'No se pueden guardar los conceptos en el disco, por favor, ponte en contacto con un administrador si este error persiste.';
 $string['conceptssaved'] = 'Conceptos guardados.';
 $string['conceptsnotsaved'] = 'No se pudo actualizar los conceptos. Por favor, ponte en contacto con un administrador si este error persiste.';

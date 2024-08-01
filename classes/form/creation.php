@@ -46,6 +46,11 @@ class creation extends \moodleform {
 
         $mform = $this->_form;
 
+        // Context ID.
+        $contextid = $this->_customdata['contextid'];
+        $mform->addElement('hidden', 'contextid')->setValue($contextid);
+        $mform->setType('contextid', PARAM_INT);
+
         // Document title.
         $mform->addElement('text', 'title', get_string('title', 'local_nolej'), 'style="width:100%;"');
         $mform->setType('title', PARAM_NOTAGS);
@@ -68,7 +73,7 @@ class creation extends \moodleform {
         $mform->addElement(
             'static',
             'sourcelimits',
-            get_string('limitcontent', 'local_nolej'),
+            '',
             $OUTPUT->render_from_template(
                 'local_nolej/contentlimits',
                 (object) [
@@ -118,7 +123,7 @@ class creation extends \moodleform {
             'editor',
             'sourcetext',
             get_string('sourcefreetext', 'local_nolej'),
-            null,
+            ['class' => 'local_nolej-hide_special_buttons'],
             [
                 'maxfiles' => 0,
                 'maxbytes' => 0,
