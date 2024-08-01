@@ -73,7 +73,7 @@ class creation extends \moodleform {
         $mform->addElement(
             'static',
             'sourcelimits',
-            get_string('limitcontent', 'local_nolej'),
+            '',
             $OUTPUT->render_from_template(
                 'local_nolej/contentlimits',
                 (object) [

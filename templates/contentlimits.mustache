@@ -30,46 +30,49 @@
     }
 }}
 
-<div class="limit-container">
-    <details class="limit-details">
-        <summary>{{#str}} limitaudio, local_nolej {{/str}}</summary>
-        <div class="limit-content">
-            <ul>
-                <li>{{#str}} limitmaxduration, local_nolej, 60 {{/str}}</li>
-                <li>{{#str}} limitmincharacters, local_nolej, 500 {{/str}}</li>
-                <li>{{#str}} limitmaxsize, local_nolej, 1 {{/str}}</li>
-                <li>{{#str}} limitmaxcharacters, local_nolej, 50 000 {{/str}}</li>
-                <li>{{#str}} limittype, local_nolej, {{audioformats}} {{/str}}</li>
-            </ul>
+<div class="container-fluid mb-3 px-0">
+    <div id='accordion' class='border rounded w-100'>
+        <div id='headingOne'>
+            <a href='#' class='btn btn-default w-100 d-flex align-items-center' id='toggleinfo' data-toggle='collapse' data-target='#collapseOne' aria-expanded='true' aria-controls='collapseOne'>
+                <div class='w-100 text-left'>{{#str}} limitcontent, local_nolej {{/str}}</div>
+                <i id='chevronIcon' class='fa fa-chevron-right ml-3' aria-hidden='true'></i>
+            </a>
         </div>
-    </details>
-</div>
 
-<div class="limit-container">
-    <details class="limit-details">
-        <summary>{{#str}} limitvideo, local_nolej {{/str}}</summary>
-        <div class="limit-content">
-            <ul>
-                <li>{{#str}} limitmaxduration, local_nolej, 60 {{/str}}</li>
-                <li>{{#str}} limitmincharacters, local_nolej, 500 {{/str}}</li>
-                <li>{{#str}} limitmaxsize, local_nolej, 1 {{/str}}</li>
-                <li>{{#str}} limitmaxcharacters, local_nolej, 50 000 {{/str}}</li>
-                <li>{{#str}} limittype, local_nolej, {{videoformats}} {{/str}}</li>
-            </ul>
-        </div>
-    </details>
-</div>
+        <div class='container px-5'>
+            <div id='collapseOne' class='collapse' aria-labelledby='headingOne' data-parent='#accordion'>
+                <div class="pb-1 pt-3">
+                    <p class='mb-2'>{{#pix}} i/messagecontentaudio, core {{/pix}} {{#str}} limitaudio, local_nolej {{/str}}</p>
+                    <ul>
+                        <li>{{#str}} limitmaxduration, local_nolej, 60 {{/str}}</li>
+                        <li>{{#str}} limitmincharacters, local_nolej, 500 {{/str}}</li>
+                        <li>{{#str}} limitmaxsize, local_nolej, 1 {{/str}}</li>
+                        <li>{{#str}} limitmaxcharacters, local_nolej, 50 000 {{/str}}</li>
+                        <li>{{#str}} limittype, local_nolej, {{audioformats}} {{/str}}</li>
+                    </ul>
+                </div>
 
-<div class="limit-container">
-    <details class="limit-details">
-        <summary>{{#str}} limitdoc, local_nolej {{/str}}</summary>
-        <div class="limit-content">
-            <ul>
-                <li>{{#str}} limitmaxpages, local_nolej, 50 {{/str}}</li>
-                <li>{{#str}} limitmincharacters, local_nolej, 500 {{/str}}</li>
-                <li>{{#str}} limitmaxcharacters, local_nolej, 50 000 {{/str}}</li>
-                <li>{{#str}} limittype, local_nolej, {{docformats}} {{/str}}</li>
-            </ul>
+                <div class="py-1">
+                    <p class='mb-2'>{{#pix}} i/messagecontentvideo, core {{/pix}} {{#str}} limitvideo, local_nolej {{/str}}</p>
+                    <ul>
+                        <li>{{#str}} limitmaxduration, local_nolej, 60 {{/str}}</li>
+                        <li>{{#str}} limitmincharacters, local_nolej, 500 {{/str}}</li>
+                        <li>{{#str}} limitmaxsize, local_nolej, 1 {{/str}}</li>
+                        <li>{{#str}} limitmaxcharacters, local_nolej, 50 000 {{/str}}</li>
+                        <li>{{#str}} limittype, local_nolej, {{videoformats}} {{/str}}</li>
+                    </ul>
+                </div>
+
+                <div class="py-1">
+                    <p class='mb-2'>{{#pix}} i/files, core {{/pix}} {{#str}} limitdoc, local_nolej {{/str}}</p>
+                    <ul>
+                        <li>{{#str}} limitmaxpages, local_nolej, 50 {{/str}}</li>
+                        <li>{{#str}} limitmincharacters, local_nolej, 500 {{/str}}</li>
+                        <li>{{#str}} limitmaxcharacters, local_nolej, 50 000 {{/str}}</li>
+                        <li>{{#str}} limittype, local_nolej, {{docformats}} {{/str}}</li>
+                    </ul>
+                </div>
+            </div>
         </div>
-    </details>
+    </div>
 </div>

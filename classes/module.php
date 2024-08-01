@@ -362,6 +362,7 @@ class module {
         }
 
         $PAGE->requires->js_call_amd('local_nolej/creation');
+        $PAGE->requires->js_call_amd('local_nolej/toggleinfo'); // Used for content limits.
 
         echo $OUTPUT->header();
         $this->printinfo();
