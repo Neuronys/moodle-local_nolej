@@ -48,6 +48,11 @@ class summary extends \moodleform {
 
         $mform = $this->_form;
 
+        // Context ID.
+        $contextid = $this->_customdata['contextid'];
+        $mform->addElement('hidden', 'contextid')->setValue($contextid);
+        $mform->setType('contextid', PARAM_INT);
+
         // Document ID.
         $documentid = $this->_customdata['documentid'];
         $mform->addElement('hidden', 'documentid')->setValue($documentid);
@@ -67,7 +72,7 @@ class summary extends \moodleform {
         $json = api::readcontent($documentid, 'summary.json');
         if (!$json) {
             redirect(
-                new moodle_url('/local/nolej/manage.php'),
+                new moodle_url('/local/nolej/manage.php', ['contextid' => $contextid]),
                 get_string('genericerror', 'local_nolej', ['error' => var_export($result, true)]),
                 null,
                 notification::NOTIFY_ERROR
@@ -125,7 +130,7 @@ class summary extends \moodleform {
             $mform->addRule($keypointid, get_string('required'), 'required', null, 'server', false, false);
         }
 
-        $this->add_action_buttons(true, get_string('savesummary', 'local_nolej'));
+        $this->add_action_buttons(true, get_string('save'));
     }
 
     /**

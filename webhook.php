@@ -39,6 +39,11 @@ if ($data == null) {
     exit;
 }
 
+// Retrieve the context ID.
+$contextid = property_exists($data, 'contextid')
+    ? $data->$contextid
+    : SYSCONTEXTID;
+
 // Looking for a file.
 if (property_exists($data, 'fileid')) {
     $filename = $data->fileid;
@@ -75,7 +80,7 @@ if (property_exists($data, 'moduleid') && property_exists($data, 'userid')) {
     }
 
     // Parse POST data.
-    $nolej->parse();
+    $nolej->parse($contextid);
 }
 
 // Request not valid.

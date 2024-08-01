@@ -48,6 +48,11 @@ class questions extends \moodleform {
 
         $mform = $this->_form;
 
+        // Context ID.
+        $contextid = $this->_customdata['contextid'];
+        $mform->addElement('hidden', 'contextid')->setValue($contextid);
+        $mform->setType('contextid', PARAM_INT);
+
         // Document ID.
         $documentid = $this->_customdata['documentid'];
         $mform->addElement('hidden', 'documentid')->setValue($documentid);
@@ -67,7 +72,7 @@ class questions extends \moodleform {
         $json = api::readcontent($documentid, 'questions.json');
         if (!$json) {
             redirect(
-                new moodle_url('/local/nolej/manage.php'),
+                new moodle_url('/local/nolej/manage.php', ['contextid' => $contextid]),
                 get_string('genericerror', 'local_nolej', ['error' => var_export($result, true)]),
                 null,
                 notification::NOTIFY_ERROR
@@ -112,7 +117,7 @@ class questions extends \moodleform {
                 $mform->addElement(
                     'html',
                     sprintf(
-                        '<div class="local_nolej_question"><div class="badge %s">%s</div>',
+                        '<div class="local_nolej-question"><div class="badge %s">%s</div>',
                         $questiontype,
                         get_string('questiontype' . $questiontype, 'local_nolej')
                     )
@@ -212,7 +217,7 @@ class questions extends \moodleform {
             }
         }
 
-        $this->add_action_buttons(true, get_string('savequestions', 'local_nolej'));
+        $this->add_action_buttons(true, get_string('save'));
     }
 
     /**

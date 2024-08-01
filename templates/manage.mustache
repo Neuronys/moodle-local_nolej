@@ -29,8 +29,7 @@
             * ispending
             * iscompleted
             * isfailed
-            * editurl
-            * activitiesurl
+    * createurl
 
     Example context (json):
     {
@@ -44,16 +43,21 @@
                 "lastupdate": "2024-01-01 12:00",
                 "ispending": false,
                 "iscompleted": false,
-                "isfailed": false,
-                "editurl": "https://mymoodlesite.com/local/nolej/edit.php?documentid=abcd-efgh",
-                "activitiesurl": null
+                "isfailed": false
             }
-        ]
+        ],
+        "createurl": "mymoodle.com/local/nolej/edit.php"
     }
 }}
 
-<div class="text-right mb-3 mt-2">
-    <input type="button" class="btn btn-primary" value="{{#str}} createmodule, local_nolej {{/str}}" onclick="location.href='{{{createurl}}}'">
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>{{#str}} modules, local_nolej {{/str}}</h2>
+    <div class="text-right mb-3 mt-2">
+        <button type="button" class="btn btn-primary" onclick="location.href='{{{createurl}}}'">
+            {{#pix}} e/insert, core {{/pix}}
+            {{#str}} createmodule, local_nolej {{/str}}
+        </button>
+    </div>
 </div>
 
 <div class="table-responsive-xl">
@@ -64,7 +68,7 @@
             <th scope="col">{{#str}} created, local_nolej {{/str}}</th>
             <th scope="col" colspan="2">{{#str}} status, local_nolej {{/str}}</th>
             <th scope="col">{{#str}} lastupdate, local_nolej {{/str}}</th>
-            <th scope="col">{{#str}} action, local_nolej {{/str}}</th>
+            <th scope="col">{{#str}} actions {{/str}}</th>
         </tr>
     </thead>
     <tbody>
@@ -79,17 +83,7 @@
                 </td>
                 <td class="local_nolej_status pl-1">{{status}}</td>
                 <td class="local_nolej_lastupdate">{{lastupdate}}</td>
-                <td>
-                    {{#activitiesurl}}
-                    <input type="button" class="btn btn-primary mr-2 mb-2 local_nolej_activities" value="{{#str}} activities, local_nolej {{/str}}"
-                        onclick="location.href='{{{activitiesurl}}}'">
-                    {{/activitiesurl}}
-                    {{#editurl}}
-                    <input type="button" class="btn btn-secondary mr-2 mb-2 local_nolej_edit" value="{{#str}} editmodule, local_nolej {{/str}}"
-                        onclick="location.href='{{{editurl}}}'">
-                    {{/editurl}}
-                    <input type="button" class="btn btn-danger mr-2 mb-2 local_nolej_delete" data-moduleid="{{moduleid}}" value="{{#str}} deletemodule, local_nolej {{/str}}">
-                </td>
+                <td>{{{actions}}}</td>
             </tr>
         {{/modules}}
     </tbody>

@@ -86,6 +86,9 @@ class module {
     /** @var string */
     const STEP_ACTIVITIES = 'activities';
 
+    /** @var int */
+    protected int $contextid;
+
     /** @var ?object */
     protected ?object $document;
 
@@ -98,10 +101,12 @@ class module {
     /**
      * Constructor
      *
+     * @param int $contextid
      * @param object|null $document default null
      * @param string $step default ''
      */
-    public function __construct(?object $document = null, string $step = '') {
+    public function __construct(int $contextid = SYSCONTEXTID, ?object $document = null, string $step = '') {
+        $this->contextid = $contextid;
         $this->document = $document;
         $this->documentid = $document != null ? $document->document_id : null;
         $this->step = $step;
@@ -148,13 +153,16 @@ class module {
         global $OUTPUT, $PAGE, $DB, $USER, $SITE, $context;
 
         // Display and handle creation form.
-        $mform = new \local_nolej\form\creation();
+        $mform = new \local_nolej\form\creation(
+            new moodle_url('/local/nolej/edit.php', ['contextid' => $this->contextid]),
+            ['contextid' => $this->contextid]
+        );
 
         if ($mform->is_cancelled()) {
 
             // Cancelled. Return to library.
             redirect(
-                new moodle_url('/local/nolej/manage.php'),
+                $this->libraryurl(),
                 get_string('modulenotcreated', 'local_nolej'),
                 null,
                 notification::NOTIFY_INFO
@@ -201,12 +209,14 @@ class module {
                         break;
                     }
 
-                    $url = (
-                        new moodle_url(
-                            '/local/nolej/webhook.php',
-                            api::generatetoken(['fileid' => $filename])
-                        )
-                    )->out(false);
+                    $url = new moodle_url(
+                        '/local/nolej/webhook.php',
+                        api::generatetoken([
+                            'contextid' => $this->contextid,
+                            'fileid' => $filename,
+                        ])
+                    );
+                    $url = $url->out(false);
                     break;
 
                 case 'text':
@@ -222,12 +232,14 @@ class module {
                         break;
                     }
 
-                    $url = (
-                        new moodle_url(
-                            '/local/nolej/webhook.php',
-                            api::generatetoken(['fileid' => $filename])
-                        )
-                    )->out(false);
+                    $url = new moodle_url(
+                        '/local/nolej/webhook.php',
+                        api::generatetoken([
+                            'contextid' => $this->contextid,
+                            'fileid' => $filename,
+                        ])
+                    );
+                    $url = $url->out(false);
                     $format = 'freetext';
                     break;
             }
@@ -333,7 +345,7 @@ class module {
 
                     // Go back to library.
                     redirect(
-                        new moodle_url('/local/nolej/manage.php'),
+                        $this->libraryurl(),
                         get_string('modulecreated', 'local_nolej'),
                         null,
                         notification::NOTIFY_SUCCESS
@@ -350,8 +362,10 @@ class module {
         }
 
         $PAGE->requires->js_call_amd('local_nolej/creation');
+        $PAGE->requires->js_call_amd('local_nolej/toggleinfo'); // Used for content limits.
 
         echo $OUTPUT->header();
+        $this->printinfo();
         $mform->display();
         echo $OUTPUT->footer();
     }
@@ -364,21 +378,18 @@ class module {
 
         // Display and handle analysis form.
         $mform = new \local_nolej\form\transcription(
-            (
-                new moodle_url(
-                    '/local/nolej/edit.php',
-                    [
-                        'documentid' => $this->documentid,
-                        'step' => 'analysis',
-                    ]
-                )
-            )->out(false),
-            ['documentid' => $this->documentid]
+            $this->editurl('analysis'),
+            [
+                'contextid' => $this->contextid,
+                'documentid' => $this->documentid,
+            ]
         );
 
         if ($mform->is_cancelled()) {
+
             // Cancelled.
-            redirect(new moodle_url('/local/nolej/manage.php'));
+            redirect($this->libraryurl());
+
         } else if ($fromform = $mform->get_data()) {
             // Submitted and validated.
 
@@ -393,15 +404,15 @@ class module {
                 );
 
                 // Call Nolej analysis API.
-                $webhook = (
-                    new moodle_url(
-                        '/local/nolej/webhook.php',
-                        api::generatetoken([
-                                'documentid' => $this->documentid,
-                                'fileid' => 'transcription.htm',
-                        ])
-                    )
-                )->out(false);
+                $webhook = new moodle_url(
+                    '/local/nolej/webhook.php',
+                    api::generatetoken([
+                            'contextid' => $this->contextid,
+                            'documentid' => $this->documentid,
+                            'fileid' => 'transcription.htm',
+                    ])
+                );
+                $webhook = $webhook->out(false);
 
                 $result = api::put(
                     "/documents/{$this->documentid}/transcription",
@@ -423,7 +434,7 @@ class module {
                     )
                 ) {
                     redirect(
-                        new moodle_url('/local/nolej/manage.php'),
+                        $this->libraryurl(),
                         get_string('genericerror', 'local_nolej', (object) ['error' => var_export($result, true)]),
                         null,
                         notification::NOTIFY_ERROR
@@ -457,22 +468,14 @@ class module {
                 );
 
                 redirect(
-                    new moodle_url('/local/nolej/manage.php'),
+                    $this->libraryurl(),
                     get_string('analysisstart', 'local_nolej'),
                     null,
                     notification::NOTIFY_SUCCESS
                 );
             } else {
                 redirect(
-                    (
-                        new moodle_url(
-                            '/local/nolej/edit.php',
-                            [
-                                'documentid' => $this->documentid,
-                                'step' => 'analysis',
-                            ]
-                        )
-                    )->out(false),
+                    $this->editurl('analysis'),
                     get_string('missingtranscription', 'local_nolej'),
                     null,
                     notification::NOTIFY_ERROR
@@ -496,22 +499,17 @@ class module {
 
         // Display and handle concepts form.
         $mform = new \local_nolej\form\concepts(
-            (
-                new moodle_url(
-                    '/local/nolej/edit.php',
-                    [
-                        'documentid' => $this->documentid,
-                        'step' => 'concepts',
-                    ]
-                )
-            )->out(false),
-            ['documentid' => $this->documentid]
+            $this->editurl('concepts'),
+            [
+                'contextid' => $this->contextid,
+                'documentid' => $this->documentid,
+            ]
         );
 
         if ($mform->is_cancelled()) {
 
             // Cancelled.
-            redirect(new moodle_url('/local/nolej/manage.php'));
+            redirect($this->libraryurl());
 
         } else if ($fromform = $mform->get_data()) {
             // Submitted and validated.
@@ -526,7 +524,7 @@ class module {
             $json = api::readcontent($this->documentid, 'concepts.json');
             if (!$json) {
                 redirect(
-                    new moodle_url('/local/nolej/manage.php'),
+                    $this->libraryurl(),
                     get_string('genericerror', 'local_nolej', ['error' => var_export($result, true)]),
                     null,
                     notification::NOTIFY_ERROR
@@ -572,15 +570,7 @@ class module {
             );
             if (!$success) {
                 redirect(
-                    (
-                        new moodle_url(
-                            '/local/nolej/edit.php',
-                            [
-                                'documentid' => $this->documentid,
-                                'step' => 'concepts',
-                            ]
-                        )
-                    )->out(false),
+                    $this->editurl('concepts'),
                     get_string('cannotwriteconcepts', 'local_nolej'),
                     null,
                     notification::NOTIFY_ERROR
@@ -590,15 +580,7 @@ class module {
 
             $success = api::putcontent($this->documentid, 'concepts', 'concepts.json');
             redirect(
-                (
-                    new moodle_url(
-                        '/local/nolej/edit.php',
-                        [
-                            'documentid' => $this->documentid,
-                            'step' => 'concepts',
-                        ]
-                    )
-                )->out(false),
+                $this->editurl('concepts'),
                 get_string($success ? 'conceptssaved' : 'conceptsnotsaved', 'local_nolej'),
                 null,
                 $success ? notification::NOTIFY_SUCCESS : notification::NOTIFY_ERROR
@@ -619,22 +601,17 @@ class module {
 
         // Display and handle questions form.
         $mform = new \local_nolej\form\questions(
-            (
-                new moodle_url(
-                    '/local/nolej/edit.php',
-                    [
-                        'documentid' => $this->documentid,
-                        'step' => 'questions',
-                    ]
-                )
-            )->out(false),
-            ['documentid' => $this->documentid]
+            $this->editurl('questions'),
+            [
+                'contextid' => $this->contextid,
+                'documentid' => $this->documentid,
+            ]
         );
 
         if ($mform->is_cancelled()) {
 
             // Cancelled.
-            redirect(new moodle_url('/local/nolej/manage.php'));
+            redirect($this->libraryurl());
 
         } else if ($fromform = $mform->get_data()) {
             // Submitted and validated.
@@ -649,7 +626,7 @@ class module {
             $json = api::readcontent($this->documentid, 'questions.json');
             if (!$json) {
                 redirect(
-                    new moodle_url('/local/nolej/manage.php'),
+                    $this->libraryurl(),
                     get_string('genericerror', 'local_nolej', ['error' => var_export($result, true)]),
                     null,
                     notification::NOTIFY_ERROR
@@ -696,15 +673,7 @@ class module {
             );
             if (!$success) {
                 redirect(
-                    (
-                        new moodle_url(
-                            '/local/nolej/edit.php',
-                            [
-                                'documentid' => $this->documentid,
-                                'step' => 'questions',
-                            ]
-                        )
-                    )->out(false),
+                    $this->editurl('questions'),
                     get_string('cannotwritequestions', 'local_nolej'),
                     null,
                     notification::NOTIFY_ERROR
@@ -714,15 +683,7 @@ class module {
 
             $success = api::putcontent($this->documentid, 'questions', 'questions.json');
             redirect(
-                (
-                    new moodle_url(
-                        '/local/nolej/edit.php',
-                        [
-                            'documentid' => $this->documentid,
-                            'step' => 'questions',
-                        ]
-                    )
-                )->out(false),
+                $this->editurl('questions'),
                 get_string($success ? 'questionssaved' : 'questionsnotsaved', 'local_nolej'),
                 null,
                 $success ? notification::NOTIFY_SUCCESS : notification::NOTIFY_ERROR
@@ -743,22 +704,17 @@ class module {
 
         // Display and handle summary form.
         $mform = new \local_nolej\form\summary(
-            (
-                new moodle_url(
-                    '/local/nolej/edit.php',
-                    [
-                        'documentid' => $this->documentid,
-                        'step' => 'summary',
-                    ]
-                )
-            )->out(false),
-            ['documentid' => $this->documentid]
+            $this->editurl('summary'),
+            [
+                'contextid' => $this->contextid,
+                'documentid' => $this->documentid,
+            ]
         );
 
         if ($mform->is_cancelled()) {
 
             // Cancelled.
-            redirect(new moodle_url('/local/nolej/manage.php'));
+            redirect($this->libraryurl());
 
         } else if ($fromform = $mform->get_data()) {
             // Submitted and validated.
@@ -800,15 +756,7 @@ class module {
             );
             if (!$success) {
                 redirect(
-                    (
-                        new moodle_url(
-                            '/local/nolej/edit.php',
-                            [
-                                'documentid' => $this->documentid,
-                                'step' => 'summary',
-                            ]
-                        )
-                    )->out(false),
+                    $this->editurl('summary'),
                     get_string('cannotwritesummary', 'local_nolej'),
                     null,
                     notification::NOTIFY_ERROR
@@ -818,15 +766,7 @@ class module {
 
             $success = api::putcontent($this->documentid, 'summary', 'summary.json');
             redirect(
-                (
-                    new moodle_url(
-                        '/local/nolej/edit.php',
-                        [
-                            'documentid' => $this->documentid,
-                            'step' => 'summary',
-                        ]
-                    )
-                )->out(false),
+                $this->editurl('summary'),
                 get_string($success ? 'summarysaved' : 'summarynotsaved', 'local_nolej'),
                 null,
                 $success ? notification::NOTIFY_SUCCESS : notification::NOTIFY_ERROR
@@ -847,22 +787,17 @@ class module {
 
         // Display and handle activities form.
         $mform = new \local_nolej\form\activities(
-            (
-                new moodle_url(
-                    '/local/nolej/edit.php',
-                    [
-                        'documentid' => $this->documentid,
-                        'step' => 'activities',
-                    ]
-                )
-            )->out(false),
-            ['documentid' => $this->documentid]
+            $this->editurl('activities'),
+            [
+                'contextid' => $this->contextid,
+                'documentid' => $this->documentid,
+            ]
         );
 
         if ($mform->is_cancelled()) {
 
             // Cancelled.
-            redirect(new moodle_url('/local/nolej/manage.php'));
+            redirect($this->libraryurl());
 
         } else if ($fromform = $mform->get_data()) {
             // Submitted and validated.
@@ -877,7 +812,7 @@ class module {
             $json = api::readcontent($this->documentid, 'settings.json');
             if (!$json) {
                 redirect(
-                    new moodle_url('/local/nolej/manage.php'),
+                    $this->libraryurl(),
                     get_string('genericerror', 'local_nolej', ['error' => var_export($result, true)]),
                     null,
                     notification::NOTIFY_ERROR
@@ -977,15 +912,7 @@ class module {
             );
             if (!$success) {
                 redirect(
-                    (
-                        new moodle_url(
-                            '/local/nolej/edit.php',
-                            [
-                                'documentid' => $this->documentid,
-                                'step' => 'settings',
-                            ]
-                        )
-                    )->out(false),
+                    $this->editurl('settings'),
                     get_string('cannotwritesettings', 'local_nolej'),
                     null,
                     notification::NOTIFY_ERROR
@@ -1021,22 +948,14 @@ class module {
                 );
 
                 redirect(
-                    (new moodle_url('/local/nolej/manage.php'))->out(false),
+                    $this->libraryurl(),
                     get_string('generationstarted', 'local_nolej'),
                     null,
                     notification::NOTIFY_SUCCESS
                 );
             } else {
                 redirect(
-                    (
-                        new moodle_url(
-                            '/local/nolej/edit.php',
-                            [
-                                'documentid' => $this->documentid,
-                                'step' => 'settings',
-                            ]
-                        )
-                    )->out(false),
+                    $this->editurl('settings'),
                     get_string('settingsnotsaved', 'local_nolej'),
                     null,
                     notification::NOTIFY_ERROR
@@ -1051,10 +970,24 @@ class module {
     }
 
     /**
-     * Print module info
+     * Print module info.
+     * @return void
      */
     public function printinfo() {
         global $OUTPUT, $PAGE;
+
+        if ($this->documentid == null) {
+            // Document not yet created.
+            echo $OUTPUT->render_from_template(
+                'local_nolej/documentinfo',
+                (object) [
+                    'title' => get_string('statuscreation', 'local_nolej'),
+                    'libraryurl' => $this->libraryurl(true),
+                    'showinfo' => false,
+                ]
+            );
+            return;
+        }
 
         $PAGE->requires->js_call_amd('local_nolej/toggleinfo');
         $reviewavailable = $this->document->status >= self::STATUS_REVISION;
@@ -1063,18 +996,80 @@ class module {
             'local_nolej/documentinfo',
             (object) [
                 'title' => $this->document->title,
+                'libraryurl' => $this->libraryurl(true),
+                'showinfo' => true,
                 'source' => $this->document->doc_url,
                 'sourcetype' => get_string('source' . $this->document->media_type, 'local_nolej'),
                 'transcription' => $reviewavailable ? api::readcontent($this->document->document_id, 'transcription.htm') : null,
-                'review' => $reviewavailable,
-                'concepts' => $this->step == 'concepts',
-                'questions' => $this->step == 'questions',
-                'summary' => $this->step == 'summary',
-                'settings' => $this->step == 'activities',
-                'editurl' => (new moodle_url('/local/nolej/edit.php', ['documentid' => $this->document->document_id]))->out(false),
-                'manageurl' => (new moodle_url('/local/nolej/manage.php'))->out(false),
             ]
         );
+
+        if (!$this->inreview()) {
+            return;
+        }
+
+        // Show review tabs.
+        $tabs = [
+            new \tabobject(
+                self::STEP_CONCEPTS,
+                $this->editurl('concepts'),
+                "<i class='fa fa-lightbulb-o mr-2' aria-hidden='true'></i> " . get_string('concepts', 'local_nolej'),
+            ),
+            new \tabobject(
+                self::STEP_QUESTIONS,
+                $this->editurl('questions'),
+                "<i class='fa fa-question mr-2' aria-hidden='true'></i> " . get_string('questions', 'local_nolej'),
+            ),
+            new \tabobject(
+                self::STEP_SUMMARY,
+                $this->editurl('summary'),
+                "<i class='fa fa-list mr-2' aria-hidden='true'></i> " . get_string('summary', 'local_nolej'),
+            ),
+            new \tabobject(
+                self::STEP_ACTIVITIES,
+                $this->editurl('activities'),
+                "<i class='fa fa-cog mr-2' aria-hidden='true'></i> " . get_string('settings', 'local_nolej'),
+            ),
+        ];
+
+        echo $OUTPUT->tabtree($tabs, $this->step);
+    }
+
+    /**
+     * Return true iff the current module is in review.
+     * @return bool
+     */
+    protected function inreview() {
+        $reviewsteps = [self::STEP_CONCEPTS, self::STEP_QUESTIONS, self::STEP_SUMMARY, self::STEP_ACTIVITIES];
+        return in_array($this->step, $reviewsteps);
+    }
+
+    /**
+     * Get the URL to the edit page of the current document in the current context.
+     * @param ?string $step
+     * @param bool $escaped if used in HTML code
+     * @return string url
+     */
+    protected function editurl($step = null, $escaped = false) {
+        $editurl = new moodle_url(
+            '/local/nolej/edit.php',
+            [
+                'contextid' => $this->contextid,
+                'documentid' => $this->documentid,
+                'step' => $step,
+            ]
+        );
+        return $editurl->out($escaped);
+    }
+
+    /**
+     * Get the URL to the library page in the current context.
+     * @param bool $escaped if used in HTML code
+     * @return string url
+     */
+    protected function libraryurl($escaped = false) {
+        $libraryurl = new moodle_url('/local/nolej/manage.php', ['contextid' => $this->contextid]);
+        return $libraryurl->out($escaped);
     }
 
     /**
@@ -1147,7 +1142,7 @@ class module {
     /**
      * Get the content bank url for the given module.
      * @param int $documentid
-     * @return string|false
+     * @return moodle_url|false
      */
     public static function getcontentbankurl($documentid) {
         global $DB;
@@ -1178,10 +1173,7 @@ class module {
 
         $context = $context ? reset($context) : false;
         if ($context && !empty($context->contextid)) {
-            return (new moodle_url(
-                '/contentbank/index.php',
-                ['contextid' => $context->contextid]
-            ))->out(false);
+            return new moodle_url('/contentbank/index.php', ['contextid' => $context->contextid]);
         }
 
         return false;

@@ -22,7 +22,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 define(['jquery', 'core/modal_factory', 'core/str', 'core/modal_events'], function($, ModalFactory, String, ModalEvents) {
-    var trigger = $('.local_nolej_delete');
+    var trigger = $('[data-action="delete"]');
     ModalFactory.create({
         type: ModalFactory.types.SAVE_CANCEL,
         title: String.get_string('deletemodule', 'local_nolej'),
@@ -39,7 +39,8 @@ define(['jquery', 'core/modal_factory', 'core/str', 'core/modal_events'], functi
             modal.getRoot().on(ModalEvents.save, function(e) {
                 e.preventDefault();
                 var moduleid = modal.params.moduleid;
-                window.location.href = M.cfg.wwwroot + '/local/nolej/delete.php?moduleid=' + moduleid;
+                window.location.href = M.cfg.wwwroot + '/local/nolej/delete.php?moduleid=' + moduleid
+                    + '&contextid=' + M.cfg.contextid;
             });
         });
 });

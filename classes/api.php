@@ -73,8 +73,11 @@ class api {
     /** @var array */
     protected $data;
 
+    /** @var int */
+    protected int $contextid = SYSCONTEXTID;
+
     /** @var bool */
-    public $shouldexit = true;
+    public bool $shouldexit = true;
 
     /**
      * Check that the API key has been set
@@ -436,11 +439,13 @@ class api {
      * Log the event
      * @param string $message
      * @param ?string $documentid
+     * @param int $contextid
      */
-    public function log($message, $documentid = null) {
+    public function log($message, $documentid = null, $contextid = SYSCONTEXTID) {
         $event = webhook_called::create(
             [
                 'other' => [
+                    'contextid' => $contextid,
                     'documentid' => $documentid,
                     'message' => $message,
                 ],
@@ -451,9 +456,10 @@ class api {
 
     /**
      * Parse the request.
+     * @param int $contextid The current context ID.
      * @param mixed $data if null parse POST data.
      */
-    public function parse($data = null) {
+    public function parse(int $contextid = SYSCONTEXTID, $data = null) {
         if ($data == null) {
             header('Content-type: application/json; charset=UTF-8');
             try {
@@ -474,6 +480,7 @@ class api {
             return;
         }
 
+        $this->contextid = $contextid;
         $this->data = $data;
         switch ($data['action']) {
             case 'transcription':
@@ -1079,6 +1086,19 @@ class api {
             false
         );
 
+        if (substr($action, -2) == 'ok') {
+            // Successful event redirect to module page.
+            $contexturl = new moodle_url('/local/nolej/edit.php', [
+                'contextid' => $this->contextid,
+                'documentid' => $documentid,
+            ]);
+        } else {
+            // Failed event redirect to library page.
+            $contexturl = new moodle_url('/local/nolej/manage.php', [
+                'contextid' => $this->contextid,
+            ]);
+        }
+
         $message = new message();
         $message->component = 'local_nolej';
         $message->name = $action;
@@ -1090,9 +1110,7 @@ class api {
         $message->fullmessagehtml = get_string($body, 'local_nolej', $vars);
         $message->smallmessage = get_string('action_' . $action, 'local_nolej');
         $message->notification = 1; // Notification generated from Moodle, not a user-to-user message.
-        $message->contexturl = substr($action, -2) == 'ok'
-            ? (new moodle_url('/local/nolej/edit.php', ['documentid' => $documentid]))->out(false)
-            : (new moodle_url('/local/nolej/manage.php'))->out(false);
+        $message->contexturl = $contexturl->out(false);
         $message->contexturlname = get_string('moduleview', 'local_nolej');
         $messageid = message_send($message);
 
@@ -1135,13 +1153,14 @@ class api {
     }
 
     /**
-     * Download the file.
+     * Download the file. Security checks are performed earlier by JWT checks.
      * @param string $filepath
      */
     public static function deliverfile(string $filepath) {
         global $CFG;
         require_once($CFG->libdir .'/filelib.php');
 
+        // Send the file.
         send_file($filepath, basename($filepath));
     }
 

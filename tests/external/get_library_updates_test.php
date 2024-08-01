@@ -99,7 +99,7 @@ class get_library_updates_test extends \externallib_advanced_testcase {
         );
 
         // Call the external service function.
-        $returnvalue = get_library_updates::execute([]);
+        $returnvalue = get_library_updates::execute(SYSCONTEXTID);
 
         // Clean return values to simulate the web service server.
         $returnvalue = \external_api::clean_returnvalue(
@@ -115,7 +115,7 @@ class get_library_updates_test extends \externallib_advanced_testcase {
         $this->assertEquals($documentid, $returnvalue['updates'][0]['documentid']);
 
         // Call again the external service function.
-        $returnvalue = get_library_updates::execute([]);
+        $returnvalue = get_library_updates::execute(SYSCONTEXTID);
 
         // Clean return values to simulate the web service server.
         $returnvalue = \external_api::clean_returnvalue(
@@ -141,6 +141,6 @@ class get_library_updates_test extends \externallib_advanced_testcase {
 
         // Call without required capability.
         $this->expectException(\required_capability_exception::class);
-        get_library_updates::execute([]);
+        get_library_updates::execute(SYSCONTEXTID);
     }
 }

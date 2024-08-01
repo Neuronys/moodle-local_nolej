@@ -29,17 +29,23 @@ require_once($CFG->dirroot . '/local/nolej/classes/module.php');
 
 use local_nolej\module;
 
-require_login();
-$context = context_system::instance();
+$contextid = optional_param('contextid', SYSCONTEXTID /* Fallback to context system. */, PARAM_INT);
+
+// Get the context instance and course data from the context ID.
+[$context, $course] = \local_nolej\utils::get_info_from_context($contextid);
+
+// Perform security checks.
+require_login($course);
 require_capability('local/nolej:usenolej', $context);
 
-$PAGE->set_url(new moodle_url('/local/nolej/manage.php'));
-$PAGE->set_context($context);
+// Page configuration.
+$PAGE->set_url('/local/nolej/manage.php', ['contextid' => $context->id]);
 $PAGE->set_pagelayout('standard');
 
-$PAGE->set_heading(get_string('modules', 'local_nolej'));
+\local_nolej\utils::page_setup($context, $course);
 $PAGE->set_title(get_string('library', 'local_nolej'));
 
+// JS and CSS dependencies.
 $PAGE->requires->js_call_amd('local_nolej/delete');
 $PAGE->requires->css('/local/nolej/styles.css');
 
@@ -65,6 +71,59 @@ $modules = $DB->get_records(
 $modulearray = [];
 foreach ($modules as $module) {
 
+    // Actions menu.
+    $menu = new action_menu();
+    $menu->set_menu_trigger(get_string('actions'));
+
+    // Activities preview link.
+    if ($module->status == module::STATUS_COMPLETED) {
+        $contentbankurl = module::getcontentbankurl($module->document_id);
+        if ($contentbankurl) {
+            $menu->add(
+                new action_menu_link(
+                    $contentbankurl,
+                    new pix_icon('i/preview', 'core'),
+                    get_string('activities', 'local_nolej'),
+                    false
+                )
+            );
+        }
+    }
+
+    // Edit link, visible iff module is not failed.
+    if ($module->status != module::STATUS_FAILED && $module->status != module::STATUS_CREATION) {
+        $editurl = new moodle_url(
+            '/local/nolej/edit.php',
+            [
+                'contextid' => $context->id,
+                'documentid' => $module->document_id,
+                'step' => $status2form[$module->status],
+            ]
+        );
+        $menu->add(
+            new action_menu_link(
+                $editurl,
+                new pix_icon('i/edit', 'core'),
+                get_string('editmodule', 'local_nolej'),
+                false
+            )
+        );
+    }
+
+    // Delete module link.
+    $menu->add(
+        new action_menu_link(
+            new moodle_url('#'),
+            new pix_icon('i/delete', 'core'),
+            get_string('deletemodule', 'local_nolej'),
+            false,
+            [
+                'data-action' => 'delete',
+                'data-moduleid' => $module->document_id,
+            ]
+        )
+    );
+
     $moduledata = [
         'moduleid' => $module->id,
         'title' => $module->title,
@@ -75,26 +134,16 @@ foreach ($modules as $module) {
         'ispending' => module::isstatuspending($module->status),
         'iscompleted' => $module->status == module::STATUS_COMPLETED,
         'isfailed' => $module->status == module::STATUS_FAILED,
-        'editurl' => $module->status != module::STATUS_FAILED && $module->status != module::STATUS_CREATION
-            ? (
-                new moodle_url(
-                    '/local/nolej/edit.php',
-                    [
-                        'documentid' => $module->document_id,
-                        'step' => $status2form[$module->status],
-                    ]
-                )
-            )->out(false)
-            : false,
-        'activitiesurl' => $module->status == module::STATUS_COMPLETED ? module::getcontentbankurl($module->document_id) : false,
+        'actions' => $OUTPUT->render($menu),
     ];
 
     $modulearray[] = $moduledata;
 }
 
+$createurl = new moodle_url('/local/nolej/edit.php', ['contextid' => $context->id]);
 $templatecontext = (object) [
     'modules' => $modulearray,
-    'createurl' => (new moodle_url('/local/nolej/edit.php'))->out(false),
+    'createurl' => $createurl->out(false),
 ];
 
 // Initialize polling.
