@@ -1,14 +1,7 @@
-/* Document creation */
+/* Hide Atto editor extra buttons */
 
-#fitem_id_sourcetext .atto_image_button,
-#fitem_id_sourcetext .atto_h5p_button {
-    display: none;
-}
-
-/* Document analysis */
-
-#fitem_id_transcription .atto_image_button,
-#fitem_id_transcription .atto_h5p_button {
+.hide-atto-buttons .atto_group.files_group,
+.hide-atto-buttons .atto_group.collapse_group {
     display: none;
 }
 

@@ -109,7 +109,7 @@ class transcription extends \moodleform {
             'editor',
             'transcription',
             get_string('transcription', 'local_nolej'),
-            null,
+            ['class' => 'hide-atto-buttons'],
             [
                 'subdirs' => 0,
                 'maxbytes' => 0,
