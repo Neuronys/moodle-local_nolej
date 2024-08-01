@@ -138,7 +138,7 @@ $string['limittype'] = 'Types permis: {$a}.';
 
 // Analysis.
 $string['analyze'] = 'Commencer l\'analyse';
-$string['analysisconfirm'] = 'Attention: Avant de continuer, avez-vous bien vérifié la transcription? Une fois l'analyse commencée, il n'est plus possible de la modifier. Veuillez vous assurer de l'exactitude des données avant de poursuivre.';
+$string['analysisconfirm'] = 'Attention: Avant de continuer, avez-vous bien vérifié la transcription? Une fois l\'analyse commencée, il n\'est plus possible de la modifier. Veuillez vous assurer de l\'exactitude des données avant de poursuivre.';
 $string['transcription'] = 'Transcription';
 $string['missingtranscription'] = 'Transcription manquante';
 $string['analysisstart'] = 'Analyse commencée. Vous recevrez une notification lorsque l\'analyse sera terminée.';
