@@ -49,6 +49,7 @@ $string['apikeymissing'] = 'La clé API Nolej est manquante. Rendez-vous dans le
 
 // Manage.
 $string['library'] = 'Bibliothèque Nolej';
+$string['backtolibrary'] = 'Retour à la bibliothèque Nolej';
 $string['modules'] = 'Vos modules Nolej';
 $string['status'] = 'État';
 $string['created'] = 'Créé';

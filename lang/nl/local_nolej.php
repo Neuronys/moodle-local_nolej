@@ -49,6 +49,7 @@ $string['apikeymissing'] = 'Nolej API-sleutel ontbreekt. U moet deze instellen i
 
 // Manage.
 $string['library'] = 'Nolej-bibliotheek';
+$string['backtolibrary'] = 'Terug naar de Nolej-bibliotheek';
 $string['modules'] = 'Uw Nolej-modules';
 $string['status'] = 'Status';
 $string['created'] = 'Aangemaakt';

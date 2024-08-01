@@ -25,7 +25,6 @@
 namespace local_nolej;
 
 use context;
-use moodle_url;
 use navigation_node;
 use core_course_category;
 

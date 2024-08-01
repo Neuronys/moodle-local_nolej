@@ -364,7 +364,7 @@ class module {
         $PAGE->requires->js_call_amd('local_nolej/creation');
 
         echo $OUTPUT->header();
-        echo $OUTPUT->heading(get_string('statuscreation', 'local_nolej'));
+        $this->printinfo();
         $mform->display();
         echo $OUTPUT->footer();
     }
@@ -975,15 +975,28 @@ class module {
     public function printinfo() {
         global $OUTPUT, $PAGE;
 
+        if ($this->documentid == null) {
+            // Document not yet created.
+            echo $OUTPUT->render_from_template(
+                'local_nolej/documentinfo',
+                (object) [
+                    'title' => get_string('statuscreation', 'local_nolej'),
+                    'libraryurl' => $this->libraryurl(true),
+                    'showinfo' => false,
+                ]
+            );
+            return;
+        }
+
         $PAGE->requires->js_call_amd('local_nolej/toggleinfo');
         $reviewavailable = $this->document->status >= self::STATUS_REVISION;
-
-        echo $OUTPUT->heading($this->document->title);
 
         echo $OUTPUT->render_from_template(
             'local_nolej/documentinfo',
             (object) [
                 'title' => $this->document->title,
+                'libraryurl' => $this->libraryurl(true),
+                'showinfo' => true,
                 'source' => $this->document->doc_url,
                 'sourcetype' => get_string('source' . $this->document->media_type, 'local_nolej'),
                 'transcription' => $reviewavailable ? api::readcontent($this->document->document_id, 'transcription.htm') : null,
@@ -1033,9 +1046,10 @@ class module {
     /**
      * Get the URL to the edit page of the current document in the current context.
      * @param ?string $step
+     * @param bool $escaped if used in HTML code
      * @return string url
      */
-    protected function editurl($step = null) {
+    protected function editurl($step = null, $escaped = false) {
         $editurl = new moodle_url(
             '/local/nolej/edit.php',
             [
@@ -1044,16 +1058,17 @@ class module {
                 'step' => $step,
             ]
         );
-        return $editurl->out(false);
+        return $editurl->out($escaped);
     }
 
     /**
      * Get the URL to the library page in the current context.
+     * @param bool $escaped if used in HTML code
      * @return string url
      */
-    protected function libraryurl() {
+    protected function libraryurl($escaped = false) {
         $libraryurl = new moodle_url('/local/nolej/manage.php', ['contextid' => $this->contextid]);
-        return $libraryurl->out(false);
+        return $libraryurl->out($escaped);
     }
 
     /**

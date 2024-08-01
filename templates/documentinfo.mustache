@@ -19,6 +19,8 @@
 
     Context variables required for this template:
     * title
+    * libraryurl
+    * showinfo
     * source
     * sourcetype
     * transcription
@@ -26,12 +28,25 @@
     Example context (json):
     {
         "title": "My Nolej Module",
+        "libraryurl": "mymoodle.com/local/nolej/manage.php",
+        "showinfo": true,
         "source": "https://www.youtube.com/...",
         "sourcetype": "Video",
         "transcription": "This is the transcription of the video"
     }
 }}
 
+<div class='container px-0 mb-5'>
+    <div class="text-left mb-3 mt-2">
+        <a href="{{{libraryurl}}}">
+            {{#pix}} i/return, core {{/pix}}
+            {{#str}} backtolibrary, local_nolej {{/str}}
+        </a>
+    </div>
+    <h2>{{title}}</h2>
+</div>
+
+{{#showinfo}}
 <div class='container mx-3 my-5' id='documentinfo'>
     <div id='accordion'>
         <div class='card'>
@@ -72,3 +87,4 @@
         </div>
     </div>
 </div>
+{{/showinfo}}

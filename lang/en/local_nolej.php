@@ -49,6 +49,7 @@ $string['apikeymissing'] = 'Nolej API key is missing. You need to set it in the 
 
 // Manage.
 $string['library'] = 'Nolej library';
+$string['backtolibrary'] = 'Back to Nolej library';
 $string['modules'] = 'Your Nolej modules';
 $string['status'] = 'Status';
 $string['created'] = 'Created';
