@@ -71,8 +71,8 @@ class utils {
     public static function page_setup(context $context, ?object $course = null, string $contextidkey = 'contextid') {
         global $PAGE;
 
-        // We only define the context of the page if the course is null, because "in theory", require_login must b
-        // called first with the course, which set the page course and context for us.
+        // We only define the context of the page if the course is null, because "in theory", require_login
+        // must be called first with the course, which set the page course and context for us.
         // Cannot check with $PAGE->context due to debbuging.
         if ($course === null) {
             $PAGE->set_context($context);

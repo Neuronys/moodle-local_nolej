@@ -29,6 +29,7 @@ defined('MOODLE_INTERNAL') || die();
 
 use curl;
 use moodle_url;
+use context;
 use context_coursecat;
 use core_course_category;
 use core_user;
@@ -444,8 +445,8 @@ class api {
     public function log($message, $documentid = null, $contextid = SYSCONTEXTID) {
         $event = webhook_called::create(
             [
+                'context' => context::instance_by_id($contextid),
                 'other' => [
-                    'contextid' => $contextid,
                     'documentid' => $documentid,
                     'message' => $message,
                 ],

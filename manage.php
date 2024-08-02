@@ -119,7 +119,7 @@ foreach ($modules as $module) {
             false,
             [
                 'data-action' => 'delete',
-                'data-moduleid' => $module->document_id,
+                'data-moduleid' => $module->id,
             ]
         )
     );
