@@ -35,7 +35,7 @@ $token = required_param('token', PARAM_NOTAGS);
 $data = $nolej->decodetoken($token);
 
 if ($data == null) {
-    $this->respondwithmessage(400, 'Request not valid.');
+    $nolej->respondwithmessage(400, 'Request not valid.');
     exit;
 }
 

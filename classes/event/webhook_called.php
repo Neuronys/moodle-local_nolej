@@ -28,7 +28,6 @@ namespace local_nolej\event;
 // phpcs:ignore
 defined('MOODLE_INTERNAL') || die();
 
-use context;
 use moodle_url;
 
 /**
@@ -40,7 +39,6 @@ class webhook_called extends \core\event\base {
      * Init the event
      */
     protected function init() {
-        $this->context = context::instance_by_id($this->other['contextid']);
         $this->data['crud'] = 'c'; // Create, Read, Update, Delete.
         $this->data['edulevel'] = \core\event\base::LEVEL_OTHER;
     }
