@@ -30,7 +30,7 @@ use local_nolej\module;
 use core\output\notification;
 
 $moduleid = required_param('moduleid', PARAM_INT);
-$contextid = optional_param('contextid', SYSCONTEXTID /* Fallback to context system. */, PARAM_INT);
+$contextid = optional_param('contextid', SYSCONTEXTID, PARAM_INT); // Fallback to context system.
 
 // Get the context instance from its id.
 $context = context::instance_by_id($contextid);
