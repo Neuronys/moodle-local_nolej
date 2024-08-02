@@ -447,7 +447,6 @@ class api {
             [
                 'context' => context::instance_by_id($contextid),
                 'other' => [
-                    'contextid' => $contextid,
                     'documentid' => $documentid,
                     'message' => $message,
                 ],
