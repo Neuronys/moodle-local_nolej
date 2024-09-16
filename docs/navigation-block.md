@@ -91,12 +91,11 @@ of the Moodle interface.
 
 1. **Download banner images**
 
-    Choose the banner matching the best your themes (banners can be found here: linkwip) and need to be put in `<moodle>/local/nolej/pix/<banner_filename.png>`
+    Choose the banner matching the best your themes (banners can be found here: [Moodle Banner Link](https://bit.ly/nolej-moodle-templates))
 
 2. **Log In and Enter Edit Mode**
 
-    Once logged in as a platform administrator and in edit mode, locate the block management panel on
-    the right side of the interface.
+    Once logged in as a platform administrator and in edit mode, locate the block management panel on the right side of the interface.
 
     ![Moodle edit mode](images/navigation-block/navigation-block-01_Moodle_edit_mode.png)
 
