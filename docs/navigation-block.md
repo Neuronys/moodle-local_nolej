@@ -85,15 +85,15 @@ of the Moodle interface.
 
 ![Final result](images/navigation-block/navigation-block-10_Final_result.png)
 
-## Other propisitions of block or navigation
+## Other proposals for block and navigation
 
 ### Banner block
 
 1. **Download banner images**
 
-    Choose the banner matching the best your themes (banners can be found here: [Moodle Banner Link](https://bit.ly/nolej-moodle-templates))
+    Choose the banner best matching your moodle theme (official banners can be found here: [Moodle Banner Link](https://bit.ly/nolej-moodle-templates))
 
-2. **Log In and Enter Edit Mode**
+2. **Log in and enter Edit Mode**
 
     Once logged in as a platform administrator and in edit mode, locate the block management panel on the right side of the interface.
 
@@ -109,11 +109,11 @@ of the Moodle interface.
 
 4. **Configure the new block**
 
-    First add a tittle like `🪄 Nolej`, then insert a image and select the banner downloaded before.
+    First add a title like 🪄 Nolej, then insert an image and select the banner downloaded earlier.
 
     ![Banner configuration](images/navigation-block/navigation-block-11_banner.png)
 
-    You can use original size or find the one who fit the best for your theme
+    You can use the original size or find the one who fit the best for your theme
 
 5. **Configure the link**
 
@@ -121,16 +121,17 @@ of the Moodle interface.
 
     ![Adding link](images/navigation-block/navigation-block-12_Adding_link.png)
 
-    Configure the link as below with
+    Configure the link as below with <br><br>
     ```
     title => Geneate e-learning in minutes
     URL => <moodle>/local/nolej/manage.php
     ```
+    <br>
 
     ![alt text](images/navigation-block/navigation-block-13_Configure_link.png)
 
 
-6. **Save and permissions**
+6. **Save and set permissions**
 
     You can follow `step 5 to 9` of `Steps`
 
@@ -140,14 +141,10 @@ of the Moodle interface.
 
 1. **Access Site administration**
 
-   In Site administration go in **Appearance** and found the theme settings
+   In Site Administration go to **Appearance** and find the theme settings
 
 2. **Custom Menu Items**
 
-    If alreay created add `🪄 Nolej | <moodle>/local/nolej/manage.php` to the menu else create a new menu with
-    ```
-    More
-    🪄 Nolej | <moodle>/local/nolej/manage.php
-    ```
+    If alreay created, add 🪄 Nolej | <moodle>/local/nolej/manage.php to the menu; otherwise create a new menu with
 
 
