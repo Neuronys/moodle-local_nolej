@@ -109,7 +109,7 @@ of the Moodle interface.
 
 4. **Configure the new block**
 
-    First add a title like 🪄 Nolej, then insert an image and select the banner downloaded earlier.
+    First add a title like :magic_wand: Nolej, then insert an image and select the banner downloaded earlier.
 
     ![Banner configuration](images/navigation-block/navigation-block-11_banner.png)
 
@@ -121,30 +121,30 @@ of the Moodle interface.
 
     ![Adding link](images/navigation-block/navigation-block-12_Adding_link.png)
 
-    Configure the link as below with <br><br>
+    Configure the link as below with
+
     ```
     title => Geneate e-learning in minutes
     URL => <moodle>/local/nolej/manage.php
     ```
-    <br>
 
     ![alt text](images/navigation-block/navigation-block-13_Configure_link.png)
-
 
 6. **Save and set permissions**
 
     You can follow `step 5 to 9` of `Steps`
 
-
-
 ### In the navigation bar
 
 1. **Access Site administration**
 
-   In Site Administration go to **Appearance** and find the theme settings
+   In Site Administration go to **Appearance** and then **Theme settings**
 
 2. **Custom Menu Items**
 
-    If alreay created, add 🪄 Nolej | <moodle>/local/nolej/manage.php to the menu; otherwise create a new menu with
+   Create a new menu by inserting this line:
 
+   ```
+   🪄 Nolej | /local/nolej/manage.php
+   ```
 
