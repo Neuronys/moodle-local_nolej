@@ -80,7 +80,7 @@ class creation extends \moodleform {
                     'audioformats' => join(', ', api::TYPE_AUDIO),
                     'videoformats' => join(', ', api::TYPE_VIDEO),
                     'docformats' => join(', ', api::TYPE_DOC),
-                    'maxsize' => display_size(min($CFG->maxbytes, api::MAX_SIZE)),
+                    'maxsize' => display_size(get_max_upload_file_size($CFG->maxbytes, api::MAX_SIZE)),
                 ]
             )
         );
@@ -92,7 +92,7 @@ class creation extends \moodleform {
             get_string('sourcefile', 'local_nolej'),
             null,
             [
-                'maxbytes' => min($CFG->maxbytes, api::MAX_SIZE),
+                'maxbytes' => get_max_upload_file_size($CFG->maxbytes, api::MAX_SIZE),
                 'accepted_types' => join(',', api::allowedtypes()),
                 'maxfiles' => 1,
             ]
