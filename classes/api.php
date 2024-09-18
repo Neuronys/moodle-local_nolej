@@ -713,7 +713,7 @@ class api {
 
         // Start analysis without modifying the transcription.
         $result = self::put(
-            "/documents/{$document->id}/transcription",
+            "/documents/{$document->documentid}/transcription",
             [],
             true,
             true
