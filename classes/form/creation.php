@@ -80,7 +80,7 @@ class creation extends \moodleform {
                     'audioformats' => join(', ', api::TYPE_AUDIO),
                     'videoformats' => join(', ', api::TYPE_VIDEO),
                     'docformats' => join(', ', api::TYPE_DOC),
-                    'maxsizegb' => min($CFG->maxbytes, api::MAX_SIZE) / 1000000000,
+                    'maxsize' => display_size(min($CFG->maxbytes, api::MAX_SIZE)),
                 ]
             )
         );
