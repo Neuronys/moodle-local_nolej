@@ -48,6 +48,7 @@ if (($coursecontext = $context->get_course_context(false)) !== false) {
 
 // Perform security checks.
 require_login($courseid);
+require_sesskey();
 require_capability('local/nolej:usenolej', $context);
 
 $success = module::delete($moduleid);
