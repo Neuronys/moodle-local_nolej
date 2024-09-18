@@ -89,6 +89,15 @@ class api {
     }
 
     /**
+     * Get max bytes limit for a file.
+     * @return int
+     */
+    public static function getmaxbytes() {
+        global $CFG;
+        return get_max_upload_file_size($CFG->maxbytes, self::MAX_SIZE);
+    }
+
+    /**
      * Send a GET request to Nolej API
      * @param string $path
      * @param array $data
