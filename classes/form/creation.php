@@ -80,6 +80,7 @@ class creation extends \moodleform {
                     'audioformats' => join(', ', api::TYPE_AUDIO),
                     'videoformats' => join(', ', api::TYPE_VIDEO),
                     'docformats' => join(', ', api::TYPE_DOC),
+                    'maxsizegb' => api::MAX_SIZE / 1000000000,
                 ]
             )
         );
