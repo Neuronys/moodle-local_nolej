@@ -661,6 +661,29 @@ class api {
             return;
         }
 
+        // Start analysis if the source is not audio or video.
+        if (!in_array($document['media_type'], ['audio', 'video'])) {
+            $errormessage = $this->startanalysis($document);
+            if ($errormessage !== null) {
+                $this->sendnotification(
+                    $documentid,
+                    (int) $document->user_id,
+                    'transcription_ko',
+                    'ko',
+                    400,
+                    $errormessage,
+                    0,
+                    'action_transcription_ko_body',
+                    (object) [
+                        'title' => $document->title,
+                        'tstamp' => userdate(time(), get_string('strftimedatetimeshortaccurate', 'core_langconfig')),
+                        'errormessage' => $errormessage,
+                    ]
+                );
+                return;
+            }
+        }
+
         $this->sendnotification(
             $documentid,
             (int) $document->user_id,
@@ -677,6 +700,75 @@ class api {
         );
 
         $this->respondwithmessage(200, 'Transcription received!');
+    }
+
+    /**
+     * Start the analysis when the source of the transcription
+     * is not an audio or a video.
+     * @param object $document
+     * @return ?string
+     */
+    protected function startanalysis($document) {
+        global $DB, $USER;
+
+        // Start analysis without modifying the transcription.
+        $result = self::put(
+            "/documents/{$document->id}/transcription",
+            [],
+            true,
+            true
+        );
+
+        if (
+            !is_object($result) ||
+            !property_exists($result, 'result') ||
+            !is_string($result->result) ||
+            !(
+                $result->result == 'ok' ||
+                $result->result == '"ok"'
+            )
+        ) {
+            // Cannot start analysis, something went wrong.
+            $errormessage = var_export($result, true);
+            $DB->update_record(
+                'local_nolej_module',
+                (object) [
+                    'id' => $document->id,
+                    'document_id' => $document->documentid,
+                    'status' => module::STATUS_FAILED,
+                    'title' => $document->title,
+                ]
+            );
+            return $errormessage;
+        }
+
+        $DB->update_record(
+            'local_nolej_module',
+            (object) [
+                'id' => $document->id,
+                'document_id' => $document->documentid,
+                'status' => module::STATUS_ANALYSIS_PENDING,
+                'title' => $document->title,
+            ]
+        );
+
+        $DB->insert_record(
+            'local_nolej_activity',
+            (object) [
+                'document_id' => $document->documentid,
+                'user_id' => $USER->id,
+                'action' => 'transcription',
+                'tstamp' => time(),
+                'status' => 'ok',
+                'code' => 200,
+                'error_message' => '',
+                'consumed_credit' => 0,
+                'notified' => true,
+            ],
+            false
+        );
+
+        return null;
     }
 
     /**
