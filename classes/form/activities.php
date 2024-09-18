@@ -72,7 +72,8 @@ class activities extends \moodleform {
         $result = api::getcontent(
             $documentid,
             'settings',
-            'settings.json'
+            'settings.json',
+            true
         );
 
         $json = api::readcontent($documentid, 'settings.json');
