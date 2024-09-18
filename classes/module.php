@@ -407,9 +407,9 @@ class module {
                 $webhook = new moodle_url(
                     '/local/nolej/webhook.php',
                     api::generatetoken([
-                            'contextid' => $this->contextid,
-                            'documentid' => $this->documentid,
-                            'fileid' => 'transcription.htm',
+                        'contextid' => $this->contextid,
+                        'documentid' => $this->documentid,
+                        'fileid' => 'transcription.htm',
                     ])
                 );
                 $webhook = $webhook->out(false);

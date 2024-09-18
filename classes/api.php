@@ -662,7 +662,7 @@ class api {
         }
 
         // Start analysis if the source is not audio or video.
-        if (!in_array($document['media_type'], ['audio', 'video'])) {
+        if (!in_array($document->media_type, ['audio', 'video'])) {
             $errormessage = $this->startanalysis($document);
             if ($errormessage !== null) {
                 $this->sendnotification(
