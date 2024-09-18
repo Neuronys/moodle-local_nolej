@@ -38,9 +38,11 @@ define(['jquery', 'core/modal_factory', 'core/str', 'core/modal_events'], functi
         .done(function(modal) {
             modal.getRoot().on(ModalEvents.save, function(e) {
                 e.preventDefault();
-                var moduleid = modal.params.moduleid;
-                window.location.href = M.cfg.wwwroot + '/local/nolej/delete.php?moduleid=' + moduleid
-                    + '&contextid=' + M.cfg.contextid;
+                var deleteurl = new URL(M.cfg.wwwroot + '/local/nolej/delete.php');
+                deleteurl.searchParams.append('moduleid', modal.params.moduleid);
+                deleteurl.searchParams.append('contextid', M.cfg.contextid);
+                deleteurl.searchParams.append('sesskey', M.cfg.sesskey);
+                window.location.href = deleteurl.toString();
             });
         });
 });
