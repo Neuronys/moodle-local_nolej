@@ -68,8 +68,8 @@ class api {
     /** @var string[] Allowed text file formats */
     const TYPE_TEXT = ['txt', 'htm', 'html'];
 
-    /** @var int Max bytes for uploaded files (1 GB) */
-    const MAX_SIZE = 2500000000;
+    /** @var int Max bytes for uploaded files (2.5 GB) */
+    const MAX_SIZE = 2684354560;
 
     /** @var array */
     protected $data;
