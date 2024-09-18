@@ -920,7 +920,12 @@ class api {
      * create it if not exists.
      * @return int
      */
-    protected static function getnolejcategoryid() {
+    protected function getnolejcategoryid() {
+        $contextid = $this->contextid;
+        if (!empty($contextid) && (core_course_category::get($contextid, IGNORE_MISSING, true) != null)) {
+            return $contextid;
+        }
+
         $categoryid = get_config('local_nolej', 'categoryid');
 
         if (!empty($categoryid) && core_course_category::get($categoryid, IGNORE_MISSING, true) != null) {
@@ -940,8 +945,34 @@ class api {
     }
 
     /**
-     * Download activities and save them in the Content Box
-     *
+     * Get the Nolej module context.
+     * @param object $document
+     * @param int $timestamp
+     * @return context
+     */
+    protected function getmodulecontext($document, $timestamp) {
+        $contextid = $this->contextid;
+        if (!empty($contextid) && $contextid != SYSCONTEXTID) {
+            // Get the context where the user created the module.
+            return context::instance_by_id($contextid);
+        }
+
+        // Create category context in the system context.
+        $nolejcategoryid = $this->getnolejcategoryid();
+        $modulecategory = core_course_category::create((object) [
+            'name' => sprintf(
+                '%s (%s)',
+                $document->title,
+                userdate($timestamp, get_string('strftimedatetimeshortaccurate', 'core_langconfig'))
+            ),
+            'description' => userdate($timestamp, get_string('strftimedatetimeshortaccurate', 'core_langconfig')),
+            'parent' => $nolejcategoryid,
+        ]);
+        return context_coursecat::instance($modulecategory->id);
+    }
+
+    /**
+     * Download activities and save them in the Content Box.
      * @param object $document
      * @return array of errors
      */
@@ -950,11 +981,9 @@ class api {
 
         $errors = [];
 
-        $nolejcategoryid = self::getnolejcategoryid();
-        $h5pdir = self::h5pdir($document->document_id);
         $now = time();
-
         $fs = get_file_storage();
+        $h5pdir = self::h5pdir($document->document_id);
         $h5pfactory = new factory();
 
         $json = self::getcontent(
@@ -971,17 +1000,7 @@ class api {
         $activities = json_decode($json);
         $activities = $activities->activities;
 
-        // Create category.
-        $modulecategory = core_course_category::create((object) [
-            'name' => sprintf(
-                '%s (%s)',
-                $document->title,
-                userdate($now, get_string('strftimedatetimeshortaccurate', 'core_langconfig'))
-            ),
-            'description' => userdate($now, get_string('strftimedatetimeshortaccurate', 'core_langconfig')),
-            'parent' => $nolejcategoryid,
-        ]);
-        $modulecontext = context_coursecat::instance($modulecategory->id);
+        $modulecontext = $this->getmodulecontext($document, $now);
 
         foreach ($activities as $activity) {
             $filepath = sprintf('%s/%s.h5p', $h5pdir, $activity->activity_name);
@@ -1207,7 +1226,7 @@ class api {
      * @return string
      */
     public static function webhookurl($moduleid, $userid) {
-        $url = new \moodle_url(
+        $url = new moodle_url(
             '/local/nolej/webhook.php',
             self::generatetoken(
                 ['moduleid' => $moduleid, 'userid' => $userid],
@@ -1235,11 +1254,8 @@ class api {
             return $data->sub;
 
         } catch (Exception $e) {
-
             // Token not valid.
             return null;
         }
-
-        return null;
     }
 }
