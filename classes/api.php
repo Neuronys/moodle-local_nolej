@@ -711,6 +711,8 @@ class api {
     protected function startanalysis($document) {
         global $DB, $USER;
 
+        $this->log('Starting analysis automatically for document: ' . $document->documentid);
+
         // Start analysis without modifying the transcription.
         $result = self::put(
             "/documents/{$document->documentid}/transcription",
