@@ -457,6 +457,8 @@ class module {
         // Check transcription.
         if ($transcription == null) {
 
+            $this->log('Requesting analysis with unmodified transcription for document: ' . $this->documentid);
+
             // Confirm transcription.
             $result = api::put(
                 "/documents/{$this->documentid}/transcription",
@@ -489,6 +491,8 @@ class module {
                 ])
             );
 
+            $this->log('Requesting analysis for document: ' . $this->documentid);
+
             // Call Nolej analysis API.
             $result = api::put(
                 "/documents/{$this->documentid}/transcription",
@@ -511,8 +515,11 @@ class module {
                 $result->result == '"ok"'
             )
         ) {
+            $this->log('Analysis for document: ' . $this->documentid . ' failed to start. Error: ' . var_export($result, true));
             return get_string('genericerror', 'local_nolej', (object) ['error' => var_export($result, true)]);
         }
+
+        $this->log('Analysis request succedeed for document: ' . $this->documentid);
 
         // Analysis started.
         $DB->update_record(
