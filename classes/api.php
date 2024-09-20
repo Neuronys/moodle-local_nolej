@@ -663,8 +663,7 @@ class api {
 
         // Start analysis if the source is not audio or video.
         if (!in_array($document->media_type, ['audio', 'video'])) {
-            $this->log('Starting analysis automatically for document: ' . $document->documentid);
-
+            $this->log('Starting analysis automatically for document: ' . $document->document_id);
             $errormessage = $this->startanalysis($document);
             if ($errormessage !== null) {
                 $this->sendnotification(
@@ -684,8 +683,6 @@ class api {
                 );
                 return;
             }
-        } else {
-            $this->log('Not starting analysis automatically for document: ' . $document->documentid . ' as its media type is: ' . $document->media_type);
         }
 
         $this->sendnotification(
@@ -717,7 +714,7 @@ class api {
 
         // Start analysis without modifying the transcription.
         $result = self::put(
-            "/documents/{$document->documentid}/transcription",
+            "/documents/{$document->document_id}/transcription",
             [],
             true,
             true
@@ -738,7 +735,7 @@ class api {
                 'local_nolej_module',
                 (object) [
                     'id' => $document->id,
-                    'document_id' => $document->documentid,
+                    'document_id' => $document->document_id,
                     'status' => module::STATUS_FAILED,
                     'title' => $document->title,
                 ]
@@ -750,7 +747,7 @@ class api {
             'local_nolej_module',
             (object) [
                 'id' => $document->id,
-                'document_id' => $document->documentid,
+                'document_id' => $document->document_id,
                 'status' => module::STATUS_ANALYSIS_PENDING,
                 'title' => $document->title,
             ]
@@ -759,7 +756,7 @@ class api {
         $DB->insert_record(
             'local_nolej_activity',
             (object) [
-                'document_id' => $document->documentid,
+                'document_id' => $document->document_id,
                 'user_id' => $USER->id,
                 'action' => 'transcription',
                 'tstamp' => time(),
