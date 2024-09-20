@@ -150,7 +150,7 @@ class module {
      * Handle creation form
      */
     public function creation() {
-        global $OUTPUT, $PAGE, $DB, $USER, $SITE, $context;
+        global $OUTPUT, $PAGE, $USER;
 
         // Display and handle creation form.
         $mform = new \local_nolej\form\creation(
@@ -178,8 +178,6 @@ class module {
             $url = '';
             $filepath = '';
             $format = '';
-            $consumedcredit = 1;
-            $automaticmode = false;
 
             // Build URL and format for the selected source type.
             switch ($sourcetype) {
@@ -246,7 +244,7 @@ class module {
                     break;
             }
 
-            $errormessage = $this->docreation($context, $title, $language, $url, $filepath, $format, 1, false);
+            $errormessage = $this->docreation($title, $language, $url, $filepath, $format, 1, false);
             if ($errormessage !== null) {
                 \core\notification::add(
                     $errormessage,
@@ -284,7 +282,6 @@ class module {
      * @return ?string error message, null on success.
      */
     public function docreation(
-        $context,
         $title,
         $language,
         $url,
@@ -293,7 +290,7 @@ class module {
         $consumedcredit = 1,
         $automaticmode = false
     ) {
-        global $DB, $USER, $SITE;
+        global $DB, $USER, $SITE, $context;
 
         // Check that variables are set.
         if (empty($url) || empty($format)) {
