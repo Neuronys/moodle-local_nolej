@@ -464,6 +464,7 @@ class module {
                 false,
                 true
             );
+
         } else if (empty($transcription)) {
 
             // Transcription cannot be empty.
@@ -478,8 +479,8 @@ class module {
                 $transcription
             );
 
-            // Call Nolej analysis API.
-            $webhook = new moodle_url(
+            // Generate transcription url webhook.
+            $transcriptionurl = new moodle_url(
                 '/local/nolej/webhook.php',
                 api::generatetoken([
                     'contextid' => $this->contextid,
@@ -487,12 +488,12 @@ class module {
                     'fileid' => 'transcription.htm',
                 ])
             );
-            $webhook = $webhook->out(false);
 
+            // Call Nolej analysis API.
             $result = api::put(
                 "/documents/{$this->documentid}/transcription",
                 [
-                    's3URL' => $webhook,
+                    's3URL' => $transcriptionurl->out(false),
                     'automaticMode' => $automaticmode,
                 ],
                 true,
