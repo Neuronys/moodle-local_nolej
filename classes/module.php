@@ -488,7 +488,7 @@ class module {
                 ])
             );
             $webhook = $webhook->out(false);
-    
+
             $result = api::put(
                 "/documents/{$this->documentid}/transcription",
                 [
