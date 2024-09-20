@@ -460,8 +460,8 @@ class module {
             // Confirm transcription.
             $result = api::put(
                 "/documents/{$this->documentid}/transcription",
-                [],
-                true,
+                null,
+                false,
                 true
             );
         } else if (empty($transcription)) {
