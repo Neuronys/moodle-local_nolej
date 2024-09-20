@@ -454,16 +454,21 @@ class module {
     public function doanalysis($title, $transcription = null, $automaticmode = false) {
         global $DB, $USER;
 
+        $nolej = new api();
+
         // Check transcription.
         if ($transcription == null) {
 
-            $this->log('Requesting analysis with unmodified transcription for document: ' . $this->documentid);
+            $nolej->log(
+                'Requesting analysis with unmodified transcription for document: ' . $this->documentid,
+                $this->documentid
+            );
 
             // Confirm transcription.
             $result = api::put(
                 "/documents/{$this->documentid}/transcription",
                 [],
-                false,
+                true,
                 true
             );
 
@@ -491,7 +496,10 @@ class module {
                 ])
             );
 
-            $this->log('Requesting analysis for document: ' . $this->documentid);
+            $nolej->log(
+                'Requesting analysis for document: ' . $this->documentid,
+                $this->documentid
+            );
 
             // Call Nolej analysis API.
             $result = api::put(
@@ -515,11 +523,17 @@ class module {
                 $result->result == '"ok"'
             )
         ) {
-            $this->log('Analysis for document: ' . $this->documentid . ' failed to start. Error: ' . var_export($result, true));
+            $nolej->log(
+                'Analysis for document: ' . $this->documentid . ' failed to start. Error: ' . var_export($result, true),
+                $this->documentid
+            );
             return get_string('genericerror', 'local_nolej', (object) ['error' => var_export($result, true)]);
         }
 
-        $this->log('Analysis request succedeed for document: ' . $this->documentid);
+        $nolej->log(
+            'Analysis request succedeed for document: ' . $this->documentid,
+            $this->documentid
+        );
 
         // Analysis started.
         $DB->update_record(
