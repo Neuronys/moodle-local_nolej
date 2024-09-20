@@ -419,89 +419,19 @@ class module {
             $title = $fromform->title;
             $transcription = $fromform->transcription;
 
-            if (!empty($transcription)) {
-                api::writecontent(
-                    $this->documentid,
-                    'transcription.htm',
-                    $transcription
+            $errormessage = $this->doanalysis($title, $transcription);
+            if ($errormessage !== null) {
+                \core\notification::add(
+                    $errormessage,
+                    notification::NOTIFY_ERROR
                 );
-
-                // Call Nolej analysis API.
-                $webhook = new moodle_url(
-                    '/local/nolej/webhook.php',
-                    api::generatetoken([
-                        'contextid' => $this->contextid,
-                        'documentid' => $this->documentid,
-                        'fileid' => 'transcription.htm',
-                    ])
-                );
-                $webhook = $webhook->out(false);
-
-                $result = api::put(
-                    "/documents/{$this->documentid}/transcription",
-                    [
-                        's3URL' => $webhook,
-                        'automaticMode' => false,
-                    ],
-                    true,
-                    true
-                );
-
-                if (
-                    !is_object($result) ||
-                    !property_exists($result, 'result') ||
-                    !is_string($result->result) ||
-                    !(
-                        $result->result == 'ok' ||
-                        $result->result == '"ok"'
-                    )
-                ) {
-                    redirect(
-                        $this->libraryurl(),
-                        get_string('genericerror', 'local_nolej', (object) ['error' => var_export($result, true)]),
-                        null,
-                        notification::NOTIFY_ERROR
-                    );
-                }
-
-                $DB->update_record(
-                    'local_nolej_module',
-                    (object) [
-                        'id' => $this->document->id,
-                        'document_id' => $this->documentid,
-                        'status' => self::STATUS_ANALYSIS_PENDING,
-                        'title' => $title,
-                    ]
-                );
-
-                $DB->insert_record(
-                    'local_nolej_activity',
-                    (object) [
-                        'document_id' => $this->documentid,
-                        'user_id' => $USER->id,
-                        'action' => 'transcription',
-                        'tstamp' => time(),
-                        'status' => 'ok',
-                        'code' => 200,
-                        'error_message' => '',
-                        'consumed_credit' => 0,
-                        'notified' => true,
-                    ],
-                    false
-                );
-
+            } else {
+                // Go back to library.
                 redirect(
                     $this->libraryurl(),
                     get_string('analysisstart', 'local_nolej'),
                     null,
                     notification::NOTIFY_SUCCESS
-                );
-            } else {
-                redirect(
-                    $this->editurl('analysis'),
-                    get_string('missingtranscription', 'local_nolej'),
-                    null,
-                    notification::NOTIFY_ERROR
                 );
             }
         }
@@ -512,6 +442,105 @@ class module {
         $this->printinfo();
         $mform->display();
         echo $OUTPUT->footer();
+    }
+
+    /**
+     * Call Nolej API to start the analysis.
+     * @param string $title
+     * @param ?string $transcription null to start analysis with no transcription changes.
+     * @param bool $automaticmode
+     * @return ?string error message, null on success.
+     */
+    public function doanalysis($title, $transcription = null, $automaticmode = false) {
+        global $DB, $USER;
+
+        // Check transcription.
+        if ($transcription == null) {
+
+            // Confirm transcription.
+            $result = api::put(
+                "/documents/{$this->documentid}/transcription",
+                [],
+                true,
+                true
+            );
+        } else if (empty($transcription)) {
+
+            // Transcription cannot be empty.
+            return get_string('missingtranscription', 'local_nolej');
+
+        } else {
+
+            // Update transcription file.
+            api::writecontent(
+                $this->documentid,
+                'transcription.htm',
+                $transcription
+            );
+
+            // Call Nolej analysis API.
+            $webhook = new moodle_url(
+                '/local/nolej/webhook.php',
+                api::generatetoken([
+                    'contextid' => $this->contextid,
+                    'documentid' => $this->documentid,
+                    'fileid' => 'transcription.htm',
+                ])
+            );
+            $webhook = $webhook->out(false);
+    
+            $result = api::put(
+                "/documents/{$this->documentid}/transcription",
+                [
+                    's3URL' => $webhook,
+                    'automaticMode' => $automaticmode,
+                ],
+                true,
+                true
+            );
+        }
+
+        // Check result.
+        if (
+            !is_object($result) ||
+            !property_exists($result, 'result') ||
+            !is_string($result->result) ||
+            !(
+                $result->result == 'ok' ||
+                $result->result == '"ok"'
+            )
+        ) {
+            return get_string('genericerror', 'local_nolej', (object) ['error' => var_export($result, true)]);
+        }
+
+        // Analysis started.
+        $DB->update_record(
+            'local_nolej_module',
+            (object) [
+                'id' => $this->document->id,
+                'document_id' => $this->documentid,
+                'status' => self::STATUS_ANALYSIS_PENDING,
+                'title' => $title,
+            ]
+        );
+
+        $DB->insert_record(
+            'local_nolej_activity',
+            (object) [
+                'document_id' => $this->documentid,
+                'user_id' => $USER->id,
+                'action' => 'transcription',
+                'tstamp' => time(),
+                'status' => 'ok',
+                'code' => 200,
+                'error_message' => '',
+                'consumed_credit' => 0,
+                'notified' => true,
+            ],
+            false
+        );
+
+        return null;
     }
 
     /**
