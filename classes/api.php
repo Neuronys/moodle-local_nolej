@@ -663,6 +663,8 @@ class api {
 
         // Start analysis if the source is not audio or video.
         if (!in_array($document->media_type, ['audio', 'video'])) {
+            $this->log('Starting analysis automatically for document: ' . $document->documentid);
+
             $errormessage = $this->startanalysis($document);
             if ($errormessage !== null) {
                 $this->sendnotification(
@@ -682,6 +684,8 @@ class api {
                 );
                 return;
             }
+        } else {
+            $this->log('Not starting analysis automatically for document: ' . $document->documentid . ' as its media type is: ' . $document->media_type);
         }
 
         $this->sendnotification(
@@ -710,8 +714,6 @@ class api {
      */
     protected function startanalysis($document) {
         global $DB, $USER;
-
-        $this->log('Starting analysis automatically for document: ' . $document->documentid);
 
         // Start analysis without modifying the transcription.
         $result = self::put(
