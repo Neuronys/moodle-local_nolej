@@ -465,9 +465,9 @@ class module {
                 true
             );
 
-        } else if (empty($transcription)) {
+        } else if (empty($transcription) || empty($title)) {
 
-            // Transcription cannot be empty.
+            // Transcription and title cannot be empty.
             return get_string('missingtranscription', 'local_nolej');
 
         } else {
