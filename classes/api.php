@@ -664,8 +664,21 @@ class api {
         // Start analysis if the source is not audio or video.
         if (!in_array($document->media_type, ['audio', 'video'])) {
             $this->log('Starting analysis automatically for document: ' . $document->document_id);
-            $errormessage = $this->startanalysis($document);
+
+            $module = new module($this->contextid, $document);
+            $errormessage = $module->doanalysis($document->title);
             if ($errormessage !== null) {
+                // Cannot start analysis, something went wrong.
+                $DB->update_record(
+                    'local_nolej_module',
+                    (object) [
+                        'id' => $document->id,
+                        'document_id' => $document->document_id,
+                        'status' => module::STATUS_FAILED,
+                        'title' => $document->title,
+                    ]
+                );
+
                 $this->sendnotification(
                     $documentid,
                     (int) $document->user_id,
@@ -681,6 +694,7 @@ class api {
                         'errormessage' => $errormessage,
                     ]
                 );
+
                 return;
             }
         }
@@ -701,75 +715,6 @@ class api {
         );
 
         $this->respondwithmessage(200, 'Transcription received!');
-    }
-
-    /**
-     * Start the analysis when the source of the transcription
-     * is not an audio or a video.
-     * @param object $document
-     * @return ?string
-     */
-    protected function startanalysis($document) {
-        global $DB, $USER;
-
-        // Start analysis without modifying the transcription.
-        $result = self::put(
-            "/documents/{$document->document_id}/transcription",
-            [],
-            true,
-            true
-        );
-
-        if (
-            !is_object($result) ||
-            !property_exists($result, 'result') ||
-            !is_string($result->result) ||
-            !(
-                $result->result == 'ok' ||
-                $result->result == '"ok"'
-            )
-        ) {
-            // Cannot start analysis, something went wrong.
-            $errormessage = var_export($result, true);
-            $DB->update_record(
-                'local_nolej_module',
-                (object) [
-                    'id' => $document->id,
-                    'document_id' => $document->document_id,
-                    'status' => module::STATUS_FAILED,
-                    'title' => $document->title,
-                ]
-            );
-            return $errormessage;
-        }
-
-        $DB->update_record(
-            'local_nolej_module',
-            (object) [
-                'id' => $document->id,
-                'document_id' => $document->document_id,
-                'status' => module::STATUS_ANALYSIS_PENDING,
-                'title' => $document->title,
-            ]
-        );
-
-        $DB->insert_record(
-            'local_nolej_activity',
-            (object) [
-                'document_id' => $document->document_id,
-                'user_id' => $USER->id,
-                'action' => 'transcription',
-                'tstamp' => time(),
-                'status' => 'ok',
-                'code' => 200,
-                'error_message' => '',
-                'consumed_credit' => 0,
-                'notified' => true,
-            ],
-            false
-        );
-
-        return null;
     }
 
     /**
