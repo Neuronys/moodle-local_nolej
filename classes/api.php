@@ -45,6 +45,7 @@ use Firebase\JWT\JWK;
 use mod_lti\local\ltiopenid\jwks_helper;
 
 global $CFG;
+require_once($CFG->libdir .'/filelib.php');
 require_once($CFG->dirroot . '/local/nolej/classes/event/webhook_called.php');
 require_once($CFG->dirroot . '/local/nolej/classes/module.php');
 
@@ -494,17 +495,17 @@ class api {
         $this->data = $data;
         switch ($data['action']) {
             case 'transcription':
-                $this->log('Received transcription request: ' . var_export($data, true));
+                $this->log('Received transcription update: ' . var_export($data, true));
                 $this->checktranscription();
                 break;
 
             case 'analysis':
-                $this->log('Received analysis request: ' . var_export($data, true));
+                $this->log('Received analysis update: ' . var_export($data, true));
                 $this->checkanalysis();
                 break;
 
             case 'activities':
-                $this->log('Received activities request: ' . var_export($data, true));
+                $this->log('Received activities update: ' . var_export($data, true));
                 $this->checkactivities();
                 break;
 
@@ -568,8 +569,21 @@ class api {
     }
 
     /**
-     * Check the transcription result
-     *
+     * Check the response status to be ok.
+     * @param array $data
+     * @param string $key
+     * @return bool
+     */
+    public static function isok($data, $key = 'status') {
+        if (!isset($data[$key])) {
+            return false;
+        }
+
+        return $data[$key] == 'ok' || $data[$key] == '\'ok\'';
+    }
+
+    /**
+     * Check the transcription result.
      * @return void
      */
     public function checktranscription() {
@@ -609,10 +623,7 @@ class api {
 
         $now = time();
 
-        if (
-            $this->data['status'] != '\'ok\'' &&
-            $this->data['status'] != 'ok'
-        ) {
+        if (!self::isok($this->data, 'status')) {
             $this->log('Result: ko');
 
             $success = $DB->update_record(
@@ -759,10 +770,7 @@ class api {
 
         $now = time();
 
-        if (
-            $this->data['status'] != '\'ok\'' &&
-            $this->data['status'] != 'ok'
-        ) {
+        if (!self::isok($this->data, 'status')) {
             $this->log('Result: ko');
 
             $success = $DB->update_record(
@@ -871,10 +879,7 @@ class api {
 
         $now = time();
 
-        if (
-            $this->data['status'] != '\'ok\'' &&
-            $this->data['status'] != 'ok'
-        ) {
+        if (!self::isok($this->data, 'status')) {
             $this->log('Result: ko');
 
             $success = $DB->update_record(
