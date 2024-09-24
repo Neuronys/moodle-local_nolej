@@ -55,7 +55,7 @@ require_once($CFG->dirroot . '/local/nolej/classes/module.php');
 class api {
 
     /** @var string Nolej API endpoint */
-    const ENDPOINT = 'https://api-staging.nolej.io';
+    const ENDPOINT = 'https://api-live.nolej.io';
 
     /** @var string[] Allowed audio formats */
     const TYPE_AUDIO = ['mp3', 'wav', 'opus', 'ogg', 'oga', 'm4a', 'aiff'];
