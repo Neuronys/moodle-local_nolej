@@ -1275,13 +1275,14 @@ class api {
      * Generate a webhook url with token, given module id.
      * @param string $moduleid
      * @param int $userid
+     * @param int $contextid
      * @return string
      */
-    public static function webhookurl($moduleid, $userid) {
+    public static function webhookurl($moduleid, $userid, $contextid = SYSCONTEXTID) {
         $url = new moodle_url(
             '/local/nolej/webhook.php',
             self::generatetoken(
-                ['moduleid' => $moduleid, 'userid' => $userid],
+                ['moduleid' => $moduleid, 'userid' => $userid, 'contextid' => $contextid],
                 false,
                 false
             )

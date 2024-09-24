@@ -324,7 +324,7 @@ class module {
         );
 
         // Get the webhook url for this module.
-        $webhookurl = api::webhookurl($moduleid, $USER->id);
+        $webhookurl = api::webhookurl($moduleid, $USER->id, $this->contextid);
 
         $result = api::post(
             '/documents',
