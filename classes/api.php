@@ -1308,7 +1308,7 @@ class api {
 
         } catch (\Firebase\JWT\ExpiredException $e) {
 
-            // Token has expired;
+            // Token has expired.
             return 'Token expired.';
 
         } catch (Exception $e) {
