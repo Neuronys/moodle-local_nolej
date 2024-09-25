@@ -1,5 +1,7 @@
-# ![Nolej logo](pix/nolej.svg) Nolej AI for Moodle LMS
+# Nolej AI for Moodle LMS
 Moodle integration plugin for [Nolej AI](https://nolej.io/).
+
+![Nolej logo](pix/nolej.svg)
 
 ## Introduction
 Nolej AI, developed by Neuronys, offers several advantages, including AI-driven
