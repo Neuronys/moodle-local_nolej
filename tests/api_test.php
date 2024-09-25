@@ -202,9 +202,10 @@ class api_test extends \advanced_testcase {
         $this->assertEquals((object) $data, $decodeddata);
 
         // Test webhook token.
+        $context = \context_system::instance();
         $moduleid = 1;
         $userid = 2;
-        $url = api::webhookurl($moduleid, $userid);
+        $url = api::webhookurl($moduleid, $userid, $context->id);
         $this->assertIsString($url);
 
         $parts = parse_url($url);
@@ -222,6 +223,6 @@ class api_test extends \advanced_testcase {
         $decodeddata = $nolej->decodetoken($token);
         $this->assertNotNull($decodeddata);
         $this->assertIsObject($decodeddata);
-        $this->assertEquals((object) ['moduleid' => $moduleid, 'userid' => $userid], $decodeddata);
+        $this->assertEquals((object) ['moduleid' => $moduleid, 'userid' => $userid, 'contextid' => $context->id], $decodeddata);
     }
 }

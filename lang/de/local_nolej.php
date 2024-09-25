@@ -71,8 +71,8 @@ $string['statuscreationpending'] = 'Transkription in Bearbeitung';
 $string['statusanalysis'] = 'Transkription abgeschlossen';
 $string['statusanalysispending'] = 'Analyse in Bearbeitung';
 $string['statusrevision'] = 'Analyse abgeschlossen';
-$string['statusrevisionpending'] = 'Revision in Bearbeitung';
-$string['statusactivities'] = 'Revision abgeschlossen';
+$string['statusrevisionpending'] = 'Überprüfung in Bearbeitung';
+$string['statusactivities'] = 'Überprüfung abgeschlossen';
 $string['statusactivitiespending'] = 'Aktivitätsgenerierung in Bearbeitung';
 $string['statuscompleted'] = 'Aktivitäten generiert';
 $string['statusfailed'] = 'Fehlgeschlagen';
@@ -85,11 +85,11 @@ $string['messageprovider:analysis_ok'] = 'Analyse abgeschlossen';
 $string['messageprovider:analysis_ko'] = 'Analyse fehlgeschlagen';
 $string['messageprovider:activities_ok'] = 'Aktivitäten generiert';
 $string['messageprovider:activities_ko'] = 'Generierung der Aktivität fehlgeschlagen';
-$string['action_transcription_ok'] = 'Transkription ist bereit';
+$string['action_transcription_ok'] = 'Transkription ist fertig';
 $string['action_transcription_ok_body'] = 'Die Transkription des Dokuments "{$a->title}" wurde am {$a->tstamp} abgeschlossen. Sie können es jetzt überprüfen und mit der Analyse beginnen.';
 $string['action_transcription_ko'] = 'Transkription fehlgeschlagen';
 $string['action_transcription_ko_body'] = 'Leider ist die Transkription des Dokuments "{$a->title}" am {$a->tstamp} fehlgeschlagen. Fehlermeldung: {$a->errormessage}';
-$string['action_analysis_ok'] = 'Analyse ist bereit';
+$string['action_analysis_ok'] = 'Analyse ist fertig';
 $string['action_analysis_ok_body'] = 'Die Analyse des Dokuments "{$a->title}" wurde am {$a->tstamp} abgeschlossen. Sie können es jetzt überprüfen.';
 $string['action_analysis_ko'] = 'Analyse fehlgeschlagen';
 $string['action_analysis_ko_body'] = 'Leider ist die Analyse des Dokuments "{$a->title}" am {$a->tstamp} fehlgeschlagen. Fehlermeldung: {$a->errormessage}';
@@ -134,7 +134,7 @@ $string['limitmaxpages'] = 'Maximale Anzahl von Seiten: {$a}.';
 $string['limitmaxsize'] = 'Maximale Dateigröße: {$a}.';
 $string['limitmincharacters'] = 'Mindestzeichen: {$a}.';
 $string['limitmaxcharacters'] = 'Maximale Zeichen: {$a}.';
-$string['limittype'] = 'Erlaubte Typen: {$a}.';
+$string['limittype'] = 'Dateiformat: {$a}.';
 
 // Analysis.
 $string['analyze'] = 'Analyse starten';
@@ -146,7 +146,7 @@ $string['cannotwritetranscription'] = 'Die Transkription kann nicht auf der Fest
 
 // Summary.
 $string['summary'] = 'Zusammenfassung';
-$string['abstract'] = 'Abstract';
+$string['abstract'] = 'Kurzzusammenfassung';
 $string['keypoints'] = 'Schlüsselpunkte';
 $string['cannotwritesummary'] = 'Die Zusammenfassung kann nicht auf der Festplatte gespeichert werden. Bitte wenden Sie sich an einen Administrator, wenn dieser Fehler weiterhin besteht.';
 $string['summarynotsaved'] = 'Die Zusammenfassung konnte nicht aktualisiert werden. Bitte wenden Sie sich an einen Administrator, wenn dieser Fehler weiterhin besteht.';
@@ -171,14 +171,14 @@ $string['questionuseforgrading'] = 'Zur Bewertung verwenden';
 $string['questionanswer'] = 'Antwort';
 $string['questionanswertrue'] = 'Richtige Aussage';
 $string['questionanswerfalse'] = 'Falsche Aussage';
-$string['questiondistractor'] = 'Ablenkung';
-$string['questionusedistractor'] = 'Angezeigte Aussage';
+$string['questiondistractor'] = 'Fehlanzeige';
+$string['questionusedistractor'] = 'Antwort anzeigen';
 
 // Concepts.
-$string['concepts'] = 'Konzepte';
-$string['cannotwriteconcepts'] = 'Die Konzepte können nicht auf der Festplatte gespeichert werden. Bitte wenden Sie sich an einen Administrator, wenn dieser Fehler weiterhin besteht.';
-$string['conceptssaved'] = 'Konzepte gespeichert.';
-$string['conceptsnotsaved'] = 'Die Konzepte konnten nicht aktualisiert werden. Bitte wenden Sie sich an einen Administrator, wenn dieser Fehler weiterhin besteht.';
+$string['concepts'] = 'Begriffe';
+$string['cannotwriteconcepts'] = 'Die Begriffe können nicht auf der Festplatte gespeichert werden. Bitte wenden Sie sich an einen Administrator, wenn dieser Fehler weiterhin besteht.';
+$string['conceptssaved'] = 'Begriffe gespeichert.';
+$string['conceptsnotsaved'] = 'Die Begriffe konnten nicht aktualisiert werden. Bitte wenden Sie sich an einen Administrator, wenn dieser Fehler weiterhin besteht.';
 $string['conceptenable'] = 'Aktiviert';
 $string['conceptlabel'] = 'Bezeichnung';
 $string['conceptdefinition'] = 'Definition';

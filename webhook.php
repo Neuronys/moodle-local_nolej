@@ -41,7 +41,7 @@ if ($data == null) {
 
 // Retrieve the context ID.
 $contextid = property_exists($data, 'contextid')
-    ? $data->$contextid
+    ? $data->contextid
     : SYSCONTEXTID;
 
 // Looking for a file.

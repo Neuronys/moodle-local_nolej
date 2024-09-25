@@ -68,7 +68,7 @@ class webhook_called extends \core\event\base {
             return null;
         }
         return new moodle_url('/local/nolej/edit.php', [
-            'contextid' => $this->other['contextid'],
+            'contextid' => $this->context->id,
             'documentid' => $this->other['documentid'],
         ]);
     }

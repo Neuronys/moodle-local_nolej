@@ -150,7 +150,7 @@ class module {
      * Handle creation form
      */
     public function creation() {
-        global $OUTPUT, $PAGE, $DB, $USER, $SITE, $context;
+        global $OUTPUT, $PAGE, $USER;
 
         // Display and handle creation form.
         $mform = new \local_nolej\form\creation(
@@ -176,9 +176,8 @@ class module {
             $sourcetype = $fromform->sourcetype;
             $language = $fromform->language;
             $url = '';
+            $filepath = '';
             $format = '';
-            $consumedcredit = 1;
-            $automaticmode = false;
 
             // Build URL and format for the selected source type.
             switch ($sourcetype) {
@@ -186,6 +185,7 @@ class module {
                     // Just use provided URL and web format.
                     $url = $fromform->sourceurl;
                     $format = $fromform->sourceurltype;
+                    $filepath = 'web';
                     break;
 
                 case 'file':
@@ -202,8 +202,8 @@ class module {
 
                     $filename = $USER->id . '.' . random_string(10) . '.' . $extension;
                     $filename = $this->uniquefilename($filename, $uploaddir . '/');
-                    $dest = $uploaddir . '/' . $filename;
-                    $success = $mform->save_file('sourcefile', $dest);
+                    $filepath = $uploaddir . '/' . $filename;
+                    $success = $mform->save_file('sourcefile', $filepath);
                     if (!$success) {
                         // Error uploading file.
                         break;
@@ -225,8 +225,8 @@ class module {
 
                     $filename = $USER->id . '.' . random_string(10) . '.html';
                     $filename = $this->uniquefilename($filename, $uploaddir . '/');
-                    $dest = $uploaddir . '/' . $filename;
-                    $success = file_put_contents($dest, $fromform->sourcetext);
+                    $filepath = $uploaddir . '/' . $filename;
+                    $success = file_put_contents($filepath, $fromform->sourcetext);
                     if (!$success) {
                         // Error saving file.
                         break;
@@ -244,119 +244,19 @@ class module {
                     break;
             }
 
-            // Check that variables are set.
-            if (!empty($url) && !empty($format)) {
-
-                // Call Nolej creation API.
-                $now = time();
-                $shorturl = shorten_text($url, 200);
-
-                // Save module in the database, with no document_id.
-                $moduleid = $DB->insert_record(
-                    'local_nolej_module',
-                    (object) [
-                        'document_id' => '',
-                        'user_id' => $USER->id,
-                        'tstamp' => $now,
-                        'status' => self::STATUS_CREATION,
-                        'title' => $title,
-                        'consumed_credit' => $consumedcredit,
-                        'doc_url' => $shorturl,
-                        'media_type' => $format,
-                        'automatic_mode' => $automaticmode,
-                        'language' => $language,
-                    ]
-                );
-
-                // Get the webhook url for this module.
-                $webhookurl = api::webhookurl($moduleid, $USER->id);
-
-                $result = api::post(
-                    '/documents',
-                    [
-                        'userID' => (int) $USER->id,
-                        'organisationID' => format_string($SITE->fullname, true, ['context' => $context]),
-                        'title' => $title,
-                        'decrementedCredit' => $consumedcredit,
-                        'docURL' => $url,
-                        'webhookURL' => $webhookurl,
-                        'mediaType' => $format,
-                        'automaticMode' => $automaticmode,
-                        'language' => $language,
-                    ],
-                    true
-                );
-
-                // Check for creation errors.
-                if (!is_object($result) || !property_exists($result, 'id') || !is_string($result->id)) {
-
-                    // An error occurred.
-                    \core\notification::add(
-                        get_string('errdocument', 'local_nolej', var_export($result, true)),
-                        notification::NOTIFY_ERROR
-                    );
-
-                    // Set module as failed.
-                    $DB->update_record(
-                        'local_nolej_module',
-                        (object) [
-                            'id' => $moduleid,
-                            'status' => self::STATUS_FAILED,
-                        ]
-                    );
-
-                    // Remove the uploaded file.
-                    if (
-                        ($sourcetype == 'file' || $sourcetype == 'text') &&
-                        isset($dest) &&
-                        !empty($dest) &&
-                        is_file($dest)
-                    ) {
-                        unlink($dest);
-                    }
-
-                } else {
-                    // Creation succeded, update module.
-                    $DB->update_record(
-                        'local_nolej_module',
-                        (object) [
-                            'id' => $moduleid,
-                            'document_id' => $result->id,
-                            'status' => self::STATUS_CREATION_PENDING,
-                        ]
-                    );
-
-                    // Save first activity in the database.
-                    $DB->insert_record(
-                        'local_nolej_activity',
-                        (object) [
-                            'document_id' => $result->id,
-                            'user_id' => $USER->id,
-                            'action' => 'transcription',
-                            'tstamp' => time(),
-                            'status' => 'ok',
-                            'code' => 200,
-                            'error_message' => '',
-                            'consumed_credit' => $consumedcredit,
-                            'notified' => true,
-                        ],
-                        false
-                    );
-
-                    // Go back to library.
-                    redirect(
-                        $this->libraryurl(),
-                        get_string('modulecreated', 'local_nolej'),
-                        null,
-                        notification::NOTIFY_SUCCESS
-                    );
-                }
-
-            } else {
-                // Some data is missing in the form.
+            $errormessage = $this->docreation($title, $language, $url, $filepath, $format, 1, false);
+            if ($errormessage !== null) {
                 \core\notification::add(
-                    get_string('errdatamissing', 'local_nolej'),
+                    $errormessage,
                     notification::NOTIFY_ERROR
+                );
+            } else {
+                // Go back to library.
+                redirect(
+                    $this->libraryurl(),
+                    get_string('modulecreated', 'local_nolej'),
+                    null,
+                    notification::NOTIFY_SUCCESS
                 );
             }
         }
@@ -368,6 +268,129 @@ class module {
         $this->printinfo();
         $mform->display();
         echo $OUTPUT->footer();
+    }
+
+    /**
+     * Call Nolej API to create the module.
+     * @param string $title
+     * @param string $language
+     * @param string $url
+     * @param string $filepath
+     * @param string $format
+     * @param int $consumedcredit
+     * @param bool $automaticmode
+     * @return ?string error message, null on success.
+     */
+    public function docreation(
+        $title,
+        $language,
+        $url,
+        $filepath,
+        $format,
+        $consumedcredit = 1,
+        $automaticmode = false
+    ) {
+        global $DB, $USER, $SITE, $context;
+
+        // Check that variables are set.
+        if (empty($url) || empty($format)) {
+            return get_string('errdatamissing', 'local_nolej');
+        }
+
+        // Check filepath if is a file.
+        if ($filepath != 'web' && (empty($filepath) || !is_file($filepath))) {
+            return get_string('errdatamissing', 'local_nolej');
+        }
+
+        // Call Nolej creation API.
+        $now = time();
+        $shorturl = shorten_text($url, 200);
+
+        // Save module in the database, with no document_id.
+        $moduleid = $DB->insert_record(
+            'local_nolej_module',
+            (object) [
+                'document_id' => '',
+                'user_id' => $USER->id,
+                'tstamp' => $now,
+                'status' => self::STATUS_CREATION,
+                'title' => $title,
+                'consumed_credit' => $consumedcredit,
+                'doc_url' => $shorturl,
+                'media_type' => $format,
+                'automatic_mode' => $automaticmode,
+                'language' => $language,
+            ]
+        );
+
+        // Get the webhook url for this module.
+        $webhookurl = api::webhookurl($moduleid, $USER->id, $this->contextid);
+
+        $result = api::post(
+            '/documents',
+            [
+                'userID' => (int) $USER->id,
+                'organisationID' => format_string($SITE->fullname, true, ['context' => $context]),
+                'title' => $title,
+                'decrementedCredit' => $consumedcredit,
+                'docURL' => $url,
+                'webhookURL' => $webhookurl,
+                'mediaType' => $format,
+                'automaticMode' => $automaticmode,
+                'language' => $language,
+            ],
+            true
+        );
+
+        // Check for creation errors.
+        if (!is_object($result) || !property_exists($result, 'id') || !is_string($result->id)) {
+
+            // An error occurred; set module as failed.
+            $DB->update_record(
+                'local_nolej_module',
+                (object) [
+                    'id' => $moduleid,
+                    'status' => self::STATUS_FAILED,
+                ]
+            );
+
+            // Remove the uploaded file.
+            if ($filepath != 'web') {
+                unlink($filepath);
+            }
+
+            return get_string('errdocument', 'local_nolej', var_export($result, true));
+
+        }
+
+        // Creation succeded, update module.
+        $DB->update_record(
+            'local_nolej_module',
+            (object) [
+                'id' => $moduleid,
+                'document_id' => $result->id,
+                'status' => self::STATUS_CREATION_PENDING,
+            ]
+        );
+
+        // Save first activity in the database.
+        $DB->insert_record(
+            'local_nolej_activity',
+            (object) [
+                'document_id' => $result->id,
+                'user_id' => $USER->id,
+                'action' => 'transcription',
+                'tstamp' => time(),
+                'status' => 'ok',
+                'code' => 200,
+                'error_message' => '',
+                'consumed_credit' => $consumedcredit,
+                'notified' => true,
+            ],
+            false
+        );
+
+        return null;
     }
 
     /**
@@ -396,89 +419,19 @@ class module {
             $title = $fromform->title;
             $transcription = $fromform->transcription;
 
-            if (!empty($transcription)) {
-                api::writecontent(
-                    $this->documentid,
-                    'transcription.htm',
-                    $transcription
+            $errormessage = $this->doanalysis($title, $transcription);
+            if ($errormessage !== null) {
+                \core\notification::add(
+                    $errormessage,
+                    notification::NOTIFY_ERROR
                 );
-
-                // Call Nolej analysis API.
-                $webhook = new moodle_url(
-                    '/local/nolej/webhook.php',
-                    api::generatetoken([
-                            'contextid' => $this->contextid,
-                            'documentid' => $this->documentid,
-                            'fileid' => 'transcription.htm',
-                    ])
-                );
-                $webhook = $webhook->out(false);
-
-                $result = api::put(
-                    "/documents/{$this->documentid}/transcription",
-                    [
-                        's3URL' => $webhook,
-                        'automaticMode' => false,
-                    ],
-                    true,
-                    true
-                );
-
-                if (
-                    !is_object($result) ||
-                    !property_exists($result, 'result') ||
-                    !is_string($result->result) ||
-                    !(
-                        $result->result == 'ok' ||
-                        $result->result == '"ok"'
-                    )
-                ) {
-                    redirect(
-                        $this->libraryurl(),
-                        get_string('genericerror', 'local_nolej', (object) ['error' => var_export($result, true)]),
-                        null,
-                        notification::NOTIFY_ERROR
-                    );
-                }
-
-                $DB->update_record(
-                    'local_nolej_module',
-                    (object) [
-                        'id' => $this->document->id,
-                        'document_id' => $this->documentid,
-                        'status' => self::STATUS_ANALYSIS_PENDING,
-                        'title' => $title,
-                    ]
-                );
-
-                $DB->insert_record(
-                    'local_nolej_activity',
-                    (object) [
-                        'document_id' => $this->documentid,
-                        'user_id' => $USER->id,
-                        'action' => 'transcription',
-                        'tstamp' => time(),
-                        'status' => 'ok',
-                        'code' => 200,
-                        'error_message' => '',
-                        'consumed_credit' => 0,
-                        'notified' => true,
-                    ],
-                    false
-                );
-
+            } else {
+                // Go back to library.
                 redirect(
                     $this->libraryurl(),
                     get_string('analysisstart', 'local_nolej'),
                     null,
                     notification::NOTIFY_SUCCESS
-                );
-            } else {
-                redirect(
-                    $this->editurl('analysis'),
-                    get_string('missingtranscription', 'local_nolej'),
-                    null,
-                    notification::NOTIFY_ERROR
                 );
             }
         }
@@ -489,6 +442,127 @@ class module {
         $this->printinfo();
         $mform->display();
         echo $OUTPUT->footer();
+    }
+
+    /**
+     * Call Nolej API to start the analysis.
+     * @param string $title
+     * @param ?string $transcription null to start analysis with no transcription changes.
+     * @param bool $automaticmode
+     * @return ?string error message, null on success.
+     */
+    public function doanalysis($title, $transcription = null, $automaticmode = false) {
+        global $DB, $USER;
+
+        $nolej = new api();
+
+        // Check transcription.
+        if ($transcription == null) {
+
+            $nolej->log(
+                'Requesting analysis with unmodified transcription for document: ' . $this->documentid,
+                $this->documentid
+            );
+
+            // Confirm transcription.
+            $result = api::put(
+                "/documents/{$this->documentid}/transcription",
+                [],
+                true,
+                true
+            );
+
+        } else if (empty($transcription) || empty($title)) {
+
+            // Transcription and title cannot be empty.
+            return get_string('missingtranscription', 'local_nolej');
+
+        } else {
+
+            // Update transcription file.
+            api::writecontent(
+                $this->documentid,
+                'transcription.htm',
+                $transcription
+            );
+
+            // Generate transcription url webhook.
+            $transcriptionurl = new moodle_url(
+                '/local/nolej/webhook.php',
+                api::generatetoken([
+                    'contextid' => $this->contextid,
+                    'documentid' => $this->documentid,
+                    'fileid' => 'transcription.htm',
+                ])
+            );
+
+            $nolej->log(
+                'Requesting analysis for document: ' . $this->documentid,
+                $this->documentid
+            );
+
+            // Call Nolej analysis API.
+            $result = api::put(
+                "/documents/{$this->documentid}/transcription",
+                [
+                    's3URL' => $transcriptionurl->out(false),
+                    'automaticMode' => $automaticmode,
+                ],
+                true,
+                true
+            );
+        }
+
+        // Check result.
+        if (
+            !is_object($result) ||
+            !property_exists($result, 'result') ||
+            !is_string($result->result) ||
+            !(
+                $result->result == 'ok' ||
+                $result->result == '"ok"'
+            )
+        ) {
+            $nolej->log(
+                'Analysis for document: ' . $this->documentid . ' failed to start. Error: ' . var_export($result, true),
+                $this->documentid
+            );
+            return get_string('genericerror', 'local_nolej', (object) ['error' => var_export($result, true)]);
+        }
+
+        $nolej->log(
+            'Analysis request succedeed for document: ' . $this->documentid,
+            $this->documentid
+        );
+
+        // Analysis started.
+        $DB->update_record(
+            'local_nolej_module',
+            (object) [
+                'id' => $this->document->id,
+                'document_id' => $this->documentid,
+                'status' => self::STATUS_ANALYSIS_PENDING,
+                'title' => $title,
+            ]
+        );
+
+        $DB->insert_record(
+            'local_nolej_activity',
+            (object) [
+                'document_id' => $this->documentid,
+                'user_id' => $USER->id,
+                'action' => 'transcription',
+                'tstamp' => time(),
+                'status' => 'ok',
+                'code' => 200,
+                'error_message' => '',
+                'consumed_credit' => 0,
+                'notified' => true,
+            ],
+            false
+        );
+
+        return null;
     }
 
     /**
