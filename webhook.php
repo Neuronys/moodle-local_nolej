@@ -34,8 +34,9 @@ $nolej = new api();
 $token = required_param('token', PARAM_NOTAGS);
 $data = $nolej->decodetoken($token);
 
-if ($data == null) {
-    $nolej->respondwithmessage(400, 'Request not valid.');
+// Check for error message.
+if (is_string($data)) {
+    $nolej->respondwithmessage(400, $data);
     exit;
 }
 

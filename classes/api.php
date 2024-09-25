@@ -1293,7 +1293,7 @@ class api {
     /**
      * Decode JWT token and return the data.
      * @param string $token to be decoded.
-     * @return ?object data
+     * @return string|object string error message or object data.
      */
     public function decodetoken($token) {
         try {
@@ -1301,14 +1301,21 @@ class api {
             $data = JWT::decode($token, $keys);
 
             if (!property_exists($data, 'sub')) {
-                return null;
+                return 'Missing token data.';
             }
 
             return $data->sub;
 
+        } catch (\Firebase\JWT\ExpiredException $e) {
+
+            // Token has expired.
+            return 'Token expired.';
+
         } catch (Exception $e) {
-            // Token not valid.
-            return null;
+
+            // Token is not valid.
+            return 'Token not valid.';
+
         }
     }
 }
