@@ -70,7 +70,7 @@ class api {
     const TYPE_TEXT = ['txt', 'htm', 'html'];
 
     /** @var int Max bytes for uploaded files (2.5 GB) */
-    const MAX_SIZE = 2684354560;
+    const MAX_SIZE = 524288000;
 
     /** @var array */
     protected $data;
@@ -1070,15 +1070,19 @@ class api {
 
             try {
 
+                $title = sprintf(
+                    '%s (%s) - %s.h5p',
+                    shorten_text($document->title, 15),
+                    userdate($now, get_string('strftimedatetimeshortaccurate', 'core_langconfig')),
+                    get_string('activities' . $activity->activity_name . 'short', 'local_nolej')
+                );
+
                 $record = (object) [
-                    'name' => get_string('activities' . $activity->activity_name, 'local_nolej') . '.h5p',
+                    'name' => $title,
                     'configdata' => '',
                     'contenttype' => 'contenttype_h5p',
-                    'title' => get_string('activities' . $activity->activity_name, 'local_nolej') . '.h5p',
-                    'author' => $document->user_id,
+                    'usercreated' => $document->user_id,
                     'type' => $activity->activity_name,
-                    'contextid' => $modulecontext->id,
-                    'filepath' => '/',
                 ];
                 $contenttype = new contenttype($modulecontext);
                 $h5pcontent = $contenttype->create_content($record);
@@ -1089,7 +1093,7 @@ class api {
                     'filearea' => file_storage::CONTENT_FILEAREA,
                     'itemid' => $h5pcontent->get_id(),
                     'filepath' => '/',
-                    'filename' => get_string('activities' . $activity->activity_name, 'local_nolej') . '.h5p',
+                    'filename' => $title,
                 ];
 
                 $file = $fs->create_file_from_pathname($filerecord, $filepath);
