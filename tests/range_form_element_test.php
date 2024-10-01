@@ -38,7 +38,7 @@ class range_form_element_test extends \advanced_testcase {
      * Testing input value.
      * @covers ::exportValue
      */
-    public function test_exportValue() {
+    final public function test_exportValue(): void {
         $min = 1;
         $max = 99;
         $step = 2;

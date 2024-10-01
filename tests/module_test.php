@@ -37,7 +37,7 @@ class module_test extends \advanced_testcase {
      *
      * @covers ::delete
      */
-    public function test_delete() {
+    final public function test_delete(): void {
         global $DB;
 
         $this->resetAfterTest(true);

@@ -39,7 +39,7 @@ class get_library_updates_test extends \externallib_advanced_testcase {
      * Test the execute function when capabilities are present.
      * @covers ::execute
      */
-    public function test_execute(): void {
+    final public function test_execute(): void {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -133,7 +133,7 @@ class get_library_updates_test extends \externallib_advanced_testcase {
      * Test the execute function when capabilities are missing.
      * @covers ::execute
      */
-    public function test_capabilities_missing(): void {
+    final public function test_capabilities_missing(): void {
         $this->resetAfterTest(true);
 
         $user = $this->getDataGenerator()->create_user();
