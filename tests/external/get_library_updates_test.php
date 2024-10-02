@@ -132,6 +132,7 @@ class get_library_updates_test extends \externallib_advanced_testcase {
 
     /**
      * Test the execute function when capabilities are missing.
+     * @runInSeparateProcess
      * @covers ::execute
      */
     final public function test_capabilities_missing(): void {
