@@ -40,7 +40,7 @@ final class get_library_updates_test extends \externallib_advanced_testcase {
      * @runInSeparateProcess
      * @covers ::execute
      */
-    final public function test_execute(): void {
+    public function test_execute(): void {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -135,7 +135,7 @@ final class get_library_updates_test extends \externallib_advanced_testcase {
      * @runInSeparateProcess
      * @covers ::execute
      */
-    final public function test_capabilities_missing(): void {
+    public function test_capabilities_missing(): void {
         $this->resetAfterTest(true);
 
         $user = $this->getDataGenerator()->create_user();

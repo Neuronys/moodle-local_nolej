@@ -37,7 +37,7 @@ final class api_test extends \advanced_testcase {
      *
      * @covers ::haskey
      */
-    final public function test_key(): void {
+    public function test_key(): void {
         $this->resetAfterTest(true);
 
         unset_config('api_key', 'local_nolej');
@@ -53,7 +53,7 @@ final class api_test extends \advanced_testcase {
      *
      * @covers ::formatfromextension
      */
-    final public function test_formatfromextension(): void {
+    public function test_formatfromextension(): void {
         $this->assertEquals('audio', api::formatfromextension('mp3'));
         $this->assertEquals('video', api::formatfromextension('mp4'));
         $this->assertEquals('document', api::formatfromextension('pdf'));
@@ -68,7 +68,7 @@ final class api_test extends \advanced_testcase {
      * @covers ::uploaddir
      * @covers ::h5pdir
      */
-    final public function test_directories(): void {
+    public function test_directories(): void {
         global $CFG;
 
         $this->resetAfterTest(true);
@@ -109,7 +109,7 @@ final class api_test extends \advanced_testcase {
      * @covers ::lookupdocumentstatus
      * @covers ::lookupdocumentwithstatus
      */
-    final public function test_lookupdocument(): void {
+    public function test_lookupdocument(): void {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -166,7 +166,7 @@ final class api_test extends \advanced_testcase {
      *
      * @covers ::sanitizefilename
      */
-    final public function test_sanitizefilename(): void {
+    public function test_sanitizefilename(): void {
         $filename = 'file$0/\\123.(..[[=,<>.abc';
         $this->assertEquals('file0123.(.abc', api::sanitizefilename($filename));
     }
@@ -178,7 +178,7 @@ final class api_test extends \advanced_testcase {
      * @covers ::webhookurl
      * @covers ::decodetoken
      */
-    final public function test_tokens(): void {
+    public function test_tokens(): void {
         $nolej = new api();
 
         $data = ['fileid' => 'examplefile'];
