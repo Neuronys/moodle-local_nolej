@@ -30,9 +30,38 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ['7.4', '8.0', '8.1']
-        moodle-branch: ['MOODLE_401_STABLE']
+        php: ['7.4', '8.0', '8.1', '8.2', '8.3']
+        moodle-branch: 
+          - 'MOODLE_401_STABLE'
+          - 'MOODLE_402_STABLE'
+          - 'MOODLE_403_STABLE'
+          - 'MOODLE_404_STABLE'
         database: [pgsql, mariadb]
+        exclude:
+          # Support     | PHP 7.4 | PHP 8.0 | PHP 8.1 | PHP 8.2 | PHP 8.3 |
+          # ----------- | ------- | ------- | ------- | ------- | ------- |
+          # Moodle 4.1* |   ok    |   ok    |   ok    |         |         |
+          # Moodle 4.2* |         |   ok    |   ok    |   ok    |         |
+          # Moodle 4.3  |         |   ok    |   ok    |   ok    |         |
+          # Moodle 4.4  |         |         |   ok    |   ok    |   ok    |
+          # ----------- | ------- | ------- | ------- | ------- | ------- |
+          # *End of Moodle general support (see https://moodledev.io/general/releases)
+          - php: '7.4'
+            moodle-branch: 'MOODLE_402_STABLE'
+          - php: '7.4'
+            moodle-branch: 'MOODLE_403_STABLE'
+          - php: '7.4'
+            moodle-branch: 'MOODLE_404_STABLE'
+          - php: '8.0'
+            moodle-branch: 'MOODLE_404_STABLE'
+          - php: '8.2'
+            moodle-branch: 'MOODLE_401_STABLE'
+          - php: '8.3'
+            moodle-branch: 'MOODLE_401_STABLE'
+          - php: '8.3'
+            moodle-branch: 'MOODLE_402_STABLE'
+          - php: '8.3'
+            moodle-branch: 'MOODLE_403_STABLE'
 
     steps:
       - name: Check out repository code

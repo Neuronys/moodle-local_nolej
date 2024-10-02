@@ -32,13 +32,13 @@ require_once(__DIR__ . '/../classes/form/element/range_form_element.php');
  * @category    test
  * @coversDefaultClass \range_form_element
  */
-class range_form_element_test extends \advanced_testcase {
+final class range_form_element_test extends \advanced_testcase {
 
     /**
      * Testing input value.
      * @covers ::exportValue
      */
-    public function test_exportValue() {
+    public function test_exportValue(): void {
         $min = 1;
         $max = 99;
         $step = 2;

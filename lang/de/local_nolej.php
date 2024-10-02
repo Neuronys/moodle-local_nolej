@@ -25,6 +25,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+// phpcs:disable moodle.Files.LangFilesOrdering.UnexpectedComment
+// phpcs:disable moodle.Files.LangFilesOrdering.IncorrectOrder
+
 // Plugin.
 $string['pluginname'] = 'Nolej';
 $string['nolej:usenolej'] = 'Erstellen Sie Aktivitäten mit Nolej';

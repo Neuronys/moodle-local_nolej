@@ -30,14 +30,14 @@ require_once(__DIR__ . '/../classes/api.php');
  * @category    test
  * @coversDefaultClass \local_nolej\api
  */
-class api_test extends \advanced_testcase {
+final class api_test extends \advanced_testcase {
 
     /**
      * Testing key.
      *
      * @covers ::haskey
      */
-    public function test_key() {
+    public function test_key(): void {
         $this->resetAfterTest(true);
 
         unset_config('api_key', 'local_nolej');
@@ -53,7 +53,7 @@ class api_test extends \advanced_testcase {
      *
      * @covers ::formatfromextension
      */
-    public function test_formatfromextension() {
+    public function test_formatfromextension(): void {
         $this->assertEquals('audio', api::formatfromextension('mp3'));
         $this->assertEquals('video', api::formatfromextension('mp4'));
         $this->assertEquals('document', api::formatfromextension('pdf'));
@@ -68,7 +68,7 @@ class api_test extends \advanced_testcase {
      * @covers ::uploaddir
      * @covers ::h5pdir
      */
-    public function test_directories() {
+    public function test_directories(): void {
         global $CFG;
 
         $this->resetAfterTest(true);
@@ -109,7 +109,7 @@ class api_test extends \advanced_testcase {
      * @covers ::lookupdocumentstatus
      * @covers ::lookupdocumentwithstatus
      */
-    public function test_lookupdocument() {
+    public function test_lookupdocument(): void {
         global $DB;
 
         $this->resetAfterTest(true);
@@ -166,7 +166,7 @@ class api_test extends \advanced_testcase {
      *
      * @covers ::sanitizefilename
      */
-    public function test_sanitizefilename() {
+    public function test_sanitizefilename(): void {
         $filename = 'file$0/\\123.(..[[=,<>.abc';
         $this->assertEquals('file0123.(.abc', api::sanitizefilename($filename));
     }
@@ -178,7 +178,7 @@ class api_test extends \advanced_testcase {
      * @covers ::webhookurl
      * @covers ::decodetoken
      */
-    public function test_tokens() {
+    public function test_tokens(): void {
         $nolej = new api();
 
         $data = ['fileid' => 'examplefile'];

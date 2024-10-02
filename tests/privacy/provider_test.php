@@ -35,12 +35,13 @@ use local_nolej\module;
  * @category    test
  * @coversDefaultClass \local_nolej\privacy\provider
  */
-class provider_test extends provider_testcase {
+final class provider_test extends provider_testcase {
 
     /**
      * PHPUnit test setup: reset after every test.
      */
     protected function setUp(): void {
+        parent::setUp();
         $this->resetAfterTest();
     }
 
@@ -49,7 +50,7 @@ class provider_test extends provider_testcase {
      *
      * @covers ::get_metadata
      */
-    public function test_get_metadata() {
+    public function test_get_metadata(): void {
         $collection = new collection('local_nolej');
         $items = provider::get_metadata($collection)->get_collection();
         $this->assertCount(4, $items);
@@ -60,7 +61,7 @@ class provider_test extends provider_testcase {
      *
      * @covers ::get_contexts_for_userid
      */
-    public function test_get_contexts_for_userid() {
+    public function test_get_contexts_for_userid(): void {
         global $DB;
 
         $userid = 1;
@@ -111,7 +112,7 @@ class provider_test extends provider_testcase {
      *
      * @covers ::export_user_data
      */
-    public function test_export_user_data() {
+    public function test_export_user_data(): void {
         global $DB;
 
         $user = $this->getDataGenerator()->create_user();
@@ -170,7 +171,7 @@ class provider_test extends provider_testcase {
      *
      * @covers ::delete_data_for_all_users_in_context
      */
-    public function test_delete_data_for_all_users_in_context() {
+    public function test_delete_data_for_all_users_in_context(): void {
         global $DB;
 
         $context = \context_system::instance();
@@ -220,7 +221,7 @@ class provider_test extends provider_testcase {
      *
      * @covers ::delete_data_for_user
      */
-    public function test_delete_data_for_user() {
+    public function test_delete_data_for_user(): void {
         global $DB;
 
         $user = $this->getDataGenerator()->create_user();
@@ -272,7 +273,7 @@ class provider_test extends provider_testcase {
      *
      * @covers ::get_users_in_context
      */
-    public function test_get_users_in_context() {
+    public function test_get_users_in_context(): void {
         global $DB;
 
         $context = \context_system::instance();
@@ -321,7 +322,7 @@ class provider_test extends provider_testcase {
      *
      * @covers ::delete_data_for_users
      */
-    public function test_delete_data_for_users() {
+    public function test_delete_data_for_users(): void {
         global $DB;
 
         $context = \context_system::instance();

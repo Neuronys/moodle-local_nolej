@@ -30,14 +30,14 @@ require_once(__DIR__ . '/../classes/module.php');
  * @category    test
  * @coversDefaultClass \local_nolej\module
  */
-class module_test extends \advanced_testcase {
+final class module_test extends \advanced_testcase {
 
     /**
      * Testing deletion.
      *
      * @covers ::delete
      */
-    public function test_delete() {
+    public function test_delete(): void {
         global $DB;
 
         $this->resetAfterTest(true);
