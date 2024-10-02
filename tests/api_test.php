@@ -30,7 +30,7 @@ require_once(__DIR__ . '/../classes/api.php');
  * @category    test
  * @coversDefaultClass \local_nolej\api
  */
-class api_test extends \advanced_testcase {
+final class api_test extends \advanced_testcase {
 
     /**
      * Testing key.

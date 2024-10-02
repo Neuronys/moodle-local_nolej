@@ -33,7 +33,7 @@ use local_nolej\module;
  * @category    test
  * @coversDefaultClass \local_nolej\external\get_library_updates
  */
-class get_library_updates_test extends \externallib_advanced_testcase {
+final class get_library_updates_test extends \externallib_advanced_testcase {
 
     /**
      * Test the execute function when capabilities are present.
