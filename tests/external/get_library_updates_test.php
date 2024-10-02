@@ -37,6 +37,7 @@ class get_library_updates_test extends \externallib_advanced_testcase {
 
     /**
      * Test the execute function when capabilities are present.
+     * @runInSeparateProcess
      * @covers ::execute
      */
     final public function test_execute(): void {
