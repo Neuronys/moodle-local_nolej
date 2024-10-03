@@ -76,13 +76,13 @@ class api {
     protected $data;
 
     /** @var int */
-    protected int $contextid = SYSCONTEXTID;
+    protected $contextid = SYSCONTEXTID;
 
     /** @var bool */
     public bool $shouldexit = true;
 
     /**
-     * Check that the API key has been set
+     * Check that the API key has been set.
      * @return bool
      */
     public static function haskey() {
@@ -99,7 +99,7 @@ class api {
     }
 
     /**
-     * Send a GET request to Nolej API
+     * Send a GET request to Nolej API.
      * @param string $path
      * @param array $data
      * @param bool $encodeinput
@@ -149,7 +149,7 @@ class api {
     }
 
     /**
-     * Send a POST request to Nolej API
+     * Send a POST request to Nolej API.
      * @param string $path
      * @param array $data
      * @param bool $decode
@@ -196,7 +196,7 @@ class api {
     }
 
     /**
-     * Send a PUT request to Nolej API
+     * Send a PUT request to Nolej API.
      * @param string $path
      * @param mixed $data
      * @param bool $encode input's data
@@ -242,7 +242,7 @@ class api {
     }
 
     /**
-     * Return all the allowed formats
+     * Return all the allowed formats.
      * @return array
      */
     public static function allowedtypes() {
@@ -276,7 +276,7 @@ class api {
     }
 
     /**
-     * Return the Nolej data directory
+     * Return the Nolej data directory.
      * @param ?string $documentid (optional)
      * @return string
      */
@@ -293,7 +293,7 @@ class api {
     }
 
     /**
-     * Return the Nolej upload directory
+     * Return the Nolej upload directory.
      * @return string
      */
     public static function uploaddir() {
@@ -306,7 +306,7 @@ class api {
     }
 
     /**
-     * Return the Nolej h5p directory for a document
+     * Return the Nolej h5p directory for a document.
      * @param string $documentid
      * @return string
      */
@@ -320,7 +320,7 @@ class api {
     }
 
     /**
-     * Fetch and save the content of a Nolej file
+     * Fetch and save the content of a Nolej file.
      *
      * @param string $documentid
      * @param string $pathname the 'id' of Nolej file
@@ -367,6 +367,7 @@ class api {
      *
      * @param string $documentid
      * @param string $filename the name of the file to read
+     *
      * @return string|false return the content if the file exists,
      * false otherwise.
      */
@@ -379,7 +380,7 @@ class api {
     }
 
     /**
-     * Put the content of a file to Nolej
+     * Put the content of a file to Nolej.
      *
      * @param string $documentid
      * @param string $pathname the 'id' of Nolej file
@@ -416,9 +417,10 @@ class api {
     }
 
     /**
-     * Lookup for a document status
+     * Lookup for a document status.
      * @param string $documentid
      * @param int $userid (optional)
+     *
      * @return int status
      */
     public static function lookupdocumentstatus($documentid, $userid = null) {
@@ -469,8 +471,9 @@ class api {
      * Parse the request.
      * @param int $contextid The current context ID.
      * @param mixed $data if null parse POST data.
+     * @return void
      */
-    public function parse(int $contextid = SYSCONTEXTID, $data = null) {
+    public function parse($contextid = SYSCONTEXTID, $data = null) {
         if ($data == null) {
             header('Content-type: application/json; charset=UTF-8');
             try {
@@ -526,7 +529,7 @@ class api {
     }
 
     /**
-     * Die with status code and a message
+     * Die with status code and a message.
      * @param int $code
      * @param string $message
      * @return void
@@ -551,7 +554,7 @@ class api {
     }
 
     /**
-     * Look for a document with a specific status
+     * Look for a document with a specific status.
      * @param string $documentid
      * @param int $status
      * @return object|false
@@ -729,8 +732,7 @@ class api {
     }
 
     /**
-     * Check the analysis result
-     *
+     * Check the analysis result.
      * @return void
      */
     public function checkanalysis() {
@@ -838,8 +840,7 @@ class api {
     }
 
     /**
-     * Check the activities result
-     *
+     * Check the activities result.
      * @return void
      */
     protected function checkactivities() {
@@ -968,8 +969,7 @@ class api {
     }
 
     /**
-     * Get the Nolej category id,
-     * create it if not exists.
+     * Get the Nolej category id, create it if not exists.
      * @return int
      */
     protected function getnolejcategoryid() {
@@ -1121,7 +1121,7 @@ class api {
     }
 
     /**
-     * Send notification to user
+     * Send notification to user.
      *
      * @param string $documentid
      * @param int $userid
@@ -1132,6 +1132,8 @@ class api {
      * @param int $credits
      * @param string $body language variable to use in mail body
      * @param ?object $vars parameters to use in $bodyVar's sprintf
+     *
+     * @return void
      */
     public function sendnotification(
         $documentid,
@@ -1194,7 +1196,7 @@ class api {
     }
 
     /**
-     * Set the language of the user
+     * Set the language of the user.
      * @param int $userid
      * @return void
      */
@@ -1231,6 +1233,7 @@ class api {
     /**
      * Download the file. Security checks are performed earlier by JWT checks.
      * @param string $filepath
+     * @return void
      */
     public static function deliverfile(string $filepath) {
         global $CFG;
@@ -1245,6 +1248,7 @@ class api {
      * @param array $content
      * @param bool $raw token string or array for moodle url
      * @param bool $expiration iff true, set the token expiration
+     *
      * @return array|string string if $raw is set, array otherwise
      */
     public static function generatetoken(
@@ -1280,6 +1284,7 @@ class api {
      * @param string $moduleid
      * @param int $userid
      * @param int $contextid
+     *
      * @return string
      */
     public static function webhookurl($moduleid, $userid, $contextid = SYSCONTEXTID) {
