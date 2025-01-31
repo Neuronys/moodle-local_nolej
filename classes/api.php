@@ -1064,6 +1064,7 @@ class api {
         $activities = $activities->activities;
 
         $modulecontext = $this->getmodulecontext($document, $now);
+        $isoriginalcontext = $modulecontext->id == $this->contextid;
 
         foreach ($activities as $activity) {
             $filepath = sprintf('%s/%s.h5p', $h5pdir, $activity->activity_name);
@@ -1081,12 +1082,21 @@ class api {
 
             try {
 
-                $title = sprintf(
-                    '%s (%s) - %s.h5p',
-                    shorten_text($document->title, 15),
-                    userdate($now, get_string('strftimedatetimeshortaccurate', 'core_langconfig')),
-                    get_string('activities' . $activity->activity_name . 'short', 'local_nolej')
-                );
+                // The title of the activities should have the information about the date and time of the generation
+                // only if they are saved into the original context (i.e. course).
+                // If they are saved into the Nolej context, the parent category has already that information.
+                $title = $isoriginalcontext
+                    ? sprintf(
+                        '%s (%s) - %s.h5p',
+                        shorten_text($document->title, 15), // Shorten for readability.
+                        userdate($now, get_string('strftimedatetimeshortaccurate', 'core_langconfig')),
+                        get_string('activities' . $activity->activity_name . 'short', 'local_nolej')
+                    )
+                    : sprintf(
+                        '%s - %s.h5p',
+                        shorten_text($document->title, 35), // Shorten for readability.
+                        get_string('activities' . $activity->activity_name . 'short', 'local_nolej')
+                    );
 
                 $record = (object) [
                     'name' => $title,
