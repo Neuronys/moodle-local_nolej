@@ -58,4 +58,18 @@ if ($hassiteconfig) { // Needs this condition or there is error on login page.
             '/^[1-9][0-9]*$/' // Positive integer, 1 minimum (i.e. 1 second).
         )
     );
+
+    // Context where to save h5p activities.
+    $settings->add(
+        new admin_setting_configselect(
+            'local_nolej/storagecontext',
+            get_string('storagecontext', 'local_nolej'),
+            get_string('storagecontextinfo', 'local_nolej'),
+            'coursecontext',
+            [
+                'coursecontext' => get_string('storagecontextcourse', 'local_nolej'),
+                'nolejcontext' => get_string('storagecontextnolej', 'local_nolej'),
+            ]
+        )
+    );
 }

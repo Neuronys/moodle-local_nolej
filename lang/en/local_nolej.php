@@ -67,6 +67,10 @@ $string['genericerror'] = 'An error occurred: <pre>{$a->error}</pre>';
 $string['moduleview'] = 'View module';
 $string['pollinginterval'] = 'Polling interval';
 $string['pollingintervalinfo'] = 'Duration of the interval in seconds, after which it checks whether there are updates on the modules. Minimum 1 second.';
+$string['storagecontext'] = 'Saving context';
+$string['storagecontextinfo'] = 'Where to save Nolej h5p activities.';
+$string['storagecontextcourse'] = 'In Course context';
+$string['storagecontextnolej'] = 'In Nolej context';
 
 // Status.
 $string['statuscreation'] = 'New module';

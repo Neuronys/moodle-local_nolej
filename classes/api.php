@@ -973,14 +973,22 @@ class api {
      * @return int
      */
     protected function getnolejcategoryid() {
-        $contextid = $this->contextid;
-        if (!empty($contextid) && (core_course_category::get($contextid, IGNORE_MISSING, true) != null)) {
-            return $contextid;
+        // Check for course context.
+        if (get_config('local_nolej', 'storagecontext') == 'coursecontext') {
+            $contextid = $this->contextid;
+            // Context must exist and cannot be systemcontext.
+            if (!empty($contextid) && $contextid != SYSCONTEXTID) {
+                $categoryexists = core_course_category::get($contextid, IGNORE_MISSING, true) != null;
+                if ($categoryexists) {
+                    return $contextid;
+                }
+            }
         }
 
         $categoryid = get_config('local_nolej', 'categoryid');
 
         if (!empty($categoryid) && core_course_category::get($categoryid, IGNORE_MISSING, true) != null) {
+            // Nolej context already exists.
             return (int) $categoryid;
         }
 
@@ -1003,13 +1011,16 @@ class api {
      * @return context
      */
     protected function getmodulecontext($document, $timestamp) {
-        $contextid = $this->contextid;
-        if (!empty($contextid) && $contextid != SYSCONTEXTID) {
-            // Get the context where the user created the module.
-            return context::instance_by_id($contextid);
+        // Check in the configuration where the modules should be put.
+        if (get_config('local_nolej', 'storagecontext') == 'coursecontext') {
+            $contextid = $this->contextid;
+            if (!empty($contextid) && $contextid != SYSCONTEXTID) {
+                // Get the context where the user created the module.
+                return context::instance_by_id($contextid);
+            }
         }
 
-        // Create category context in the system context.
+        // Create category context in the Nolej context.
         $nolejcategoryid = $this->getnolejcategoryid();
         $modulecategory = core_course_category::create((object) [
             'name' => sprintf(
