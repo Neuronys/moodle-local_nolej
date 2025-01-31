@@ -247,3 +247,4 @@ $string['erractivitiesdecode'] = 'Failed to decode activities data';
 $string['erractivitydownload'] = 'Failed to save activity on disk';
 $string['errh5psave'] = 'Failed to save h5p package';
 $string['errh5pvalidation'] = 'h5p package is not valid';
+$string['erractivitiesget'] = 'The import of some h5p activities have failed: {$a->errors}';

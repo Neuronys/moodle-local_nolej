@@ -940,7 +940,7 @@ class api {
                 $this->data['code'],
                 $this->data['error_message'],
                 $this->data['consumedCredit'],
-                'err_activities_get',
+                'erractivitiesget',
                 (object) [
                     'errors' => '<ul><li>' . join('</li><li>', $errors) . '</li></ul>',
                 ]

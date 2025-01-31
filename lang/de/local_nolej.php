@@ -243,3 +243,4 @@ $string['erractivitiesdecode'] = 'Entschlüsselung der Aktivitätsdaten fehlgesc
 $string['erractivitydownload'] = 'Speichern der Aktivität auf der Festplatte fehlgeschlagen';
 $string['errh5psave'] = 'Speichern des h5p-Pakets fehlgeschlagen';
 $string['errh5pvalidation'] = 'h5p-Paket ist ungültig';
+$string['erractivitiesget'] = 'Der Import einiger H5P-Aktivitäten ist fehlgeschlagen: {$a->errors}';

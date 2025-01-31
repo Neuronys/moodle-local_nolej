@@ -243,3 +243,4 @@ $string['erractivitiesdecode'] = 'Kan activiteitengegevens niet decoderen';
 $string['erractivitydownload'] = 'Kan activiteit niet op schijf opslaan';
 $string['errh5psave'] = 'Kan h5p-pakket niet opslaan';
 $string['errh5pvalidation'] = 'h5p-pakket is niet geldig';
+$string['erractivitiesget'] = 'Het importeren van sommige H5P-activiteiten is mislukt: {$a->errors}';
