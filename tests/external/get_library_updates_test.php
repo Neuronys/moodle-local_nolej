@@ -28,7 +28,7 @@ use local_nolej\module;
  *
  * @package     local_nolej
  * @author      Vincenzo Padula <vincenzo@oc-group.eu>
- * @copyright   2024 OC Open Consulting SB Srl
+ * @copyright   2025 OC Open Consulting SB Srl
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @category    test
  * @coversDefaultClass \local_nolej\external\get_library_updates
