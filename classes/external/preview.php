@@ -66,7 +66,7 @@ class preview extends external_api {
         }
 
         // Return the error message.
-        return ['link' => '', 'message' => get_string('statuspreviewnotavailable', 'local_nolej'),];
+        return ['link' => '', 'message' => get_string('statuspreviewnotavailable', 'local_nolej')];
     }
 
     /**
