@@ -47,6 +47,7 @@ $PAGE->set_title(get_string('library', 'local_nolej'));
 
 // JS and CSS dependencies.
 $PAGE->requires->js_call_amd('local_nolej/delete');
+$PAGE->requires->js_call_amd('local_nolej/preview');
 $PAGE->requires->css('/local/nolej/styles.css');
 
 $status2form = [
@@ -75,22 +76,7 @@ foreach ($modules as $module) {
     $menu = new action_menu();
     $menu->set_menu_trigger(get_string('actions'));
 
-    // Activities preview link.
-    if ($module->status == module::STATUS_COMPLETED) {
-        $contentbankurl = module::getcontentbankurl($module->document_id);
-        if ($contentbankurl) {
-            $menu->add(
-                new action_menu_link(
-                    $contentbankurl,
-                    new pix_icon('i/preview', 'core'),
-                    get_string('activities', 'local_nolej'),
-                    false
-                )
-            );
-        }
-    }
-
-    // Edit link, visible iff module is not failed.
+    // Edit and Preview link, visible iff module is not failed.
     if ($module->status != module::STATUS_FAILED && $module->status != module::STATUS_CREATION) {
         $editurl = new moodle_url(
             '/local/nolej/edit.php',
@@ -106,6 +92,20 @@ foreach ($modules as $module) {
                 new pix_icon('i/edit', 'core'),
                 get_string('editmodule', 'local_nolej'),
                 false
+            )
+        );
+
+        // Activities preview link.
+        $menu->add(
+            new action_menu_link(
+                new moodle_url('#'),
+                new pix_icon('i/preview', 'core'),
+                get_string('activities', 'local_nolej'),
+                false,
+                [
+                    'data-action' => 'preview',
+                    'data-documentid' => $module->document_id,
+                ]
             )
         );
     }

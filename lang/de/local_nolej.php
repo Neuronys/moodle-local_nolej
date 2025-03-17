@@ -77,6 +77,7 @@ $string['statusrevision'] = 'Analyse abgeschlossen';
 $string['statusrevisionpending'] = 'Überprüfung in Bearbeitung';
 $string['statusactivities'] = 'Überprüfung abgeschlossen';
 $string['statusactivitiespending'] = 'Aktivitätsgenerierung in Bearbeitung';
+$string['statuspreviewnotavailable'] = 'Vorschau der Aktivitäten noch nicht verfügbar.';
 $string['statuscompleted'] = 'Aktivitäten generiert';
 $string['statusfailed'] = 'Fehlgeschlagen';
 

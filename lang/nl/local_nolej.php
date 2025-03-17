@@ -77,6 +77,7 @@ $string['statusrevision'] = 'Analyse voltooid';
 $string['statusrevisionpending'] = 'Revisie bezig';
 $string['statusactivities'] = 'Revisie voltooid';
 $string['statusactivitiespending'] = 'Activiteiten genereren bezig';
+$string['statuspreviewnotavailable'] = 'Voorbeeld van activiteiten nog niet beschikbaar.';
 $string['statuscompleted'] = 'Activiteiten gegenereerd';
 $string['statusfailed'] = 'Mislukt';
 

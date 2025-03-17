@@ -34,4 +34,12 @@ $functions = [
         'ajax' => true,
         'loginrequired' => true,
     ],
+    'local_nolej_preview' => [
+        'classname' => 'local_nolej\external\preview',
+        'description' => 'Check for activities preview link',
+        'capabilities' => 'local/nolej:usenolej',
+        'type' => 'read',
+        'ajax' => true,
+        'loginrequired' => true,
+    ],
 ];
