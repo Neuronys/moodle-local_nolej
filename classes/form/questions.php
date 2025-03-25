@@ -159,10 +159,7 @@ class questions extends \moodleform {
                 $mform->addElement(
                     'selectyesno',
                     $enableid,
-                    get_string(
-                        $questiontype == 'open' ? 'questionenable' : 'questionuseforgrading',
-                        'local_nolej'
-                    )
+                    get_string('questionenable', 'local_nolej')
                 )->setValue(
                         $questiontype == 'open'
                         ? $questions[$i]->enable
