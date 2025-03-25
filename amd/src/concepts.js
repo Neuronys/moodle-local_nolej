@@ -14,7 +14,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Show/hide elements depending on selected type.
+ * Hide concept details when disabled.
  *
  * @module      local_nolej
  * @author      Vincenzo Padula <vincenzo@oc-group.eu>
