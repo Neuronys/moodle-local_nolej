@@ -569,7 +569,7 @@ class module {
      * Handle review concepts form
      */
     public function concepts() {
-        global $OUTPUT;
+        global $OUTPUT, $PAGE;
 
         // Display and handle concepts form.
         $mform = new \local_nolej\form\concepts(
@@ -660,6 +660,8 @@ class module {
                 $success ? notification::NOTIFY_SUCCESS : notification::NOTIFY_ERROR
             );
         }
+
+        $PAGE->requires->js_call_amd('local_nolej/concepts');
 
         echo $OUTPUT->header();
         $this->printinfo();
