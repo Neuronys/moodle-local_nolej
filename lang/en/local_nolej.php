@@ -68,9 +68,10 @@ $string['moduleview'] = 'View module';
 $string['pollinginterval'] = 'Polling interval';
 $string['pollingintervalinfo'] = 'Duration of the interval in seconds, after which it checks whether there are updates on the modules. Minimum 1 second.';
 $string['storagecontext'] = 'Saving context';
-$string['storagecontextinfo'] = 'Where to save Nolej h5p activities.';
-$string['storagecontextcourse'] = 'In Course context';
-$string['storagecontextnolej'] = 'In Nolej context';
+$string['storagecontextinfo'] = 'Select the position where to save Nolej generated h5p activities.';
+$string['storagecontextcourse'] = 'Save activities in the course where the module has been originally created';
+$string['storagecontextcurrent'] = 'Save activities in the course where the user is at the time of generation';
+$string['storagecontextnolej'] = 'Save activities in the Nolej global context';
 
 // Status.
 $string['statuscreation'] = 'New module';

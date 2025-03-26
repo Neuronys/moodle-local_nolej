@@ -68,6 +68,7 @@ if ($hassiteconfig) { // Needs this condition or there is error on login page.
             'coursecontext',
             [
                 'coursecontext' => get_string('storagecontextcourse', 'local_nolej'),
+                'currentcontext' => get_string('storagecontextcurrent', 'local_nolej'),
                 'nolejcontext' => get_string('storagecontextnolej', 'local_nolej'),
             ]
         )

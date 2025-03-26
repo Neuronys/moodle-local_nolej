@@ -45,7 +45,7 @@ use Firebase\JWT\JWK;
 use mod_lti\local\ltiopenid\jwks_helper;
 
 global $CFG;
-require_once($CFG->libdir .'/filelib.php');
+require_once($CFG->libdir . '/filelib.php');
 require_once($CFG->dirroot . '/local/nolej/classes/event/webhook_called.php');
 require_once($CFG->dirroot . '/local/nolej/classes/module.php');
 
@@ -969,21 +969,82 @@ class api {
     }
 
     /**
+     * Get the Nolej category id where the module has been created.
+     * @return int|false
+     */
+    protected function getgenerationcoursecontext() {
+        $contextid = $this->contextid;
+        // Context must exist and cannot be systemcontext.
+        if (empty($contextid) || $contextid == SYSCONTEXTID) {
+            return false;
+        }
+
+        $categoryexists = core_course_category::get($contextid, IGNORE_MISSING, true) != null;
+        return $categoryexists ? $contextid : false;
+    }
+
+    /**
+     * Get the Nolej category id where the activities generation started.
+     * @return int|false
+     */
+    protected function getgenerationcurrentcontext($document) {
+        global $DB;
+
+        // Use the latest 'generate' action to detect where the user executed the generation.
+        $activities = $DB->get_records(
+            'local_nolej_activity',
+            [
+                'user_id' => $document->user_id,
+                'document_id' => $document->document_id,
+                'action' => 'activities',
+            ],
+            'tstamp DESC',
+            '*',
+            0,
+            1
+        );
+
+        $lastactivity = $activities ? reset($activities) : false;
+        if (!$lastactivity) {
+            return false;
+        }
+
+        $contextid = $lastactivity->context_id;
+        // Context must exist and cannot be systemcontext.
+        if (empty($contextid) || $contextid == SYSCONTEXTID) {
+            return false;
+        }
+
+        $categoryexists = core_course_category::get($contextid, IGNORE_MISSING, true) != null;
+        return $categoryexists ? $contextid : false;
+    }
+
+    /**
      * Get the Nolej category id, create it if not exists.
+     * @param object $document
      * @return int
      */
-    protected function getnolejcategoryid() {
+    protected function getnolejcategoryid($document) {
         // Check for course context.
-        if (get_config('local_nolej', 'storagecontext') == 'coursecontext') {
-            $contextid = $this->contextid;
-            // Context must exist and cannot be systemcontext.
-            if (!empty($contextid) && $contextid != SYSCONTEXTID) {
-                $categoryexists = core_course_category::get($contextid, IGNORE_MISSING, true) != null;
-                if ($categoryexists) {
+        $storagecontext = get_config('local_nolej', 'storagecontext');
+
+        switch ($storagecontext) {
+            case 'coursecontext':
+                $contextid = $this->getgenerationcoursecontext();
+                if ($contextid) {
                     return $contextid;
                 }
-            }
+                break;
+
+            case 'currentcontext':
+                $contextid = $this->getgenerationcurrentcontext($document);
+                if ($contextid) {
+                    return $contextid;
+                }
+                break;
         }
+
+        // Defaults to Nolej global context.
 
         $categoryid = get_config('local_nolej', 'categoryid');
 
@@ -1021,7 +1082,7 @@ class api {
         }
 
         // Create category context in the Nolej context.
-        $nolejcategoryid = $this->getnolejcategoryid();
+        $nolejcategoryid = $this->getnolejcategoryid($document);
         $modulecategory = core_course_category::create((object) [
             'name' => sprintf(
                 '%s (%s)',
@@ -1174,6 +1235,7 @@ class api {
             (object) [
                 'document_id' => $documentid,
                 'user_id' => $userid,
+                'context_id' => $this->contextid ?? SYSCONTEXTID,
                 'action' => $action,
                 'tstamp' => time(),
                 'status' => $status,

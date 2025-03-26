@@ -379,6 +379,7 @@ class module {
             (object) [
                 'document_id' => $result->id,
                 'user_id' => $USER->id,
+                'context_id' => $this->contextid ?? SYSCONTEXTID,
                 'action' => 'transcription',
                 'tstamp' => time(),
                 'status' => 'ok',
@@ -551,6 +552,7 @@ class module {
             (object) [
                 'document_id' => $this->documentid,
                 'user_id' => $USER->id,
+                'context_id' => $this->contextid ?? SYSCONTEXTID,
                 'action' => 'transcription',
                 'tstamp' => time(),
                 'status' => 'ok',
@@ -1012,6 +1014,7 @@ class module {
                     (object) [
                         'document_id' => $this->documentid,
                         'user_id' => $USER->id,
+                        'context_id' => $this->contextid ?? SYSCONTEXTID,
                         'action' => 'activities',
                         'tstamp' => time(),
                         'status' => 'ok',

@@ -133,5 +133,18 @@ function xmldb_local_nolej_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2024070401, 'local', 'nolej');
     }
 
+    // Add column context_id in local_nolej_activity.
+    if ($oldversion < 2025032605) {
+
+        $table = new xmldb_table('local_nolej_activity');
+        $field = new xmldb_field('context_id', XMLDB_TYPE_INTEGER, '11', null, null, null, null);
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Update the version number to the current version.
+        upgrade_plugin_savepoint(true, 2025032605, 'local', 'nolej');
+    }
+
     return true;
 }
