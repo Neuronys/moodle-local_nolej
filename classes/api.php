@@ -985,6 +985,7 @@ class api {
 
     /**
      * Get the Nolej category id where the activities generation started.
+     * @param object $document
      * @return int|false
      */
     protected function getgenerationcurrentcontext($document) {
