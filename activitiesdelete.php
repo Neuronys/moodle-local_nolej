@@ -81,9 +81,14 @@ if (!$document) {
 }
 
 $module = new module($context->id, $document);
-$errormessage = $module->deleteactivities($activityids);
+$success = $module->deleteactivities($activityids, $savedbytes, $errormessage);
+$issingle = count($activityids) == 1;
+$params = (object) [
+    'savedspace' => display_size($savedbytes),
+    'failed' => $errormessage,
+];
 
-if (empty($errormessage)) {
+if ($success) {
     // Activities have been deleted.
     redirect(
         new moodle_url(
@@ -93,12 +98,12 @@ if (empty($errormessage)) {
                 'documentid' => $documentid,
             ]
         ),
-        get_string(count($activityids) == 1 ? 'activitydeleted' : 'activitiesdeleted', 'local_nolej'),
+        get_string($issingle ? 'activitydeleted' : 'activitiesdeleted', 'local_nolej', $params),
         null,
         notification::NOTIFY_SUCCESS
     );
 } else {
-    // An error occurred.
+    // An error (or more) occurred.
     redirect(
         new moodle_url(
             '/local/nolej/management.php',
@@ -107,7 +112,7 @@ if (empty($errormessage)) {
                 'documentid' => $documentid,
             ]
         ),
-        get_string('activitydeletionerror', 'local_nolej', $errormessage),
+        get_string($issingle ? 'activitydeletefail' : 'activitiesdeletefail', 'local_nolej', $params),
         null,
         notification::NOTIFY_ERROR
     );

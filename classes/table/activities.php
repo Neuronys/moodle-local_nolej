@@ -192,7 +192,7 @@ class activities extends \table_sql {
      * @return string
      */
     public function col_name($data) {
-        return "<a href='{$data->link}'>{$data->name}</a>";
+        return \html_writer::link($data->link, $data->name);
     }
 
     /**
@@ -292,10 +292,10 @@ class activities extends \table_sql {
 
         foreach ($data as $element) {
             $content = $contentbank->get_content_from_id($element->content_id);
+            $contenttype = $content->get_content_type_instance();
+
             $file = $content->get_file();
             $filesize = $file ? $file->get_filesize() : 0;
-            $contenttypeclass = $content->get_content_type().'\\contenttype';
-            $contenttype = new $contenttypeclass($this->context);
             $author = \core_user::get_user($content->get_content()->usercreated);
             $element->link = $contenttype->get_view_url($content);
             $element->icon = $contenttype->get_icon($content);

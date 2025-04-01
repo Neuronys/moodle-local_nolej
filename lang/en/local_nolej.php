@@ -77,8 +77,10 @@ $string['manageactivitiesofmodule'] = '{$a->title}: Manage generated activities'
 $string['withselectedactivities'] = 'With selected activities:';
 $string['deletecontents'] = 'Delete activities';
 $string['deletecontentsconfirm'] = 'Are you sure you want to delete the selected contents and all associated files? This action cannot be undone.';
-$string['activitydeleted'] = 'The selected activity has been successfully deleted.';
-$string['activitiesdeleted'] = 'The selected activities have been successfully deleted.';
+$string['activitydeleted'] = 'The selected activity has been successfully deleted, saving {$a->savedspace}.';
+$string['activitiesdeleted'] = 'The selected activities have been successfully deleted, saving {$a->savedspace}.';
+$string['activitydeletefail'] = 'Could not delete the activity: {$a->failed}';
+$string['activitiesdeletefail'] = 'Could not deleted the following activities, you saved {$a->savedspace}: {$a->failed}';
 
 // Status.
 $string['statuscreation'] = 'New module';
