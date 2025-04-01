@@ -240,7 +240,7 @@ class activities extends \table_sql {
      * @return string containing sql to use.
      */
     protected function get_sql($count = false): string {
-        $select = $count ? 'COUNT(1)' :  '*';
+        $select = $count ? 'COUNT(1)' : '*';
 
         $sql = "SELECT $select
                   FROM {local_nolej_h5p} n

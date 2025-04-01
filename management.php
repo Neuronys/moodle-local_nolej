@@ -80,6 +80,14 @@ $table->out(20, false);
 $tablehtml = ob_get_contents();
 ob_end_clean();
 
+$bulklabel = $label = html_writer::tag(
+    'label',
+    get_string('withselectedactivities', 'local_nolej'),
+    [
+        'for' => 'formactionid',
+        'class' => 'col-form-label d-inline',
+    ]
+);
 $bulkactions = html_writer::select(
     [
         '#delete' => get_string('delete'),
@@ -106,6 +114,7 @@ echo $OUTPUT->render_from_template(
         'contextid' => $contextid,
         'documentid' => $documentid,
         'table' => $tablehtml,
+        'bulklabel' => $bulklabel,
         'bulkactions' => $bulkactions,
     ]
 );

@@ -62,7 +62,7 @@ define(
             });
 
         // Initialize bulk activity delete confirmation modal.
-        $('form[name="activitiesmanagement"] #formactionid').on('change', function() {
+        $('form[name="activitiesmanagement"] #formactionid').on('change', function(e) {
             const form = $('form[name="activitiesmanagement"]')[0];
 
             const checked = $('form[name="activitiesmanagement"] input.activitycheckbox:checked');
@@ -71,13 +71,17 @@ define(
                 return;
             }
 
-            switch ($(this).val()) {
+            // Save value and reset input.
+            const selected = $(this).val();
+            $(this).val('');
+
+            switch (selected) {
                 case '#delete':
                     ModalFactory.create({
                         type: ModalFactory.types.SAVE_CANCEL,
                         title: String.get_string('deletecontents', 'local_nolej'),
                     })
-                        .then(function(modal) {
+                        .done(function(modal) {
                             const activities = checked.closest('tr').find('a:first').map(function() {
                                 return {
                                     name: $(this).text(),
