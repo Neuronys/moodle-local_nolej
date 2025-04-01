@@ -33,6 +33,10 @@ This plugin currently supports the following languages:
 
 ## Requirements
 * Moodle 4.1+ (tested with version `20221128`)
+* H5P plugin `mod_h5pactivity`, included in Moodle since 3.9.
+  This plugin does not share data with the older [`mod_hvp`](https://moodle.org/plugins/mod_hvp),
+  so they can be both installed at the same time.
+  You can also [migrate h5p activities to the new plugin](https://docs.moodle.org/405/en/H5P_migration_tool).
 
 ## Installation
 
