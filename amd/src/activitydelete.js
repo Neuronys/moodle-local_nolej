@@ -62,7 +62,7 @@ define(
             });
 
         // Initialize bulk activity delete confirmation modal.
-        $('form[name="activitiesmanagement"] #formactionid').on('change', function(e) {
+        $('form[name="activitiesmanagement"] #formactionid').on('change', function() {
             const form = $('form[name="activitiesmanagement"]')[0];
 
             const checked = $('form[name="activitiesmanagement"] input.activitycheckbox:checked');
