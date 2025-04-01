@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Nolej module deletion.
+ * Nolej activities deletion.
  *
  * @package     local_nolej
  * @author      Vincenzo Padula <vincenzo@oc-group.eu>
@@ -29,8 +29,10 @@ require_once($CFG->dirroot . '/local/nolej/classes/module.php');
 use local_nolej\module;
 use core\output\notification;
 
-$moduleid = required_param('moduleid', PARAM_INT);
-$contextid = optional_param('contextid', SYSCONTEXTID, PARAM_INT); // Fallback to context system.
+// var_dump($_GET);die;
+
+$contextid = required_param('contextid', PARAM_INT);
+$documentid = required_param('documentid', PARAM_ALPHANUMEXT);
 
 // Get the context instance from its id.
 $context = context::instance_by_id($contextid);
@@ -51,21 +53,63 @@ require_login($courseid);
 require_sesskey();
 require_capability('local/nolej:usenolej', $context);
 
-$success = module::delete($moduleid);
+// Delete a single activity or multiple activities.
+$activityid = optional_param('activityid', 0, PARAM_INT);
+$activityids = optional_param_array('activityids', [], PARAM_INT);
 
-if ($success) {
-    // Module deleted.
+if ($activityid > 0) {
+    // A single activity will be deleted.
+    $activityids = [$activityid];
+} elseif (empty($activityids)) {
+    // No data.
     redirect(
         new moodle_url('/local/nolej/manage.php', ['contextid' => $context->id]),
-        get_string('moduledeleted', 'local_nolej'),
+        get_string('errdatamissing', 'local_nolej'),
+        null,
+        notification::NOTIFY_ERROR
+    );
+}
+
+// Retrieve document data.
+$document = $DB->get_record('local_nolej_module', ['document_id' => $documentid, 'user_id' => $USER->id]);
+if (!$document) {
+    // Document does not exist. Redirect to the library.
+    redirect(
+        new moodle_url('/local/nolej/manage.php', ['contextid' => $context->id]),
+        get_string('modulenotfound', 'local_nolej'),
+        null,
+        notification::NOTIFY_ERROR
+    );
+}
+
+$module = new module($context->id, $document);
+$errormessage = $module->deleteactivities($activityids);
+
+if (empty($errormessage)) {
+    // Activities have been deleted.
+    redirect(
+        new moodle_url(
+            '/local/nolej/management.php',
+            [
+                'contextid' => $context->id,
+                'documentid' => $documentid,
+            ]
+        ),
+        get_string(count($activityids) == 1 ? 'activitydeleted' : 'activitiesdeleted', 'local_nolej'),
         null,
         notification::NOTIFY_SUCCESS
     );
 } else {
-    // Module not found.
+    // An error occurred.
     redirect(
-        new moodle_url('/local/nolej/manage.php', ['contextid' => $context->id]),
-        get_string('modulenotfound', 'local_nolej'),
+        new moodle_url(
+            '/local/nolej/management.php',
+            [
+                'contextid' => $context->id,
+                'documentid' => $documentid,
+            ]
+        ),
+        get_string('activitydeletionerror', 'local_nolej', $errormessage),
         null,
         notification::NOTIFY_ERROR
     );

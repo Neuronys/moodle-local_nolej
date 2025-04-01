@@ -1301,4 +1301,15 @@ class module {
 
         return true;
     }
+
+    /**
+     * Delete activities of this module from disk and database.
+     * @param int[] $activitiesid
+     * @return string error message
+     */
+    public function deleteactivities($activitiesid) {
+        // TODO: delete activities.
+        
+        return '';
+    }
 }

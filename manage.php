@@ -108,6 +108,23 @@ foreach ($modules as $module) {
                 ]
             )
         );
+
+        // Activities management link.
+        $manageurl = new moodle_url(
+            '/local/nolej/management.php',
+            [
+                'contextid' => $context->id,
+                'documentid' => $module->document_id,
+            ]
+        );
+        $menu->add(
+            new action_menu_link(
+                $manageurl,
+                new pix_icon('a/setting', 'core'),
+                get_string('manageactivities', 'local_nolej'),
+                false
+            )
+        );
     }
 
     // Delete module link.
@@ -151,5 +168,5 @@ $interval = max(1, (int) get_config('local_nolej', 'pollinginterval')) * 1000;
 $PAGE->requires->js_call_amd('local_nolej/libraryupdate', 'init', [$interval]);
 
 echo $OUTPUT->header();
-echo $OUTPUT->render_from_template('local_nolej/manage', $templatecontext);
+echo $OUTPUT->render_from_template('local_nolej/library', $templatecontext);
 echo $OUTPUT->footer();

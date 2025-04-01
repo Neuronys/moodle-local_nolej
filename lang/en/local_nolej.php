@@ -72,6 +72,13 @@ $string['storagecontextinfo'] = 'Select the position where to save Nolej generat
 $string['storagecontextcourse'] = 'Save activities in the course where the module has been originally created';
 $string['storagecontextcurrent'] = 'Save activities in the course where the user is at the time of generation';
 $string['storagecontextnolej'] = 'Save activities in the Nolej global context';
+$string['manageactivities'] = 'Manage activities';
+$string['manageactivitiesofmodule'] = '{$a->title}: Manage generated activities';
+$string['withselectedactivities'] = 'With selected activities:';
+$string['deletecontents'] = 'Delete activities';
+$string['deletecontentsconfirm'] = 'Are you sure you want to delete the selected contents and all associated files? This action cannot be undone.';
+$string['activitydeleted'] = 'The selected activity has been successfully deleted.';
+$string['activitiesdeleted'] = 'The selected activities have been successfully deleted.';
 
 // Status.
 $string['statuscreation'] = 'New module';
