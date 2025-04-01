@@ -1,6 +1,14 @@
 name: Moodle Plugin CI
 
-on: [push, pull_request]
+on:
+  push:
+    paths-ignore:
+      - "README.md"
+      - "docs/**"
+  pull_request:
+    paths-ignore:
+      - "README.md"
+      - "docs/**"
 
 jobs:
   test:
@@ -31,7 +39,7 @@ jobs:
       fail-fast: false
       matrix:
         php: ['7.4', '8.0', '8.1', '8.2', '8.3']
-        moodle-branch: 
+        moodle-branch:
           - 'MOODLE_401_STABLE'
           - 'MOODLE_402_STABLE'
           - 'MOODLE_403_STABLE'
