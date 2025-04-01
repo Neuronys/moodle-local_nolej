@@ -29,8 +29,6 @@ require_once($CFG->dirroot . '/local/nolej/classes/module.php');
 use local_nolej\module;
 use core\output\notification;
 
-// var_dump($_GET);die;
-
 $contextid = required_param('contextid', PARAM_INT);
 $documentid = required_param('documentid', PARAM_ALPHANUMEXT);
 
@@ -60,7 +58,7 @@ $activityids = optional_param_array('activityids', [], PARAM_INT);
 if ($activityid > 0) {
     // A single activity will be deleted.
     $activityids = [$activityid];
-} elseif (empty($activityids)) {
+} else if (empty($activityids)) {
     // No data.
     redirect(
         new moodle_url('/local/nolej/manage.php', ['contextid' => $context->id]),

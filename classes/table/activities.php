@@ -35,8 +35,8 @@ use core_user\output\status_field;
 use moodle_url;
 
 global $CFG;
-require_once $CFG->libdir . '/tablelib.php';
-require_once $CFG->dirroot . '/user/lib.php';
+require_once($CFG->libdir . '/tablelib.php');
+require_once($CFG->dirroot . '/user/lib.php');
 require_once($CFG->dirroot . '/local/nolej/classes/api.php');
 
 /**
@@ -112,36 +112,6 @@ class activities extends \table_sql {
         $headers[] = get_string('actions');
         $columns[] = 'actions';
 
-        // // Get the list of fields we have to hide.
-        // $hiddenfields = array();
-        // if (!has_capability('moodle/course:viewhiddenuserfields', $this->context)) {
-        //     $hiddenfields = array_flip(explode(',', $CFG->hiddenuserfields));
-        // }
-
-        // // Add column for groups if the user can view them.
-        // $canseegroups = !isset($hiddenfields['groups']);
-        // if ($canseegroups) {
-        //     $headers[] = get_string('groups');
-        //     $columns[] = 'groups';
-        // }
-
-        // // Do not show the columns if it exists in the hiddenfields array.
-        // if (!isset($hiddenfields['lastaccess'])) {
-        //     if ($this->courseid == SITEID) {
-        //         $headers[] = get_string('lastsiteaccess');
-        //     } else {
-        //         $headers[] = get_string('lastcourseaccess');
-        //     }
-        //     $columns[] = 'lastaccess';
-        // }
-
-        // $canreviewenrol = has_capability('moodle/course:enrolreview', $this->context);
-        // if ($canreviewenrol && $this->courseid != SITEID) {
-        //     $columns[] = 'status';
-        //     $headers[] = get_string('participationstatus', 'enrol');
-        //     $this->no_sorting('status');
-        // };
-
         $this->define_columns($columns);
         $this->define_headers($headers);
 
@@ -157,14 +127,6 @@ class activities extends \table_sql {
         $this->set_attribute('id', 'local_nolej_activities_management');
 
         parent::out($pagesize, $useinitialsbar, $downloadhelpbutton);
-
-        // if (has_capability('moodle/course:enrolreview', $this->context)) {
-        //     $params = [
-        //         'contextid' => $this->context->id,
-        //         'uniqueid' => $this->uniqueid,
-        //     ];
-        //     $PAGE->requires->js_call_amd('core_user/status_field', 'init', [$params]);
-        // }
     }
 
     /**
@@ -334,11 +296,6 @@ class activities extends \table_sql {
             $filesize = $file ? $file->get_filesize() : 0;
             $contenttypeclass = $content->get_content_type().'\\contenttype';
             $contenttype = new $contenttypeclass($this->context);
-            // if ($content->get_visibility() == content::VISIBILITY_UNLISTED) {
-            //     $name = get_string('visibilitytitleunlisted', 'contentbank', $content->get_name());
-            // } else {
-            //     $name = $content->get_name();
-            // }
             $author = \core_user::get_user($content->get_content()->usercreated);
             $element->link = $contenttype->get_view_url($content);
             $element->icon = $contenttype->get_icon($content);

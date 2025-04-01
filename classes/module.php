@@ -1309,7 +1309,6 @@ class module {
      */
     public function deleteactivities($activitiesid) {
         // TODO: delete activities.
-        
         return '';
     }
 }

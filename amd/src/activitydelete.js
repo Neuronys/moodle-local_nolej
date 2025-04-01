@@ -21,70 +21,88 @@
  * @copyright   2025 OC Open Consulting SB Srl
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-define(['jquery', 'core/modal_factory', 'core/str', 'core/modal_events', 'core/templates'], function($, ModalFactory, String, ModalEvents, Templates) {
-    // Initialize single activity delete confirmation modal.
-    var trigger = $('[data-action="delete"]');
-    console.log(M);
-    ModalFactory.create({
-        type: ModalFactory.types.SAVE_CANCEL,
-        title: String.get_string('deletecontent', 'core_contentbank'),
-        preShowCallback: function(triggerElement, modal) {
-            triggerElement = $(triggerElement);
-            let urlparams = new URLSearchParams(window.location.search);
-            let documentid = urlparams.get('documentid');
-            modal.params = {
-                'activityid': triggerElement[0].getAttribute('data-activityid'),
-                'documentid': documentid,
-            };
-            let activityname = triggerElement[0].getAttribute('data-activityname');
-            modal.setBody(String.get_string('deletecontentconfirm', 'core_contentbank', { name: activityname }));
-            modal.setSaveButtonText(String.get_string('delete'));
-        }
-    }, trigger)
-        .done(function(modal) {
-            modal.getRoot().on(ModalEvents.save, function(e) {
-                e.preventDefault();
-                var deleteurl = new URL(M.cfg.wwwroot + '/local/nolej/activitiesdelete.php');
-                deleteurl.searchParams.append('activityid', modal.params.activityid);
-                deleteurl.searchParams.append('documentid', modal.params.documentid);
-                deleteurl.searchParams.append('contextid', M.cfg.contextid);
-                deleteurl.searchParams.append('sesskey', M.cfg.sesskey);
-                window.location.href = deleteurl.toString();
+define(
+    ['jquery', 'core/modal_factory', 'core/str', 'core/modal_events', 'core/templates'],
+    function($, ModalFactory, String, ModalEvents, Templates) {
+        // Initialize single activity delete confirmation modal.
+        var trigger = $('[data-action="delete"]');
+        ModalFactory.create({
+            type: ModalFactory.types.SAVE_CANCEL,
+            title: String.get_string('deletecontent', 'core_contentbank'),
+            preShowCallback: function(triggerElement, modal) {
+                triggerElement = $(triggerElement);
+                let urlparams = new URLSearchParams(window.location.search);
+                let documentid = urlparams.get('documentid');
+                modal.params = {
+                    'activityid': triggerElement[0].getAttribute('data-activityid'),
+                    'documentid': documentid,
+                };
+                let activityname = triggerElement[0].getAttribute('data-activityname');
+                const body = String.get_string(
+                    'deletecontentconfirm',
+                    'core_contentbank',
+                    {
+                        name: activityname,
+                    }
+                );
+                modal.setBody(body);
+                modal.setSaveButtonText(String.get_string('delete'));
+            }
+        }, trigger)
+            .done(function(modal) {
+                modal.getRoot().on(ModalEvents.save, function(e) {
+                    e.preventDefault();
+                    var deleteurl = new URL(M.cfg.wwwroot + '/local/nolej/activitiesdelete.php');
+                    deleteurl.searchParams.append('activityid', modal.params.activityid);
+                    deleteurl.searchParams.append('documentid', modal.params.documentid);
+                    deleteurl.searchParams.append('contextid', M.cfg.contextid);
+                    deleteurl.searchParams.append('sesskey', M.cfg.sesskey);
+                    window.location.href = deleteurl.toString();
+                });
             });
-        });
 
-    // Initialize bulk activity delete confirmation modal.
-    $('form[name="activitiesmanagement"] #formactionid').on('change', function() {
-        const form = $('form[name="activitiesmanagement"]')[0];
+        // Initialize bulk activity delete confirmation modal.
+        $('form[name="activitiesmanagement"] #formactionid').on('change', function() {
+            const form = $('form[name="activitiesmanagement"]')[0];
 
-        const checked = $('form[name="activitiesmanagement"] input.activitycheckbox:checked');
-        if (checked.length <= 0) {
-            // No activities selected.
-            return;
-        }
+            const checked = $('form[name="activitiesmanagement"] input.activitycheckbox:checked');
+            if (checked.length <= 0) {
+                // No activities selected.
+                return;
+            }
 
-        switch ($(this).val()) {
-            case '#delete':
-                ModalFactory.create({
-                    type: ModalFactory.types.SAVE_CANCEL,
-                    title: String.get_string('deletecontents', 'local_nolej'),
-                })
-                    .then(function(modal) {
-                        const activities = checked.closest('tr').find('a:first').map(function() {
-                            return { name: $(this).text() }
-                        }).get();
-                        modal.setBody(Templates.render('local_nolej/activitiesdelete', { activities }));
-                        modal.setSaveButtonText(String.get_string('delete'));
+            switch ($(this).val()) {
+                case '#delete':
+                    ModalFactory.create({
+                        type: ModalFactory.types.SAVE_CANCEL,
+                        title: String.get_string('deletecontents', 'local_nolej'),
+                    })
+                        .then(function(modal) {
+                            const activities = checked.closest('tr').find('a:first').map(function() {
+                                return {
+                                    name: $(this).text(),
+                                };
+                            }).get();
+                            const body = Templates.render(
+                                'local_nolej/activitiesdelete',
+                                {
+                                    activities,
+                                }
+                            );
+                            modal.setBody(body);
+                            modal.setSaveButtonText(String.get_string('delete'));
 
-                        modal.getRoot().on(ModalEvents.save, function(e) {
-                            e.preventDefault();
-                            const deleteurl = new URL(M.cfg.wwwroot + '/local/nolej/activitiesdelete.php');
-                            form.action = deleteurl;
-                            form.submit();
+                            modal.getRoot().on(ModalEvents.save, function(e) {
+                                e.preventDefault();
+                                const deleteurl = new URL(M.cfg.wwwroot + '/local/nolej/activitiesdelete.php');
+                                form.action = deleteurl;
+                                form.submit();
+                            });
+
+                            modal.show();
+                            return;
                         });
-
-                        modal.show();
-                    });
-        }
-    });
-});
+            }
+        });
+    }
+);
