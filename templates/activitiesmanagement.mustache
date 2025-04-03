@@ -18,6 +18,8 @@
     @template local_nolej/activitiesmanagement
 
     Context variables required for this template:
+    * title
+    * libraryurl
     * sesskey
     * contextid
     * documentid
@@ -26,6 +28,8 @@
 
     Example context (json):
     {
+        "title": "My Nolej Module",
+        "libraryurl": "mymoodle.com/local/nolej/library.php",
         "sesskey": "***",
         "contextid": 1,
         "documentid": "abcd-efgh",
@@ -34,15 +38,28 @@
     }
 }}
 
-<form method="post" name="activitiesmanagement">
-    <input type="hidden" name="sesskey" value="{{sesskey}}">
-    <input type="hidden" name="contextid" value="{{contextid}}">
-    <input type="hidden" name="documentid" value="{{documentid}}">
-
-    {{{table}}}
-
-    <div class="mt-3">
-        {{{bulklabel}}}
-        {{{bulkactions}}}
+<div class='container-fluid'>
+    <div class='mb-5'>
+        <div class="text-left mb-3 mt-2">
+            <a href="{{{libraryurl}}}">
+                {{#pix}} i/return, core {{/pix}}
+                {{#str}} backtolibrary, local_nolej {{/str}}
+            </a>
+        </div>
+        <h2>{{title}}</h2>
+        <h5>{{#str}} manageactivitiesofmodule, local_nolej {{/str}}</h5>
     </div>
-</form>
+
+    <form method="post" name="activitiesmanagement">
+        <input type="hidden" name="sesskey" value="{{sesskey}}">
+        <input type="hidden" name="contextid" value="{{contextid}}">
+        <input type="hidden" name="documentid" value="{{documentid}}">
+
+        {{{table}}}
+
+        <div class="mt-3">
+            {{{bulklabel}}}
+            {{{bulkactions}}}
+        </div>
+    </form>
+</div>

@@ -1147,7 +1147,7 @@ class module {
      * @return string url
      */
     protected function libraryurl($escaped = false) {
-        $libraryurl = new moodle_url('/local/nolej/manage.php', ['contextid' => $this->contextid]);
+        $libraryurl = new moodle_url('/local/nolej/library.php', ['contextid' => $this->contextid]);
         return $libraryurl->out($escaped);
     }
 
@@ -1271,13 +1271,10 @@ class module {
             $userid = $USER->id;
         }
 
-        $module = $DB->get_record(
-            'local_nolej_module',
-            [
-                'id' => $moduleid,
-                'user_id' => $userid,
-            ]
-        );
+        $params = is_siteadmin()
+            ? ['id' => $moduleid]
+            : ['id' => $moduleid, 'user_id' => $userid];
+        $module = $DB->get_record('local_nolej_module', $params);
 
         if (!$module) {
             // Document does not exist.

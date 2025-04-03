@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Nolej module list
+ * Nolej activities management table
  *
  * @package     local_nolej
  * @author      Vincenzo Padula <vincenzo@oc-group.eu>
@@ -26,10 +26,18 @@
 require_once(__DIR__ . '/../../config.php');
 require_once($CFG->dirroot . '/local/nolej/classes/api.php');
 require_once($CFG->dirroot . '/local/nolej/classes/module.php');
+require_once($CFG->dirroot . '/local/nolej/classes/table/activities.php');
 
 use local_nolej\module;
+use core\output\notification;
 
 $contextid = optional_param('contextid', SYSCONTEXTID /* Fallback to context system. */, PARAM_INT);
+$documentid = optional_param('documentid', '', PARAM_ALPHANUMEXT);
+
+if (empty($documentid)) {
+    // Redirect to Nolej library, with no warnings (for backward compatibility).
+    redirect(new moodle_url('/local/nolej/library.php', ['contextid' => $contextid]));
+}
 
 // Get the context instance and course data from the context ID.
 [$context, $course] = \local_nolej\utils::get_info_from_context($contextid);
@@ -38,135 +46,79 @@ $contextid = optional_param('contextid', SYSCONTEXTID /* Fallback to context sys
 require_login($course);
 require_capability('local/nolej:usenolej', $context);
 
+// Retrieve document data.
+$params = is_siteadmin()
+    ? ['document_id' => $documentid]
+    : ['document_id' => $documentid, 'user_id' => $USER->id];
+$document = $DB->get_record('local_nolej_module', $params);
+if (!$document) {
+    // Document does not exist. Redirect to the library.
+    redirect(
+        new moodle_url('/local/nolej/library.php', ['contextid' => $contextid]),
+        get_string('modulenotfound', 'local_nolej'),
+        null,
+        notification::NOTIFY_ERROR
+    );
+}
+
 // Page configuration.
-$PAGE->set_url('/local/nolej/manage.php', ['contextid' => $context->id]);
-$PAGE->set_pagelayout('standard');
+$PAGE->set_url('/local/nolej/manage.php', ['contextid' => $contextid, 'documentid' => $documentid]);
+$PAGE->set_pagelayout('report');
 
 \local_nolej\utils::page_setup($context, $course);
 $PAGE->set_title(get_string('library', 'local_nolej'));
 
-// JS and CSS dependencies.
-$PAGE->requires->js_call_amd('local_nolej/delete');
-$PAGE->requires->js_call_amd('local_nolej/preview');
-$PAGE->requires->css('/local/nolej/styles.css');
+// JS dependencies.
+$PAGE->requires->js_call_amd('local_nolej/activitydelete');
 
-$status2form = [
-    module::STATUS_CREATION => '',
-    module::STATUS_CREATION_PENDING => '',
-    module::STATUS_ANALYSIS => 'analysis',
-    module::STATUS_ANALYSIS_PENDING => 'analysis',
-    module::STATUS_REVISION => 'concepts',
-    module::STATUS_REVISION_PENDING => 'concepts',
-    module::STATUS_ACTIVITIES => 'activities',
-    module::STATUS_ACTIVITIES_PENDING => 'activities',
-    module::STATUS_COMPLETED => 'activities',
-    module::STATUS_FAILED => '',
-];
+// Init activities table.
+$table = new \local_nolej\table\activities($documentid);
+$table->define_baseurl($PAGE->url);
 
-$modules = $DB->get_records(
-    'local_nolej_module',
-    ['user_id' => $USER->id],
-    'tstamp DESC'
+// Get table html.
+ob_start();
+$table->out(20, false);
+$tablehtml = ob_get_contents();
+ob_end_clean();
+
+$libraryurl = new moodle_url('/local/nolej/library.php', ['contextid' => $contextid]);
+$bulklabel = $label = html_writer::tag(
+    'label',
+    get_string('withselectedactivities', 'local_nolej'),
+    [
+        'for' => 'formactionid',
+        'class' => 'col-form-label d-inline',
+    ]
+);
+$bulkactions = html_writer::select(
+    [
+        '#delete' => get_string('delete'),
+    ],
+    'formaction',
+    '',
+    ['' => 'choosedots'],
+    [
+        'id' => 'formactionid',
+        'class' => 'ml-2',
+        'data-action' => 'toggle',
+        'data-togglegroup' => $table->uniqueid,
+        'data-toggle' => 'action',
+        'disabled' => 'disabled',
+    ]
 );
 
-$modulearray = [];
-foreach ($modules as $module) {
-
-    // Actions menu.
-    $menu = new action_menu();
-    $menu->set_menu_trigger(get_string('actions'));
-
-    // Edit and Preview link, visible iff module is not failed.
-    if ($module->status != module::STATUS_FAILED && $module->status != module::STATUS_CREATION) {
-        $editurl = new moodle_url(
-            '/local/nolej/edit.php',
-            [
-                'contextid' => $context->id,
-                'documentid' => $module->document_id,
-                'step' => $status2form[$module->status],
-            ]
-        );
-        $menu->add(
-            new action_menu_link(
-                $editurl,
-                new pix_icon('i/edit', 'core'),
-                get_string('editmodule', 'local_nolej'),
-                false
-            )
-        );
-
-        // Activities preview link.
-        $menu->add(
-            new action_menu_link(
-                new moodle_url('#'),
-                new pix_icon('i/preview', 'core'),
-                get_string('activities', 'local_nolej'),
-                false,
-                [
-                    'data-action' => 'preview',
-                    'data-documentid' => $module->document_id,
-                ]
-            )
-        );
-
-        // Activities management link.
-        $manageurl = new moodle_url(
-            '/local/nolej/management.php',
-            [
-                'contextid' => $context->id,
-                'documentid' => $module->document_id,
-            ]
-        );
-        $menu->add(
-            new action_menu_link(
-                $manageurl,
-                new pix_icon('a/setting', 'core'),
-                get_string('manageactivities', 'local_nolej'),
-                false
-            )
-        );
-    }
-
-    // Delete module link.
-    $menu->add(
-        new action_menu_link(
-            new moodle_url('#'),
-            new pix_icon('i/delete', 'core'),
-            get_string('deletemodule', 'local_nolej'),
-            false,
-            [
-                'data-action' => 'delete',
-                'data-moduleid' => $module->id,
-            ]
-        )
-    );
-
-    $moduledata = [
-        'moduleid' => $module->id,
-        'title' => $module->title,
-        'status' => module::getstatusname((int) $module->status),
-        'documentid' => $module->document_id,
-        'created' => userdate($module->tstamp),
-        'lastupdate' => module::lastupdateof($module->document_id),
-        'ispending' => module::isstatuspending($module->status),
-        'iscompleted' => $module->status == module::STATUS_COMPLETED,
-        'isfailed' => $module->status == module::STATUS_FAILED,
-        'actions' => $OUTPUT->render($menu),
-    ];
-
-    $modulearray[] = $moduledata;
-}
-
-$createurl = new moodle_url('/local/nolej/edit.php', ['contextid' => $context->id]);
-$templatecontext = (object) [
-    'modules' => $modulearray,
-    'createurl' => $createurl->out(false),
-];
-
-// Initialize polling.
-$interval = max(1, (int) get_config('local_nolej', 'pollinginterval')) * 1000;
-$PAGE->requires->js_call_amd('local_nolej/libraryupdate', 'init', [$interval]);
-
 echo $OUTPUT->header();
-echo $OUTPUT->render_from_template('local_nolej/library', $templatecontext);
+echo $OUTPUT->render_from_template(
+    'local_nolej/activitiesmanagement',
+    (object) [
+        'title' => $document->title,
+        'libraryurl' => $libraryurl->out(true),
+        'sesskey' => sesskey(),
+        'contextid' => $contextid,
+        'documentid' => $documentid,
+        'table' => $tablehtml,
+        'bulklabel' => $bulklabel,
+        'bulkactions' => $bulkactions,
+    ]
+);
 echo $OUTPUT->footer();

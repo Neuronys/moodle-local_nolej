@@ -61,7 +61,7 @@ if ($activityid > 0) {
 } else if (empty($activityids)) {
     // No data.
     redirect(
-        new moodle_url('/local/nolej/manage.php', ['contextid' => $context->id]),
+        new moodle_url('/local/nolej/library.php', ['contextid' => $context->id]),
         get_string('errdatamissing', 'local_nolej'),
         null,
         notification::NOTIFY_ERROR
@@ -69,11 +69,14 @@ if ($activityid > 0) {
 }
 
 // Retrieve document data.
-$document = $DB->get_record('local_nolej_module', ['document_id' => $documentid, 'user_id' => $USER->id]);
+$params = is_siteadmin()
+    ? ['document_id' => $documentid]
+    : ['document_id' => $documentid, 'user_id' => $USER->id];
+$document = $DB->get_record('local_nolej_module', $params);
 if (!$document) {
     // Document does not exist. Redirect to the library.
     redirect(
-        new moodle_url('/local/nolej/manage.php', ['contextid' => $context->id]),
+        new moodle_url('/local/nolej/library.php', ['contextid' => $context->id]),
         get_string('modulenotfound', 'local_nolej'),
         null,
         notification::NOTIFY_ERROR
@@ -92,7 +95,7 @@ if ($success) {
     // Activities have been deleted.
     redirect(
         new moodle_url(
-            '/local/nolej/management.php',
+            '/local/nolej/manage.php',
             [
                 'contextid' => $context->id,
                 'documentid' => $documentid,
@@ -106,7 +109,7 @@ if ($success) {
     // An error (or more) occurred.
     redirect(
         new moodle_url(
-            '/local/nolej/management.php',
+            '/local/nolej/manage.php',
             [
                 'contextid' => $context->id,
                 'documentid' => $documentid,

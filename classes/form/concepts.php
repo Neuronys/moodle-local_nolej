@@ -72,7 +72,7 @@ class concepts extends \moodleform {
         $json = api::readcontent($documentid, 'concepts.json');
         if (!$json) {
             redirect(
-                new moodle_url('/local/nolej/manage.php', ['contextid' => $contextid]),
+                new moodle_url('/local/nolej/library.php', ['contextid' => $contextid]),
                 get_string('genericerror', 'local_nolej', ['error' => var_export($result, true)]),
                 null,
                 notification::NOTIFY_ERROR

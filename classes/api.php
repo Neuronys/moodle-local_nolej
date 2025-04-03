@@ -1256,7 +1256,7 @@ class api {
             ]);
         } else {
             // Failed event redirect to library page.
-            $contexturl = new moodle_url('/local/nolej/manage.php', [
+            $contexturl = new moodle_url('/local/nolej/library.php', [
                 'contextid' => $this->contextid,
             ]);
         }

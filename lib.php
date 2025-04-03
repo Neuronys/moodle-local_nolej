@@ -47,7 +47,7 @@ function local_nolej_add_to_navigation($navigation, $context = null) {
     // Adds an entry to the navigation.
     $navigation->add(
         get_string('library', 'local_nolej'),
-        new moodle_url('/local/nolej/manage.php', ['contextid' => $context->id]),
+        new moodle_url('/local/nolej/library.php', ['contextid' => $context->id]),
         global_navigation::TYPE_SETTING,
         null,
         'nolejlibrary',

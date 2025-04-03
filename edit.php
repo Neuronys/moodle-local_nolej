@@ -43,9 +43,9 @@ require_capability('local/nolej:usenolej', $context);
 
 // Is the API key missing?
 if (!api::haskey()) {
-    // API key missing. Redirect to the manage page.
+    // API key missing. Redirect to the library page.
     redirect(
-        new moodle_url('/local/nolej/manage.php', ['contextid' => $context->id]),
+        new moodle_url('/local/nolej/library.php', ['contextid' => $context->id]),
         get_string('apikeymissing', 'local_nolej'),
         null,
         notification::NOTIFY_ERROR

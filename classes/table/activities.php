@@ -27,22 +27,25 @@ namespace local_nolej\table;
 
 defined('MOODLE_INTERNAL') || die;
 
-use DateTime;
-use context;
-use core_table\dynamic as dynamic_table;
+use action_menu;
+use action_menu_link;
+use core_contentbank\contentbank;
+use core_user;
 use core_table\local\filter\filterset;
-use core_user\output\status_field;
+use core\output\checkbox_toggleall;
+use html_writer;
 use moodle_url;
+use pix_icon;
+use table_sql;
 
 global $CFG;
 require_once($CFG->libdir . '/tablelib.php');
 require_once($CFG->dirroot . '/user/lib.php');
-require_once($CFG->dirroot . '/local/nolej/classes/api.php');
 
 /**
  * Class for the displaying the generated activities table.
  */
-class activities extends \table_sql {
+class activities extends table_sql {
 
     /**
      * @var string $documentid Document ID
@@ -69,14 +72,14 @@ class activities extends \table_sql {
      * @param string $downloadhelpbutton
      */
     public function out($pagesize, $useinitialsbar, $downloadhelpbutton = '') {
-        global $CFG, $OUTPUT, $PAGE;
+        global $OUTPUT;
 
         // Define the headers and columns.
         $headers = [];
         $columns = [];
 
         // Select column for bulk actions.
-        $mastercheckbox = new \core\output\checkbox_toggleall(
+        $mastercheckbox = new checkbox_toggleall(
             'local_nolej_activities_management',
             true,
             [
@@ -138,7 +141,7 @@ class activities extends \table_sql {
     public function col_select($data) {
         global $OUTPUT;
 
-        $checkbox = new \core\output\checkbox_toggleall(
+        $checkbox = new checkbox_toggleall(
             'local_nolej_activities_management',
             false,
             [
@@ -156,7 +159,7 @@ class activities extends \table_sql {
     }
 
     /**
-     * Generate the fullname column.
+     * Generate the actions column.
      *
      * @param \stdClass $data
      * @return string
@@ -165,13 +168,13 @@ class activities extends \table_sql {
         global $OUTPUT;
 
         // Actions menu.
-        $menu = new \action_menu();
+        $menu = new action_menu();
         $menu->set_menu_trigger(get_string('actions'));
 
         $menu->add(
-            new \action_menu_link(
+            new action_menu_link(
                 new moodle_url('#'),
-                new \pix_icon('i/delete', 'core'),
+                new pix_icon('i/delete', 'core'),
                 get_string('delete'),
                 false,
                 [
@@ -192,7 +195,7 @@ class activities extends \table_sql {
      * @return string
      */
     public function col_name($data) {
-        return \html_writer::link($data->link, $data->name);
+        return html_writer::link($data->link, $data->name);
     }
 
     /**
@@ -216,7 +219,7 @@ class activities extends \table_sql {
             return userdate($data->timecreated);
         }
 
-        return get_string('unknown');
+        return get_string('statusunknown');
     }
 
     /**
@@ -230,7 +233,7 @@ class activities extends \table_sql {
             return userdate($data->timemodified);
         }
 
-        return get_string('unknown');
+        return get_string('statusunknown');
     }
 
     /**
@@ -288,7 +291,7 @@ class activities extends \table_sql {
             $this->get_page_size()
         );
 
-        $contentbank = new \core_contentbank\contentbank();
+        $contentbank = new contentbank();
 
         foreach ($data as $element) {
             $content = $contentbank->get_content_from_id($element->content_id);
@@ -296,7 +299,7 @@ class activities extends \table_sql {
 
             $file = $content->get_file();
             $filesize = $file ? $file->get_filesize() : 0;
-            $author = \core_user::get_user($content->get_content()->usercreated);
+            $author = core_user::get_user($content->get_content()->usercreated);
             $element->link = $contenttype->get_view_url($content);
             $element->icon = $contenttype->get_icon($content);
             $element->usagecount = count($content->get_uses());

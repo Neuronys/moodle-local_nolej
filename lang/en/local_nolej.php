@@ -72,8 +72,10 @@ $string['storagecontextinfo'] = 'Select the position where to save Nolej generat
 $string['storagecontextcourse'] = 'Save activities in the course where the module has been originally created';
 $string['storagecontextcurrent'] = 'Save activities in the course where the user is at the time of generation';
 $string['storagecontextnolej'] = 'Save activities in the Nolej global context';
+$string['managemodules'] = 'Manage Nolej modules';
+$string['managemodulesshort'] = 'Manage modules';
 $string['manageactivities'] = 'Manage activities';
-$string['manageactivitiesofmodule'] = '{$a->title}: Manage generated activities';
+$string['manageactivitiesofmodule'] = 'Manage generated activities';
 $string['withselectedactivities'] = 'With selected activities:';
 $string['deletecontents'] = 'Delete activities';
 $string['deletecontentsconfirm'] = 'Are you sure you want to delete the selected contents and all associated files? This action cannot be undone.';
@@ -81,6 +83,9 @@ $string['activitydeleted'] = 'The selected activity has been successfully delete
 $string['activitiesdeleted'] = 'The selected activities have been successfully deleted, saving {$a->savedspace}.';
 $string['activitydeletefail'] = 'Could not delete the activity: {$a->failed}';
 $string['activitiesdeletefail'] = 'Could not deleted the following activities, you saved {$a->savedspace}: {$a->failed}';
+$string['activitiescount'] = 'Number of activities';
+$string['unusedactivities'] = 'Unused activities';
+$string['totalsize'] = 'Total storage size';
 
 // Status.
 $string['statuscreation'] = 'New module';
