@@ -106,11 +106,11 @@ class activities extends table_sql {
         $headers[] = get_string('lastmodified', 'core_contentbank');
         $columns[] = 'timemodified';
 
-        $headers[] = get_string('uses', 'core_contentbank');
-        $columns[] = 'usagecount';
-
         $headers[] = get_string('size', 'core_contentbank');
         $columns[] = 'size';
+
+        $headers[] = get_string('uses', 'core_contentbank');
+        $columns[] = 'usagecount';
 
         $headers[] = get_string('actions');
         $columns[] = 'actions';
@@ -122,7 +122,6 @@ class activities extends table_sql {
         $this->sortable(true, 'name');
         $this->no_sorting('select');
         $this->no_sorting('usagecount');
-        $this->no_sorting('size');
         $this->no_sorting('actions');
 
         $this->set_default_per_page(20);
@@ -146,11 +145,11 @@ class activities extends table_sql {
             false,
             [
                 'classes' => 'activitycheckbox m-1',
-                'id' => 'activity_' . $data->id,
+                'id' => 'activity_' . $data->content_id,
                 'name' => 'activityids[]',
                 'checked' => false,
-                'value' => $data->id,
-                'label' => get_string('selectitem', 'moodle', fullname($data)),
+                'value' => $data->content_id,
+                'label' => get_string('selectitem', 'moodle', $data->name),
                 'labelclasses' => 'accesshide',
             ]
         );
@@ -237,22 +236,53 @@ class activities extends table_sql {
     }
 
     /**
+     * Generate the size column.
+     *
+     * @param \stdClass $data
+     * @return string
+     */
+    public function col_size($data) {
+        return display_size($data->size);
+    }
+
+    /**
+     * Generate the activity's usage count column.
+     *
+     * @param \stdClass $data
+     * @return string
+     */
+    public function col_usagecount($data) {
+        if ($data->usagecount > 0) {
+            return $data->usagecount;
+        }
+        return 0;
+    }
+
+    /**
      * Builds the SQL query.
      *
      * @param bool $count When true, return the count SQL.
      * @return string containing sql to use.
      */
     protected function get_sql($count = false): string {
-        $select = $count ? 'COUNT(1)' : '*';
-
-        $sql = "SELECT $select
-                  FROM {local_nolej_h5p} n
-            INNER JOIN {contentbank_content} c ON c.id = n.content_id
-                 WHERE n.document_id = :documentid";
+        $contentbankfiles = "SELECT itemid, filesize AS size, filename AS name,
+                                    timecreated, timemodified
+                               FROM {files}
+                              WHERE component = 'contentbank'
+                                AND filesize > 0";
 
         if ($count) {
+            $sql = "SELECT COUNT(1)
+                      FROM {local_nolej_h5p} AS h
+                INNER JOIN ($contentbankfiles) AS f ON f.itemid = h.content_id
+                     WHERE h.document_id = :documentid";
             return $sql;
         }
+
+        $sql = "SELECT h.content_id, h.type, f.size, f.name, f.timecreated, f.timemodified
+                  FROM {local_nolej_h5p} AS h
+            INNER JOIN ($contentbankfiles) AS f ON f.itemid = h.content_id
+                 WHERE h.document_id = :documentid";
 
         $sort = $this->get_sql_sort();
         if ($sort) {
@@ -272,21 +302,14 @@ class activities extends table_sql {
         global $DB;
 
         $countsql = $this->get_sql(true);
-        $total = $DB->count_records_sql(
-            $countsql,
-            [
-                'documentid' => $this->documentid,
-            ]
-        );
+        $total = $DB->count_records_sql($countsql, ['documentid' => $this->documentid]);
 
         $this->pagesize($pagesize, $total);
 
         $sql = $this->get_sql();
         $data = $DB->get_records_sql(
             $sql,
-            [
-                'documentid' => $this->documentid,
-            ],
+            ['documentid' => $this->documentid],
             $this->get_page_start(),
             $this->get_page_size()
         );
@@ -297,15 +320,9 @@ class activities extends table_sql {
             $content = $contentbank->get_content_from_id($element->content_id);
             $contenttype = $content->get_content_type_instance();
 
-            $file = $content->get_file();
-            $filesize = $file ? $file->get_filesize() : 0;
-            $author = core_user::get_user($content->get_content()->usercreated);
             $element->link = $contenttype->get_view_url($content);
             $element->icon = $contenttype->get_icon($content);
             $element->usagecount = count($content->get_uses());
-            $element->bytes = $filesize;
-            $element->size = display_size($filesize);
-            $element->author = fullname($author);
         }
 
         $this->rawdata = $data;
