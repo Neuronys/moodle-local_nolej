@@ -282,6 +282,7 @@ class api {
      */
     public static function datadir($documentid = null) {
         global $CFG;
+
         $datadir = $CFG->dataroot . '/local_nolej';
         if ($documentid != null) {
             $datadir .= '/' . $documentid;
@@ -969,8 +970,32 @@ class api {
     }
 
     /**
-     * Get the Nolej category id where the module has been created.
-     * @return int|false
+     * Get the Nolej category id, create it if not exists.
+     * @return int category id
+     */
+    protected function getorcreatenolejcategory() {
+        $categoryid = get_config('local_nolej', 'categoryid');
+
+        if (!empty($categoryid) && core_course_category::get($categoryid, IGNORE_MISSING, true) != null) {
+            // Nolej category already exists.
+            return (int) $categoryid;
+        }
+
+        // Create Nolej category if not exists.
+        $nolejcategory = core_course_category::create((object) [
+            'name' => 'Nolej',
+            'description' => 'This category contains Nolej h5p contents',
+            'parent' => 0,
+            'visible' => 0,
+        ]);
+        $categoryid = $nolejcategory->id;
+        set_config('categoryid', $categoryid, 'local_nolej');
+        return (int) $categoryid;
+    }
+
+    /**
+     * Get the context where the module has been created.
+     * @return int|false context id or false
      */
     protected function getgenerationcoursecontext() {
         $contextid = $this->contextid;
@@ -979,16 +1004,19 @@ class api {
             return false;
         }
 
-        $categoryexists = core_course_category::get($contextid, IGNORE_MISSING, true) != null;
-        return $categoryexists ? $contextid : false;
+        if ($context instanceof context_course ||  $context instanceof context_coursecat) {
+            return $context->id;
+        }
+
+        return false;
     }
 
     /**
-     * Get the Nolej category id where the activities generation started.
+     * Get the context from where the activities generation started.
      * @param object $document
-     * @return int|false
+     * @return int|false context id or false
      */
-    protected function getgenerationcurrentcontext($document) {
+    public function getgenerationcurrentcontext($document) {
         global $DB;
 
         // Use the latest 'generate' action to detect where the user executed the generation.
@@ -1010,60 +1038,42 @@ class api {
             return false;
         }
 
-        $contextid = $lastactivity->context_id;
+        $contextid = (int) $lastactivity->context_id;
         // Context must exist and cannot be systemcontext.
         if (empty($contextid) || $contextid == SYSCONTEXTID) {
             return false;
         }
 
-        $categoryexists = core_course_category::get($contextid, IGNORE_MISSING, true) != null;
-        return $categoryexists ? $contextid : false;
+        $context = context::instance_by_id($contextid, IGNORE_MISSING);
+        if ($context instanceof context_course ||  $context instanceof context_coursecat) {
+            return $context->id;
+        }
+
+        return false;
     }
 
     /**
-     * Get the Nolej category id, create it if not exists.
+     * Get the Nolej category context.
      * @param object $document
-     * @return int
+     * @return int context id
      */
-    protected function getnolejcategoryid($document) {
-        // Check for course context.
-        $storagecontext = get_config('local_nolej', 'storagecontext');
+    protected function getnolejcontext($document) {
+        // Get Nolej category.
+        $nolejcategoryid = getorcreatenolejcategory($document);
 
-        switch ($storagecontext) {
-            case 'coursecontext':
-                $contextid = $this->getgenerationcoursecontext();
-                if ($contextid) {
-                    return $contextid;
-                }
-                break;
-
-            case 'currentcontext':
-                $contextid = $this->getgenerationcurrentcontext($document);
-                if ($contextid) {
-                    return $contextid;
-                }
-                break;
-        }
-
-        // Defaults to Nolej global context.
-
-        $categoryid = get_config('local_nolej', 'categoryid');
-
-        if (!empty($categoryid) && core_course_category::get($categoryid, IGNORE_MISSING, true) != null) {
-            // Nolej context already exists.
-            return (int) $categoryid;
-        }
-
-        // Create Nolej context if not exists.
-        $nolejcategory = core_course_category::create((object) [
-            'name' => 'Nolej',
-            'description' => 'This category contains Nolej h5p contents',
-            'parent' => 0,
-            'visible' => 0,
+        // Create a Nolej subdirectory.
+        $modulecategory = core_course_category::create((object) [
+            'name' => sprintf(
+                '%s (%s)',
+                $document->title,
+                userdate($timestamp, get_string('strftimedatetimeshortaccurate', 'core_langconfig'))
+            ),
+            'description' => userdate($timestamp, get_string('strftimedatetimeshortaccurate', 'core_langconfig')),
+            'parent' => $nolejcategoryid,
         ]);
-        $categoryid = $nolejcategory->id;
-        set_config('categoryid', $categoryid, 'local_nolej');
-        return (int) $categoryid;
+
+        $context = context_coursecat::instance($modulecategory->id);
+        return $context->id;
     }
 
     /**
@@ -1074,26 +1084,21 @@ class api {
      */
     protected function getmodulecontext($document, $timestamp) {
         // Check in the configuration where the modules should be put.
-        if (get_config('local_nolej', 'storagecontext') == 'coursecontext') {
-            $contextid = $this->contextid;
-            if (!empty($contextid) && $contextid != SYSCONTEXTID) {
-                // Get the context where the user created the module.
-                return context::instance_by_id($contextid);
-            }
+        $storagecontext = get_config('local_nolej', 'storagecontext');
+
+        switch ($storagecontext) {
+            case 'coursecontext':
+                $contextid = $this->getgenerationcoursecontext();
+                break;
+
+            case 'currentcontext':
+                $contextid = $this->getgenerationcurrentcontext($document);
+                break;
         }
 
-        // Create category context in the Nolej context.
-        $nolejcategoryid = $this->getnolejcategoryid($document);
-        $modulecategory = core_course_category::create((object) [
-            'name' => sprintf(
-                '%s (%s)',
-                $document->title,
-                userdate($timestamp, get_string('strftimedatetimeshortaccurate', 'core_langconfig'))
-            ),
-            'description' => userdate($timestamp, get_string('strftimedatetimeshortaccurate', 'core_langconfig')),
-            'parent' => $nolejcategoryid,
-        ]);
-        return context_coursecat::instance($modulecategory->id);
+        // Use Nolej category context by default.
+        $contextid = $contextid ? $contextid : $this->getnolejcontext($document);
+        return context::instance_by_id($contextid);
     }
 
     /**
@@ -1102,15 +1107,15 @@ class api {
      * @return array of errors
      */
     public function downloadactivities($document) {
-        global $CFG, $DB;
+        global $DB;
 
         $errors = [];
-
         $now = time();
         $fs = get_file_storage();
         $h5pdir = self::h5pdir($document->document_id);
         $h5pfactory = new factory();
 
+        // Fetch activities list.
         $json = self::getcontent(
             $document->document_id,
             'activities',
@@ -1122,6 +1127,7 @@ class api {
         if (!$json) {
             return get_string('erractivitiesdecode', 'local_nolej');
         }
+
         $activities = json_decode($json);
         $activities = $activities->activities;
 
@@ -1129,6 +1135,7 @@ class api {
         $isoriginalcontext = $modulecontext->id == $this->contextid;
 
         foreach ($activities as $activity) {
+            // Destination path.
             $filepath = sprintf('%s/%s.h5p', $h5pdir, $activity->activity_name);
 
             // Download the h5p activity.
@@ -1138,12 +1145,12 @@ class api {
             );
 
             if (!$success) {
+                // Save error and continue.
                 $errors[] = sprintf('%s (%s)', $activity->activity_name, get_string('erractivitydownload', 'local_nolej'));
                 continue;
             }
 
             try {
-
                 // The title of the activities should have the information about the date and time of the generation
                 // only if they are saved into the original context (i.e. course).
                 // If they are saved into the Nolej context, the parent category has already that information.
@@ -1196,6 +1203,7 @@ class api {
                 );
 
             } catch (Exception $e) {
+                // Save error and continue.
                 $errors[] = sprintf('%s (%s)', $activity->activity_name, 'Exception: ' . var_export($e, true));
             }
         }
@@ -1286,6 +1294,7 @@ class api {
      */
     protected function setlanguageofuser(int $userid) {
         global $DB, $CFG, $USER;
+
         $user = $DB->get_record(
             'user',
             ['id' => $userid]
@@ -1293,8 +1302,10 @@ class api {
         $preferredlanguage = $user->lang;
 
         if (isloggedin()) {
+            // Change user language if logged in.
             $USER->lang = $preferredlanguage;
         } else {
+            // Change global language otherwise.
             $CFG->lang = $preferredlanguage;
         }
     }
