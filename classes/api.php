@@ -30,6 +30,7 @@ defined('MOODLE_INTERNAL') || die();
 use curl;
 use moodle_url;
 use context;
+use context_course;
 use context_coursecat;
 use core_course_category;
 use core_user;
@@ -1016,7 +1017,7 @@ class api {
      * @param object $document
      * @return int|false context id or false
      */
-    public function getgenerationcurrentcontext($document) {
+    protected function getgenerationcurrentcontext($document) {
         global $DB;
 
         // Use the latest 'generate' action to detect where the user executed the generation.
@@ -1055,11 +1056,12 @@ class api {
     /**
      * Get the Nolej category context.
      * @param object $document
+     * @param int $timestamp
      * @return int context id
      */
-    protected function getnolejcontext($document) {
+    protected function getnolejsubcontext($document, $timestamp) {
         // Get Nolej category.
-        $nolejcategoryid = getorcreatenolejcategory($document);
+        $nolejcategoryid = $this->getorcreatenolejcategory();
 
         // Create a Nolej subdirectory.
         $modulecategory = core_course_category::create((object) [
@@ -1097,7 +1099,8 @@ class api {
         }
 
         // Use Nolej category context by default.
-        $contextid = $contextid ? $contextid : $this->getnolejcontext($document);
+        $contextid = $contextid ? $contextid : $this->getnolejsubcontext($document, $timestamp);
+        var_dump($contextid);
         return context::instance_by_id($contextid);
     }
 
