@@ -996,7 +996,7 @@ class api {
 
     /**
      * Get the context where the module has been created.
-     * @return int|false context id or false
+     * @return context|false
      */
     protected function getgenerationcoursecontext() {
         $contextid = $this->contextid;
@@ -1005,8 +1005,9 @@ class api {
             return false;
         }
 
+        $context = context::instance_by_id($contextid, IGNORE_MISSING);
         if ($context instanceof context_course ||  $context instanceof context_coursecat) {
-            return $context->id;
+            return $context;
         }
 
         return false;
@@ -1015,7 +1016,7 @@ class api {
     /**
      * Get the context from where the activities generation started.
      * @param object $document
-     * @return int|false context id or false
+     * @return context|false
      */
     protected function getgenerationcurrentcontext($document) {
         global $DB;
@@ -1047,17 +1048,17 @@ class api {
 
         $context = context::instance_by_id($contextid, IGNORE_MISSING);
         if ($context instanceof context_course ||  $context instanceof context_coursecat) {
-            return $context->id;
+            return $context;
         }
 
         return false;
     }
 
     /**
-     * Get the Nolej category context.
+     * Get the Nolej category subcontext.
      * @param object $document
      * @param int $timestamp
-     * @return int context id
+     * @return context_coursecat Nolej subcontext
      */
     protected function getnolejsubcontext($document, $timestamp) {
         // Get Nolej category.
@@ -1074,8 +1075,7 @@ class api {
             'parent' => $nolejcategoryid,
         ]);
 
-        $context = context_coursecat::instance($modulecategory->id);
-        return $context->id;
+        return context_coursecat::instance($modulecategory->id);
     }
 
     /**
@@ -1084,24 +1084,28 @@ class api {
      * @param int $timestamp
      * @return context
      */
-    protected function getmodulecontext($document, $timestamp) {
+    protected function getactivitiessavingcontext($document, $timestamp) {
         // Check in the configuration where the modules should be put.
         $storagecontext = get_config('local_nolej', 'storagecontext');
 
         switch ($storagecontext) {
             case 'coursecontext':
-                $contextid = $this->getgenerationcoursecontext();
+                $context = $this->getgenerationcoursecontext();
+                if ($context != null) {
+                    return $context;
+                }
                 break;
 
             case 'currentcontext':
-                $contextid = $this->getgenerationcurrentcontext($document);
+                $context = $this->getgenerationcurrentcontext($document);
+                if ($context != null) {
+                    return $context;
+                }
                 break;
         }
 
-        // Use Nolej category context by default.
-        $contextid = $contextid ? $contextid : $this->getnolejsubcontext($document, $timestamp);
-        var_dump($contextid);
-        return context::instance_by_id($contextid);
+        // Use Nolej category subcontext by default.
+        return $this->getnolejsubcontext($document, $timestamp);
     }
 
     /**
@@ -1134,7 +1138,7 @@ class api {
         $activities = json_decode($json);
         $activities = $activities->activities;
 
-        $modulecontext = $this->getmodulecontext($document, $now);
+        $modulecontext = $this->getactivitiessavingcontext($document, $now);
         $isoriginalcontext = $modulecontext->id == $this->contextid;
 
         foreach ($activities as $activity) {

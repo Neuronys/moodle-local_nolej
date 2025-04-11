@@ -64,7 +64,7 @@ if ($hassiteconfig) { // Needs this condition or there is error on login page.
         new admin_setting_configselect(
             'local_nolej/storagecontext',
             get_string('storagecontext', 'local_nolej'),
-            get_string('storagecontextinfo', 'local_nolej'),
+            $OUTPUT->render_from_template('local_nolej/storagecontext', (object) []),
             'coursecontext',
             [
                 'coursecontext' => get_string('storagecontextcourse', 'local_nolej'),
