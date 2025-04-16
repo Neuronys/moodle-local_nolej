@@ -69,7 +69,14 @@ to complete the installation from the command line.
 
 
 After the installation, Moodle will redirect you to the plugin setting page,
-where you have to put the API Key.
+where you have to put the API Key and select where Nolej should store the generated H5P activities.
+
+- Save in the course where the Nolej module was created:
+This option links the generated H5P activities to the course where the Nolej module was originally created, even if the user switches to another course before starting the generation. It's ideal when you want to keep the content centralized in the source course for consistency.
+- Save in the course where the activity generation is started:
+With this option, the plugin uses the currently active course at the moment of generation as the reference for storage. This is useful when Nolej modules are created in one course but the activities need to be generated in a different course, such as in customized or shared teaching contexts.
+- Save in the central "Nolej" container:
+The activities are saved in a subfolder of a centralized shared context called Nolej, separate from individual courses. This helps avoid overloading course content banks and provides an organized structure for generated resources. However, careful permission management is required: users may not be able to access the generated activities if they lack the necessary permissions for the central context..
 
 ## After installation
 
