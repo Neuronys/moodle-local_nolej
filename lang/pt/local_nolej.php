@@ -19,7 +19,7 @@
  *
  * @package     local_nolej
  * @author      Vincenzo Padula <vincenzo@oc-group.eu>
- * @copyright   2024 OC Open Consulting SB Srl
+ * @copyright   2025 OC Open Consulting SB Srl
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -77,6 +77,7 @@ $string['statusrevision'] = 'Análise concluída';
 $string['statusrevisionpending'] = 'Revisão em andamento';
 $string['statusactivities'] = 'Revisão concluída';
 $string['statusactivitiespending'] = 'Geração de atividades em andamento';
+$string['statuspreviewnotavailable'] = 'Pré-visualização das atividades ainda não disponível.';
 $string['statuscompleted'] = 'Atividades geradas';
 $string['statusfailed'] = 'Falha';
 
@@ -243,3 +244,4 @@ $string['erractivitiesdecode'] = 'Falha ao decodificar os dados das atividades';
 $string['erractivitydownload'] = 'Falha ao salvar a atividade no disco';
 $string['errh5psave'] = 'Falha ao salvar o pacote h5p';
 $string['errh5pvalidation'] = 'O pacote h5p não é válido';
+$string['erractivitiesget'] = 'A importação de algumas atividades H5P falhou: {$a->errors}';

@@ -19,7 +19,7 @@
  *
  * @package     local_nolej
  * @author      Vincenzo Padula <vincenzo@oc-group.eu>
- * @copyright   2024 OC Open Consulting SB Srl
+ * @copyright   2025 OC Open Consulting SB Srl
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -79,7 +79,7 @@ class activities extends \moodleform {
         $json = api::readcontent($documentid, 'settings.json');
         if (!$json) {
             redirect(
-                new moodle_url('/local/nolej/manage.php', ['contextid' => $contextid]),
+                new moodle_url('/local/nolej/library.php', ['contextid' => $contextid]),
                 get_string('genericerror', 'local_nolej', ['error' => var_export($result, true)]),
                 null,
                 notification::NOTIFY_ERROR

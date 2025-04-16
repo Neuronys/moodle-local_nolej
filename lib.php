@@ -19,7 +19,7 @@
  *
  * @package     local_nolej
  * @author      Vincenzo Padula <vincenzo@oc-group.eu>
- * @copyright   2024 OC Open Consulting SB Srl
+ * @copyright   2025 OC Open Consulting SB Srl
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -47,7 +47,7 @@ function local_nolej_add_to_navigation($navigation, $context = null) {
     // Adds an entry to the navigation.
     $navigation->add(
         get_string('library', 'local_nolej'),
-        new moodle_url('/local/nolej/manage.php', ['contextid' => $context->id]),
+        new moodle_url('/local/nolej/library.php', ['contextid' => $context->id]),
         global_navigation::TYPE_SETTING,
         null,
         'nolejlibrary',

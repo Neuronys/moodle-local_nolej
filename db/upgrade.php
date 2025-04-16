@@ -19,7 +19,7 @@
  *
  * @package     local_nolej
  * @author      Vincenzo Padula <vincenzo@oc-group.eu>
- * @copyright   2024 OC Open Consulting SB Srl
+ * @copyright   2025 OC Open Consulting SB Srl
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -131,6 +131,19 @@ function xmldb_local_nolej_upgrade($oldversion) {
 
         // Update the version number to the current version.
         upgrade_plugin_savepoint(true, 2024070401, 'local', 'nolej');
+    }
+
+    // Add column context_id in local_nolej_activity.
+    if ($oldversion < 2025032605) {
+
+        $table = new xmldb_table('local_nolej_activity');
+        $field = new xmldb_field('context_id', XMLDB_TYPE_INTEGER, '11', null, null, null, null);
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Update the version number to the current version.
+        upgrade_plugin_savepoint(true, 2025032605, 'local', 'nolej');
     }
 
     return true;

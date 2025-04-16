@@ -15,11 +15,11 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Nolej module edit steps, from creation to activity generation.
+ * Nolej module deletion.
  *
  * @package     local_nolej
  * @author      Vincenzo Padula <vincenzo@oc-group.eu>
- * @copyright   2024 OC Open Consulting SB Srl
+ * @copyright   2025 OC Open Consulting SB Srl
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -56,7 +56,7 @@ $success = module::delete($moduleid);
 if ($success) {
     // Module deleted.
     redirect(
-        new moodle_url('/local/nolej/manage.php', ['contextid' => $context->id]),
+        new moodle_url('/local/nolej/library.php', ['contextid' => $context->id]),
         get_string('moduledeleted', 'local_nolej'),
         null,
         notification::NOTIFY_SUCCESS
@@ -64,7 +64,7 @@ if ($success) {
 } else {
     // Module not found.
     redirect(
-        new moodle_url('/local/nolej/manage.php', ['contextid' => $context->id]),
+        new moodle_url('/local/nolej/library.php', ['contextid' => $context->id]),
         get_string('modulenotfound', 'local_nolej'),
         null,
         notification::NOTIFY_ERROR

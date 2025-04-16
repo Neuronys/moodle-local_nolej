@@ -19,7 +19,7 @@
  *
  * @package     local_nolej
  * @author      Vincenzo Padula <vincenzo@oc-group.eu>
- * @copyright   2024 OC Open Consulting SB Srl
+ * @copyright   2025 OC Open Consulting SB Srl
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -29,6 +29,14 @@ $functions = [
     'local_nolej_get_library_updates' => [
         'classname' => 'local_nolej\external\get_library_updates',
         'description' => 'Get updates for modules',
+        'capabilities' => 'local/nolej:usenolej',
+        'type' => 'read',
+        'ajax' => true,
+        'loginrequired' => true,
+    ],
+    'local_nolej_preview' => [
+        'classname' => 'local_nolej\external\preview',
+        'description' => 'Check for activities preview link',
         'capabilities' => 'local/nolej:usenolej',
         'type' => 'read',
         'ajax' => true,

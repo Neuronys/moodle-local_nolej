@@ -39,7 +39,7 @@ not appear. If that's the case, this guide will help you create a link to the li
 4. **Insert the Link**
 
     Save the image and proceed to insert the direct link to the Nolej library, located at the
-    address of your Moodle installation (`<moodle>/local/nolej/manage.php`).
+    address of your Moodle installation (`<moodle>/local/nolej/library.php`).
 
     * You can choose to open the link in a new window, based on your preference.
 
@@ -125,7 +125,7 @@ of the Moodle interface.
 
     ```
     title => Geneate e-learning in minutes
-    URL => <moodle>/local/nolej/manage.php
+    URL => <moodle>/local/nolej/library.php
     ```
 
     ![alt text](images/navigation-block/navigation-block-13_Configure_link.png)

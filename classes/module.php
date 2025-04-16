@@ -19,7 +19,7 @@
  *
  * @package     local_nolej
  * @author      Vincenzo Padula <vincenzo@oc-group.eu>
- * @copyright   2024 OC Open Consulting SB Srl
+ * @copyright   2025 OC Open Consulting SB Srl
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -379,6 +379,7 @@ class module {
             (object) [
                 'document_id' => $result->id,
                 'user_id' => $USER->id,
+                'context_id' => $this->contextid ?? SYSCONTEXTID,
                 'action' => 'transcription',
                 'tstamp' => time(),
                 'status' => 'ok',
@@ -551,6 +552,7 @@ class module {
             (object) [
                 'document_id' => $this->documentid,
                 'user_id' => $USER->id,
+                'context_id' => $this->contextid ?? SYSCONTEXTID,
                 'action' => 'transcription',
                 'tstamp' => time(),
                 'status' => 'ok',
@@ -569,7 +571,7 @@ class module {
      * Handle review concepts form
      */
     public function concepts() {
-        global $OUTPUT;
+        global $OUTPUT, $PAGE;
 
         // Display and handle concepts form.
         $mform = new \local_nolej\form\concepts(
@@ -660,6 +662,8 @@ class module {
                 $success ? notification::NOTIFY_SUCCESS : notification::NOTIFY_ERROR
             );
         }
+
+        $PAGE->requires->js_call_amd('local_nolej/concepts');
 
         echo $OUTPUT->header();
         $this->printinfo();
@@ -1010,6 +1014,7 @@ class module {
                     (object) [
                         'document_id' => $this->documentid,
                         'user_id' => $USER->id,
+                        'context_id' => $this->contextid ?? SYSCONTEXTID,
                         'action' => 'activities',
                         'tstamp' => time(),
                         'status' => 'ok',
@@ -1142,7 +1147,7 @@ class module {
      * @return string url
      */
     protected function libraryurl($escaped = false) {
-        $libraryurl = new moodle_url('/local/nolej/manage.php', ['contextid' => $this->contextid]);
+        $libraryurl = new moodle_url('/local/nolej/library.php', ['contextid' => $this->contextid]);
         return $libraryurl->out($escaped);
     }
 
@@ -1266,13 +1271,10 @@ class module {
             $userid = $USER->id;
         }
 
-        $module = $DB->get_record(
-            'local_nolej_module',
-            [
-                'id' => $moduleid,
-                'user_id' => $userid,
-            ]
-        );
+        $params = is_siteadmin()
+            ? ['id' => $moduleid]
+            : ['id' => $moduleid, 'user_id' => $userid];
+        $module = $DB->get_record('local_nolej_module', $params);
 
         if (!$module) {
             // Document does not exist.
@@ -1295,5 +1297,62 @@ class module {
         }
 
         return true;
+    }
+
+    /**
+     * Delete activities of this module from disk and database.
+     * @param int[] $activitiesid
+     * @param int $savedbytes
+     * @param string $errormessage
+     * @return bool true on success
+     */
+    public function deleteactivities($activitiesid, &$savedbytes, &$errormessage) {
+        global $DB;
+
+        $contentbank = new \core_contentbank\contentbank();
+        $failed = [];
+        $savedbytes = 0;
+        $errormessage = '';
+
+        foreach ($activitiesid as $id) {
+            try {
+                $content = $contentbank->get_content_from_id($id);
+                $contenttype = $content->get_content_type_instance();
+
+                $name = $content->get_name();
+
+                // Check permission.
+                if (!$contenttype->can_delete($content)) {
+                    $failed[] = $name . ': ' . get_string('contentnotdeleted', 'core_contentbank');
+                    continue;
+                }
+
+                // Get file size.
+                $file = $content->get_file();
+                $filesize = $file ? $file->get_filesize() : 0;
+
+                // Try to delete activity.
+                $success = $contenttype->delete_content($content);
+                if (!$success) {
+                    $failed[] = $name . ': ' . get_string('nopermissiontodelete', 'core_contentbank');
+                    continue;
+                }
+
+                // Delete from Nolej activities table.
+                $result = $DB->delete_records('local_nolej_h5p', ['content_id' => $id]);
+                $savedbytes += $filesize;
+            } catch (\Exception $e) {
+                $failed[] = get_string('notavailable', 'core_contentbank');
+            }
+        }
+
+        if (empty($failed)) {
+            // Nothing failed.
+            return true;
+        }
+
+        // At least on error occurred. The error message a list if there was multiple activities.
+        $errormessage = count($activitiesid) == 1 ? $failed[0] : \html_writer::alist($failed);
+        return false;
     }
 }

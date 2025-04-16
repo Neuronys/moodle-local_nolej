@@ -19,7 +19,7 @@
  *
  * @package     local_nolej
  * @author      Vincenzo Padula <vincenzo@oc-group.eu>
- * @copyright   2024 OC Open Consulting SB Srl
+ * @copyright   2025 OC Open Consulting SB Srl
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -56,6 +56,21 @@ if ($hassiteconfig) { // Needs this condition or there is error on login page.
             get_string('pollingintervalinfo', 'local_nolej'),
             '30',
             '/^[1-9][0-9]*$/' // Positive integer, 1 minimum (i.e. 1 second).
+        )
+    );
+
+    // Context where to save h5p activities.
+    $settings->add(
+        new admin_setting_configselect(
+            'local_nolej/storagecontext',
+            get_string('storagecontext', 'local_nolej'),
+            $OUTPUT->render_from_template('local_nolej/storagecontext', (object) []),
+            'coursecontext',
+            [
+                'coursecontext' => get_string('storagecontextcourse', 'local_nolej'),
+                'currentcontext' => get_string('storagecontextcurrent', 'local_nolej'),
+                'nolejcontext' => get_string('storagecontextnolej', 'local_nolej'),
+            ]
         )
     );
 }

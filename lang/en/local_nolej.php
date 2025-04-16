@@ -19,7 +19,7 @@
  *
  * @package     local_nolej
  * @author      Vincenzo Padula <vincenzo@oc-group.eu>
- * @copyright   2024 OC Open Consulting SB Srl
+ * @copyright   2025 OC Open Consulting SB Srl
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -67,6 +67,28 @@ $string['genericerror'] = 'An error occurred: <pre>{$a->error}</pre>';
 $string['moduleview'] = 'View module';
 $string['pollinginterval'] = 'Polling interval';
 $string['pollingintervalinfo'] = 'Duration of the interval in seconds, after which it checks whether there are updates on the modules. Minimum 1 second.';
+$string['storagecontext'] = 'H5P Activity Storage Context';
+$string['storagecontextinfo'] = 'Select where Nolej should store the generated H5P activities.';
+$string['storagecontextcourse'] = 'Save in the course where the Nolej module was created';
+$string['storagecontextcourseinfo'] = 'This option links the generated H5P activities to the course where the Nolej module was originally created, even if the user switches to another course before starting the generation. It\'s ideal when you want to keep the content centralized in the source course for consistency.';
+$string['storagecontextcurrent'] = 'Save in the course where the activity generation is started';
+$string['storagecontextcurrentinfo'] = 'With this option, the plugin uses the currently active course at the moment of generation as the reference for storage. This is useful when Nolej modules are created in one course but the activities need to be generated in a different course, such as in customized or shared teaching contexts.';
+$string['storagecontextnolej'] = 'Save in the central "Nolej" container';
+$string['storagecontextnolejinfo'] = 'The activities are saved in a subfolder of a centralized shared context called Nolej, separate from individual courses. This helps avoid overloading course content banks and provides an organized structure for generated resources. However, careful permission management is required: users may not be able to access the generated activities if they lack the necessary permissions for the central context.';
+$string['managemodules'] = 'Manage Nolej modules';
+$string['managemodulesshort'] = 'Manage modules';
+$string['manageactivities'] = 'Manage activities';
+$string['manageactivitiesofmodule'] = 'Manage generated activities';
+$string['withselectedactivities'] = 'With selected activities:';
+$string['deletecontents'] = 'Delete activities';
+$string['deletecontentsconfirm'] = 'Are you sure you want to delete the selected contents and all associated files? This action cannot be undone.';
+$string['activitydeleted'] = 'The selected activity has been successfully deleted, saving {$a->savedspace}.';
+$string['activitiesdeleted'] = 'The selected activities have been successfully deleted, saving {$a->savedspace}.';
+$string['activitydeletefail'] = 'Could not delete the activity: {$a->failed}';
+$string['activitiesdeletefail'] = 'Could not deleted the following activities, you saved {$a->savedspace}: {$a->failed}';
+$string['activitiescount'] = 'Number of activities';
+$string['unusedactivities'] = 'Unused activities';
+$string['totalsize'] = 'Total storage size';
 
 // Status.
 $string['statuscreation'] = 'New module';
@@ -77,6 +99,7 @@ $string['statusrevision'] = 'Analysis completed';
 $string['statusrevisionpending'] = 'Revision in progress';
 $string['statusactivities'] = 'Revision completed';
 $string['statusactivitiespending'] = 'Activities generation in progress';
+$string['statuspreviewnotavailable'] = 'Preview of activities not yet available.';
 $string['statuscompleted'] = 'Activities generated';
 $string['statusfailed'] = 'Failed';
 
@@ -243,3 +266,4 @@ $string['erractivitiesdecode'] = 'Failed to decode activities data';
 $string['erractivitydownload'] = 'Failed to save activity on disk';
 $string['errh5psave'] = 'Failed to save h5p package';
 $string['errh5pvalidation'] = 'h5p package is not valid';
+$string['erractivitiesget'] = 'The import of some h5p activities have failed: {$a->errors}';

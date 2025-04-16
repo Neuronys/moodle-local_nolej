@@ -15,7 +15,7 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template local_nolej/manage
+    @template local_nolej/library
 
     Context variables required for this template:
     * modules
@@ -30,6 +30,7 @@
             * iscompleted
             * isfailed
     * createurl
+    * managementurl
 
     Example context (json):
     {
@@ -46,7 +47,8 @@
                 "isfailed": false
             }
         ],
-        "createurl": "mymoodle.com/local/nolej/edit.php"
+        "createurl": "mymoodle.com/local/nolej/edit.php",
+        "managementurl": "mymoodle.com/local/nolej/management.php"
     }
 }}
 
@@ -56,6 +58,10 @@
         <button type="button" class="btn btn-primary" onclick="location.href='{{{createurl}}}'">
             {{#pix}} e/insert, core {{/pix}}
             {{#str}} createmodule, local_nolej {{/str}}
+        </button>
+        <button type="button" class="btn btn-secondary mx-1" onclick="location.href='{{{managementurl}}}'">
+            {{#pix}} a/setting, core {{/pix}}
+            {{#str}} managemodulesshort, local_nolej {{/str}}
         </button>
     </div>
 </div>
