@@ -4,7 +4,7 @@
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
   <TABLES>
-  <TABLE NAME="local_nolej_module" COMMENT="each record is one nolej module">
+    <TABLE NAME="local_nolej_module" COMMENT="each record is one nolej module">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" COMMENT="Module incremental id"/>
         <FIELD NAME="document_id" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false" COMMENT="Nolej document id"/>
