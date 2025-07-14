@@ -10,8 +10,8 @@
         <FIELD NAME="document_id" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false" COMMENT="Nolej document id"/>
         <FIELD NAME="user_id" TYPE="int" LENGTH="11" NOTNULL="true" SEQUENCE="false" COMMENT="author id"/>
         <FIELD NAME="tstamp" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="creation datetime"/>
-        <FIELD NAME="status" TYPE="int" LENGTH="4" NOTNULL="true" SEQUENCE="false" COMMENT="0 -> idle, ... 8 -> completed"/>
-        <FIELD NAME="title" TYPE="char" LENGTH="250" NOTNULL="false" SEQUENCE="false" COMMENT="null -> Nolej will set a title"/>
+        <FIELD NAME="status" TYPE="int" LENGTH="4" NOTNULL="true" SEQUENCE="false" COMMENT="0: idle, ... 8: completed"/>
+        <FIELD NAME="title" TYPE="char" LENGTH="250" NOTNULL="false" SEQUENCE="false" COMMENT="null: Nolej will set a title"/>
         <FIELD NAME="consumed_credit" TYPE="int" LENGTH="4" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="doc_url" TYPE="char" LENGTH="200" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="media_type" TYPE="char" LENGTH="20" NOTNULL="true" SEQUENCE="false" COMMENT="web, audio, video, document, freetext"/>
